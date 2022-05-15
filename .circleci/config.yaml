@@ -1,0 +1,19 @@
+version: 2.1
+orbs:
+  nx: nrwl/nx@1.4.0
+jobs:
+  main:
+    docker:
+      - image: cimg/node:lts-browsers
+    steps:
+      - checkout
+      - run: npm ci
+      - nx/set-shas
+
+      - run: yarn nx workspace-lint
+      - run: yarn nx format:check
+
+workflows:
+  build:
+    jobs:
+      - main
