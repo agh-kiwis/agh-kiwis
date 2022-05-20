@@ -37,3 +37,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Environments
+*.env
+
+# Auto-generated schemas
+*.gql

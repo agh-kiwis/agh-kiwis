@@ -1,6 +1,6 @@
 {
   "name": "agh-kiwis",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
@@ -9,12 +9,20 @@
   },
   "private": true,
   "dependencies": {
+    "@nestjs/apollo": "^10.0.12",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/graphql": "^10.0.12",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.3",
+    "apollo-server-express": "^3.7.0",
+    "graphql": "^16.5.0",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "typeorm": "0.2"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
