@@ -50,8 +50,6 @@ export class AuthService {
 
     // TODO
 
-    
-
     if (isValidPassword) {
       const token = await this.jwtService.sign({
         id: user.id,
