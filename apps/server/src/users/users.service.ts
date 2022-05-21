@@ -5,7 +5,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 @Injectable()
 export class UsersService {
   create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+    return `This action returns all users`;
   }
 
   findAll() {

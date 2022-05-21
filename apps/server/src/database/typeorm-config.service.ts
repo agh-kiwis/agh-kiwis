@@ -1,12 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { Category } from '../tasks/entities/category.entity';
+import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
+import { Color } from '../tasks/entities/color.entity';
+import { Priority } from '../tasks/entities/priority.entity';
+import { Repeat } from '../tasks/entities/repeat.entity';
+import { Task } from '../tasks/entities/task.entity';
+import { Notification } from '../tasks/entities/notification.entity';
+import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
+    console.log('This is my path :))');
+    console.log(__dirname + '/../../../apps/server/**/*.entity{.ts,.js}');
+
     return {
       type: this.configService.get('database.type'),
       url: this.configService.get('database.url'),
@@ -19,10 +31,20 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       dropSchema: false,
       keepConnectionAlive: true,
       logging: this.configService.get('app.nodeEnv') !== 'production',
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      migrations: [__dirname + '/database/migrations/**/*{.ts,.js}'],
-      seeds: [__dirname + '/database/seeds/**/*{.ts,.js}'],
-      factories: [__dirname + '/database/factories/**/*{.ts,.js}'],
+      entities: [
+        User,
+        Category,
+        Task,
+        Repeat,
+        Priority,
+        TaskBreakdown,
+        Color,
+        ChunkInfo,
+        Notification,
+      ],
+      migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+      seeds: [__dirname + '/seeds/**/*{.ts,.js}'],
+      factories: [__dirname + '/factories/**/*{.ts,.js}'],
       cli: {
         entitiesDir: 'src',
         migrationsDir: 'src/database/migrations',

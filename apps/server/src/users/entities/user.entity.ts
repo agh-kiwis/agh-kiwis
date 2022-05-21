@@ -1,43 +1,55 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Task } from '../../tasks/entities/task.entity';
 
+@ObjectType()
 @Entity()
 export class User {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, nullable: true })
+  @Field()
+  @Column({ unique: true })
   email: string | null;
 
-  @Column({ nullable: true })
+  @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Field()
+  @Column()
   gender: string;
 
+  @Field()
   @Index()
-  @Column({ nullable: true })
+  @Column()
   name: string | null;
 
+  @Field()
   @Column({ type: 'date', nullable: true })
   birthDate: Date;
 
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
+
+  @Field()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field()
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Field()
   @DeleteDateColumn()
   deletedAt: Date;
-
-  // TODO Finish this
-  // Update relations to other entities
 }
