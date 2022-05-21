@@ -12,12 +12,13 @@ import { ApolloConfigService } from '../graphql/apollo-config.service';
 import { ApolloDriver } from '@nestjs/apollo';
 import { UsersModule } from '../users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
+import authConfig from '../config/auth.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, appConfig],
+      load: [databaseConfig, appConfig, authConfig],
       envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({

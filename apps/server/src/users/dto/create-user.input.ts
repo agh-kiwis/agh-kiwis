@@ -1,7 +1,18 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Transform } from 'class-transformer';
+import { IsEmail, IsNotEmpty, MinLength, Validate } from 'class-validator';
+import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
 
-@InputType()
 export class CreateUserInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Transform(({ value }) => value?.toLowerCase().trim())
+  @IsNotEmpty()
+  @Validate(IsNotExist, ['User'], {
+    message: 'emailAlreadyExists',
+  })
+  @IsEmail()
+  email: string | null;
+
+  @MinLength(6)
+  password?: string;
+
+  hash?: string | null;
 }

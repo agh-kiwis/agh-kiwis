@@ -1,19 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { EntityCondition } from '../utils/types/entity-condition.type';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>
+  ) {}
+
   create(createUserInput: CreateUserInput) {
-    return `This action returns all users`;
+    return this.usersRepository.save(
+      this.usersRepository.create(createUserInput)
+    );
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(fields: EntityCondition<User>) {
+    return this.usersRepository.findOne({
+      where: fields,
+    });
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
@@ -22,5 +35,9 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async softDelete(id: number): Promise<void> {
+    await this.usersRepository.softDelete(id);
   }
 }
