@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { HelloResolver } from '../resolvers/hello.resolver';
 
 @Injectable()
 export class ApolloConfigService implements ApolloDriverConfigFactory {

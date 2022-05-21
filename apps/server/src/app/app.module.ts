@@ -10,7 +10,6 @@ import appConfig from '../config/app.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloConfigService } from '../graphql/apollo-config.service';
 import { ApolloDriver } from '@nestjs/apollo';
-import { HelloResolver } from '../resolvers/hello.resolver';
 import { UsersModule } from '../users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
 
@@ -33,6 +32,6 @@ import { TasksModule } from '../tasks/tasks.module';
     TasksModule,
   ],
   controllers: [AppController],
-  providers: [AppService, HelloResolver],
+  providers: [AppService],
 })
 export class AppModule {}
