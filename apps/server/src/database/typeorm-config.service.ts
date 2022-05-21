@@ -20,9 +20,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       keepConnectionAlive: true,
       logging: this.configService.get('app.nodeEnv') !== 'production',
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-      seeds: [__dirname + '/seeds/**/*{.ts,.js}'],
-      factories: [__dirname + '/factories/**/*{.ts,.js}'],
+      migrations: [__dirname + '/database/migrations/**/*{.ts,.js}'],
+      seeds: [__dirname + '/database/seeds/**/*{.ts,.js}'],
+      factories: [__dirname + '/database/factories/**/*{.ts,.js}'],
       cli: {
         entitiesDir: 'src',
         migrationsDir: 'src/database/migrations',

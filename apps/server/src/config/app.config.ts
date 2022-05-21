@@ -3,6 +3,7 @@ import { registerAs } from '@nestjs/config';
 export default registerAs('app', () => ({
   nodeEnv: process.env.NODE_ENV,
   name: process.env.APP_NAME,
+  sandbox: process.env.ENABLE_SANDBOX === 'true',
   workingDirectory: process.env.PWD || process.cwd(),
   frontendDomain: process.env.FRONTEND_DOMAIN,
   backendDomain: process.env.BACKEND_DOMAIN,

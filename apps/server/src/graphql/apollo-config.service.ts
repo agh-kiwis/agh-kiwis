@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { HelloResolver } from '../resolvers/hello.resolver';
 
 @Injectable()
 export class ApolloConfigService implements ApolloDriverConfigFactory {
@@ -12,8 +13,10 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
     return {
       autoSchemaFile: join(process.cwd(), 'generated/schema.gql'),
       sortSchema: true,
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      playground: !this.configService.get('app.sandbox'),
+      plugins: this.configService.get('app.sandbox')
+        ? [ApolloServerPluginLandingPageLocalDefault()]
+        : undefined,
       debug: this.configService.get('app.debug') == 'development',
     };
   }
