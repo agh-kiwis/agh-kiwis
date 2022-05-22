@@ -39,17 +39,17 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   previousPassword: string;
 
   @Field()
-  @Column()
-  gender: string;
+  @Column({ nullable: true })
+  gender?: string;
 
   @Field()
   @Index()
-  @Column()
-  name: string | null;
+  @Column({ nullable: true })
+  name?: string | null;
 
   @Field()
   @Column({ type: 'date', nullable: true })

@@ -1,32 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
-import { AuthEmailLoginInput } from './dto/auth-email-login.input';
-import { AuthUpdateDto } from './dto/auth-update.dto';
-import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import * as crypto from 'crypto';
-import { plainToClass } from 'class-transformer';
-import { AuthProvidersEnum } from './auth-providers.enum';
-import { AuthRegisterDto } from './dto/auth-register.input';
-import { Status } from '@chakra-ui/react';
-import { ForgotService } from '../forgot/forgot.service';
-import { MailService } from '../mail/mail.service';
+import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
+import { AuthProvidersEnum } from './auth-providers.enum';
+import { AuthEmailLoginInput } from './dto/auth-email-login.input';
+import { AuthRegisterDto } from './dto/auth-register.input';
+import { AuthUserResponse } from './dto/auth-user.response';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private usersService: UsersService,
-    private forgotService: ForgotService,
-    private mailService: MailService
+    private usersService: UsersService
   ) {}
 
   async login(
-    loginDto: AuthEmailLoginInput,
-    onlyAdmin: boolean
-  ): Promise<{ token: string; user: User }> {
+    context,
+    loginDto: AuthEmailLoginInput
+  ): Promise<AuthUserResponse> {
     const user = await this.usersService.findOne({
       email: loginDto.email,
     });
@@ -51,12 +43,22 @@ export class AuthService {
     // TODO
 
     if (isValidPassword) {
-      const token = await this.jwtService.sign({
+      const token = this.jwtService.sign({
         id: user.id,
-        role: user.role,
       });
 
-      return { token, user: user };
+      context.res.cookie('token', token, {
+        // maxAge: REFRESH_COOKIE_DURATION,
+        maxAge: 3.154e10,
+        // domain: COOKIE_DOMAIN,
+        domain: 'localhost',
+        // Change this in prod
+        httpOnly: true,
+        // secure: !IS_LOCAL,
+        secure: false,
+      });
+
+      return { response: { token: token, name: user.name } };
     } else {
       throw new HttpException(
         {
@@ -70,11 +72,27 @@ export class AuthService {
     }
   }
 
-  async register(dto: AuthRegisterDto): Promise<void> {
+  async register(context, dto: AuthRegisterDto): Promise<AuthUserResponse> {
     const user = await this.usersService.create({
       ...dto,
       email: dto.email,
     });
+    const token = this.jwtService.sign({
+      id: user.id,
+    });
+    // TODO Extract this and put to env
+    context.res.cookie('token', token, {
+      // maxAge: REFRESH_COOKIE_DURATION,
+      maxAge: 3.154e10,
+      // domain: COOKIE_DOMAIN,
+      domain: 'localhost',
+      // Change this in prod
+      httpOnly: true,
+      // secure: !IS_LOCAL,
+      secure: false,
+    });
+
+    return { response: { token: token, name: user.name } };
   }
 
   async softDelete(user: User): Promise<void> {

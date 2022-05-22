@@ -13,6 +13,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { UsersModule } from '../users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
 import authConfig from '../config/auth.config';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import authConfig from '../config/auth.config';
     }),
     UsersModule,
     TasksModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
