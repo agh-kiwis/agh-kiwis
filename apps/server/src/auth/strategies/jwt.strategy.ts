@@ -1,9 +1,14 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { User } from '../../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 type JwtPayload = Pick<User, 'id'> & { iat: number; exp: number };
 
@@ -14,9 +19,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('auth.secret'),
+      jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+      secretOrKey: 'secret',
     });
+  }
+
+  getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    console.log(ctx.getContext().req);
+    return ctx.getContext().req;
   }
 
   public validate(payload: JwtPayload) {

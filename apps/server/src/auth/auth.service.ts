@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { Context } from '../types/context.type';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthProvidersEnum } from './auth-providers.enum';
@@ -8,15 +10,29 @@ import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 import { AuthRegisterDto } from './dto/auth-register.input';
 import { AuthUserResponse } from './dto/auth-user.response';
 
+const setCookie = (
+  token: string,
+  context: Context,
+  configService: ConfigService
+) => {
+  context.res.cookie(configService.get('auth.cookie_name'), token, {
+    maxAge: configService.get('auth.cookie_refresh_duration'),
+    domain: configService.get('auth.cookie_domain'),
+    httpOnly: configService.get('app.production'),
+    secure: configService.get('app.production'),
+  });
+};
+
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private jwtService: JwtService,
     private usersService: UsersService
   ) {}
 
   async login(
-    context,
+    context: Context,
     loginDto: AuthEmailLoginInput
   ): Promise<AuthUserResponse> {
     const user = await this.usersService.findOne({
@@ -40,23 +56,13 @@ export class AuthService {
       user.password
     );
 
-    // TODO
-
     if (isValidPassword) {
+      console.log('hello world');
+
       const token = this.jwtService.sign({
         id: user.id,
       });
-
-      context.res.cookie('token', token, {
-        // maxAge: REFRESH_COOKIE_DURATION,
-        maxAge: 3.154e10,
-        // domain: COOKIE_DOMAIN,
-        domain: 'localhost',
-        // Change this in prod
-        httpOnly: true,
-        // secure: !IS_LOCAL,
-        secure: false,
-      });
+      setCookie(token, context, this.configService);
 
       return { response: { token: token, name: user.name } };
     } else {
@@ -72,7 +78,10 @@ export class AuthService {
     }
   }
 
-  async register(context, dto: AuthRegisterDto): Promise<AuthUserResponse> {
+  async register(
+    context: Context,
+    dto: AuthRegisterDto
+  ): Promise<AuthUserResponse> {
     const user = await this.usersService.create({
       ...dto,
       email: dto.email,
@@ -81,16 +90,7 @@ export class AuthService {
       id: user.id,
     });
     // TODO Extract this and put to env
-    context.res.cookie('token', token, {
-      // maxAge: REFRESH_COOKIE_DURATION,
-      maxAge: 3.154e10,
-      // domain: COOKIE_DOMAIN,
-      domain: 'localhost',
-      // Change this in prod
-      httpOnly: true,
-      // secure: !IS_LOCAL,
-      secure: false,
-    });
+    setCookie(token, context, this.configService);
 
     return { response: { token: token, name: user.name } };
   }

@@ -11,8 +11,6 @@ import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
   // TODO Change to our own pipe
   app.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3333;
