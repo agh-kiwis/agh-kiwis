@@ -18,6 +18,7 @@ const setCookie = (
   context.res.cookie(configService.get('auth.cookie_name'), token, {
     maxAge: configService.get('auth.cookie_refresh_duration'),
     domain: configService.get('auth.cookie_domain'),
+    // This header prevents extracting cookie from client's browser third-party script
     httpOnly: configService.get('app.production'),
     secure: configService.get('app.production'),
   });
@@ -26,8 +27,8 @@ const setCookie = (
 @Injectable()
 export class AuthService {
   constructor(
-    private configService: ConfigService,
     private jwtService: JwtService,
+    private configService: ConfigService,
     private usersService: UsersService
   ) {}
 
@@ -40,6 +41,7 @@ export class AuthService {
     });
 
     if (user.provider !== AuthProvidersEnum.email) {
+      // TODO Add our own error handling
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -57,13 +59,12 @@ export class AuthService {
     );
 
     if (isValidPassword) {
-      console.log('hello world');
-
       const token = this.jwtService.sign({
         id: user.id,
       });
       setCookie(token, context, this.configService);
 
+      // TODO Change response type & add error handling
       return { response: { token: token, name: user.name } };
     } else {
       throw new HttpException(
@@ -89,7 +90,6 @@ export class AuthService {
     const token = this.jwtService.sign({
       id: user.id,
     });
-    // TODO Extract this and put to env
     setCookie(token, context, this.configService);
 
     return { response: { token: token, name: user.name } };

@@ -18,6 +18,7 @@ import { AuthProvidersEnum } from '../../auth/auth-providers.enum';
 
 @ObjectType()
 @Entity()
+// TODO Make some cleanup on types
 export class User {
   @Field()
   @PrimaryGeneratedColumn()
@@ -29,7 +30,7 @@ export class User {
 
   @BeforeInsert()
   @BeforeUpdate()
-  // TODO Maybe remove business logic from entity
+  // TODO Remove this to somewhere else, it's ugly and breaks every single rule
   async setPassword() {
     if (this.previousPassword !== this.password && this.password) {
       const salt = await bcrypt.genSalt();
