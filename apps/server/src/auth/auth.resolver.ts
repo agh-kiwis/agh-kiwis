@@ -6,6 +6,8 @@ import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 
 import { ContextType } from '../types/context.type';
 import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -26,5 +28,11 @@ export class AuthResolver {
     @Args('registerDto') registerDto: AuthEmailRegisterInput
   ) {
     return this.service.register(context, registerDto);
+  }
+
+  @Query(() => User)
+  @UseGuards(JwtAuthGuard)
+  async me(@Context('req') request: any) {
+    return this.service.me(request);
   }
 }

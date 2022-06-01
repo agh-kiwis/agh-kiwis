@@ -41,7 +41,7 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  previousPassword: string;
+  previousPassword?: string;
 
   @Field()
   @Column({ nullable: true })
@@ -54,13 +54,16 @@ export class User {
 
   @Field()
   @Column({ type: 'date', nullable: true })
-  birthDate: Date;
+  birthDate?: Date;
 
   @OneToMany(() => Task, (task) => task.user)
-  tasks: Task[];
+  tasks?: Task[];
 
   @Column({ default: AuthProvidersEnum.email })
   provider: string;
+
+  @Column({ default: true })
+  isEnabled: boolean;
 
   @Field()
   @CreateDateColumn()

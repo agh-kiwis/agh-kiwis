@@ -26,7 +26,6 @@ import { JwtStrategy } from '../auth/strategies/jwt.strategy';
       TaskBreakdown,
       Repeat,
     ]),
-    JwtStrategy,
   ],
 
   providers: [TasksResolver, TasksService],

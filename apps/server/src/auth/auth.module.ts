@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
@@ -11,8 +11,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   // The list of imported modules that export the providers which are required in this module
   imports: [
-    UsersModule,
-    PassportModule,
+    // To resolve circular dependencies
+    forwardRef(() => UsersModule),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,7 +26,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   // The providers that will be instantiated by the Nest injector and that may be shared at least across this module
-  providers: [AuthService, JwtStrategy, AuthResolver, AnonymousStrategy],
+  providers: [AuthService, AuthResolver, JwtStrategy],
   // the subset of providers that are provided by this module and should be available in other modules which import this module.
   exports: [AuthService],
 })

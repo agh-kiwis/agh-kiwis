@@ -1,9 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { ContextType } from '../types/context.type';
-import { JwtTokenType } from '../types/jwt-token.type';
+import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthProvidersEnum } from './auth-providers.enum';
@@ -29,6 +35,8 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,
+    // This is done to avoid circular dependencies
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService
   ) {}
 
@@ -59,7 +67,7 @@ export class AuthService {
     );
 
     if (isValidPassword) {
-      const tokenObject: JwtTokenType = {
+      const tokenObject: JwtTokenPayload = {
         id: user.id,
       };
       const token = this.jwtService.sign(tokenObject);
@@ -88,7 +96,7 @@ export class AuthService {
       email: registerInput.email,
     });
 
-    const tokenObject: JwtTokenType = {
+    const tokenObject: JwtTokenPayload = {
       id: user.id,
     };
 
@@ -101,5 +109,24 @@ export class AuthService {
 
   async softDelete(user: User): Promise<void> {
     await this.usersService.softDelete(user.id);
+  }
+
+  async validateJwtPayload(
+    payload: JwtTokenPayload
+  ): Promise<User | undefined> {
+    // This will be used when the user has already logged in and has a JWT
+    console.log(payload);
+    const user = await this.usersService.findOne({ id: +payload.id });
+
+    // Ensure the user exists and their account isn't disabled
+    if (user && user.isEnabled) {
+      return user;
+    }
+
+    return undefined;
+  }
+
+  me(context: any): User {
+    return context.user;
   }
 }
