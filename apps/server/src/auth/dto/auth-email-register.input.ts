@@ -4,7 +4,8 @@ import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class AuthRegisterDto {
+// TODO make this type a subtype of AuthLoginInput or vice-versa
+export class AuthEmailRegisterInput {
   @Transform(({ value }) => value.toLowerCase().trim())
   @Validate(IsNotExist, ['User'], {
     message: 'emailAlreadyExists',

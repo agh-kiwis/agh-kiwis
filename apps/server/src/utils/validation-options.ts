@@ -1,15 +1,14 @@
 import { ValidationError, ValidationPipeOptions } from '@nestjs/common';
-import { FieldError } from '../auth/dto/auth-user.response';
 
-// TODO Add own validations message & change error messages structure
+// TODO Change this to follow up the same error pattern (maybe)
+// This can be used in main.ts as GlobalValidationPipe
 const validationOptions: ValidationPipeOptions = {
   transform: true,
   whitelist: true,
-  exceptionFactory: (errors: ValidationError[]) =>
-    ({
-      field: 'field',
-      message: 'message',
-    } as FieldError),
+  exceptionFactory: (errors: ValidationError[]) => ({
+    field: 'field',
+    message: 'message',
+  }),
 };
 
 export default validationOptions;

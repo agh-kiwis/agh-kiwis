@@ -2,17 +2,17 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { Context } from '../types/context.type';
+import { ContextType } from '../types/context.type';
+import { JwtTokenType } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthProvidersEnum } from './auth-providers.enum';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
-import { AuthRegisterDto } from './dto/auth-register.input';
-import { AuthUserResponse } from './dto/auth-user.response';
+import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 
 const setCookie = (
   token: string,
-  context: Context,
+  context: ContextType,
   configService: ConfigService
 ) => {
   context.res.cookie(configService.get('auth.cookie_name'), token, {
@@ -33,11 +33,11 @@ export class AuthService {
   ) {}
 
   async login(
-    context: Context,
-    loginDto: AuthEmailLoginInput
-  ): Promise<AuthUserResponse> {
+    context: ContextType,
+    loginInput: AuthEmailLoginInput
+  ): Promise<User> {
     const user = await this.usersService.findOne({
-      email: loginDto.email,
+      email: loginInput.email,
     });
 
     if (user.provider !== AuthProvidersEnum.email) {
@@ -54,18 +54,18 @@ export class AuthService {
     }
 
     const isValidPassword = await bcrypt.compare(
-      loginDto.password,
+      loginInput.password,
       user.password
     );
 
     if (isValidPassword) {
-      const token = this.jwtService.sign({
+      const tokenObject: JwtTokenType = {
         id: user.id,
-      });
+      };
+      const token = this.jwtService.sign(tokenObject);
       setCookie(token, context, this.configService);
 
-      // TODO Change response type & add error handling
-      return { response: { token: token, name: user.name } };
+      return user;
     } else {
       throw new HttpException(
         {
@@ -80,19 +80,23 @@ export class AuthService {
   }
 
   async register(
-    context: Context,
-    dto: AuthRegisterDto
-  ): Promise<AuthUserResponse> {
+    context: ContextType,
+    registerInput: AuthEmailRegisterInput
+  ): Promise<User> {
     const user = await this.usersService.create({
-      ...dto,
-      email: dto.email,
+      ...registerInput,
+      email: registerInput.email,
     });
-    const token = this.jwtService.sign({
+
+    const tokenObject: JwtTokenType = {
       id: user.id,
-    });
+    };
+
+    const token = this.jwtService.sign(tokenObject);
+
     setCookie(token, context, this.configService);
 
-    return { response: { token: token, name: user.name } };
+    return user;
   }
 
   async softDelete(user: User): Promise<void> {

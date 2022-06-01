@@ -7,10 +7,11 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // TODO Add helmet and other security modules here
+
   // TODO Change to our own pipe
   app.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3333;

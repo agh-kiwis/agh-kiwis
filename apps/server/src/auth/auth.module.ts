@@ -6,17 +6,27 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AnonymousStrategy } from './strategies/anonymous.strategy';
 import { UsersModule } from '../users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
+  // The list of imported modules that export the providers which are required in this module
   imports: [
     UsersModule,
     PassportModule,
-    // TODO Change this to async load & using of ConfigModule
-    JwtModule.register({ secret: 'hard!to-guess_secret' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('auth.secret'),
+        signOptions: {
+          expiresIn: configService.get('auth.expires'),
+        },
+      }),
+    }),
   ],
-  // TODO What are providers? What is the difference between providers and exports and imports?
-  // TODO Reorganize module structure
+  // The providers that will be instantiated by the Nest injector and that may be shared at least across this module
   providers: [AuthService, JwtStrategy, AuthResolver, AnonymousStrategy],
+  // the subset of providers that are provided by this module and should be available in other modules which import this module.
   exports: [AuthService],
 })
 export class AuthModule {}

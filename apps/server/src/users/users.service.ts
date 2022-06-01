@@ -9,7 +9,7 @@ import { EntityCondition } from '../utils/types/entity-condition.type';
 @Injectable()
 export class UsersService {
   constructor(
-    // TODO Do we want to use a repo or just User.create/save etc?
+    // TODO Make it Active Record pattern there
     @InjectRepository(User)
     private usersRepository: Repository<User>
   ) {}

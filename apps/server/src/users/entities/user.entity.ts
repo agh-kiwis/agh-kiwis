@@ -73,8 +73,4 @@ export class User {
   @Field()
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @Column({ nullable: true })
-  @Index()
-  hash: string | null;
 }

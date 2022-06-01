@@ -12,7 +12,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 type JwtPayload = Pick<User, 'id'> & { iat: number; exp: number };
 
 @Injectable()
-  // TODO Rereview how we use the strategies and what for
+// TODO this is not working
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private configService: ConfigService) {
     super({

@@ -3,27 +3,28 @@ import { UserDto } from '../users/dto/user.response';
 import { User } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
-import { AuthRegisterDto } from './dto/auth-register.input';
-import { AuthUserResponse } from './dto/auth-user.response';
+
+import { ContextType } from '../types/context.type';
+import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 
 @Resolver(() => User)
 export class AuthResolver {
   constructor(public service: AuthService) {}
 
-  @Mutation(() => AuthUserResponse)
+  @Mutation(() => User)
   public async login(
     // TODO Add types to context
-    @Context() context,
+    @Context() context: ContextType,
     @Args('loginDto') loginDto: AuthEmailLoginInput
   ) {
     return this.service.login(context, loginDto);
   }
 
-  @Mutation(() => AuthUserResponse)
+  @Mutation(() => User)
   async register(
-    @Context() context,
-    @Args('createUserDto') createUserDto: AuthRegisterDto
+    @Context() context: ContextType,
+    @Args('registerDto') registerDto: AuthEmailRegisterInput
   ) {
-    return this.service.register(context, createUserDto);
+    return this.service.register(context, registerDto);
   }
 }
