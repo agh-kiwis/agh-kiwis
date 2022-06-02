@@ -16,6 +16,9 @@ import { AuthProvidersEnum } from './auth-providers.enum';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 
+// This is vulnerable to XSRF attacks, instead of setting a cookie we need to set an
+// HTTP Authorization header, from the side of client, and store this in cookies
+// But we will ignore it by now
 const setCookie = (
   token: string,
   context: ContextType,

@@ -1,8 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
 import { User } from '../../users/entities/user.entity';
+import { extractJwtFromCookie } from '../../utils/extract-jwt-from-cookie';
 import { AuthService } from '../auth.service';
 
 type JwtPayload = Pick<User, 'id'> & { iat: number; exp: number };
@@ -14,17 +15,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService
   ) {
     super({
-      // TODO THIS IS NOT WORKING!!!
-      jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+      // This function should accept the request as a first argument, and return
+      // token if it is present or null
+
+      // This is vulnerable to XSRF attacks, instead of setting a cookie we need to set a header, and get JWT Token from header itself
+      // jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
+      jwtFromRequest: extractJwtFromCookie(
+        configService.get('auth.cookie_name')
+      ),
       secretOrKey: configService.get('auth.secret'),
     });
   }
 
   public validate(payload: JwtPayload) {
-    console.log('Hello there!');
     const user = this.authService.validateJwtPayload(payload);
     if (!user) {
-      // TODO Customize this exception
       throw new UnauthorizedException(
         'Could not log-in with the provided credentials'
       );
