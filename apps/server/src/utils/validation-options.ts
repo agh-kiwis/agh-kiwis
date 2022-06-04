@@ -1,14 +1,26 @@
 import { ValidationError, ValidationPipeOptions } from '@nestjs/common';
+import { CustomValidationErrors } from './CustomValidationError';
 
-// TODO Change this to follow up the same error pattern (maybe)
-// This can be used in main.ts as GlobalValidationPipe
+const transformErrorMessages = (errorMessages: any): string[] => {
+  errorMessages = Object.values(errorMessages);
+  return errorMessages.map((message: string) => {
+    return message.trim().charAt(0).toUpperCase() + message.slice(1);
+  });
+};
+
 const validationOptions: ValidationPipeOptions = {
-  transform: true,
-  whitelist: true,
-  exceptionFactory: (errors: ValidationError[]) => ({
-    field: 'field',
-    message: 'message',
-  }),
+  exceptionFactory: (errors: ValidationError[]) =>
+    new CustomValidationErrors({
+      errors: errors.reduce(
+        (accumulator, currentValue) => ({
+          ...accumulator,
+          [currentValue.property]: transformErrorMessages(
+            currentValue.constraints
+          ),
+        }),
+        []
+      ),
+    }),
 };
 
 export default validationOptions;

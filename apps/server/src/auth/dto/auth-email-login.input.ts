@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Validate } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, Validate } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsExist } from '../../utils/validators/is-exists.validator';
 import { Field, InputType } from '@nestjs/graphql';
@@ -7,13 +7,14 @@ import { Field, InputType } from '@nestjs/graphql';
 export class AuthEmailLoginInput {
   @Transform(({ value }) => value.toLowerCase().trim())
   @Validate(IsExist, ['User'], {
-    message: 'emailNotExists',
+    message: "Email doesn't exist",
   })
   @Field()
   @IsEmail()
   email: string;
 
   @IsNotEmpty()
+  @MinLength(6)
   @Field()
   password: string;
 }
