@@ -5,7 +5,6 @@ export function Home() {
   const [string, setString] = useState('');
 
   useEffect(() => {
-    console.log('Home component rendered');
     setString(doSomething());
   }, []);
 

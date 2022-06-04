@@ -8,7 +8,7 @@ import { Field, InputType } from '@nestjs/graphql';
 export class AuthEmailRegisterInput {
   @Transform(({ value }) => value.toLowerCase().trim())
   @Validate(IsNotExist, ['User'], {
-    message: 'emailAlreadyExists',
+    message: 'Email already exists',
   })
   @IsEmail()
   @Field()

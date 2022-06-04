@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import * as bcrypt from 'bcryptjs';
 import {
-  BaseEntity,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -12,13 +12,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Task } from '../../tasks/entities/task.entity';
-import * as bcrypt from 'bcryptjs';
 import { AuthProvidersEnum } from '../../auth/auth-providers.enum';
+import { Task } from '../../tasks/entities/task.entity';
 
 @ObjectType()
 @Entity()
-// TODO Make some cleanup on types
 export class User {
   @Field()
   @PrimaryGeneratedColumn()
@@ -30,7 +28,6 @@ export class User {
 
   @BeforeInsert()
   @BeforeUpdate()
-  // TODO Remove this to somewhere else, it's ugly and breaks every single rule
   async setPassword() {
     if (this.previousPassword !== this.password && this.password) {
       const salt = await bcrypt.genSalt();
@@ -43,16 +40,17 @@ export class User {
   @Column({ nullable: true })
   previousPassword?: string;
 
-  @Field()
+  // TODO Create NullableField decorator
+  @Field({ nullable: true })
   @Column({ nullable: true })
   gender?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Index()
   @Column({ nullable: true })
   name?: string | null;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ type: 'date', nullable: true })
   birthDate?: Date;
 
@@ -69,11 +67,11 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @DeleteDateColumn()
   deletedAt: Date;
 }

@@ -11,7 +11,6 @@ import { TaskBreakdown } from './entities/taskBreakdown.entity';
 import { Repeat } from './entities/repeat.entity';
 import { Notification } from './entities/notification.entity';
 import { AuthModule } from '../auth/auth.module';
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 
 @Module({
   imports: [
