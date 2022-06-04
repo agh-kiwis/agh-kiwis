@@ -53,12 +53,12 @@ export class AuthService {
       throw new ForbiddenError('Invalid login provider');
     }
 
-    const isValidPassword = await bcrypt.compare(
+    const IsPasswordValid = await bcrypt.compare(
       loginInput.password,
       user.password
     );
 
-    if (!isValidPassword) {
+    if (!IsPasswordValid) {
       throw new UserInputError('Invalid login credentials');
     }
 

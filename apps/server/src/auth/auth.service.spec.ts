@@ -7,7 +7,6 @@ import { PassportModule } from '@nestjs/passport';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 
-
 // This is an example of unit test
 // Unit tests would test core parts of our app, and
 // They need to be near logic they are testing
