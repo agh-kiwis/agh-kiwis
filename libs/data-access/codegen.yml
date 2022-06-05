@@ -1,0 +1,15 @@
+overwrite: true
+schema: http://localhost:3333/graphql
+generates:
+  libs/data-access/src/lib/generated/generated.tsx:
+    documents: 'libs/data-access/src/lib/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - fragment-matcher
+
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false

@@ -1,0 +1,13 @@
+mutation Login($loginDto: AuthEmailLoginInput!) {
+  login(loginDto: $loginDto) {
+    birthDate
+    createdAt
+    deletedAt
+    email
+    gender
+    id
+    name
+    updatedAt
+    token
+  }
+}

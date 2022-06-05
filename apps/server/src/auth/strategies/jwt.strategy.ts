@@ -29,6 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   public validate(payload: JwtPayload) {
     const user = this.authService.validateJwtPayload(payload);
+    console.log('Hello there!!! ' + user);
     if (!user) {
       throw new UnauthorizedException(
         'Could not log-in with the provided credentials'

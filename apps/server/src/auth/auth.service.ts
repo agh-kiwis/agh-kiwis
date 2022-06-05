@@ -12,6 +12,7 @@ import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 import { AuthResponse } from './dto/auth.response';
 import { ForbiddenError, UserInputError } from 'apollo-server-errors';
 
+// This won't work for different domains, so client need to set this cookie manually
 const setCookie = (
   token: string,
   context: CustomContext,

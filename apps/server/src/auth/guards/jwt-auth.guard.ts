@@ -15,6 +15,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleRequest(err: any, user: any) {
+    console.log('Hello there!!!');
+    console.log(user);
     if (err || !user) {
       throw err || new AuthenticationError('Authentication failed');
     }
