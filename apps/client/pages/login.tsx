@@ -1,7 +1,6 @@
 import { useLoginMutation } from '@agh-kiwis/data-access';
 import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/layout';
-import { Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/layout';
 import { Form, Formik } from 'formik';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,7 +13,7 @@ const Login = () => {
   const router = useRouter();
 
   return (
-    <Wrapper variant="small">
+    <Wrapper>
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
@@ -40,23 +39,33 @@ const Login = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="email" label="Email" />
+            <Box>
+              <InputField name="email" placeholder="Email" label="Email" />
+            </Box>
             <Box mt={4}>
               <InputField
                 name="password"
-                placeholder="password"
+                placeholder="Password"
                 label="Password"
                 type="password"
               />
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
-              Login
+            <Flex justify={'right'} mt={1}>
+              <NextLink href="/forgot-password" passHref>
+                <Button colorScheme="green" variant="link" size={'sm'}>
+                  Forgot password?
+                </Button>
+              </NextLink>
+            </Flex>
+            <Button
+              colorScheme="green"
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+              w={'100%'}
+            >
+              Sign in
             </Button>
-            <NextLink href="/forgot-password" passHref>
-              <Box mr={2} mt={2}>
-                <Link>Forgot password?</Link>
-              </Box>
-            </NextLink>
           </Form>
         )}
       </Formik>

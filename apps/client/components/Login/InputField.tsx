@@ -11,6 +11,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   isTextArea?: boolean;
+  focusBorderColor?: string;
 };
 import { Textarea } from '@chakra-ui/react';
 // '' => false
@@ -31,7 +32,12 @@ export const InputField: React.FC<InputFieldProps> = ({
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <InputOrTextArea {...field} {...props} id={field.name} />
+      <InputOrTextArea
+        {...field}
+        {...props}
+        id={field.name}
+        focusBorderColor={props.focusBorderColor || 'green.500'}
+      />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
