@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Flex, Button, Stack } from '@chakra-ui/react';
-import { useLogoutMutation, useMeQuery } from '@agh-kiwis/data-access';
 import NextLink from 'next/link';
+import { Flex, Box, Button, Link } from '@chakra-ui/react';
+import { useLogoutMutation, useMeQuery } from '@agh-kiwis/data-access';
 
 export const NavBar = () => {
   const [logoutMutation, { data: loggedOut, loading: logoutLoading }] =
@@ -15,53 +15,33 @@ export const NavBar = () => {
   } else if (!meData?.me || loggedOut) {
     body = (
       <>
-        <Stack justify={'flex-end'} direction={'row'} spacing={4}>
-          <NextLink href="/login" passHref>
-            <Button
-              as={'a'}
-              fontSize={'sm'}
-              href={'/login'}
-              color={'white'}
-              colorScheme={'green'}
-            >
-              Sign In
-            </Button>
-          </NextLink>
-          <NextLink href="/register" passHref>
-            <Button fontSize={'sm'} variant={'outline'} colorScheme={'green'}>
-              Sign Up
-            </Button>
-          </NextLink>
-        </Stack>
+        <NextLink href="/login" passHref>
+          <Link mr={2}>login</Link>
+        </NextLink>
+        <NextLink href="/register" passHref>
+          <Link>register</Link>
+        </NextLink>
       </>
     );
   } else {
     body = (
       <Flex>
+        <Box mr={2}>{meData.me.id}</Box>
         <Button
           onClick={() => {
             logoutMutation();
           }}
           isLoading={logoutLoading}
-          variant="outline"
-          colorScheme={'green'}
+          variant="link"
         >
-          Sign out
+          logout
         </Button>
       </Flex>
     );
   }
 
   return (
-    <Flex
-      position="sticky"
-      top={0}
-      zIndex="sticky"
-      p={4}
-      borderBottom={2}
-      borderStyle={'solid'}
-      borderColor={'green.500'}
-    >
+    <Flex position="sticky" top={0} zIndex="sticky" bg="tan" p={4}>
       <Box ml={'auto'}>{body}</Box>
     </Flex>
   );

@@ -1,6 +1,4 @@
-import { Text } from '@chakra-ui/react';
 import { NavBar } from '../components/Login/NavBar';
-import { Wrapper } from '../components/Login/Wrapper';
 
 export function Index() {
   /*
@@ -10,10 +8,7 @@ export function Index() {
    */
   return (
     <>
-      <NavBar />
-      <Wrapper>
-        <Text fontSize="4xl">Hello in main</Text>
-      </Wrapper>
+      <NavBar /> <h1>Hello in main</h1>
     </>
   );
 }

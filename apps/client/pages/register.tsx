@@ -1,8 +1,10 @@
 import { useRegisterMutation } from '@agh-kiwis/data-access';
 import { Button } from '@chakra-ui/button';
 import { Box } from '@chakra-ui/layout';
+import { Link } from '@chakra-ui/react';
 // TODO Change this to something supporting TS
 import { Form, Formik } from 'formik';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { InputField } from '../components/Login/InputField';
 import { Wrapper } from '../components/Login/Wrapper';
@@ -13,7 +15,7 @@ const Register = () => {
   const router = useRouter();
 
   return (
-    <Wrapper>
+    <Wrapper variant="small">
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
@@ -38,24 +40,23 @@ const Register = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="Email" label="Email" />
+            <InputField name="email" placeholder="email" label="Email" />
             <Box mt={4}>
               <InputField
                 name="password"
-                placeholder="Password"
+                placeholder="password"
                 label="Password"
                 type="password"
               />
             </Box>
-            <Button
-              colorScheme="green"
-              mt={4}
-              type="submit"
-              isLoading={isSubmitting}
-              w={'100%'}
-            >
-              Sign Up
+            <Button mt={4} type="submit" isLoading={isSubmitting}>
+              Register
             </Button>
+            <NextLink href="/forgot-password" passHref>
+              <Box mr={2} mt={2}>
+                <Link>Forgot password?</Link>
+              </Box>
+            </NextLink>
           </Form>
         )}
       </Formik>
