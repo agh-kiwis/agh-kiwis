@@ -1,8 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { TasksService } from './tasks.service';
-import { Task } from './entities/task.entity';
+import { UseGuards } from '@nestjs/common';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
+import { Task } from './entities/task.entity';
+import { TasksService } from './tasks.service';
 
 @Resolver(() => Task)
 export class TasksResolver {
@@ -14,6 +16,7 @@ export class TasksResolver {
   }
 
   @Query(() => [Task], { name: 'tasks' })
+  @UseGuards(JwtStrategy)
   findAll() {
     return this.tasksService.findAll();
   }

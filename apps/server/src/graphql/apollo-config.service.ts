@@ -2,6 +2,7 @@ import { ApolloDriverConfig, ApolloDriverConfigFactory } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
+import { get } from 'lodash';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 
 @Injectable()
@@ -17,6 +18,11 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
         ? [ApolloServerPluginLandingPageLocalDefault()]
         : undefined,
       debug: this.configService.get('app.debug') == 'development',
+      context: ({ req, res, connection }) => {
+        const clientId = get(connection, 'context.clientId');
+        return { req, res, ...(clientId && { clientId }) };
+      },
+      // TODO Add our own error handler and define error format
     };
   }
 }

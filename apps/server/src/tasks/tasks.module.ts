@@ -10,9 +10,11 @@ import { Priority } from './entities/priority.entity';
 import { TaskBreakdown } from './entities/taskBreakdown.entity';
 import { Repeat } from './entities/repeat.entity';
 import { Notification } from './entities/notification.entity';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([
       Category,
       Task,

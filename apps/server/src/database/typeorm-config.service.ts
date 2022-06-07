@@ -16,9 +16,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    console.log('This is my path :))');
-    console.log(__dirname + '/../../../apps/server/**/*.entity{.ts,.js}');
-
     return {
       type: this.configService.get('database.type'),
       url: this.configService.get('database.url'),
