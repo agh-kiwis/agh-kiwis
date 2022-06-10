@@ -1,5 +1,6 @@
-import { Button, Image } from '@chakra-ui/react';
 import React from 'react';
+import Image from 'next/image';
+import { Button, Wrap, WrapItem } from '@chakra-ui/react';
 
 type ButtonProps = {
   buttonText: string;
@@ -14,13 +15,17 @@ export const GoogleButton: React.FC<ButtonProps> = ({
 }) => {
   return (
     <Button variant="outline" type={type} isLoading={isLoading} w={'100%'}>
-      <Image
-        w="18px"
-        mx={2}
-        alt="Google sign-in"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
-      />
-      {buttonText}
+      <Wrap spacing="8px">
+        <WrapItem>
+          <Image
+            width="18px"
+            height="18px"
+            alt="Google sign-in"
+            src="/google.png"
+          />
+        </WrapItem>
+        <WrapItem>{buttonText}</WrapItem>
+      </Wrap>
     </Button>
   );
 };
