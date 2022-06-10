@@ -1,6 +1,6 @@
 import { Text } from '@chakra-ui/react';
 import { NavBar } from '../components/Login/NavBar';
-import { Wrapper } from '../components/Login/Wrapper';
+import { Wrapper } from '../components/Containers/Wrapper';
 
 export function Index() {
   /*

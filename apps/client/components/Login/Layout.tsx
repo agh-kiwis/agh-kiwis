@@ -1,6 +1,6 @@
 import React from 'react';
+import { Wrapper } from '../Containers/Wrapper';
 import { NavBar } from './NavBar';
-import { Wrapper } from './Wrapper';
 
 interface WrapperProps {
   children: React.ReactNode;

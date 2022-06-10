@@ -53,15 +53,7 @@ export const NavBar = () => {
   }
 
   return (
-    <Flex
-      position="sticky"
-      top={0}
-      zIndex="sticky"
-      p={4}
-      borderBottom={2}
-      borderStyle={'solid'}
-      borderColor={'green.500'}
-    >
+    <Flex position="sticky" zIndex="sticky" top={0} p={4} shadow="md">
       <Box ml={'auto'}>{body}</Box>
     </Flex>
   );

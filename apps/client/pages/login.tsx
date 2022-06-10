@@ -1,17 +1,14 @@
-import { useLoginMutation } from '@agh-kiwis/data-access';
-import { Button } from '@chakra-ui/button';
-import { Box, Flex } from '@chakra-ui/layout';
-import { Text, VStack, Heading, Divider } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { Button, Box, Flex, Text, VStack, Divider } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
+import { useLoginMutation } from '@agh-kiwis/data-access';
 import { CommonButton } from '../components/Common/CommonButton';
 import { GoogleButton } from '../components/Common/GoogleButton';
 import { InputField } from '../components/Login/InputField';
-import { Wrapper } from '../components/Login/Wrapper';
+import { Wrapper } from '../components/Containers/Wrapper';
+import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faKiwiBird } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
   const [loginMutation] = useLoginMutation();
@@ -19,13 +16,7 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <Flex justify={'center'} direction={'column'} my={4}>
-        <FontAwesomeIcon icon={faKiwiBird} fontSize="100" color="#2F855A" />
-        <Heading size="2xl" textAlign={'center'}>
-          agh kiwis
-        </Heading>
-      </Flex>
-
+      <Logo />
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
@@ -44,7 +35,6 @@ const Login = () => {
             console.log(response.data.login.token);
             // Set authorization cookie to response token
             // cookieCutter.set('authorization', response.data.login.token);
-
             router.push('/');
           }
         }}
@@ -86,7 +76,6 @@ const Login = () => {
               <Divider mx={4} />
             </Flex>
             <NextLink href="/register" passHref>
-              {/* <CommonButton variant="c" buttonText="Sign up" /> */}
               <Button variant="outline" colorScheme="green" w={'100%'}>
                 Sign up
               </Button>
