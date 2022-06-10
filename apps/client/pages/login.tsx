@@ -54,7 +54,7 @@ const Login = () => {
             </Box>
             <Flex justify={'right'} mt={1}>
               <NextLink href="/forgot-password" passHref>
-                <Button colorScheme="green" variant="link" size={'sm'}>
+                <Button variant="link" size={'sm'}>
                   Forgot password?
                 </Button>
               </NextLink>
@@ -76,7 +76,7 @@ const Login = () => {
               <Divider mx={4} />
             </Flex>
             <NextLink href="/register" passHref>
-              <Button variant="outline" colorScheme="green" w={'100%'}>
+              <Button variant="outline" w={'100%'}>
                 Sign up
               </Button>
             </NextLink>

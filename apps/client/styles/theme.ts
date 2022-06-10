@@ -11,4 +11,11 @@ export const theme = extendTheme({
     heading: 'Quicksand, serif',
     mono: 'Quicksand, monospace',
   },
+  components: {
+    Button: {
+      defaultProps: {
+        colorScheme: 'green',
+      },
+    },
+  },
 });

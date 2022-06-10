@@ -13,13 +13,7 @@ export const GoogleButton: React.FC<ButtonProps> = ({
   isLoading,
 }) => {
   return (
-    <Button
-      variant="outline"
-      colorScheme="green"
-      type={type}
-      isLoading={isLoading}
-      w={'100%'}
-    >
+    <Button variant="outline" type={type} isLoading={isLoading} w={'100%'}>
       <Image
         w="18px"
         mx={2}

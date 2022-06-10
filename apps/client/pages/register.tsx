@@ -60,7 +60,7 @@ const Register = () => {
             </VStack>
             <SectionDivider />
             <NextLink href="/login" passHref>
-              <Button variant="outline" colorScheme="green" w={'100%'}>
+              <Button variant="outline" w={'100%'}>
                 Sign in
               </Button>
             </NextLink>

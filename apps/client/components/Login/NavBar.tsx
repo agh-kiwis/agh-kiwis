@@ -17,18 +17,12 @@ export const NavBar = () => {
       <>
         <Stack justify={'flex-end'} direction={'row'} spacing={4}>
           <NextLink href="/login" passHref>
-            <Button
-              as={'a'}
-              fontSize={'sm'}
-              href={'/login'}
-              color={'white'}
-              colorScheme={'green'}
-            >
+            <Button as={'a'} fontSize={'sm'} href={'/login'} color={'white'}>
               Sign In
             </Button>
           </NextLink>
           <NextLink href="/register" passHref>
-            <Button fontSize={'sm'} variant={'outline'} colorScheme={'green'}>
+            <Button fontSize={'sm'} variant={'outline'}>
               Sign Up
             </Button>
           </NextLink>
@@ -44,7 +38,6 @@ export const NavBar = () => {
           }}
           isLoading={logoutLoading}
           variant="outline"
-          colorScheme={'green'}
         >
           Sign out
         </Button>

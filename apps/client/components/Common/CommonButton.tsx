@@ -15,13 +15,7 @@ export const CommonButton: React.FC<ButtonProps> = ({
   isLoading,
 }) => {
   return (
-    <Button
-      variant={variant}
-      colorScheme="green"
-      type={type}
-      isLoading={isLoading}
-      w={'100%'}
-    >
+    <Button variant={variant} type={type} isLoading={isLoading} w={'100%'}>
       {buttonText}
     </Button>
   );
