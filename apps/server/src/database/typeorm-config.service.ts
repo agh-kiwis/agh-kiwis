@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { Category } from '../tasks/entities/category.entity';
 import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
-import { Color } from '../tasks/entities/color.entity';
+import { Color } from '../categories/entities/color.entity';
 import { Priority } from '../tasks/entities/priority.entity';
 import { Repeat } from '../tasks/entities/repeat.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { Notification } from '../tasks/entities/notification.entity';
 import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
 import { User } from '../users/entities/user.entity';
+import { Category } from '../categories/entities/category.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

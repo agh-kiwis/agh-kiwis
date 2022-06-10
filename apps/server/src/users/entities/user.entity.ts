@@ -13,6 +13,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { AuthProvidersEnum } from '../../auth/auth-providers.enum';
+import { Category } from '../../categories/entities/category.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
 @ObjectType()
@@ -56,6 +57,9 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks?: Task[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
 
   @Column({ default: AuthProvidersEnum.email })
   provider: string;

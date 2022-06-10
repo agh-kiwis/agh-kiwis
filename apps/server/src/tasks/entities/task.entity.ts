@@ -12,8 +12,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
-import { Category } from './category.entity';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
 import { Priority } from './priority.entity';
@@ -58,6 +58,9 @@ export class Task {
 
   @Column({ type: 'interval' })
   estimation: Date;
+
+  @Column({ type: 'time with time zone', nullable: true })
+  deadline?: Date;
 
   @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)
   taskBreakdowns: TaskBreakdown[];

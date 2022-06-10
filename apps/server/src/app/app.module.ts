@@ -14,6 +14,7 @@ import { UsersModule } from '../users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
 import authConfig from '../config/auth.config';
 import { AuthModule } from '../auth/auth.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     UsersModule,
     TasksModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

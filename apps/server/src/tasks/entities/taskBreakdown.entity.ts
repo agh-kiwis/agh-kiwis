@@ -20,7 +20,7 @@ export class TaskBreakdown {
   @Column({ type: 'time with time zone' })
   start: Date;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'interval' })
   duration: Date;
 
   @ManyToOne(() => Task, (task) => task.taskBreakdowns)
