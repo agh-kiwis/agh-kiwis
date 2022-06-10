@@ -3,8 +3,6 @@
 export const extractJwtFromCookie = (cookieName: string) => {
   return function (request: any & Request) {
     const cookies = request.headers.cookie;
-    console.log(request);
-
     if (cookies) {
       request.cookies = cookies
         .split(';')
@@ -18,8 +16,6 @@ export const extractJwtFromCookie = (cookieName: string) => {
     // Check if cookieName is in cookies:
     if (request.cookies && request.cookies[cookieName]) {
       // If it is, return the token
-      console.log('Extracted cookie!');
-      console.log(request.cookies[cookieName]);
       return request.cookies[cookieName];
     }
     return null;
