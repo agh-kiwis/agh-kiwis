@@ -33,35 +33,9 @@ const Register = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <Wrapper>
-      <Logo />
-
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        onSubmit={async (values, { setErrors }) => {
-          console.log(values);
-          const response = await registerMutation({
-            variables: {
-              registerDto: {
-                email: values.email,
-                password: values.password,
-              },
-            },
-          }).catch((caughtError) => {
-            console.log(caughtError.graphQLErrors);
-            setErrors(toErrorMap(caughtError));
-          });
-          if (response) {
-            // Handle response somehow
-            router.push('/');
-          }
-        }}
-      >
-=======
     <Wrapper variant="small">
+      <Logo />
       <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
->>>>>>> e800293a0557d514a0867fca58e59f2f6caf1613
         {({ isSubmitting }) => (
           <Form>
             <InputField name="email" placeholder="Email" label="Email" />
