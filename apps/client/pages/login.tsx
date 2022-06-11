@@ -14,31 +14,30 @@ const Login = () => {
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
 
+  const onSubmit = async (values, { setErrors }) => {
+    const response = await loginMutation({
+      variables: {
+        loginDto: {
+          email: values.email,
+          password: values.password,
+        },
+      },
+    }).catch((caughtError) => {
+      setErrors(toErrorMap(caughtError));
+    });
+    if (response) {
+      // Handle response somehow
+      console.log(response.data.login.token);
+      // Set authorization cookie to response token (if we are working at different domains and it's not set automatically)
+      // cookieCutter.set('authorization', response.data.login.token);
+      router.push('/');
+    }
+  };
+
   return (
     <Wrapper>
       <Logo />
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        onSubmit={async (values, { setErrors }) => {
-          const response = await loginMutation({
-            variables: {
-              loginDto: {
-                email: values.email,
-                password: values.password,
-              },
-            },
-          }).catch((caughtError) => {
-            setErrors(toErrorMap(caughtError));
-          });
-          if (response) {
-            // Handle response somehow
-            console.log(response.data.login.token);
-            // Set authorization cookie to response token
-            // cookieCutter.set('authorization', response.data.login.token);
-            router.push('/');
-          }
-        }}
-      >
+      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
             <Box>
