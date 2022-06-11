@@ -1,14 +1,14 @@
-import { useRegisterMutation } from '@agh-kiwis/data-access';
-import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/layout';
-import { Link } from '@chakra-ui/react';
-// TODO Change this to something supporting TS
-import { Form, Formik } from 'formik';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { Button, Box, VStack } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
+import { useRegisterMutation } from '@agh-kiwis/data-access';
+import { CommonButton } from '../components/Common/CommonButton';
 import { InputField } from '../components/Login/InputField';
-import { Wrapper } from '../components/Login/Wrapper';
+import { Wrapper } from '../components/Containers/Wrapper';
+import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
+import { SectionDivider } from '../components/Utils/SectionDivider';
 
 const Register = () => {
   const [registerMutation] = useRegisterMutation();
@@ -34,25 +34,32 @@ const Register = () => {
 
   return (
     <Wrapper variant="small">
+      <Logo />
       <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="email" label="Email" />
+            <InputField name="email" placeholder="Email" label="Email" />
             <Box mt={4}>
               <InputField
                 name="password"
-                placeholder="password"
+                placeholder="Password"
                 label="Password"
                 type="password"
               />
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
-              Register
-            </Button>
-            <NextLink href="/forgot-password" passHref>
-              <Box mr={2} mt={2}>
-                <Link>Forgot password?</Link>
-              </Box>
+            <VStack mt={4} spacing={4}>
+              <CommonButton
+                variant="solid"
+                type="submit"
+                isLoading={isSubmitting}
+                buttonText="Sign Up"
+              />
+            </VStack>
+            <SectionDivider />
+            <NextLink href="/login" passHref>
+              <Button variant="outline" w={'100%'}>
+                Sign in
+              </Button>
             </NextLink>
           </Form>
         )}

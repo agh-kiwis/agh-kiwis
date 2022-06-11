@@ -1,10 +1,8 @@
-import './styles.css';
-import { store } from '../redux/store';
 import { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
-import { ChakraProvider } from '@chakra-ui/react';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Counter } from '../components/Counter/Counter';
+import { ChakraProvider } from '@chakra-ui/react';
+import { theme } from '../styles/theme';
+
 function CustomApp({ Component, pageProps }: AppProps) {
   const client = new ApolloClient({
     uri: 'http://localhost:3333/graphql',
@@ -14,12 +12,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ApolloProvider client={client}>
-        <Provider store={store}>
-          <ChakraProvider>
-            <Counter />
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </Provider>
+        <ChakraProvider resetCSS theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </ApolloProvider>
     </>
   );
