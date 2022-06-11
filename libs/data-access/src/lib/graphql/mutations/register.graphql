@@ -1,0 +1,13 @@
+mutation Register($registerDto: AuthEmailRegisterInput!) {
+  register(registerDto: $registerDto) {
+    birthDate
+    createdAt
+    deletedAt
+    email
+    gender
+    id
+    name
+    updatedAt
+    token
+  }
+}

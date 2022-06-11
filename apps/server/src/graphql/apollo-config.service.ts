@@ -22,7 +22,11 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
         const clientId = get(connection, 'context.clientId');
         return { req, res, ...(clientId && { clientId }) };
       },
-      // TODO Add our own error handler and define error format
+      cors: {
+        // TODO Replace it with env variable
+        origin: 'http://localhost:4200',
+        credentials: true,
+      },
     };
   }
 }
