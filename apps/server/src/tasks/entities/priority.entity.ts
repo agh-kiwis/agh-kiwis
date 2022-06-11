@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -11,7 +12,7 @@ import {
 import { Task } from './task.entity';
 
 @Entity()
-export class Priority {
+export class Priority extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

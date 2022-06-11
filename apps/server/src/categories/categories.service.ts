@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { CustomValidationErrors } from '../utils/CustomValidationError';
+import { sanitizeInput } from '../utils/sanitizers/inputSanitizer';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
@@ -35,18 +36,22 @@ export class CategoriesService {
     const category = this.categoryRepository.create({
       color: color,
       user: user,
-      ...createCategoryInput,
+      name: createCategoryInput.name,
     });
 
     return this.categoryRepository.save(category);
   }
 
-  findAll() {
-    return `This action returns all categories`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findByPrefix(user: User, prefix: string) {
+    // TODO Extract sanitizer to utils
+    const sanitizedPrefix = sanitizeInput(prefix);
+    return await this.categoryRepository.find({
+      where: {
+        user: user,
+        // TODO This seems to be case sensitive, maybe we want it not to be
+        name: Like(`${sanitizedPrefix}%`),
+      },
+    });
   }
 
   update(id: number, updateCategoryInput: UpdateCategoryInput) {

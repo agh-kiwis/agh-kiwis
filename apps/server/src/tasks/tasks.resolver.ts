@@ -1,7 +1,9 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
-import { CreateTaskInput } from './dto/create-task.input';
+import { ContextRequest } from '../types/context.type';
+import { CreateConstTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
@@ -11,8 +13,16 @@ export class TasksResolver {
   constructor(private readonly tasksService: TasksService) {}
 
   @Mutation(() => Task)
-  createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
-    return this.tasksService.create(createTaskInput);
+  @UseGuards(JwtAuthGuard)
+  addConstTask(
+    @Context('req') contextRequest: ContextRequest,
+
+    @Args('CreateConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
+  ) {
+    return this.tasksService.createConst(
+      contextRequest.user,
+      CreateConstTaskInput
+    );
   }
 
   @Query(() => [Task], { name: 'tasks' })

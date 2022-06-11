@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
 import {
+  BaseEntity,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -18,7 +19,7 @@ import { Task } from '../../tasks/entities/task.entity';
 
 @ObjectType()
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;

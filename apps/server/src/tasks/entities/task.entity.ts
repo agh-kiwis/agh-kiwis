@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -18,10 +19,11 @@ import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
 import { Priority } from './priority.entity';
 import { TaskBreakdown } from './taskBreakdown.entity';
+import { IPostgresInterval } from 'postgres-interval';
 
 @ObjectType()
 @Entity()
-export class Task {
+export class Task extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -45,21 +47,21 @@ export class Task {
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
-  @Field()
+  @Field(() => String)
   @Column({ type: 'interval' })
-  chillTime: Date;
+  chillTime: IPostgresInterval;
 
   @ManyToOne(() => Notification, (notification) => notification.tasks)
   notifications: Notification;
 
   @Field()
-  @Column()
+  @Column({ default: false })
   shouldAutoResolve: boolean;
 
-  @Column({ type: 'interval' })
-  estimation: Date;
+  @Column({ type: 'interval', nullable: true })
+  estimation: IPostgresInterval;
 
-  @Column({ type: 'time with time zone', nullable: true })
+  @Column({ type: 'timestamp with time zone', nullable: true })
   deadline?: Date;
 
   @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)

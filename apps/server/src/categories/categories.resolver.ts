@@ -13,7 +13,6 @@ export class CategoriesResolver {
   @Mutation(() => Category)
   @UseGuards(JwtAuthGuard)
   createCategory(
-    // TODO Find a way to inject this context
     @Context('req') contextRequest: ContextRequest,
     @Args('createCategoryInput') createCategoryInput: CreateCategoryInput
   ) {
@@ -23,17 +22,18 @@ export class CategoriesResolver {
     );
   }
 
-  @Query(() => [Category], { name: 'categories' })
-  findAll() {
-    return this.categoriesService.findAll();
-  }
-
-  @Query(() => Category, { name: 'category' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.categoriesService.findOne(id);
+  @Query(() => [Category])
+  // TODO Change this to exclude unprotected rotes, not include
+  @UseGuards(JwtAuthGuard)
+  findCategoryByPrefix(
+    @Context('req') contextRequest: ContextRequest,
+    @Args('prefix') prefix: string
+  ) {
+    return this.categoriesService.findByPrefix(contextRequest.user, prefix);
   }
 
   @Mutation(() => Category)
+  @UseGuards(JwtAuthGuard)
   updateCategory(
     @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput
   ) {
@@ -44,6 +44,7 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Category)
+  @UseGuards(JwtAuthGuard)
   removeCategory(@Args('id', { type: () => Int }) id: number) {
     return this.categoriesService.remove(id);
   }

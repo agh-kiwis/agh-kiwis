@@ -1,14 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Index,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,7 +17,7 @@ import { User } from '../../users/entities/user.entity';
 
 @ObjectType()
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,14 +28,14 @@ export class Category {
   name: string;
 
   @ManyToOne(() => User, (user) => user.categories)
+  @Index()
   user: User;
 
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];
 
   @Field(() => Color)
-  @OneToOne(() => Color)
-  @JoinColumn()
+  @ManyToOne(() => Color, { eager: true })
   color: Color;
 
   @CreateDateColumn()

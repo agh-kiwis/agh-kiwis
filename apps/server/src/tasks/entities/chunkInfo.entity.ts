@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -6,20 +7,21 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IPostgresInterval } from 'postgres-interval';
 
 @Entity()
-export class ChunkInfo {
+export class ChunkInfo extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'interval' })
-  minTimeBetweenChunks: Date;
+  minTimeBetweenChunks: IPostgresInterval;
 
   @Column({ type: 'interval' })
-  minChunkDuration: Date;
+  minChunkDuration: IPostgresInterval;
 
   @Column({ type: 'interval' })
-  maxChunkDuration: Date;
+  maxChunkDuration: IPostgresInterval;
 
   @CreateDateColumn()
   createdAt: Date;

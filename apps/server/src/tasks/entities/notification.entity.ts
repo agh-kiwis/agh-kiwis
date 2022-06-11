@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -8,14 +9,15 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Task } from './task.entity';
+import { IPostgresInterval } from 'postgres-interval';
 
 @Entity()
-export class Notification {
+export class Notification extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'interval' })
-  timeBefore: Date;
+  timeBefore: IPostgresInterval;
 
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];

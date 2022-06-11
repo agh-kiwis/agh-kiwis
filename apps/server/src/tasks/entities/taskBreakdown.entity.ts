@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -11,17 +12,18 @@ import {
 } from 'typeorm';
 import { Repeat } from './repeat.entity';
 import { Task } from './task.entity';
+import { IPostgresInterval } from 'postgres-interval';
 
 @Entity()
-export class TaskBreakdown {
+export class TaskBreakdown extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'time with time zone' })
+  @Column({ type: 'timestamp with time zone' })
   start: Date;
 
   @Column({ type: 'interval' })
-  duration: Date;
+  duration: IPostgresInterval;
 
   @ManyToOne(() => Task, (task) => task.taskBreakdowns)
   task: Task;

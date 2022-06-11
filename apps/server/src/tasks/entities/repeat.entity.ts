@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -16,7 +17,7 @@ export enum RepeatType {
 
 @Entity()
 // Applicable only for const tasks (Add some validation)
-export class Repeat {
+export class Repeat extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

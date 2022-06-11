@@ -106,12 +106,9 @@ export class AuthService {
   async validateJwtPayload(
     payload: JwtTokenPayload
   ): Promise<User | undefined> {
-    // This will be used when the user has already logged in and has a JWT token to validate
-
     // + is an unary operator, which converts value to a number
     const user = await this.usersService.findOne({ id: +payload.id });
 
-    // Ensure the user exists and their account isn't disabled
     if (user && user.isEnabled) {
       return user;
     }
