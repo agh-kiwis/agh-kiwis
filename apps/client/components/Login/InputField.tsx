@@ -12,7 +12,6 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   isTextArea?: boolean;
-  focusBorderColor?: string;
 };
 // '' => false
 // 'error message stuff' => true
@@ -36,7 +35,6 @@ export const InputField: React.FC<InputFieldProps> = ({
         {...field}
         {...props}
         id={field.name}
-        focusBorderColor={props.focusBorderColor || 'green.500'}
       />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
