@@ -1,7 +1,7 @@
 import React from 'react';
+import NextLink from 'next/link';
 import { Box, Flex, Button, Stack } from '@chakra-ui/react';
 import { useLogoutMutation, useMeQuery } from '@agh-kiwis/data-access';
-import NextLink from 'next/link';
 
 export const NavBar = () => {
   const [logoutMutation, { data: loggedOut, loading: logoutLoading }] =

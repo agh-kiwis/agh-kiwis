@@ -2,8 +2,9 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
+  Input,
+  Textarea,
+} from '@chakra-ui/react';
 import { InputHTMLAttributes } from 'react';
 import { useField } from 'formik';
 
@@ -11,9 +12,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   isTextArea?: boolean;
-  focusBorderColor?: string;
 };
-import { Textarea } from '@chakra-ui/react';
 // '' => false
 // 'error message stuff' => true
 
@@ -32,12 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <InputOrTextArea
-        {...field}
-        {...props}
-        id={field.name}
-        focusBorderColor={props.focusBorderColor || 'green.500'}
-      />
+      <InputOrTextArea {...field} {...props} id={field.name} />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
