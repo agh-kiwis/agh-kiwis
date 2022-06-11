@@ -2,8 +2,9 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
+  Input,
+  Textarea,
+} from '@chakra-ui/react';
 import { InputHTMLAttributes } from 'react';
 import { useField } from 'formik';
 
@@ -13,7 +14,6 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   isTextArea?: boolean;
   focusBorderColor?: string;
 };
-import { Textarea } from '@chakra-ui/react';
 // '' => false
 // 'error message stuff' => true
 
