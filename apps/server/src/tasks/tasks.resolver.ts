@@ -3,7 +3,8 @@ import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { ContextRequest } from '../types/context.type';
-import { CreateConstTaskInput } from './dto/create-task.input';
+import { CreateConstTaskInput } from './dto/createConstTask.input';
+import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
@@ -22,6 +23,19 @@ export class TasksResolver {
     return this.tasksService.createConst(
       contextRequest.user,
       CreateConstTaskInput
+    );
+  }
+
+  @Mutation(() => Task)
+  @UseGuards(JwtAuthGuard)
+  addFloatTask(
+    @Context('req') contextRequest: ContextRequest,
+
+    @Args('createFloatTaskInput') createFloatTaskInput: CreateFloatTaskInput
+  ) {
+    return this.tasksService.createFloatTask(
+      contextRequest.user,
+      createFloatTaskInput
     );
   }
 

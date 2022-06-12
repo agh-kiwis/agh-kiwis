@@ -12,6 +12,7 @@ import {
 import { Task } from './task.entity';
 
 @Entity()
+// TODO add MyBaseEntity where there will be id and createdDates
 export class Priority extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

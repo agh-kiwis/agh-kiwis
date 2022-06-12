@@ -2,15 +2,14 @@ import { Field, InputType } from '@nestjs/graphql';
 import { RepeatInput } from './repeat.input';
 import { IPostgresInterval } from 'postgres-interval';
 
-// TODO Add some custom validators
+// TODO Add Custom Validators
 @InputType()
-export class CreateConstTaskInput {
+export class CreateTaskInput {
   @Field()
   name: string;
   @Field()
   start: Date;
-  @Field(() => String)
-  duration: IPostgresInterval;
+
   @Field(() => String)
   chillTime: IPostgresInterval;
   @Field({ nullable: true })
@@ -19,6 +18,15 @@ export class CreateConstTaskInput {
   categoryId: number;
   @Field(() => RepeatInput)
   repeat: RepeatInput;
-  // @Field({ nullable: true })
-  // notificationId: number;
+  @Field(() => String, { nullable: true })
+  timeBeforeNotification: IPostgresInterval;
+  // TODO Default this closer to database
+  @Field({ nullable: true })
+  priorityId: number;
+}
+
+@InputType()
+export class CreateConstTaskInput extends CreateTaskInput {
+  @Field(() => String)
+  duration: IPostgresInterval;
 }

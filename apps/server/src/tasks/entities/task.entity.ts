@@ -7,6 +7,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -17,9 +18,9 @@ import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
-import { Priority } from './priority.entity';
 import { TaskBreakdown } from './taskBreakdown.entity';
 import { IPostgresInterval } from 'postgres-interval';
+import { Priority } from './priority.entity';
 
 @ObjectType()
 @Entity()
@@ -36,7 +37,7 @@ export class Task extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.tasks)
   category: Category;
 
-  @ManyToOne(() => Priority, (priority) => priority.tasks)
+  @ManyToOne(() => Priority, { eager: true })
   priority: Priority;
 
   @Field()

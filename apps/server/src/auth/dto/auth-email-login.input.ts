@@ -1,4 +1,4 @@
-import { IsEmail, MinLength, Validate } from 'class-validator';
+import { IsEmail, Length, Validate } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsExist } from '../../utils/validators/is-exists.validator';
 import { Field, InputType } from '@nestjs/graphql';
@@ -13,7 +13,7 @@ export class AuthEmailLoginInput {
   @IsEmail()
   email: string;
 
-  @MinLength(6)
+  @Length(6, 50)
   @Field()
   password: string;
 }

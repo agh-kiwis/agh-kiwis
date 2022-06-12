@@ -1,4 +1,4 @@
-import { CreateConstTaskInput } from './create-task.input';
+import { CreateConstTaskInput } from './createConstTask.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
