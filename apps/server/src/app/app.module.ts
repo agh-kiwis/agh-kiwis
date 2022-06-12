@@ -16,6 +16,8 @@ import authConfig from '../config/auth.config';
 import { AuthModule } from '../auth/auth.module';
 import { CategoriesModule } from '../categories/categories.module';
 import { IntervalScalar } from '../utils/interval.scalar';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -39,6 +41,13 @@ import { IntervalScalar } from '../utils/interval.scalar';
   ],
   controllers: [AppController],
   // TODO Maybe move IntervalScalar somewhere else
-  providers: [AppService, IntervalScalar],
+  providers: [
+    AppService,
+    IntervalScalar,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

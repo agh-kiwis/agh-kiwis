@@ -1,6 +1,4 @@
-import { UseGuards } from '@nestjs/common';
 import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ContextRequest } from '../types/context.type';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryInput } from './dto/create-category.input';
@@ -11,7 +9,6 @@ import { Category } from './entities/category.entity';
 export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
   @Mutation(() => Category)
-  @UseGuards(JwtAuthGuard)
   createCategory(
     @Context('req') contextRequest: ContextRequest,
     @Args('createCategoryInput') createCategoryInput: CreateCategoryInput
@@ -24,7 +21,6 @@ export class CategoriesResolver {
 
   @Query(() => [Category])
   // TODO Change this to exclude unprotected rotes, not include
-  @UseGuards(JwtAuthGuard)
   findCategoryByPrefix(
     @Context('req') contextRequest: ContextRequest,
     @Args('prefix') prefix: string
@@ -33,7 +29,6 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Category)
-  @UseGuards(JwtAuthGuard)
   updateCategory(
     @Context('req') contextRequest: ContextRequest,
 
@@ -47,7 +42,6 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Category)
-  @UseGuards(JwtAuthGuard)
   removeCategory(
     @Context('req') contextRequest: ContextRequest,
     @Args('id', { type: () => Int }) id: number
