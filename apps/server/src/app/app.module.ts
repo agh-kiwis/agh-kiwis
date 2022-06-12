@@ -15,6 +15,7 @@ import { TasksModule } from '../tasks/tasks.module';
 import authConfig from '../config/auth.config';
 import { AuthModule } from '../auth/auth.module';
 import { CategoriesModule } from '../categories/categories.module';
+import { IntervalScalar } from '../utils/interval.scalar';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CategoriesModule } from '../categories/categories.module';
     CategoriesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  // TODO Maybe move IntervalScalar somewhere else
+  providers: [AppService, IntervalScalar],
 })
 export class AppModule {}

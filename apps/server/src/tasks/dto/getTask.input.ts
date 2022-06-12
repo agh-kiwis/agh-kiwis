@@ -1,10 +1,13 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { PaginatedInput } from '../../utils/PaginatedInput';
 
 @InputType()
 export class FilterOptions {
-  @Field()
-  isDone: boolean;
+  @Field({ nullable: true })
+  isDone?: boolean;
+
+  @Field({ nullable: true })
+  isFloat?: boolean;
 }
 
 @InputType()

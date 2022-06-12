@@ -14,6 +14,7 @@ import { Repeat } from './repeat.entity';
 import { Task } from './task.entity';
 import { IPostgresInterval } from 'postgres-interval';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Interval } from '../../utils/interval.scalar';
 
 @Entity()
 @ObjectType()
@@ -25,7 +26,7 @@ export class TaskBreakdown extends BaseEntity {
   @Column({ type: 'timestamp with time zone' })
   start: Date;
 
-  @Field(() => String)
+  @Field(() => Interval)
   @Column({ type: 'interval' })
   duration: IPostgresInterval;
 

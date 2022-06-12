@@ -112,7 +112,6 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     // Get paginated results from Tasks
-    console.log(user);
     return await Task.find({
       where: {
         user: user,

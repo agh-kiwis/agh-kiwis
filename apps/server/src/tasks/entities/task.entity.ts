@@ -8,11 +8,12 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
 import { GeneralEntity } from '../../utils/GeneralEntity';
+import { Interval } from '../../utils/interval.scalar';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
 import { Priority } from './priority.entity';
@@ -31,7 +32,7 @@ export class Task extends GeneralEntity {
   name: string;
 
   @Field()
-  @ManyToOne(() => Category, (category) => category.tasks)
+  @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 
   @Field(() => Priority)
@@ -47,7 +48,7 @@ export class Task extends GeneralEntity {
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
-  @Field(() => String)
+  @Field(() => Interval)
   @Column({ type: 'interval' })
   chillTime: IPostgresInterval;
 
@@ -59,7 +60,7 @@ export class Task extends GeneralEntity {
   @Column({ default: false })
   isDone: boolean;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Interval, { nullable: true })
   @Column({ type: 'interval', nullable: true })
   estimation: IPostgresInterval;
 
