@@ -1,19 +1,20 @@
-import { useLoginMutation } from '@agh-kiwis/data-access';
-import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/layout';
-import { Link } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { Button, Box, Flex, Text, VStack, Divider } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
+import { useLoginMutation } from '@agh-kiwis/data-access';
+import { CommonButton } from '../components/Common/CommonButton';
+import { GoogleButton } from '../components/Common/GoogleButton';
 import { InputField } from '../components/Login/InputField';
-import { Wrapper } from '../components/Login/Wrapper';
+import { Wrapper } from '../components/Containers/Wrapper';
+import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
 
 const Login = () => {
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
 
-  const onFormSubmit = async (values, { setErrors }) => {
+  const onSubmit = async (values, { setErrors }) => {
     const response = await loginMutation({
       variables: {
         loginDto: {
@@ -34,29 +35,49 @@ const Login = () => {
   };
 
   return (
-    <Wrapper variant="small">
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        onSubmit={onFormSubmit}
-      >
+    <Wrapper>
+      <Logo />
+      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="email" label="Email" />
+            <Box>
+              <InputField name="email" placeholder="Email" label="Email" />
+            </Box>
             <Box mt={4}>
               <InputField
                 name="password"
-                placeholder="password"
+                placeholder="Password"
                 label="Password"
                 type="password"
               />
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
-              Login
-            </Button>
-            <NextLink href="/forgot-password" passHref>
-              <Box mr={2} mt={2}>
-                <Link>Forgot password?</Link>
-              </Box>
+            <Flex justify={'right'} mt={1}>
+              <NextLink href="/forgot-password" passHref>
+                <Button variant="link" size={'sm'}>
+                  Forgot password?
+                </Button>
+              </NextLink>
+            </Flex>
+            <VStack mt={4} spacing={4}>
+              <CommonButton
+                variant="solid"
+                type="submit"
+                isLoading={isSubmitting}
+                buttonText="Sign in"
+              />
+              <GoogleButton buttonText="Continue with Google" />
+            </VStack>
+            <Flex justify={'space-around'} align={'center'} my={6}>
+              <Divider mx={4} />
+              <Text fontSize="sm" color="gray.300">
+                OR
+              </Text>
+              <Divider mx={4} />
+            </Flex>
+            <NextLink href="/register" passHref>
+              <Button variant="outline" w={'100%'}>
+                Sign up
+              </Button>
             </NextLink>
           </Form>
         )}
