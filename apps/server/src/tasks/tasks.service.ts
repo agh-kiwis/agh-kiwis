@@ -4,6 +4,7 @@ import { Category } from '../categories/entities/category.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
+import { GetTasksInput } from './dto/getTask.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
@@ -109,8 +110,20 @@ export class TasksService {
     return task;
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async getTasks(user: User, getTasksInput: GetTasksInput) {
+    // Get paginated results from Tasks
+    console.log(user);
+    return await Task.find({
+      where: {
+        user: user,
+        ...getTasksInput.filterOptions,
+      },
+      skip: getTasksInput.offset * getTasksInput.limit,
+      take: getTasksInput.limit,
+      order: {
+        updatedAt: 'DESC',
+      },
+    });
   }
 
   findOne(id: number) {

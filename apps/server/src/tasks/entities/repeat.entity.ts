@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
@@ -16,17 +17,21 @@ export enum RepeatType {
 }
 
 @Entity()
+@ObjectType()
 // Applicable only for const tasks (Add some validation)
 export class Repeat extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column({ type: 'date' })
   startFrom: Date;
 
+  @Field()
   @Column({ type: 'int' })
   repeatEvery: number;
 
+  @Field()
   @Column({ type: 'enum', enum: RepeatType, default: RepeatType.DAYS })
   repeatType: RepeatType;
 

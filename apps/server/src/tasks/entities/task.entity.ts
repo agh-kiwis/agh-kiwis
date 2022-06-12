@@ -1,30 +1,26 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { IPostgresInterval } from 'postgres-interval';
 import {
-  BaseEntity,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
-  JoinTable,
   ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
-import { TaskBreakdown } from './taskBreakdown.entity';
-import { IPostgresInterval } from 'postgres-interval';
 import { Priority } from './priority.entity';
+import { TaskBreakdown } from './taskBreakdown.entity';
 
 @ObjectType()
 @Entity()
-export class Task extends BaseEntity {
+export class Task extends GeneralEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -32,11 +28,13 @@ export class Task extends BaseEntity {
   @Field()
   @Index()
   @Column()
-  name: string | null;
+  name: string;
 
+  @Field()
   @ManyToOne(() => Category, (category) => category.tasks)
   category: Category;
 
+  @Field(() => Priority)
   @ManyToOne(() => Priority, { eager: true })
   priority: Priority;
 
@@ -44,7 +42,8 @@ export class Task extends BaseEntity {
   @Column()
   isFloat: boolean;
 
-  @OneToOne(() => ChunkInfo)
+  @Field({ nullable: true })
+  @OneToOne(() => ChunkInfo, { eager: true })
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
@@ -52,34 +51,30 @@ export class Task extends BaseEntity {
   @Column({ type: 'interval' })
   chillTime: IPostgresInterval;
 
-  @ManyToOne(() => Notification, (notification) => notification.tasks)
-  notifications: Notification;
-
   @Field()
   @Column({ default: false })
   shouldAutoResolve: boolean;
 
+  @Field()
+  @Column({ default: false })
+  isDone: boolean;
+
+  @Field(() => String, { nullable: true })
   @Column({ type: 'interval', nullable: true })
   estimation: IPostgresInterval;
 
+  @Field(() => String, { nullable: true })
   @Column({ type: 'timestamp with time zone', nullable: true })
   deadline?: Date;
 
+  @Field(() => [TaskBreakdown], { nullable: true })
   @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)
   taskBreakdowns: TaskBreakdown[];
 
+  @Field(() => Notification, { nullable: true })
+  @ManyToOne(() => Notification, (notification) => notification.tasks)
+  notifications: Notification;
+
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;
-
-  @Field()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Field()
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

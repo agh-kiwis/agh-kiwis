@@ -1,18 +1,12 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { IPostgresInterval } from 'postgres-interval';
-import { Field, InputType } from '@nestjs/graphql';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 
 @Entity()
-@InputType()
-export class ChunkInfo extends BaseEntity {
+@ObjectType()
+export class ChunkInfo extends GeneralEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,13 +21,4 @@ export class ChunkInfo extends BaseEntity {
   @Field(() => String)
   @Column({ type: 'interval' })
   maxChunkDuration: IPostgresInterval;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

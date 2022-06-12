@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Like } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { CustomValidationErrors } from '../utils/CustomValidationError';
 import { sanitizeInput } from '../utils/sanitizers/inputSanitizer';
@@ -11,18 +10,10 @@ import { Color } from './entities/color.entity';
 
 @Injectable()
 export class CategoriesService {
-  constructor(
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
-
-    @InjectRepository(Color)
-    private colorRepository: Repository<Color>
-  ) {}
-
   async create(user: User, createCategoryInput: CreateCategoryInput) {
-    const color = await this.colorRepository.findOne(
-      createCategoryInput.colorId
-    );
+    const color = await Color.findOne({
+      where: { id: createCategoryInput.colorId },
+    });
     if (!color)
       throw new CustomValidationErrors({
         errors: [
@@ -33,19 +24,18 @@ export class CategoriesService {
         ],
       });
 
-    const category = this.categoryRepository.create({
+    const category = Category.create({
       color: color,
       user: user,
       name: createCategoryInput.name,
     });
 
-    return this.categoryRepository.save(category);
+    return Category.save(category);
   }
 
   async findByPrefix(user: User, prefix: string) {
-    // TODO Extract sanitizer to utils
     const sanitizedPrefix = sanitizeInput(prefix);
-    return await this.categoryRepository.find({
+    return await Category.find({
       where: {
         user: user,
         // TODO This seems to be case sensitive, maybe we want it not to be
@@ -54,11 +44,13 @@ export class CategoriesService {
     });
   }
 
-  update(id: number, updateCategoryInput: UpdateCategoryInput) {
+  update(user: User, id: number, updateCategoryInput: UpdateCategoryInput) {
+    // TODO
     return `This action updates a #${id} category`;
   }
 
-  remove(id: number) {
+  remove(user: User, id: number) {
+    // TODO
     return `This action removes a #${id} category`;
   }
 }

@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
@@ -12,11 +13,13 @@ import {
 import { Task } from './task.entity';
 
 @Entity()
-// TODO add MyBaseEntity where there will be id and createdDates
+@ObjectType()
 export class Priority extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Index()
   @Column()
   name: string | null;

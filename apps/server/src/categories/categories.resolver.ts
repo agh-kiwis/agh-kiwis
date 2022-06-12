@@ -35,9 +35,12 @@ export class CategoriesResolver {
   @Mutation(() => Category)
   @UseGuards(JwtAuthGuard)
   updateCategory(
+    @Context('req') contextRequest: ContextRequest,
+
     @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput
   ) {
     return this.categoriesService.update(
+      contextRequest.user,
       updateCategoryInput.id,
       updateCategoryInput
     );
@@ -45,7 +48,10 @@ export class CategoriesResolver {
 
   @Mutation(() => Category)
   @UseGuards(JwtAuthGuard)
-  removeCategory(@Args('id', { type: () => Int }) id: number) {
-    return this.categoriesService.remove(id);
+  removeCategory(
+    @Context('req') contextRequest: ContextRequest,
+    @Args('id', { type: () => Int }) id: number
+  ) {
+    return this.categoriesService.remove(contextRequest.user, id);
   }
 }
