@@ -5,7 +5,7 @@ import { Form, Formik } from 'formik';
 import { useLoginMutation } from '@agh-kiwis/data-access';
 import { CommonButton } from '../components/Common/CommonButton';
 import { GoogleButton } from '../components/Common/GoogleButton';
-import { InputField } from '../components/Login/InputField';
+import { InputField } from '../components/Common/InputField';
 import { Wrapper } from '../components/Containers/Wrapper';
 import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';

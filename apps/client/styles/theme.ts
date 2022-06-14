@@ -17,5 +17,10 @@ export const theme = extendTheme({
         colorScheme: 'green',
       },
     },
+    Switch: {
+      defaultProps: {
+        colorScheme: 'green',
+      },
+    },
   },
 });
