@@ -1,0 +1,36 @@
+.container {
+    background-color: #48BB78;
+    padding: 2rem;
+    border-radius: 11px;
+    color: white;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.taskHead {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    position: relative;
+}
+
+.text {
+    font-size: x-large;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+}
+
+.chunkHandle {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+}

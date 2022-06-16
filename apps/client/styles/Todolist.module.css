@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem;
+}
+
+.tasksKeeper {
+    overflow: hidden;
+    position: relative;
+}
+
+.plus {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+}
