@@ -35,7 +35,7 @@ export class Task extends GeneralEntity {
   @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 
-  @Field(() => Priority)
+  @Field(() => Priority, { nullable: true })
   @ManyToOne(() => Priority, { eager: true })
   priority: Priority;
 
