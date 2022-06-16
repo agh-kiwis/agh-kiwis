@@ -1,4 +1,6 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -11,10 +13,13 @@ import {
 import { Task } from './task.entity';
 
 @Entity()
-export class Priority {
+@ObjectType()
+export class Priority extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Index()
   @Column()
   name: string | null;

@@ -1,7 +1,8 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
-import { CreateTaskInput } from './dto/create-task.input';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ContextRequest } from '../types/context.type';
+import { CreateConstTaskInput } from './dto/createConstTask.input';
+import { CreateFloatTaskInput } from './dto/createFloatTask.input';
+import { GetTasksInput } from './dto/getTask.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
@@ -11,17 +12,36 @@ export class TasksResolver {
   constructor(private readonly tasksService: TasksService) {}
 
   @Mutation(() => Task)
-  createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
-    return this.tasksService.create(createTaskInput);
+  addConstTask(
+    @Context('req') contextRequest: ContextRequest,
+    @Args('CreateConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
+  ) {
+    return this.tasksService.createConst(
+      contextRequest.user,
+      CreateConstTaskInput
+    );
   }
 
-  @Query(() => [Task], { name: 'tasks' })
-  @UseGuards(JwtStrategy)
-  findAll() {
-    return this.tasksService.findAll();
+  @Mutation(() => Task)
+  addFloatTask(
+    @Context('req') contextRequest: ContextRequest,
+    @Args('createFloatTaskInput') createFloatTaskInput: CreateFloatTaskInput
+  ) {
+    return this.tasksService.createFloatTask(
+      contextRequest.user,
+      createFloatTaskInput
+    );
   }
 
-  @Query(() => Task, { name: 'task' })
+  @Query(() => [Task])
+  getTasks(
+    @Context('req') contextRequest: ContextRequest,
+    @Args('getTasksInput') getTasksInput: GetTasksInput
+  ) {
+    return this.tasksService.getTasks(contextRequest.user, getTasksInput);
+  }
+
+  @Query(() => Task)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.tasksService.findOne(id);
   }

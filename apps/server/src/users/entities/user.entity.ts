@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
 import {
+  BaseEntity,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -13,11 +14,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { AuthProvidersEnum } from '../../auth/auth-providers.enum';
+import { Category } from '../../categories/entities/category.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
 @ObjectType()
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -56,6 +58,9 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks?: Task[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
 
   @Column({ default: AuthProvidersEnum.email })
   provider: string;

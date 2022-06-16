@@ -1,35 +1,17 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { ForbiddenError, UserInputError } from 'apollo-server-errors';
 import * as bcrypt from 'bcryptjs';
 import { ContextRequest, CustomContext } from '../types/context.type';
 import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
+import { clearCookie, setCookie } from '../utils/cookies-handler';
 import { AuthProvidersEnum } from './auth-providers.enum';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 import { AuthResponse } from './dto/auth.response';
-import { ForbiddenError, UserInputError } from 'apollo-server-errors';
-
-// This won't work for different domains, so client need to set this cookie manually
-const setCookie = (
-  token: string,
-  context: CustomContext,
-  configService: ConfigService
-) => {
-  context.res.cookie(configService.get('auth.cookie_name'), token, {
-    maxAge: configService.get('auth.cookie_refresh_duration'),
-    domain: configService.get('auth.cookie_domain'),
-    // This header prevents extracting cookie from client's browser by third-party script
-    httpOnly: configService.get('app.production'),
-    secure: configService.get('app.production'),
-  });
-};
-
-const clearCookie = (context: CustomContext, configService: ConfigService) => {
-  context.res.clearCookie(configService.get('auth.cookie_name'));
-};
 
 @Injectable()
 export class AuthService {
@@ -106,12 +88,8 @@ export class AuthService {
   async validateJwtPayload(
     payload: JwtTokenPayload
   ): Promise<User | undefined> {
-    // This will be used when the user has already logged in and has a JWT token to validate
+    const user = await User.findOne({ where: { id: payload.id } });
 
-    // + is an unary operator, which converts value to a number
-    const user = await this.usersService.findOne({ id: +payload.id });
-
-    // Ensure the user exists and their account isn't disabled
     if (user && user.isEnabled) {
       return user;
     }

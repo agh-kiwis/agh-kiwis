@@ -1,32 +1,41 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Index,
-  JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Color } from './color.entity';
-import { Task } from './task.entity';
+import { Task } from '../../tasks/entities/task.entity';
+import { User } from '../../users/entities/user.entity';
 
+@ObjectType()
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Index()
   @Column()
-  name: string | null;
+  name: string;
+
+  @ManyToOne(() => User, (user) => user.categories)
+  @Index()
+  user: User;
 
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];
 
-  @OneToOne(() => Color)
-  @JoinColumn()
+  @Field(() => Color)
+  @ManyToOne(() => Color, { eager: true })
   color: Color;
 
   @CreateDateColumn()
