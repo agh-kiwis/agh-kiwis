@@ -13,5 +13,9 @@ export const ControlledInputAddon: React.FC<ControlledInputAddonProps> = ({
   ...props
 }) => {
   const field = useField(props);
-  return <InputLeftAddon bg={field[1].value}>color</InputLeftAddon>;
+  return (
+    <InputLeftAddon bg={field[1].value} color="white">
+      color
+    </InputLeftAddon>
+  );
 };

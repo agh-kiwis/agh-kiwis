@@ -20,6 +20,11 @@ import { ToggleSwitch } from '../../components/Common/ToggleSwitch';
 import { DateTimePicker } from '../../components/Common/DateTimePicker';
 import { ColorPicker } from '../../components/Common/ColorPicker';
 import { ControlledInputAddon } from '../../components/Common/ControlledInputAddon';
+import {
+  LongIntervalAmountType,
+  LongIntervalPicker,
+  LongIntervalSelectType,
+} from '../../components/Common/LongIntervalPicker';
 
 type constTaskType = {
   type: string;
@@ -42,8 +47,17 @@ type constTaskType = {
   chillTime: {
     minutes: number;
   };
+  chillTimeFacade: string;
   priority: string;
-  repeat: boolean;
+  repeat: {
+    shouldRepeat: boolean;
+    startFrom: string;
+    repeatEvery: {
+      type: string;
+      amount: number;
+    };
+  };
+  repeatEveryFacade: string;
   notify: boolean;
   autoresolve: boolean;
 };
@@ -104,9 +118,30 @@ const DependentStartTimeField = (props) => {
   );
 };
 
+const DependentRepeatEveryField = (props) => {
+  const { values, setFieldValue } = useFormikContext<constTaskType>();
+
+  useEffect(() => {
+    {
+      setFieldValue(
+        props.name,
+        `${values.repeat.repeatEvery.amount} ${values.repeat.repeatEvery.type}`
+      );
+    }
+  }, [props.name, setFieldValue, values]);
+
+  return (
+    <InputField
+      name="repeatEveryFacade"
+      placeholder="Repeat every"
+      label="Repeat every"
+    />
+  );
+};
+
 const ConstTask: React.FC = () => {
   const initialValues: constTaskType = {
-    type: '',
+    type: 'const',
     category: {
       color: '#38A169',
       name: '',
@@ -114,7 +149,7 @@ const ConstTask: React.FC = () => {
     color: '',
     taskName: '',
     startTime: {
-      date: moment().format('DD/MM/YYYY'),
+      date: moment().format('yyyy-MM-DD'),
       time: moment().format('HH:MM'),
     },
     startTimeFacade: '',
@@ -126,8 +161,17 @@ const ConstTask: React.FC = () => {
     chillTime: {
       minutes: 5,
     },
+    chillTimeFacade: '',
     priority: '',
-    repeat: false,
+    repeat: {
+      shouldRepeat: false,
+      startFrom: moment().format('yyyy-MM-DD'),
+      repeatEvery: {
+        type: 'Day',
+        amount: 1,
+      },
+    },
+    repeatEveryFacade: '',
     notify: false,
     autoresolve: false,
   };
@@ -166,13 +210,46 @@ const ConstTask: React.FC = () => {
     },
   ];
 
+  const repeatEverySelectField: LongIntervalSelectType = {
+    name: 'repeat.repeatEvery.type',
+    label: 'Type',
+    options: ['Day', 'Week', 'Month'],
+  };
+
+  const repeatEveryAmountFields: LongIntervalAmountType[] = [
+    {
+      minValue: 1,
+      maxValue: 28,
+      defaultValue: 1,
+      step: 1,
+      label: 'Day',
+      name: 'repeat.repeatEvery.amount',
+    },
+    {
+      minValue: 1,
+      maxValue: 4,
+      defaultValue: 1,
+      step: 1,
+      label: 'Week',
+      name: 'repeat.repeatEvery.amount',
+    },
+    {
+      minValue: 1,
+      maxValue: 12,
+      defaultValue: 1,
+      step: 1,
+      label: 'Month',
+      name: 'repeat.repeatEvery.amount',
+    },
+  ];
+
   return (
     <Wrapper>
       <Heading textAlign={'center'} color="secondary" mb={4}>
         Add new task
       </Heading>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {({ isSubmitting, setFieldValue }) => (
+        {({ isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
@@ -213,21 +290,24 @@ const ConstTask: React.FC = () => {
                 <DependentStartTimeField name="startTimeFacade" />
               </DateTimePicker>
               <Flex justify="space-between">
-                <IntervalPicker
-                  modalTitle="Duration"
-                  inputFields={durationInputFields}
-                  handleChange={setFieldValue}
-                >
-                  <DependentDurationField name="durationFacade" />
-                </IntervalPicker>
-                <Box w={4} />
-                <IntervalPicker
-                  modalTitle="Chill time"
-                  inputFields={chillTimeInputFields}
-                  handleChange={setFieldValue}
-                >
-                  <DependentChillTimeField name="chillTimeFacade" />
-                </IntervalPicker>
+                <Box w="50%" mr={2}>
+                  <IntervalPicker
+                    modalTitle="Duration"
+                    inputFields={durationInputFields}
+                    handleChange={setFieldValue}
+                  >
+                    <DependentDurationField name="durationFacade" />
+                  </IntervalPicker>
+                </Box>
+                <Box w="50%" ml={2}>
+                  <IntervalPicker
+                    modalTitle="Chill time"
+                    inputFields={chillTimeInputFields}
+                    handleChange={setFieldValue}
+                  >
+                    <DependentChillTimeField name="chillTimeFacade" />
+                  </IntervalPicker>
+                </Box>
               </Flex>
               <Box>
                 <InputField
@@ -236,13 +316,42 @@ const ConstTask: React.FC = () => {
                   label="Priority"
                 />
               </Box>
-              <Box boxShadow="inner" borderRadius={8} p={4}>
-                <ToggleSwitch
-                  name="repeat"
-                  label="Repeat"
-                  handleChange={setFieldValue}
-                />
-              </Box>
+              {values.repeat.shouldRepeat ? (
+                <Box boxShadow="inner" borderRadius={8} p={4}>
+                  <ToggleSwitch
+                    name="repeat.shouldRepeat"
+                    label="Repeat"
+                    handleChange={setFieldValue}
+                  />
+                  <Box my={4}>
+                    <InputField
+                      type="date"
+                      label="Start from"
+                      name="repeat.startFrom"
+                    />
+                  </Box>
+                  <Box my={4}>
+                    <LongIntervalPicker
+                      modalTitle="Repeat every"
+                      selectField={repeatEverySelectField}
+                      amountFields={repeatEveryAmountFields}
+                      selectValue={values.repeat.repeatEvery.type}
+                      handleChange={setFieldValue}
+                    >
+                      <DependentRepeatEveryField name="repeatEveryFacade" />
+                    </LongIntervalPicker>
+                  </Box>
+                </Box>
+              ) : (
+                <Box>
+                  <ToggleSwitch
+                    name="repeat.shouldRepeat"
+                    label="Repeat"
+                    handleChange={setFieldValue}
+                  />
+                </Box>
+              )}
+
               <Box>
                 <ToggleSwitch
                   name="notify"
