@@ -5,14 +5,14 @@ import * as parse from 'postgres-interval';
 
 @Scalar('Interval', () => Interval)
 export class IntervalScalar implements CustomScalar<string, IPostgresInterval> {
-  description = 'Interval from postgresInterval';
+  description = 'Interval string for Postgres, read more in docs';
 
   parseValue(value: string): IPostgresInterval {
     return parse(value); // value from the client
   }
 
   serialize(value: IPostgresInterval): string {
-    return value.toPostgres(); // value sent to the client
+    return value.toISOString(); // value sent to the client
   }
 
   // TODO I have no idea what this function does
@@ -20,6 +20,7 @@ export class IntervalScalar implements CustomScalar<string, IPostgresInterval> {
     if (ast.kind === Kind.STRING) {
       return parse(ast.value);
     }
+    // TODO Parse date literal there
     return null;
   }
 }

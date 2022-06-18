@@ -112,6 +112,7 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     // Get paginated results from Tasks
+
     return await Task.find({
       where: {
         user: user,
