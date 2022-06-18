@@ -11,19 +11,10 @@ type ButtonProps = {
 
 export const CommonButton: React.FC<ButtonProps> = ({
   buttonText,
-  variant,
-  type,
-  isLoading,
-  onClick,
+  ...props
 }) => {
   return (
-    <Button
-      variant={variant}
-      type={type}
-      isLoading={isLoading}
-      w={'100%'}
-      onClick={onClick}
-    >
+    <Button {...props} w={'100%'}>
       {buttonText}
     </Button>
   );

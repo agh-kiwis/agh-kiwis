@@ -4,9 +4,9 @@ import {
   LongIntervalSelectType,
 } from '../../components/Pickers/LongIntervalPicker';
 import { NumberInputType } from '../../components/Pickers/IntervalPicker';
-import { constTaskType } from '../../components/Tasks/ConstTaskForm';
-import { floatTaskType } from '../../components/Tasks/FloatTaskForm';
 import { roundToMinutes } from '../../components/Utils/MomentUtils';
+import { constTaskType } from '../../Types/TaskTypes';
+import { floatTaskType } from '../../Types/TaskTypes';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',

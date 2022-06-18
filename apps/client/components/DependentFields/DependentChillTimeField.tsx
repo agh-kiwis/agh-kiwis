@@ -1,7 +1,7 @@
-import { constTaskType } from 'apps/client/pages/add/const-task';
-import { useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
+import { constTaskType } from '../../Types/TaskTypes';
 
 type DependentChillTimeFieldProps = {
   name: string;

@@ -1,7 +1,7 @@
-import { useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
-import { floatTaskType } from '../Tasks/FloatTaskForm';
+import { floatTaskType } from '../../Types/TaskTypes';
 
 type DependentDeadlineFieldProps = {
   name: string;

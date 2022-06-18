@@ -1,3 +1,5 @@
+import React from 'react';
+import { Form, Formik } from 'formik';
 import {
   Box,
   Flex,
@@ -6,8 +8,6 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import React from 'react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -25,6 +25,7 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
+import { constTaskType } from '../../Types/TaskTypes';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;
@@ -33,42 +34,6 @@ type ConstTaskCreationFormProps = {
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values) => void;
-};
-
-export type constTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
-  startTime: {
-    date: string;
-    time: string;
-  };
-  startTimeFacade: string;
-  duration: {
-    hours: number;
-    minutes: number;
-  };
-  durationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
-  priority: string;
-  repeat: {
-    shouldRepeat: boolean;
-    startFrom: string;
-    repeatEvery: {
-      type: string;
-      amount: number;
-    };
-  };
-  repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
 };
 
 export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
@@ -96,10 +61,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                       handleChange={setFieldValue}
                       name="category.color"
                     >
-                      <ControlledInputAddon
-                        addonContent="color"
-                        name="category.color"
-                      />
+                      <ControlledInputAddon name="category.color" />
                     </ColorPicker>
                     <InputField
                       name="category.name"

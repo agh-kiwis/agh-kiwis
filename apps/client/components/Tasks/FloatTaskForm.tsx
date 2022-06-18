@@ -13,62 +13,19 @@ import { DependentTimeEstimationField } from '../DependentFields/DependentTimeEs
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import {
-  LongIntervalAmountType,
-  LongIntervalSelectType,
-} from '../Pickers/LongIntervalPicker';
+import { floatTaskType } from '../../Types/TaskTypes';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;
   durationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
-  repeatEverySelectField: LongIntervalSelectType;
-  repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values) => void;
-};
-
-export type floatTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
-  deadline: {
-    date: string;
-    time: string;
-  };
-  deadlineFacade: string;
-  timeEstimation: {
-    hours: number;
-    minutes: number;
-  };
-  timeEstimationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
-  priority: string;
-  chunking: {
-    shouldChunk: boolean;
-    numberOfChunks: number;
-    repeatEvery: {
-      type: string;
-      amount: number;
-    };
-  };
-  repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
 };
 
 export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
   initialValues,
   durationInputFields,
   chillTimeInputFields,
-  repeatEverySelectField,
-  repeatEveryAmountFields,
   onSubmit,
 }) => {
   return (
@@ -88,10 +45,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                       handleChange={setFieldValue}
                       name="category.color"
                     >
-                      <ControlledInputAddon
-                        addonContent="color"
-                        name="category.color"
-                      />
+                      <ControlledInputAddon name="category.color" />
                     </ColorPicker>
                     <InputField
                       name="category.name"
@@ -151,6 +105,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                     label="Chunking"
                     handleChange={setFieldValue}
                   />
+                  {/* TODO do usunięcia*/}
                   <CustomNumberInput
                     minValue={1}
                     maxValue={10}
