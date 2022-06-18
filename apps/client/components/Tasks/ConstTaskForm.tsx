@@ -1,6 +1,3 @@
-import React, { useEffect } from 'react';
-import moment from 'moment';
-import { Form, Formik, useFormikContext } from 'formik';
 import {
   Box,
   Flex,
@@ -9,24 +6,36 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import {
-  IntervalPicker,
-  NumberInputType,
-} from '../../components/Common/IntervalPicker';
-import { Wrapper } from '../../components/Containers/Wrapper';
-import { InputField } from '../../components/Common/InputField';
-import { CommonButton } from '../../components/Common/CommonButton';
-import { ToggleSwitch } from '../../components/Common/ToggleSwitch';
-import { DateTimePicker } from '../../components/Common/DateTimePicker';
-import { ColorPicker } from '../../components/Common/ColorPicker';
-import { ControlledInputAddon } from '../../components/Common/ControlledInputAddon';
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { CommonButton } from '../Buttons/CommonButton';
+import { ControlledInputAddon } from '../Common/ControlledInputAddon';
+import { InputField } from '../Common/InputField';
+import { ToggleSwitch } from '../Common/ToggleSwitch';
+import { Wrapper } from '../Containers/Wrapper';
+import { DependentChillTimeField } from '../DependentFields/DependentChillTimeField';
+import { DependentDurationField } from '../DependentFields/DependentDurationField';
+import { DependentRepeatEveryField } from '../DependentFields/DependentRepeatEveryField';
+import { DependentStartTimeField } from '../DependentFields/DependentStartTimeField';
+import { ColorPicker } from '../Pickers/ColorPicker';
+import { DateTimePicker } from '../Pickers/DateTimePicker';
+import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 import {
   LongIntervalAmountType,
   LongIntervalPicker,
   LongIntervalSelectType,
-} from '../../components/Common/LongIntervalPicker';
+} from '../Pickers/LongIntervalPicker';
 
-type constTaskType = {
+type ConstTaskCreationFormProps = {
+  initialValues: constTaskType;
+  durationInputFields: NumberInputType[];
+  chillTimeInputFields: NumberInputType[];
+  repeatEverySelectField: LongIntervalSelectType;
+  repeatEveryAmountFields: LongIntervalAmountType[];
+  onSubmit: (values) => void;
+};
+
+export type constTaskType = {
   type: string;
   category: {
     color: string;
@@ -62,187 +71,14 @@ type constTaskType = {
   autoresolve: boolean;
 };
 
-const DependentDurationField = (props) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
-
-  useEffect(() => {
-    if (values.duration.hours === 0) {
-      setFieldValue(props.name, `${values.duration.minutes}min`);
-    } else {
-      setFieldValue(
-        props.name,
-        `${values.duration.hours}h ${values.duration.minutes}min`
-      );
-    }
-  }, [props.name, setFieldValue, values]);
-
-  return (
-    <InputField name="durationFacade" placeholder="Duration" label="Duration" />
-  );
-};
-
-const DependentChillTimeField = (props) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
-
-  useEffect(() => {
-    setFieldValue(props.name, `${values.chillTime.minutes}min`);
-  }, [props.name, setFieldValue, values]);
-
-  return (
-    <InputField
-      name="chillTimeFacade"
-      placeholder="Chill time"
-      label="Chill time"
-    />
-  );
-};
-
-const DependentStartTimeField = (props) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
-
-  useEffect(() => {
-    {
-      setFieldValue(
-        props.name,
-        `${values.startTime.date}  at  ${values.startTime.time}`
-      );
-    }
-  }, [props.name, setFieldValue, values]);
-
-  return (
-    <InputField
-      name="startTimeFacade"
-      placeholder="Start time"
-      label="Start time"
-    />
-  );
-};
-
-const DependentRepeatEveryField = (props) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
-
-  useEffect(() => {
-    {
-      setFieldValue(
-        props.name,
-        `${values.repeat.repeatEvery.amount} ${values.repeat.repeatEvery.type}`
-      );
-    }
-  }, [props.name, setFieldValue, values]);
-
-  return (
-    <InputField
-      name="repeatEveryFacade"
-      placeholder="Repeat every"
-      label="Repeat every"
-    />
-  );
-};
-
-const ConstTask: React.FC = () => {
-  const initialValues: constTaskType = {
-    type: 'const',
-    category: {
-      color: '#38A169',
-      name: '',
-    },
-    color: '',
-    taskName: '',
-    startTime: {
-      date: moment().format('yyyy-MM-DD'),
-      time: moment().format('HH:MM'),
-    },
-    startTimeFacade: '',
-    duration: {
-      hours: 0,
-      minutes: 15,
-    },
-    durationFacade: '',
-    chillTime: {
-      minutes: 5,
-    },
-    chillTimeFacade: '',
-    priority: '',
-    repeat: {
-      shouldRepeat: false,
-      startFrom: moment().format('yyyy-MM-DD'),
-      repeatEvery: {
-        type: 'Day',
-        amount: 1,
-      },
-    },
-    repeatEveryFacade: '',
-    notify: false,
-    autoresolve: false,
-  };
-
-  const onSubmit = async (values) => {
-    console.log(values);
-  };
-
-  const durationInputFields: NumberInputType[] = [
-    {
-      minValue: 0,
-      maxValue: 24,
-      defaultValue: 0,
-      step: 1,
-      label: 'Hours',
-      name: 'duration.hours',
-    },
-    {
-      minValue: 0,
-      maxValue: 60,
-      defaultValue: 15,
-      step: 5,
-      label: 'Minutes',
-      name: 'duration.minutes',
-    },
-  ];
-
-  const chillTimeInputFields: NumberInputType[] = [
-    {
-      minValue: 0,
-      maxValue: 60,
-      defaultValue: 5,
-      step: 5,
-      label: 'Minutes',
-      name: 'chillTime.minutes',
-    },
-  ];
-
-  const repeatEverySelectField: LongIntervalSelectType = {
-    name: 'repeat.repeatEvery.type',
-    label: 'Type',
-    options: ['Day', 'Week', 'Month'],
-  };
-
-  const repeatEveryAmountFields: LongIntervalAmountType[] = [
-    {
-      minValue: 1,
-      maxValue: 28,
-      defaultValue: 1,
-      step: 1,
-      label: 'Day',
-      name: 'repeat.repeatEvery.amount',
-    },
-    {
-      minValue: 1,
-      maxValue: 4,
-      defaultValue: 1,
-      step: 1,
-      label: 'Week',
-      name: 'repeat.repeatEvery.amount',
-    },
-    {
-      minValue: 1,
-      maxValue: 12,
-      defaultValue: 1,
-      step: 1,
-      label: 'Month',
-      name: 'repeat.repeatEvery.amount',
-    },
-  ];
-
+export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
+  initialValues,
+  durationInputFields,
+  chillTimeInputFields,
+  repeatEverySelectField,
+  repeatEveryAmountFields,
+  onSubmit,
+}) => {
   return (
     <Wrapper>
       <Heading textAlign={'center'} color="secondary" mb={4}>
@@ -382,5 +218,3 @@ const ConstTask: React.FC = () => {
     </Wrapper>
   );
 };
-
-export default ConstTask;

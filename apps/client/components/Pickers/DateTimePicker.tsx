@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Box,
   Button,
+  FormControl,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,47 +13,26 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { CustomNumberInput } from './CustomNumberInput';
+import { CustomDateTimeInput } from '../Common/CustomDateTimeInput';
 
-export type NumberInputType = {
+type DateTimePickerProps = {
+  modalTitle: string;
   label: string;
   name: string;
-  minValue: number;
-  maxValue: number;
-  defaultValue: number;
-  step: number;
-};
-
-type IntervalPickerProps = {
-  modalTitle: string;
   children: React.ReactNode;
-  handleChange: (fieldName: string, value: number) => void;
-  inputFields: NumberInputType[];
+  handleChange: (fieldName: string, value: string) => void;
 };
 
-export const IntervalPicker: React.FC<IntervalPickerProps> = ({
+export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   modalTitle,
+  label,
+  name,
   children,
   handleChange,
-  inputFields,
   ...props
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-
-  const renderInputFields = (inputFields: NumberInputType[]): JSX.Element[] =>
-    inputFields.map((field) => (
-      <CustomNumberInput
-        key={field.name}
-        minValue={field.minValue}
-        maxValue={field.maxValue}
-        defaultValue={field.defaultValue}
-        step={field.step}
-        label={field.label}
-        name={field.name}
-        handleChange={handleChange}
-      />
-    ));
 
   return (
     <>
@@ -68,8 +48,27 @@ export const IntervalPicker: React.FC<IntervalPickerProps> = ({
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="center">{renderInputFields(inputFields)}</VStack>
+            <VStack justify="center">
+              <FormControl>
+                <VStack>
+                  <CustomDateTimeInput
+                    type="date"
+                    label={`${label}.date`}
+                    name={`${name}.date`}
+                    handleChange={handleChange}
+                  />
+
+                  <CustomDateTimeInput
+                    type="time"
+                    label={`${label}.time`}
+                    name={`${name}.time`}
+                    handleChange={handleChange}
+                  />
+                </VStack>
+              </FormControl>
+            </VStack>
           </ModalBody>
+
           <ModalFooter>
             <Button onClick={onClose}>Save</Button>
           </ModalFooter>
