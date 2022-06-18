@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -21,6 +15,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** Interval from postgresInterval */
+  Interval: any;
 };
 
 export type AuthEmailLoginInput = {
@@ -46,9 +42,61 @@ export type AuthResponse = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
-export type CreateTaskInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int'];
+export type Category = {
+  __typename?: 'Category';
+  color: Color;
+  id: Scalars['Float'];
+  name: Scalars['String'];
+};
+
+export type ChunkInfo = {
+  __typename?: 'ChunkInfo';
+  id: Scalars['Float'];
+  maxChunkDuration: Scalars['Interval'];
+  minChunkDuration: Scalars['Interval'];
+  minTimeBetweenChunks: Scalars['Interval'];
+};
+
+export type ChunkInfoInput = {
+  maxChunkDuration: Scalars['String'];
+  minChunkDuration: Scalars['String'];
+  minTimeBetweenChunks: Scalars['String'];
+};
+
+export type Color = {
+  __typename?: 'Color';
+  hexCode: Scalars['String'];
+  id: Scalars['Float'];
+};
+
+export type CreateCategoryInput = {
+  colorId: Scalars['Float'];
+  name: Scalars['String'];
+};
+
+export type CreateConstTaskInput = {
+  categoryId: Scalars['Float'];
+  chillTime: Scalars['String'];
+  duration: Scalars['String'];
+  name: Scalars['String'];
+  priorityId?: InputMaybe<Scalars['Float']>;
+  repeat: RepeatInput;
+  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  start: Scalars['DateTime'];
+  timeBeforeNotification?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateFloatTaskInput = {
+  categoryId: Scalars['Float'];
+  chillTime: Scalars['String'];
+  chunkInfo: ChunkInfoInput;
+  estimation: Scalars['String'];
+  name: Scalars['String'];
+  priorityId?: InputMaybe<Scalars['Float']>;
+  repeat: RepeatInput;
+  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  start: Scalars['DateTime'];
+  timeBeforeNotification?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateUserInput = {
@@ -56,84 +104,198 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
+export type FilterOptions = {
+  isDone?: InputMaybe<Scalars['Boolean']>;
+  isFloat?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GetTasksInput = {
+  filterOptions: FilterOptions;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  createTask: Task;
+  addConstTask: Task;
+  addFloatTask: Task;
+  createCategory: Category;
   createUser: User;
   login: AuthResponse;
   logout: Scalars['Boolean'];
   register: AuthResponse;
+  removeCategory: Category;
   removeTask: Task;
   removeUser: User;
+  updateCategory: Category;
   updateTask: Task;
   updateUser: User;
 };
 
-export type MutationCreateTaskArgs = {
-  createTaskInput: CreateTaskInput;
+
+export type MutationAddConstTaskArgs = {
+  CreateConstTaskInput: CreateConstTaskInput;
 };
+
+
+export type MutationAddFloatTaskArgs = {
+  createFloatTaskInput: CreateFloatTaskInput;
+};
+
+
+export type MutationCreateCategoryArgs = {
+  createCategoryInput: CreateCategoryInput;
+};
+
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
 
+
 export type MutationLoginArgs = {
   loginDto: AuthEmailLoginInput;
 };
+
 
 export type MutationRegisterArgs = {
   registerDto: AuthEmailRegisterInput;
 };
 
+
+export type MutationRemoveCategoryArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationRemoveTaskArgs = {
   id: Scalars['Int'];
 };
+
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationUpdateCategoryArgs = {
+  updateCategoryInput: UpdateCategoryInput;
+};
+
+
 export type MutationUpdateTaskArgs = {
   updateTaskInput: UpdateTaskInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
 };
 
+export type Notification = {
+  __typename?: 'Notification';
+  timeBefore: Scalars['Interval'];
+};
+
+export type Priority = {
+  __typename?: 'Priority';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  findCategoryByPrefix: Array<Category>;
+  findOne: Task;
+  getTasks: Array<Task>;
   me: User;
-  task: Task;
-  tasks: Array<Task>;
   user: User;
   users: Array<User>;
 };
 
-export type QueryTaskArgs = {
+
+export type QueryFindCategoryByPrefixArgs = {
+  prefix: Scalars['String'];
+};
+
+
+export type QueryFindOneArgs = {
   id: Scalars['Int'];
 };
+
+
+export type QueryGetTasksArgs = {
+  getTasksInput: GetTasksInput;
+};
+
 
 export type QueryUserArgs = {
   id: Scalars['Int'];
 };
 
+export type Repeat = {
+  __typename?: 'Repeat';
+  repeatEvery: Scalars['Float'];
+  repeatType: Scalars['String'];
+  startFrom: Scalars['DateTime'];
+};
+
+export type RepeatInput = {
+  repeatEvery: Scalars['Float'];
+  repeatType?: InputMaybe<RepeatType>;
+  startFrom: Scalars['DateTime'];
+};
+
+/** Supported repeat types */
+export enum RepeatType {
+  Days = 'DAYS',
+  Months = 'MONTHS',
+  Weeks = 'WEEKS',
+  Years = 'YEARS'
+}
+
 export type Task = {
   __typename?: 'Task';
-  chillTime: Scalars['DateTime'];
-  createdAt: Scalars['DateTime'];
-  deletedAt: Scalars['DateTime'];
+  category: Category;
+  chillTime: Scalars['Interval'];
+  chunkInfo?: Maybe<ChunkInfo>;
+  deadline?: Maybe<Scalars['String']>;
+  estimation?: Maybe<Scalars['Interval']>;
   id: Scalars['Float'];
+  isDone: Scalars['Boolean'];
   isFloat: Scalars['Boolean'];
   name: Scalars['String'];
+  notifications?: Maybe<Notification>;
+  priority: Priority;
   shouldAutoResolve: Scalars['Boolean'];
-  updatedAt: Scalars['DateTime'];
+  taskBreakdowns?: Maybe<Array<TaskBreakdown>>;
+};
+
+export type TaskBreakdown = {
+  __typename?: 'TaskBreakdown';
+  duration: Scalars['Interval'];
+  isDone: Scalars['Boolean'];
+  repeat: Repeat;
+  start: Scalars['DateTime'];
+};
+
+export type UpdateCategoryInput = {
+  colorId: Scalars['Float'];
+  id: Scalars['Float'];
+  name: Scalars['String'];
 };
 
 export type UpdateTaskInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars['Int']>;
+  categoryId?: InputMaybe<Scalars['Float']>;
+  chillTime?: InputMaybe<Scalars['String']>;
+  duration?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
+  priorityId?: InputMaybe<Scalars['Float']>;
+  repeat?: InputMaybe<RepeatInput>;
+  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  start?: InputMaybe<Scalars['DateTime']>;
+  timeBeforeNotification?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
@@ -154,86 +316,125 @@ export type User = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
+export type AddConstTaskMutationVariables = Exact<{
+  createConstTaskInput: CreateConstTaskInput;
+}>;
+
+
+export type AddConstTaskMutation = { __typename?: 'Mutation', addConstTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+
 export type LoginMutationVariables = Exact<{
   loginDto: AuthEmailLoginInput;
 }>;
 
-export type LoginMutation = {
-  __typename?: 'Mutation';
-  login: {
-    __typename?: 'AuthResponse';
-    birthDate?: any | null;
-    createdAt: any;
-    deletedAt?: any | null;
-    email: string;
-    gender?: string | null;
-    id: number;
-    name?: string | null;
-    updatedAt?: any | null;
-    token?: string | null;
-  };
-};
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', birthDate?: any | null, createdAt: any, deletedAt?: any | null, email: string, gender?: string | null, id: number, name?: string | null, updatedAt?: any | null, token?: string | null } };
 
-export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type RegisterMutationVariables = Exact<{
   registerDto: AuthEmailRegisterInput;
 }>;
 
-export type RegisterMutation = {
-  __typename?: 'Mutation';
-  register: {
-    __typename?: 'AuthResponse';
-    birthDate?: any | null;
-    createdAt: any;
-    deletedAt?: any | null;
-    email: string;
-    gender?: string | null;
-    id: number;
-    name?: string | null;
-    updatedAt?: any | null;
-    token?: string | null;
-  };
-};
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>;
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AuthResponse', birthDate?: any | null, createdAt: any, deletedAt?: any | null, email: string, gender?: string | null, id: number, name?: string | null, updatedAt?: any | null, token?: string | null } };
 
-export type MeQuery = {
-  __typename?: 'Query';
-  me: {
-    __typename?: 'User';
-    birthDate?: any | null;
-    createdAt: any;
-    deletedAt?: any | null;
-    email: string;
-    gender?: string | null;
-    id: number;
-    name?: string | null;
-    updatedAt?: any | null;
-  };
-};
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export const LoginDocument = gql`
-  mutation Login($loginDto: AuthEmailLoginInput!) {
-    login(loginDto: $loginDto) {
-      birthDate
-      createdAt
-      deletedAt
-      email
-      gender
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, createdAt: any, deletedAt?: any | null, email: string, gender?: string | null, id: number, name?: string | null, updatedAt?: any | null } };
+
+
+export const AddConstTaskDocument = gql`
+    mutation AddConstTask($createConstTaskInput: CreateConstTaskInput!) {
+  addConstTask(CreateConstTaskInput: $createConstTaskInput) {
+    category {
+      color {
+        hexCode
+        id
+      }
       id
       name
-      updatedAt
-      token
+    }
+    chillTime
+    chunkInfo {
+      id
+      maxChunkDuration
+      minChunkDuration
+      minTimeBetweenChunks
+    }
+    deadline
+    estimation
+    id
+    isDone
+    isFloat
+    name
+    notifications {
+      timeBefore
+    }
+    priority {
+      id
+      name
+    }
+    shouldAutoResolve
+    taskBreakdowns {
+      duration
+      isDone
+      repeat {
+        repeatEvery
+        repeatType
+        startFrom
+      }
+      start
     }
   }
-`;
-export type LoginMutationFn = Apollo.MutationFunction<
-  LoginMutation,
-  LoginMutationVariables
->;
+}
+    `;
+export type AddConstTaskMutationFn = Apollo.MutationFunction<AddConstTaskMutation, AddConstTaskMutationVariables>;
+
+/**
+ * __useAddConstTaskMutation__
+ *
+ * To run a mutation, you first call `useAddConstTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddConstTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addConstTaskMutation, { data, loading, error }] = useAddConstTaskMutation({
+ *   variables: {
+ *      createConstTaskInput: // value for 'createConstTaskInput'
+ *   },
+ * });
+ */
+export function useAddConstTaskMutation(baseOptions?: Apollo.MutationHookOptions<AddConstTaskMutation, AddConstTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddConstTaskMutation, AddConstTaskMutationVariables>(AddConstTaskDocument, options);
+      }
+export type AddConstTaskMutationHookResult = ReturnType<typeof useAddConstTaskMutation>;
+export type AddConstTaskMutationResult = Apollo.MutationResult<AddConstTaskMutation>;
+export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<AddConstTaskMutation, AddConstTaskMutationVariables>;
+export const LoginDocument = gql`
+    mutation Login($loginDto: AuthEmailLoginInput!) {
+  login(loginDto: $loginDto) {
+    birthDate
+    createdAt
+    deletedAt
+    email
+    gender
+    id
+    name
+    updatedAt
+    token
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -252,33 +453,19 @@ export type LoginMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LoginMutation,
-    LoginMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    options
-  );
-}
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<
-  LoginMutation,
-  LoginMutationVariables
->;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
-  mutation Logout {
-    logout
-  }
-`;
-export type LogoutMutationFn = Apollo.MutationFunction<
-  LogoutMutation,
-  LogoutMutationVariables
->;
+    mutation Logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -296,43 +483,29 @@ export type LogoutMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useLogoutMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LogoutMutation,
-    LogoutMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
-    LogoutDocument,
-    options
-  );
-}
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
-  mutation Register($registerDto: AuthEmailRegisterInput!) {
-    register(registerDto: $registerDto) {
-      birthDate
-      createdAt
-      deletedAt
-      email
-      gender
-      id
-      name
-      updatedAt
-      token
-    }
+    mutation Register($registerDto: AuthEmailRegisterInput!) {
+  register(registerDto: $registerDto) {
+    birthDate
+    createdAt
+    deletedAt
+    email
+    gender
+    id
+    name
+    updatedAt
+    token
   }
-`;
-export type RegisterMutationFn = Apollo.MutationFunction<
-  RegisterMutation,
-  RegisterMutationVariables
->;
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -351,38 +524,27 @@ export type RegisterMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRegisterMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RegisterMutation,
-    RegisterMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-    RegisterDocument,
-    options
-  );
-}
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-  RegisterMutation,
-  RegisterMutationVariables
->;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const MeDocument = gql`
-  query Me {
-    me {
-      birthDate
-      createdAt
-      deletedAt
-      email
-      gender
-      id
-      name
-      updatedAt
-    }
+    query Me {
+  me {
+    birthDate
+    createdAt
+    deletedAt
+    email
+    gender
+    id
+    name
+    updatedAt
   }
-`;
+}
+    `;
 
 /**
  * __useMeQuery__
@@ -399,28 +561,25 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(
-  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-}
-export function useMeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-}
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        }
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 
-export interface PossibleTypesResultData {
-  possibleTypes: {
-    [key: string]: string[];
-  };
-}
-const result: PossibleTypesResultData = {
-  possibleTypes: {},
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {}
 };
-export default result;
+      export default result;
+    

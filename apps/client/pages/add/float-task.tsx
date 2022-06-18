@@ -2,24 +2,24 @@ import React from 'react';
 import {
   chillTimeInputFields,
   durationInputFields,
-  constTaskInitialValues,
+  floatTaskInitialValues,
   repeatEveryAmountFields,
   repeatEverySelectField,
 } from './initialValues';
-import { ConstTaskCreationForm } from '../../components/Tasks/ConstTaskForm';
-import { addConstTask } from '../../components/Tasks/TaskService';
+import { addFloatTask } from '../../components/Tasks/TaskService';
+import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
 
-const ConstTask: React.FC = () => {
+const FloatTask: React.FC = () => {
   return (
-    <ConstTaskCreationForm
-      initialValues={constTaskInitialValues}
+    <FloatTaskCreationForm
+      initialValues={floatTaskInitialValues}
       durationInputFields={durationInputFields}
       chillTimeInputFields={chillTimeInputFields}
       repeatEverySelectField={repeatEverySelectField}
       repeatEveryAmountFields={repeatEveryAmountFields}
-      onSubmit={addConstTask}
+      onSubmit={addFloatTask}
     />
   );
 };
 
-export default ConstTask;
+export default FloatTask;

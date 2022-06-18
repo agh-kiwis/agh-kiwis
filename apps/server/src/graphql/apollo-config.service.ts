@@ -31,6 +31,7 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
       cors: {
         // TODO Replace it with env variable
         origin: 'http://localhost:4200',
+        // origin: '*',
         credentials: true,
       },
     };

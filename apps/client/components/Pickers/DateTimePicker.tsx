@@ -53,14 +53,14 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 <VStack>
                   <CustomDateTimeInput
                     type="date"
-                    label={`${label}.date`}
+                    label="Date"
                     name={`${name}.date`}
                     handleChange={handleChange}
                   />
 
                   <CustomDateTimeInput
                     type="time"
-                    label={`${label}.time`}
+                    label="Time"
                     name={`${name}.time`}
                     handleChange={handleChange}
                   />

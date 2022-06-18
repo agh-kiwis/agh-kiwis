@@ -2,11 +2,13 @@ import moment from 'moment';
 import {
   LongIntervalAmountType,
   LongIntervalSelectType,
-} from 'apps/client/components/Pickers/LongIntervalPicker';
-import { NumberInputType } from 'apps/client/components/Pickers/IntervalPicker';
-import { constTaskType } from 'apps/client/components/Tasks/ConstTaskForm';
+} from '../../components/Pickers/LongIntervalPicker';
+import { NumberInputType } from '../../components/Pickers/IntervalPicker';
+import { constTaskType } from '../../components/Tasks/ConstTaskForm';
+import { floatTaskType } from '../../components/Tasks/FloatTaskForm';
+import { roundToMinutes } from '../../components/Utils/MomentUtils';
 
-export const initialValues: constTaskType = {
+export const constTaskInitialValues: constTaskType = {
   type: 'const',
   category: {
     color: '#38A169',
@@ -16,7 +18,7 @@ export const initialValues: constTaskType = {
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
-    time: moment().format('HH:MM'),
+    time: roundToMinutes(moment(), 10),
   },
   startTimeFacade: '',
   duration: {
@@ -32,6 +34,42 @@ export const initialValues: constTaskType = {
   repeat: {
     shouldRepeat: false,
     startFrom: moment().format('yyyy-MM-DD'),
+    repeatEvery: {
+      type: 'Day',
+      amount: 1,
+    },
+  },
+  repeatEveryFacade: '',
+  notify: false,
+  autoresolve: false,
+};
+
+export const floatTaskInitialValues: floatTaskType = {
+  type: 'const',
+  category: {
+    color: '#38A169',
+    name: '',
+  },
+  color: '',
+  taskName: '',
+  deadline: {
+    date: moment().add(7, 'd').format('yyyy-MM-DD'),
+    time: roundToMinutes(moment(), 10),
+  },
+  deadlineFacade: '',
+  timeEstimation: {
+    hours: 0,
+    minutes: 15,
+  },
+  timeEstimationFacade: '',
+  chillTime: {
+    minutes: 5,
+  },
+  chillTimeFacade: '',
+  priority: '',
+  chunking: {
+    shouldChunk: false,
+    numberOfChunks: 1,
     repeatEvery: {
       type: 'Day',
       amount: 1,
