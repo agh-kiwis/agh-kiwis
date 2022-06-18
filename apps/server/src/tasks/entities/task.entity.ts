@@ -31,7 +31,7 @@ export class Task extends GeneralEntity {
   @Column()
   name: string;
 
-  @Field()
+  @Field(() => Category)
   @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 

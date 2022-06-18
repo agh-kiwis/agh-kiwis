@@ -10,7 +10,6 @@ export class RepeatInput {
   @Field()
   repeatEvery: number;
 
-  // TODO It's better to put defaults closer to db
   @Field(() => RepeatType, { defaultValue: RepeatType.DAYS })
   repeatType: RepeatType;
 }

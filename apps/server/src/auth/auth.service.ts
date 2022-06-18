@@ -12,7 +12,6 @@ import { AuthProvidersEnum } from './auth-providers.enum';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 import { AuthResponse } from './dto/auth.response';
-import * as moment from 'moment';
 
 @Injectable()
 export class AuthService {
@@ -99,12 +98,6 @@ export class AuthService {
   }
 
   me(contextRequest: ContextRequest): User {
-    const string = 'P0Y0M0DT0H0M2S';
-
-    const parsedString = moment.duration(string);
-
-    console.log(parsedString);
-
     return contextRequest.user;
   }
 }

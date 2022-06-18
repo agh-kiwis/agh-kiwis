@@ -15,10 +15,11 @@ import { Task } from './task.entity';
 import { IPostgresInterval } from 'postgres-interval';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Interval } from '../../utils/interval.scalar';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 
 @Entity()
 @ObjectType()
-export class TaskBreakdown extends BaseEntity {
+export class TaskBreakdown extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -41,13 +42,4 @@ export class TaskBreakdown extends BaseEntity {
   @OneToOne(() => Repeat)
   @JoinColumn()
   repeat: Repeat;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

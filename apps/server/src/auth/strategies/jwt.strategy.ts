@@ -15,11 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService
   ) {
     super({
-      // This function should accept the request as a first argument, and return
-      // token if it is present or null
-
       // This is vulnerable to XSRF attacks, instead of setting a cookie we need to set a header, and get JWT Token from header itself
-      // jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
       jwtFromRequest: extractJwtFromCookie(
         configService.get('auth.cookie_name')
       ),
