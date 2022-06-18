@@ -1,10 +1,11 @@
 import React from 'react';
 import {
   chillTimeInputFields,
-  durationInputFields,
+  estimationInputFields,
   floatTaskInitialValues,
-  repeatEveryAmountFields,
-  repeatEverySelectField,
+  maxChunkTimeInputFields,
+  minChunkTimeInputFields,
+  minTimeBetweenChunksInputFields,
 } from './initialValues';
 import { addFloatTask } from '../../components/Tasks/TaskService';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
@@ -13,10 +14,11 @@ const FloatTask: React.FC = () => {
   return (
     <FloatTaskCreationForm
       initialValues={floatTaskInitialValues}
-      durationInputFields={durationInputFields}
+      estimationInputFields={estimationInputFields}
       chillTimeInputFields={chillTimeInputFields}
-      repeatEverySelectField={repeatEverySelectField}
-      repeatEveryAmountFields={repeatEveryAmountFields}
+      minChunkTimeInputFields={minChunkTimeInputFields}
+      maxChunkTimeInputFields={maxChunkTimeInputFields}
+      minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
       onSubmit={addFloatTask}
     />
   );

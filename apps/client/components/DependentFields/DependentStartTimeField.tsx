@@ -21,11 +21,5 @@ export const DependentStartTimeField: React.FC<
     }
   }, [name, setFieldValue, values.startTime.date, values.startTime.time]);
 
-  return (
-    <InputField
-      name="startTimeFacade"
-      placeholder="Start time"
-      label="Start time"
-    />
-  );
+  return <InputField name={name} label="Start time" />;
 };

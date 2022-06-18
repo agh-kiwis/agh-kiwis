@@ -26,11 +26,5 @@ export const DependentRepeatEveryField: React.FC<
     values.repeat.repeatEvery.type,
   ]);
 
-  return (
-    <InputField
-      name="repeatEveryFacade"
-      placeholder="Repeat every"
-      label="Repeat every"
-    />
-  );
+  return <InputField name={name} label="Repeat every" />;
 };

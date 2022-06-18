@@ -15,6 +15,8 @@ export const DependentDurationField: React.FC<DependentDurationFieldProps> = ({
   useEffect(() => {
     if (values.duration.hours === 0) {
       setFieldValue(name, `${values.duration.minutes}min`);
+    } else if (values.duration.minutes === 0) {
+      setFieldValue(name, `${values.duration.hours}h`);
     } else {
       setFieldValue(
         name,
@@ -23,7 +25,5 @@ export const DependentDurationField: React.FC<DependentDurationFieldProps> = ({
     }
   }, [name, setFieldValue, values.duration.hours, values.duration.minutes]);
 
-  return (
-    <InputField name="durationFacade" placeholder="Duration" label="Duration" />
-  );
+  return <InputField name={name} label="Duration" />;
 };

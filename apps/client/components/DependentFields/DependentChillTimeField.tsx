@@ -16,11 +16,5 @@ export const DependentChillTimeField: React.FC<
     setFieldValue(name, `${values.chillTime.minutes}min`);
   }, [name, setFieldValue, values.chillTime.minutes]);
 
-  return (
-    <InputField
-      name="chillTimeFacade"
-      placeholder="Chill time"
-      label="Chill time"
-    />
-  );
+  return <InputField name={name} label="Chill time" />;
 };

@@ -59,13 +59,22 @@ export type floatTaskType = {
   priority: string;
   chunking: {
     shouldChunk: boolean;
-    numberOfChunks: number;
-    repeatEvery: {
-      type: string;
-      amount: number;
+    minChunkTime: {
+      minutes: number;
+    };
+    maxChunkTime: {
+      hours: number;
+      minutes: number;
+    };
+    maxChunksNumber: number;
+    minTimeBetweenChunks: {
+      hours: number;
+      minutes: number;
     };
   };
-  repeatEveryFacade: string;
+  minChunkTimeFacade: string;
+  maxChunkTimeFacade: string;
+  minTimeBetweenChunksFacade: string;
   notify: boolean;
   autoresolve: boolean;
 };

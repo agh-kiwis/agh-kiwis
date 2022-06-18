@@ -19,10 +19,9 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 export const InputField: React.FC<InputFieldProps> = ({
   isTextArea,
   label,
-  size: _,
   ...props
 }) => {
-  let InputOrTextArea = Input as any;
+  let InputOrTextArea = Input as React.FC;
   if (isTextArea) {
     InputOrTextArea = Textarea;
   }
@@ -31,7 +30,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   return (
     <FormControl isInvalid={!!error}>
       {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
-      <InputOrTextArea {...field} {...props} id={field.name} />
+      <InputOrTextArea {...field} {...props} />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
