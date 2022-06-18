@@ -2,6 +2,7 @@ import { NavBar } from '../components/Login/NavBar';
 import { Wrapper } from '../components/Containers/Wrapper';
 import {TodoList} from './TodoList';
 import { Task } from '../components/TodoList/Task';
+import Login from './login';
 
 export function Index() {
   /*
@@ -12,6 +13,7 @@ export function Index() {
   return (
     <>
       <Wrapper>
+        <Login />
         <TodoList />
       </Wrapper>
     </>

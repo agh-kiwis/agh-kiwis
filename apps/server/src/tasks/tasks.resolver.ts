@@ -2,7 +2,7 @@ import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ContextRequest } from '../types/context.type';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
-import { GetTasksInput } from './dto/getTask.input';
+import { GetTasksInput } from './dto/getTasks.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';

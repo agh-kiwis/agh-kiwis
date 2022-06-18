@@ -12,7 +12,6 @@ export class Notification extends GeneralEntity {
   id: number;
 
   @Field(() => Interval)
-  // TODO Add some default
   @Column({ type: 'interval' })
   timeBefore: IPostgresInterval;
 

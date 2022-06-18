@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
+import { IPostgresInterval } from 'postgres-interval';
 import { Category } from '../categories/entities/category.entity';
+import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
+import { CategoryInput } from './dto/category.input';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
-import { GetTasksInput } from './dto/getTask.input';
+import { GetTasksInput } from './dto/getTasks.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
@@ -14,52 +17,38 @@ import { Task } from './entities/task.entity';
 import { TaskBreakdown } from './entities/taskBreakdown.entity';
 
 @Injectable()
-// TODO Move this to helpers
 export class TasksService {
-  async createConst(user: User, CreateConstTaskInput: CreateConstTaskInput) {
-    const category = await Category.findOne(CreateConstTaskInput.categoryId);
-    if (!category) {
-      throw new UserInputError('Category not found');
-    }
-    const repeat = Repeat.create(CreateConstTaskInput.repeat);
-    await Repeat.save(repeat);
+  async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
+    const category = await getCategory(user, createConstTaskInput.category);
+
+    const repeat = await Repeat.create(createConstTaskInput.repeat).save();
 
     // Find if this notification exists
-    let notification = await Notification.findOne({
-      where: {
-        timeBefore: CreateConstTaskInput.timeBeforeNotification,
-      },
-    });
 
-    if (!notification && CreateConstTaskInput.timeBeforeNotification) {
-      notification = await Notification.create({
-        timeBefore: CreateConstTaskInput.timeBeforeNotification,
-      }).save();
-    }
+    const notification = await getNotification(
+      createConstTaskInput.timeBeforeNotification
+    );
 
-    const priority = await Priority.findOne(CreateConstTaskInput.priorityId);
+    const priority = await getPriority(createConstTaskInput.priorityId);
 
-    const task = Task.create({
+    const task = await Task.create({
       user: user,
       category: category,
       isFloat: false,
-      name: CreateConstTaskInput.name,
-      chillTime: CreateConstTaskInput.chillTime,
+      name: createConstTaskInput.name,
+      chillTime: createConstTaskInput.chillTime,
       notifications: notification,
       priority: priority,
-      shouldAutoResolve: CreateConstTaskInput.shouldAutoResolve,
-    });
-    await Task.save(task);
+      shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
+    }).save();
 
     // Create task breakdown and put repeat there
-    const taskBreakdown = TaskBreakdown.create({
+    await TaskBreakdown.create({
       task: task,
       repeat: repeat,
-      duration: CreateConstTaskInput.duration,
-      start: CreateConstTaskInput.start,
-    });
-
-    await TaskBreakdown.save(taskBreakdown);
+      duration: createConstTaskInput.duration,
+      start: createConstTaskInput.start,
+    }).save();
 
     return task;
   }
@@ -68,33 +57,20 @@ export class TasksService {
     user: User,
     createFloatTaskInput: CreateFloatTaskInput
   ) {
-    const category = await Category.findOne(createFloatTaskInput.categoryId);
-    if (!category) {
-      throw new UserInputError('Category not found');
-    }
-    const repeat = Repeat.create(createFloatTaskInput.repeat);
-    await Repeat.save(repeat);
+    const category = await getCategory(user, createFloatTaskInput.category);
 
-    let notification = await Notification.findOne({
-      where: {
-        timeBefore: createFloatTaskInput.timeBeforeNotification,
-      },
-    });
+    const notification = await getNotification(
+      createFloatTaskInput.timeBeforeNotification
+    );
 
-    if (!notification && createFloatTaskInput.timeBeforeNotification) {
-      notification = await Notification.create({
-        timeBefore: createFloatTaskInput.timeBeforeNotification,
-      }).save();
-    }
-
-    const priority = await Priority.findOne(createFloatTaskInput.priorityId);
+    const priority = await getPriority(createFloatTaskInput.priorityId);
 
     // Create chunk info
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
     }).save();
 
-    const task = Task.create({
+    const task = await Task.create({
       user: user,
       category: category,
       isFloat: true,
@@ -104,14 +80,12 @@ export class TasksService {
       priority: priority,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
-    });
-    await Task.save(task);
+    }).save();
 
     return task;
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
-    // Get paginated results from Tasks
     return await Task.find({
       where: {
         user: user,
@@ -137,3 +111,55 @@ export class TasksService {
     return `This action removes a #${id} task`;
   }
 }
+
+// TODO Move helpers to another place
+
+export const getCategory = async (user: User, categoryInput: CategoryInput) => {
+  let category: Category;
+  if (categoryInput.id) {
+    category = await Category.findOne(categoryInput.id);
+    if (!category) {
+      throw new UserInputError('Category not found');
+    }
+  } else if (categoryInput.newCategory) {
+    const newCategory = categoryInput.newCategory;
+    const color = await Color.findOne({
+      where: { id: newCategory.colorId },
+    });
+
+    category = await Category.create({
+      color: color,
+      user: user,
+      name: newCategory.name,
+    }).save();
+  } else {
+    throw new UserInputError('Specify category id or give newCategory input');
+  }
+  return category;
+};
+
+export const getNotification = async (
+  timeBeforeNotification: IPostgresInterval
+) => {
+  let notification = await Notification.findOne({
+    where: {
+      timeBefore: timeBeforeNotification,
+    },
+  });
+
+  if (!notification && timeBeforeNotification) {
+    notification = await Notification.create({
+      timeBefore: timeBeforeNotification,
+    }).save();
+  }
+  return notification;
+};
+
+export const getPriority = async (priorityId: number) => {
+  const priority = await Priority.findOne(priorityId);
+
+  if (!priority) {
+    throw new UserInputError('Priority not found');
+  }
+  return priority;
+};

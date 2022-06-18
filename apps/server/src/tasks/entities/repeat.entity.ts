@@ -1,13 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 
 export enum RepeatType {
   DAYS = 'Days',
@@ -18,8 +11,8 @@ export enum RepeatType {
 
 @Entity()
 @ObjectType()
-// Applicable only for const tasks (Add some validation)
-export class Repeat extends BaseEntity {
+// Applicable only for const tasks
+export class Repeat extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,13 +27,4 @@ export class Repeat extends BaseEntity {
   @Field()
   @Column({ type: 'enum', enum: RepeatType, default: RepeatType.DAYS })
   repeatType: RepeatType;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

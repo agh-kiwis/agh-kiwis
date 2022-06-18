@@ -24,8 +24,8 @@ export const TodoList = () => {
   });
 
   useEffect(() => {
-    console.log(data);
-    console.log(loading);
+    console.log(data, "data");
+    console.log(loading,  "loading");
     console.log(error);
   }, [data, loading, error]);
 

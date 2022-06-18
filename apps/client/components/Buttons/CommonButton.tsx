@@ -6,6 +6,7 @@ type ButtonProps = {
   variant: string;
   type?: 'button' | 'submit' | 'reset';
   isLoading?: boolean;
+  onClick?: () => void;
 };
 
 export const CommonButton: React.FC<ButtonProps> = ({
@@ -13,9 +14,16 @@ export const CommonButton: React.FC<ButtonProps> = ({
   variant,
   type,
   isLoading,
+  onClick,
 }) => {
   return (
-    <Button variant={variant} type={type} isLoading={isLoading} w={'100%'}>
+    <Button
+      variant={variant}
+      type={type}
+      isLoading={isLoading}
+      w={'100%'}
+      onClick={onClick}
+    >
       {buttonText}
     </Button>
   );
