@@ -7,4 +7,4 @@
 - Client sends to server Interval scalar which is string under the hood but it is converted to `IPostgresInterval` in the server immediately.
   To operate on dates on the server side, we need to convert `IPostgresInterval` to string and then parse it with `${library}`.
 
-##### `${library}` = [date-fns](https://date-fns.org/v2.28.0/docs/)
+##### `${library}` = moment

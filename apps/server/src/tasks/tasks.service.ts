@@ -23,8 +23,6 @@ export class TasksService {
 
     const repeat = await Repeat.create(createConstTaskInput.repeat).save();
 
-    // Find if this notification exists
-
     const notification = await getNotification(
       createConstTaskInput.timeBeforeNotification
     );
@@ -42,7 +40,6 @@ export class TasksService {
       shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
     }).save();
 
-    // Create task breakdown and put repeat there
     await TaskBreakdown.create({
       task: task,
       repeat: repeat,
@@ -65,7 +62,6 @@ export class TasksService {
 
     const priority = await getPriority(createFloatTaskInput.priorityId);
 
-    // Create chunk info
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
     }).save();
