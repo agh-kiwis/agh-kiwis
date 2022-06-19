@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IPostgresInterval } from 'postgres-interval';
+import { Duration } from 'moment';
 import { Interval } from '../../utils/interval.scalar';
 import { ChunkInfoInput } from './chunkInfo.input';
 import { CreateTaskInput } from './createTask.input';
@@ -11,5 +11,11 @@ export class CreateFloatTaskInput extends CreateTaskInput {
   chunkInfo: ChunkInfoInput;
 
   @Field(() => Interval)
-  estimation: IPostgresInterval;
+  estimation: Duration;
+
+  @Field(() => String)
+  deadline: Date;
+
+  @Field()
+  start: Date;
 }

@@ -41,3 +41,9 @@ yarn nx serve
 ```bash
 nx run data-access:generate
 ```
+
+## To be able to use Postgres interval, you need to add this to psql console
+
+```
+SET intervalstyle = 'iso_8601';
+```

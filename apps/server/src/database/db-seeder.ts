@@ -1,16 +1,15 @@
+import moment = require('moment');
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
+import { Notification } from '../tasks/entities/notification.entity';
 import { Priority } from '../tasks/entities/priority.entity';
-import { Repeat } from '../tasks/entities/repeat.entity';
+import { Repeat, RepeatType } from '../tasks/entities/repeat.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
+import { TasksService } from '../tasks/tasks.service';
 import { User } from '../users/entities/user.entity';
 import { InitialSeend } from './initial-seed';
-import { Notification } from '../tasks/entities/notification.entity';
-
-import * as moment from 'moment';
-import * as parse from 'postgres-interval';
 
 export const seedDatabase = async () => {
   // TODO This is ugly and needs to be replaced with db deletion & creation
@@ -64,7 +63,7 @@ export const seedDatabase = async () => {
     name: 'Low',
   }).save();
 
-  await Priority.create({
+  const mediumPriority = await Priority.create({
     name: 'Low',
   }).save();
   await Priority.create({
@@ -72,25 +71,82 @@ export const seedDatabase = async () => {
   }).save();
 
   // Add some tasks
-  const ten_minutes = moment.duration('P3Y6M4DT12H30M5S');
-  console.log(ten_minutes);
+  const ten_minutes = moment.duration({ minutes: 10 });
+  const taskService = new TasksService();
 
-  // TODO This is not working yet
-  const postgresTime = parse('10:00:00');
-  console.log(postgresTime);
+  // Const tasks
 
-  const notifications = await Notification.create({
-    timeBefore: postgresTime,
-  }).save();
+  taskService.createConst(user, {
+    category: { id: eatingCategory.id },
+    name: 'Breakfast',
+    priorityId: mediumPriority.id,
+    shouldAutoResolve: true,
+    chillTime: ten_minutes,
+    repeat: {
+      startFrom: moment().startOf('day').add(1, 'day').toDate(),
+      repeatEvery: 1,
+      repeatType: RepeatType.DAYS,
+    },
+    timeBeforeNotification: ten_minutes,
+    start: moment().startOf('day').add(1, 'days').add(8, 'hours').toDate(),
+    duration: moment.duration({ minutes: 20 }),
+  });
 
-  await Task.create({
-    user: user,
-    category: sleepingCategory,
-    isFloat: false,
-    name: 'Sleep',
-    notifications: notifications,
-    priority: lowPriority,
-    shouldAutoResolve: false,
-    chillTime: postgresTime,
-  }).save();
+  taskService.createConst(user, {
+    category: { id: eatingCategory.id },
+    name: 'Supper',
+    priorityId: mediumPriority.id,
+    shouldAutoResolve: true,
+    chillTime: ten_minutes,
+    repeat: {
+      startFrom: moment().startOf('day').add(1, 'day').toDate(),
+      repeatEvery: 1,
+      repeatType: RepeatType.DAYS,
+    },
+    timeBeforeNotification: ten_minutes,
+    start: moment().startOf('day').add(1, 'days').add(14, 'hours').toDate(),
+    duration: moment.duration({ minutes: 40 }),
+  });
+
+  taskService.createConst(user, {
+    category: { id: eatingCategory.id },
+    name: 'Dinner',
+    priorityId: mediumPriority.id,
+    shouldAutoResolve: true,
+    chillTime: ten_minutes,
+    repeat: {
+      startFrom: moment().startOf('day').add(1, 'day').toDate(),
+      repeatEvery: 1,
+      repeatType: RepeatType.DAYS,
+    },
+    timeBeforeNotification: ten_minutes,
+    start: moment().startOf('day').add(18, 'hours').add(1, 'days').toDate(),
+    duration: moment.duration({ minutes: 40 }),
+  });
+
+  // Float tasks:
+
+  taskService.createFloatTask(user, {
+    category: { id: eatingCategory.id },
+    name: 'Get prepared for IO exam',
+    priorityId: mediumPriority.id,
+    shouldAutoResolve: true,
+    chillTime: ten_minutes,
+    repeat: {
+      startFrom: moment().startOf('day').add(1, 'day').toDate(),
+      repeatEvery: 1,
+      repeatType: RepeatType.DAYS,
+    },
+    timeBeforeNotification: ten_minutes,
+    // Can start now
+    start: moment().startOf('day').add(1, 'days').toDate(),
+
+    estimation: moment.duration({ hour: 10 }),
+    chunkInfo: {
+      maxChunkDuration: moment.duration({ minutes: 20 }),
+      minChunkDuration: moment.duration({ minutes: 10 }),
+      minTimeBetweenChunks: moment.duration({ minutes: 10 }),
+    },
+    deadline: moment().startOf('day').add(3, 'days').add(12, 'hours').toDate(),
+  });
 };

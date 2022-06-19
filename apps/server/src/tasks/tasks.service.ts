@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
-import { IPostgresInterval } from 'postgres-interval';
+import { Duration } from 'moment';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
+import { planTask } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
@@ -62,8 +63,11 @@ export class TasksService {
 
     const priority = await getPriority(createFloatTaskInput.priorityId);
 
+    console.log(createFloatTaskInput.start);
+
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
+      start: createFloatTaskInput.start,
     }).save();
 
     const task = await Task.create({
@@ -74,9 +78,12 @@ export class TasksService {
       chillTime: createFloatTaskInput.chillTime,
       notifications: notification,
       priority: priority,
+      deadline: createFloatTaskInput.deadline,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
     }).save();
+
+    planTask(task, chunkInfo);
 
     return task;
   }
@@ -134,9 +141,7 @@ export const getCategory = async (user: User, categoryInput: CategoryInput) => {
   return category;
 };
 
-export const getNotification = async (
-  timeBeforeNotification: IPostgresInterval
-) => {
+export const getNotification = async (timeBeforeNotification: Duration) => {
   let notification = await Notification.findOne({
     where: {
       timeBefore: timeBeforeNotification,
