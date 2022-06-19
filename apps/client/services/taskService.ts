@@ -3,26 +3,27 @@ import moment from 'moment';
 import { constTaskType } from '../types/TaskTypes';
 
 export const constTaskFormToAddTaskMutationMapper = (
-  categoryResponse,
   variables: constTaskType
 ): CreateConstTaskInput => {
   console.log(variables);
 
   return {
-    categoryId: categoryResponse.data.createCategory.id,
+    category: {
+      id: 1,
+    },
     chillTime: getIntervalISOString(variables.chillTime),
     duration: getIntervalISOString(variables.duration),
     name: variables.taskName,
+    // TODO replace not to be hardcoded
+    priorityId: 1,
     repeat: {
       repeatEvery: variables.repeat.repeatEvery.amount,
       startFrom: mapToDateTime(variables.startTime.date),
       repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
     },
     start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-    // TODO replace not to be hardcoded
-    priorityId: 1,
     shouldAutoResolve: false,
-    timeBeforeNotification: '',
+    timeBeforeNotification: null,
   };
 };
 
