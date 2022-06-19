@@ -1,4 +1,6 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -8,18 +10,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@ObjectType()
 @Entity()
-export class Color {
+export class Color extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Index()
   @Column()
-  name: string | null;
-
-  @Index()
-  @Column()
-  hexCode: string | null;
+  hexCode: string;
 
   @CreateDateColumn()
   createdAt: Date;

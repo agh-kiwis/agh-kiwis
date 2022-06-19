@@ -1,0 +1,10 @@
+mutation createCategory($createCategoryInput: CreateCategoryInput!) {
+  createCategory(createCategoryInput: $createCategoryInput) {
+    color {
+      hexCode
+      id
+    }
+    id
+    name
+  }
+}

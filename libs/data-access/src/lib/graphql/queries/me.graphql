@@ -1,12 +1,9 @@
-query Me {
+query me {
   me {
     birthDate
-    createdAt
-    deletedAt
     email
     gender
     id
     name
-    updatedAt
   }
 }

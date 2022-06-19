@@ -1,32 +1,31 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Duration } from 'moment';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IntervalColumn } from '../../types/IntervalColumn';
+import { GeneralEntity } from '../../utils/GeneralEntity';
+import { Interval } from '../../utils/interval.scalar';
 
 @Entity()
-export class ChunkInfo {
+@ObjectType()
+export class ChunkInfo extends GeneralEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'interval' })
-  minTimeBetweenChunks: Date;
+  // We need to have information on when the task needs to be started
+  @Field()
+  @Column({ type: 'timestamp with time zone' })
+  start: Date;
 
-  @Column({ type: 'interval' })
-  minChunkDuration: Date;
+  @Field(() => Interval)
+  @IntervalColumn()
+  minTimeBetweenChunks: Duration;
 
-  @Column({ type: 'interval' })
-  maxChunkDuration: Date;
+  @Field(() => Interval)
+  @IntervalColumn()
+  minChunkDuration: Duration;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
+  @Field(() => Interval)
+  @IntervalColumn()
+  maxChunkDuration: Duration;
 }

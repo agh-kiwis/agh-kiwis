@@ -1,41 +1,42 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Duration } from 'moment';
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
+import { IntervalColumn } from '../../types/IntervalColumn';
+import { GeneralEntity } from '../../utils/GeneralEntity';
+import { Interval } from '../../utils/interval.scalar';
 import { Repeat } from './repeat.entity';
 import { Task } from './task.entity';
 
 @Entity()
-export class TaskBreakdown {
+@ObjectType()
+export class TaskBreakdown extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'time with time zone' })
+  @Field()
+  @Column({ type: 'timestamp with time zone' })
   start: Date;
 
-  @Column({ type: 'time' })
-  duration: Date;
+  @Field(() => Interval)
+  @IntervalColumn()
+  duration: Duration;
+
+  @Field()
+  @Column({ default: false })
+  isDone: boolean;
 
   @ManyToOne(() => Task, (task) => task.taskBreakdowns)
   task: Task;
 
+  @Field()
   @OneToOne(() => Repeat)
   @JoinColumn()
   repeat: Repeat;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

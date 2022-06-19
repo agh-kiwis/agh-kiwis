@@ -1,33 +1,26 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Task } from './task.entity';
 
 @Entity()
-export class Priority {
+@ObjectType()
+export class Priority extends GeneralEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Index()
   @Column()
   name: string | null;
 
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

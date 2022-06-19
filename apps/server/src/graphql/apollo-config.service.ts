@@ -4,12 +4,18 @@ import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { get } from 'lodash';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { registerEnumType } from '@nestjs/graphql';
+import { RepeatType } from '../tasks/entities/repeat.entity';
 
 @Injectable()
 export class ApolloConfigService implements ApolloDriverConfigFactory {
   constructor(private configService: ConfigService) {}
 
   createGqlOptions(): ApolloDriverConfig {
+    registerEnumType(RepeatType, {
+      name: 'RepeatType',
+      description: 'Supported repeat types',
+    });
     return {
       autoSchemaFile: join(process.cwd(), 'generated/schema.gql'),
       sortSchema: true,
@@ -23,8 +29,8 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
         return { req, res, ...(clientId && { clientId }) };
       },
       cors: {
-        // TODO Replace it with env variable
-        origin: 'http://localhost:4200',
+        // origin: '*',
+        origin: this.configService.get('app.corsOrigin'),
         credentials: true,
       },
     };

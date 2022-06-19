@@ -9,7 +9,7 @@ interface WrapperProps {
 
 export const Wrapper: React.FC<WrapperProps> = ({ children }) => {
   return (
-    <Container mt={8} maxW={['300px', '400px', '500px', '600px']}>
+    <Container py={8} maxW={['300px', '400px', '500px', '600px']}>
       {children}
     </Container>
   );

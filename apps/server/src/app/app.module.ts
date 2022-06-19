@@ -1,19 +1,23 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ApolloDriver } from '@nestjs/apollo';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../auth/auth.module';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CategoriesModule } from '../categories/categories.module';
+import appConfig from '../config/app.config';
+import authConfig from '../config/auth.config';
 import databaseConfig from '../config/database.config';
 import { TypeOrmConfigService } from '../database/typeorm-config.service';
-import { ConfigModule } from '@nestjs/config';
-import appConfig from '../config/app.config';
-import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloConfigService } from '../graphql/apollo-config.service';
-import { ApolloDriver } from '@nestjs/apollo';
-import { UsersModule } from '../users/users.module';
 import { TasksModule } from '../tasks/tasks.module';
-import authConfig from '../config/auth.config';
-import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
+import { IntervalScalar } from '../utils/interval.scalar';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -33,8 +37,16 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     UsersModule,
     TasksModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    IntervalScalar,
+  ],
 })
 export class AppModule {}
