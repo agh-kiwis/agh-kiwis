@@ -15,7 +15,7 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
-  /** Interval from postgresInterval */
+  /** Interval string for Postgres, read more in docs */
   Interval: any;
 };
 
@@ -58,9 +58,9 @@ export type ChunkInfo = {
 };
 
 export type ChunkInfoInput = {
-  maxChunkDuration: Scalars['String'];
-  minChunkDuration: Scalars['String'];
-  minTimeBetweenChunks: Scalars['String'];
+  maxChunkDuration: Scalars['Interval'];
+  minChunkDuration: Scalars['Interval'];
+  minTimeBetweenChunks: Scalars['Interval'];
 };
 
 export type Color = {
@@ -76,27 +76,27 @@ export type CreateCategoryInput = {
 
 export type CreateConstTaskInput = {
   categoryId: Scalars['Float'];
-  chillTime: Scalars['String'];
-  duration: Scalars['String'];
+  chillTime: Scalars['Interval'];
+  duration: Scalars['Interval'];
   name: Scalars['String'];
   priorityId?: InputMaybe<Scalars['Float']>;
   repeat: RepeatInput;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start: Scalars['DateTime'];
-  timeBeforeNotification?: InputMaybe<Scalars['String']>;
+  timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
 export type CreateFloatTaskInput = {
   categoryId: Scalars['Float'];
-  chillTime: Scalars['String'];
+  chillTime: Scalars['Interval'];
   chunkInfo: ChunkInfoInput;
-  estimation: Scalars['String'];
+  estimation: Scalars['Interval'];
   name: Scalars['String'];
   priorityId?: InputMaybe<Scalars['Float']>;
   repeat: RepeatInput;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start: Scalars['DateTime'];
-  timeBeforeNotification?: InputMaybe<Scalars['String']>;
+  timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
 export type CreateUserInput = {
@@ -287,15 +287,15 @@ export type UpdateCategoryInput = {
 
 export type UpdateTaskInput = {
   categoryId?: InputMaybe<Scalars['Float']>;
-  chillTime?: InputMaybe<Scalars['String']>;
-  duration?: InputMaybe<Scalars['String']>;
+  chillTime?: InputMaybe<Scalars['Interval']>;
+  duration?: InputMaybe<Scalars['Interval']>;
   id: Scalars['Int'];
   name?: InputMaybe<Scalars['String']>;
   priorityId?: InputMaybe<Scalars['Float']>;
   repeat?: InputMaybe<RepeatInput>;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start?: InputMaybe<Scalars['DateTime']>;
-  timeBeforeNotification?: InputMaybe<Scalars['String']>;
+  timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
 export type UpdateUserInput = {
@@ -322,6 +322,13 @@ export type AddConstTaskMutationVariables = Exact<{
 
 
 export type AddConstTaskMutation = { __typename?: 'Mutation', addConstTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+
+export type CreateCategoryMutationVariables = Exact<{
+  createCategoryInput: CreateCategoryInput;
+}>;
+
+
+export type CreateCategoryMutation = { __typename?: 'Mutation', createCategory: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } } };
 
 export type LoginMutationVariables = Exact<{
   loginDto: AuthEmailLoginInput;
@@ -419,6 +426,44 @@ export function useAddConstTaskMutation(baseOptions?: Apollo.MutationHookOptions
 export type AddConstTaskMutationHookResult = ReturnType<typeof useAddConstTaskMutation>;
 export type AddConstTaskMutationResult = Apollo.MutationResult<AddConstTaskMutation>;
 export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<AddConstTaskMutation, AddConstTaskMutationVariables>;
+export const CreateCategoryDocument = gql`
+    mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {
+  createCategory(createCategoryInput: $createCategoryInput) {
+    color {
+      hexCode
+      id
+    }
+    id
+    name
+  }
+}
+    `;
+export type CreateCategoryMutationFn = Apollo.MutationFunction<CreateCategoryMutation, CreateCategoryMutationVariables>;
+
+/**
+ * __useCreateCategoryMutation__
+ *
+ * To run a mutation, you first call `useCreateCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCategoryMutation, { data, loading, error }] = useCreateCategoryMutation({
+ *   variables: {
+ *      createCategoryInput: // value for 'createCategoryInput'
+ *   },
+ * });
+ */
+export function useCreateCategoryMutation(baseOptions?: Apollo.MutationHookOptions<CreateCategoryMutation, CreateCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCategoryMutation, CreateCategoryMutationVariables>(CreateCategoryDocument, options);
+      }
+export type CreateCategoryMutationHookResult = ReturnType<typeof useCreateCategoryMutation>;
+export type CreateCategoryMutationResult = Apollo.MutationResult<CreateCategoryMutation>;
+export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<CreateCategoryMutation, CreateCategoryMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($loginDto: AuthEmailLoginInput!) {
   login(loginDto: $loginDto) {

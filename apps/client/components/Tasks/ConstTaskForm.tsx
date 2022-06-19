@@ -25,7 +25,7 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
-import { constTaskType } from '../../Types/TaskTypes';
+import { constTaskType } from '../../types/TaskTypes';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;

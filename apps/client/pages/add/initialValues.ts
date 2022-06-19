@@ -5,8 +5,8 @@ import {
 } from '../../components/Pickers/LongIntervalPicker';
 import { NumberInputType } from '../../components/Pickers/IntervalPicker';
 import { roundToMinutes } from '../../components/Utils/MomentUtils';
-import { constTaskType } from '../../Types/TaskTypes';
-import { floatTaskType } from '../../Types/TaskTypes';
+import { constTaskType } from '../../types/TaskTypes';
+import { floatTaskType } from '../../types/TaskTypes';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',
@@ -190,7 +190,7 @@ export const minTimeBetweenChunksInputFields: NumberInputType[] = [
 export const repeatEverySelectField: LongIntervalSelectType = {
   name: 'repeat.repeatEvery.type',
   label: 'Type',
-  options: ['Day', 'Week', 'Month'],
+  options: ['Day', 'Week', 'Month', 'Year'],
 };
 
 export const repeatEveryAmountFields: LongIntervalAmountType[] = [

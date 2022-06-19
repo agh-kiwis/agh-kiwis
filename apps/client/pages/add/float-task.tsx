@@ -7,8 +7,8 @@ import {
   minChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
 } from './initialValues';
-import { addFloatTask } from '../../components/Tasks/TaskService';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
+import { addFloatTask } from '../../services/taskService';
 
 const FloatTask: React.FC = () => {
   return (
