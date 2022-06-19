@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IPostgresInterval } from 'postgres-interval';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Duration } from 'moment';
+import { Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
 import { Task } from './task.entity';
@@ -12,9 +13,8 @@ export class Notification extends GeneralEntity {
   id: number;
 
   @Field(() => Interval)
-  // TODO Add some default
-  @Column({ type: 'interval' })
-  timeBefore: IPostgresInterval;
+  @IntervalColumn()
+  timeBefore: Duration;
 
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];

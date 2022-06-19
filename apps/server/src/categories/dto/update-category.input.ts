@@ -5,9 +5,9 @@ export class UpdateCategoryInput {
   @Field()
   id: number;
 
-  @Field()
-  name: string;
+  @Field({ nullable: true })
+  name?: string;
 
-  @Field()
-  colorId: number;
+  @Field({ nullable: true })
+  colorId?: number;
 }

@@ -1,26 +1,25 @@
 import { Scalar, CustomScalar } from '@nestjs/graphql';
 import { Kind, ValueNode } from 'graphql';
-import { IPostgresInterval } from 'postgres-interval';
-import * as parse from 'postgres-interval';
+import moment = require('moment');
+import { Duration } from 'moment';
 
 @Scalar('Interval', () => Interval)
-export class IntervalScalar implements CustomScalar<string, IPostgresInterval> {
+export class IntervalScalar implements CustomScalar<string, Duration> {
   description = 'Interval string for Postgres, read more in docs';
 
-  parseValue(value: string): IPostgresInterval {
-    return parse(value); // value from the client
+  parseValue(value: string): Duration {
+    return moment.duration(value); // value from the client
   }
 
-  serialize(value: IPostgresInterval): string {
+  serialize(value: Duration): string {
     return value.toISOString(); // value sent to the client
   }
 
   // TODO I have no idea what this function does
-  parseLiteral(ast: ValueNode): IPostgresInterval {
+  parseLiteral(ast: ValueNode): Duration {
     if (ast.kind === Kind.STRING) {
-      return parse(ast.value);
+      return moment.duration(ast.value);
     }
-    // TODO Parse date literal there
     return null;
   }
 }

@@ -1,4 +1,4 @@
-mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {
+mutation createCategory($createCategoryInput: CreateCategoryInput!) {
   createCategory(createCategoryInput: $createCategoryInput) {
     color {
       hexCode

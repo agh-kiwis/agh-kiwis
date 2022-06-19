@@ -20,7 +20,6 @@ export class CategoriesResolver {
   }
 
   @Query(() => [Category])
-  // TODO Change this to exclude unprotected rotes, not include
   findCategoryByPrefix(
     @Context('req') contextRequest: ContextRequest,
     @Args('prefix') prefix: string

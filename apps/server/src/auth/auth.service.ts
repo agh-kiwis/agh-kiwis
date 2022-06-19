@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ForbiddenError, UserInputError } from 'apollo-server-errors';
 import * as bcrypt from 'bcryptjs';
+import moment = require('moment');
 import { ContextRequest, CustomContext } from '../types/context.type';
 import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
@@ -12,7 +13,6 @@ import { AuthProvidersEnum } from './auth-providers.enum';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
 import { AuthEmailRegisterInput } from './dto/auth-email-register.input';
 import { AuthResponse } from './dto/auth.response';
-import * as moment from 'moment';
 
 @Injectable()
 export class AuthService {

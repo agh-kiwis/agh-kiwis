@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IPostgresInterval } from 'postgres-interval';
+import { Duration } from 'moment';
 import {
   Column,
   Entity,
@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
+import { IntervalColumn } from '../../types/IntervalColumn';
 import { User } from '../../users/entities/user.entity';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
@@ -31,7 +32,7 @@ export class Task extends GeneralEntity {
   @Column()
   name: string;
 
-  @Field()
+  @Field(() => Category)
   @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 
@@ -49,8 +50,8 @@ export class Task extends GeneralEntity {
   chunkInfo: ChunkInfo;
 
   @Field(() => Interval)
-  @Column({ type: 'interval' })
-  chillTime: IPostgresInterval;
+  @IntervalColumn()
+  chillTime: Duration;
 
   @Field()
   @Column({ default: false })
@@ -61,8 +62,8 @@ export class Task extends GeneralEntity {
   isDone: boolean;
 
   @Field(() => Interval, { nullable: true })
-  @Column({ type: 'interval', nullable: true })
-  estimation: IPostgresInterval;
+  @IntervalColumn({ nullable: true })
+  estimation: Duration;
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'timestamp with time zone', nullable: true })

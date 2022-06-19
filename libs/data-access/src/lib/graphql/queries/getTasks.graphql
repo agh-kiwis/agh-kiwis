@@ -1,5 +1,5 @@
-mutation addConstTask($CreateConstTaskInput: CreateConstTaskInput!) {
-  addConstTask(CreateConstTaskInput: $CreateConstTaskInput) {
+query getTasks($getTasksInput: GetTasksInput!) {
+  getTasks(getTasksInput: $getTasksInput) {
     category {
       color {
         hexCode

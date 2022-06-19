@@ -1,13 +1,10 @@
-mutation Register($registerDto: AuthEmailRegisterInput!) {
+mutation register($registerDto: AuthEmailRegisterInput!) {
   register(registerDto: $registerDto) {
     birthDate
-    createdAt
-    deletedAt
     email
     gender
     id
     name
-    updatedAt
     token
   }
 }

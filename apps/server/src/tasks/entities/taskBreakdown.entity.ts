@@ -1,24 +1,22 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Duration } from 'moment';
 import {
-  BaseEntity,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Repeat } from './repeat.entity';
 import { Task } from './task.entity';
-import { IPostgresInterval } from 'postgres-interval';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { IntervalColumn } from '../../types/IntervalColumn';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
 
 @Entity()
 @ObjectType()
-export class TaskBreakdown extends BaseEntity {
+export class TaskBreakdown extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,8 +25,8 @@ export class TaskBreakdown extends BaseEntity {
   start: Date;
 
   @Field(() => Interval)
-  @Column({ type: 'interval' })
-  duration: IPostgresInterval;
+  @IntervalColumn()
+  duration: Duration;
 
   @Field()
   @Column({ default: false })
@@ -41,13 +39,4 @@ export class TaskBreakdown extends BaseEntity {
   @OneToOne(() => Repeat)
   @JoinColumn()
   repeat: Repeat;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

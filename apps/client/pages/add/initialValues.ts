@@ -218,4 +218,12 @@ export const repeatEveryAmountFields: LongIntervalAmountType[] = [
     label: 'Month',
     name: 'repeat.repeatEvery.amount',
   },
+  {
+    minValue: 1,
+    maxValue: 10,
+    defaultValue: 1,
+    step: 1,
+    label: 'Year',
+    name: 'repeat.repeatEvery.amount',
+  },
 ];

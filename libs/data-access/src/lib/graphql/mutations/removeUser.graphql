@@ -1,5 +1,5 @@
-query me {
-  me {
+mutation removeUser($id: Int!) {
+  removeUser(id: $id) {
     birthDate
     email
     gender

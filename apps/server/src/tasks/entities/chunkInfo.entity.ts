@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IPostgresInterval } from 'postgres-interval';
+import { Duration } from 'moment';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
 
@@ -11,15 +12,20 @@ export class ChunkInfo extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Interval)
-  @Column({ type: 'interval' })
-  minTimeBetweenChunks: IPostgresInterval;
+  // We need to have information on when the task needs to be started
+  @Field()
+  @Column({ type: 'timestamp with time zone' })
+  start: Date;
 
   @Field(() => Interval)
-  @Column({ type: 'interval' })
-  minChunkDuration: IPostgresInterval;
+  @IntervalColumn()
+  minTimeBetweenChunks: Duration;
 
   @Field(() => Interval)
-  @Column({ type: 'interval' })
-  maxChunkDuration: IPostgresInterval;
+  @IntervalColumn()
+  minChunkDuration: Duration;
+
+  @Field(() => Interval)
+  @IntervalColumn()
+  maxChunkDuration: Duration;
 }

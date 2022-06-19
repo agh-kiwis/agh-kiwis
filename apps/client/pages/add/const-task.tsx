@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  useAddConstTaskMutation,
-  useCreateCategoryMutation,
-} from '@agh-kiwis/data-access';
+import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
 import {
   chillTimeInputFields,
   durationInputFields,
@@ -15,40 +12,23 @@ import { ConstTaskCreationForm } from '../../components/Tasks/ConstTaskForm';
 import { constTaskFormToAddTaskMutationMapper } from '../../services/taskService';
 
 const ConstTask: React.FC = () => {
-  const [createTaskMutation] = useCreateCategoryMutation();
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const handleSubmit = async (values: constTaskType) => {
     console.log(values);
 
-    const categoryResponse = await createTaskMutation({
+    const taskResponse = await addConstTaskMutation({
       variables: {
-        createCategoryInput: {
-          colorId: 1,
-          name: values.category.name,
-        },
+        CreateConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
       },
-    }).catch((erorr) => {
-      console.log(erorr);
+    }).catch((error) => {
+      // TODO handle error
+      console.log(error);
     });
 
-    if (categoryResponse) {
-      const taskResponse = await addConstTaskMutation({
-        variables: {
-          createConstTaskInput: constTaskFormToAddTaskMutationMapper(
-            categoryResponse,
-            values
-          ),
-        },
-      }).catch((error) => {
-        // TODO handle error
-        console.log(error);
-      });
-
-      if (taskResponse) {
-        // TODO handle success
-        console.log(taskResponse.data);
-      }
+    if (taskResponse) {
+      // TODO handle success
+      console.log(taskResponse.data);
     }
   };
 

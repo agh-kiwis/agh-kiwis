@@ -5,21 +5,19 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { AuthProvidersEnum } from '../../auth/auth-providers.enum';
 import { Category } from '../../categories/entities/category.entity';
 import { Task } from '../../tasks/entities/task.entity';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class User extends GeneralEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -67,16 +65,4 @@ export class User extends BaseEntity {
 
   @Column({ default: true })
   isEnabled: boolean;
-
-  @Field()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field({ nullable: true })
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Field({ nullable: true })
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

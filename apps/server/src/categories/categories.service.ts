@@ -38,7 +38,7 @@ export class CategoriesService {
     return await Category.find({
       where: {
         user: user,
-        // TODO This seems to be case sensitive, maybe we want it not to be
+        // TODO This is case sensitive, we want it not to be
         name: Like(`${sanitizedPrefix}%`),
       },
     });

@@ -1,15 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IPostgresInterval } from 'postgres-interval';
+import { Duration } from 'moment';
 import { Interval } from '../../utils/interval.scalar';
 
 @InputType()
+// TODO Add validation (maybe add validation lib to use there and in frontend)
 export class ChunkInfoInput {
   @Field(() => Interval)
-  minTimeBetweenChunks: IPostgresInterval;
+  minTimeBetweenChunks: Duration;
 
   @Field(() => Interval)
-  minChunkDuration: IPostgresInterval;
+  minChunkDuration: Duration;
 
   @Field(() => Interval)
-  maxChunkDuration: IPostgresInterval;
+  maxChunkDuration: Duration;
 }
