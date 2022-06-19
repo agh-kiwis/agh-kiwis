@@ -25,10 +25,9 @@ export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
         deadline: task.deadline,
       }
     )
-    //   User should be given user
     .andWhere('task.user = :user_id', { user_id: task.user.id })
     .getMany();
 
-  console.log('results');
-  console.log(tasksInBetween);
+  // Now iterate from start date to deadline date and try to fit as much tasks as possible there
+  // TODO
 };
