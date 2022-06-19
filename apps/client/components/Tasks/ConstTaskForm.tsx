@@ -33,7 +33,7 @@ type ConstTaskCreationFormProps = {
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values) => void;
+  onSubmit: (values: constTaskType) => void;
 };
 
 export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({

@@ -17,8 +17,8 @@ export class CreateTaskInput {
   shouldAutoResolve: boolean;
   @Field(() => CategoryInput)
   category: CategoryInput;
-  @Field(() => RepeatInput)
-  repeat: RepeatInput;
+  @Field(() => RepeatInput, { nullable: true })
+  repeat?: RepeatInput;
   @Field(() => Interval, { nullable: true })
   timeBeforeNotification: Duration;
   // TODO There always need to be a priority in the database for this to work

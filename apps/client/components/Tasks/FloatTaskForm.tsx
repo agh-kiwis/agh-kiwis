@@ -32,7 +32,7 @@ type FloatTaskCreationFormProps = {
   minChunkTimeInputFields: NumberInputType[];
   maxChunkTimeInputFields: NumberInputType[];
   minTimeBetweenChunksInputFields: NumberInputType[];
-  onSubmit: (values) => void;
+  onSubmit: (values: floatTaskType) => void;
 };
 
 export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({

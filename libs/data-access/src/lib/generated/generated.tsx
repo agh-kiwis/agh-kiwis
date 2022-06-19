@@ -83,7 +83,7 @@ export type CreateConstTaskInput = {
   duration: Scalars['Interval'];
   name: Scalars['String'];
   priorityId?: InputMaybe<Scalars['Float']>;
-  repeat: RepeatInput;
+  repeat?: InputMaybe<RepeatInput>;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start: Scalars['DateTime'];
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
@@ -93,11 +93,11 @@ export type CreateFloatTaskInput = {
   category: CategoryInput;
   chillTime: Scalars['Interval'];
   chunkInfo: ChunkInfoInput;
-  deadline: Scalars['String'];
+  deadline: Scalars['DateTime'];
   estimation: Scalars['Interval'];
   name: Scalars['String'];
   priorityId?: InputMaybe<Scalars['Float']>;
-  repeat: RepeatInput;
+  repeat?: InputMaybe<RepeatInput>;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start: Scalars['DateTime'];
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
@@ -138,7 +138,7 @@ export type Mutation = {
 
 
 export type MutationAddConstTaskArgs = {
-  CreateConstTaskInput: CreateConstTaskInput;
+  createConstTaskInput: CreateConstTaskInput;
 };
 
 
@@ -318,7 +318,7 @@ export type User = {
 };
 
 export type AddConstTaskMutationVariables = Exact<{
-  CreateConstTaskInput: CreateConstTaskInput;
+  createConstTaskInput: CreateConstTaskInput;
 }>;
 
 
@@ -446,8 +446,8 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 
 
 export const AddConstTaskDocument = gql`
-    mutation addConstTask($CreateConstTaskInput: CreateConstTaskInput!) {
-  addConstTask(CreateConstTaskInput: $CreateConstTaskInput) {
+    mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
+  addConstTask(createConstTaskInput: $createConstTaskInput) {
     category {
       color {
         hexCode
@@ -506,7 +506,7 @@ export type AddConstTaskMutationFn = Apollo.MutationFunction<AddConstTaskMutatio
  * @example
  * const [addConstTaskMutation, { data, loading, error }] = useAddConstTaskMutation({
  *   variables: {
- *      CreateConstTaskInput: // value for 'CreateConstTaskInput'
+ *      createConstTaskInput: // value for 'createConstTaskInput'
  *   },
  * });
  */

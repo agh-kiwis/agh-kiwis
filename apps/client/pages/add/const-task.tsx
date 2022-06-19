@@ -15,11 +15,9 @@ const ConstTask: React.FC = () => {
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const handleSubmit = async (values: constTaskType) => {
-    console.log(values);
-
     const taskResponse = await addConstTaskMutation({
       variables: {
-        CreateConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
+        createConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
       },
     }).catch((error) => {
       // TODO handle error

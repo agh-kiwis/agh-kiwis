@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
 import {
   chillTimeInputFields,
   estimationInputFields,
@@ -8,9 +9,28 @@ import {
   minTimeBetweenChunksInputFields,
 } from './initialValues';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
-import { addFloatTask } from '../../services/taskService';
+import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
+import { floatTaskType } from '../../types/TaskTypes';
 
 const FloatTask: React.FC = () => {
+  const [addFloatTaskMutation] = useAddFloatTaskMutation();
+
+  const handleSubmit = async (values: floatTaskType) => {
+    const taskResponse = await addFloatTaskMutation({
+      variables: {
+        createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+      },
+    }).catch((error) => {
+      // TODO handle error
+      console.log(error);
+    });
+
+    if (taskResponse) {
+      // TODO handle success
+      console.log(taskResponse.data);
+    }
+  };
+
   return (
     <FloatTaskCreationForm
       initialValues={floatTaskInitialValues}
@@ -19,7 +39,7 @@ const FloatTask: React.FC = () => {
       minChunkTimeInputFields={minChunkTimeInputFields}
       maxChunkTimeInputFields={maxChunkTimeInputFields}
       minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
-      onSubmit={addFloatTask}
+      onSubmit={handleSubmit}
     />
   );
 };
