@@ -1,21 +1,25 @@
-import { Text, Icon, Stack, Flex } from "@chakra-ui/react"
-import { IoTimerOutline } from "react-icons/io5";
+import { Text, Icon, Stack, Flex } from '@chakra-ui/react';
+import { IoTimerOutline } from 'react-icons/io5';
 import { useState } from 'react';
-import { TaskModal } from "../Modals/TaskModal";
-import moment from "moment";
-import PriorityIcon from "./PriorityIcon";
+import { TaskModal } from '../Modals/TaskModal';
+import moment from 'moment';
+import PriorityIcon from './PriorityIcon';
 
-// TODO Change deadline data type from Unix Milisecond Timestamp to Date
-function dataConvert(miliseconds: number) {
-  return moment(miliseconds, "x").format("DD MMM");
-}
+// TODO Change deadline data type from Unix Millisecond Timestamp to Date
+const dataConvert = (milliseconds: number) => {
+  return moment(milliseconds, 'x').format('DD MMM');
+};
 
-export const Task = (props) => {
+export type TaskProps = any;
+
+export const Task = (props: TaskProps) => {
   const [closeModal, openModal] = useState(false);
   return (
     <>
       <Stack
-        backgroundColor={!props.task.isDone ? props.task.category.color.hexCode : "gray.400"}
+        backgroundColor={
+          !props.task.isDone ? props.task.category.color.hexCode : 'gray.400'
+        }
         borderRadius="0.7rem"
         padding="2rem"
         color="white"
@@ -40,20 +44,24 @@ export const Task = (props) => {
           <PriorityIcon priority={props.task.priority.name} />
         </Flex>
 
-        {!props.task.isFloat ? null :
+        {!props.task.isFloat ? null : (
           <Flex justifyContent={'center'} paddingBottom={'0.5rem'}>
             <Text fontSize="xl">
               <Icon as={IoTimerOutline} />
               {dataConvert(props.task.deadline)}
             </Text>
           </Flex>
-        }
+        )}
 
         <Flex justifyContent={'center'} paddingBottom={'0.5rem'}>
           <Text fontSize="md">{props.task.name}</Text>
         </Flex>
       </Stack>
-      <TaskModal isOpen={closeModal} task={props.task} close={() => openModal(false)} />
+      <TaskModal
+        isOpen={closeModal}
+        task={props.task}
+        close={() => openModal(false)}
+      />
     </>
-  )
-}
+  );
+};

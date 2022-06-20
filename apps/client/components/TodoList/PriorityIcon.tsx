@@ -1,6 +1,6 @@
-import { HiChevronDown } from "react-icons/hi";
-import { HiChevronUp } from "react-icons/hi";
-import { HiChevronDoubleUp } from "react-icons/hi";
+import { HiChevronDown } from 'react-icons/hi';
+import { HiChevronUp } from 'react-icons/hi';
+import { HiChevronDoubleUp } from 'react-icons/hi';
 
 // TODO Change priority hardcoded to enum(?)
 export const PriorityIcon = (props) => {
@@ -9,17 +9,17 @@ export const PriorityIcon = (props) => {
       {(() => {
         switch (props.priority) {
           case 'Low':
-            return <HiChevronDown />
+            return <HiChevronDown />;
           case 'Medium':
-            return <HiChevronUp />
+            return <HiChevronUp />;
           case 'High':
-            return <HiChevronDoubleUp />
+            return <HiChevronDoubleUp />;
           default:
-            return null
+            return null;
         }
       })()}
     </>
   );
-}
+};
 
 export default PriorityIcon;
