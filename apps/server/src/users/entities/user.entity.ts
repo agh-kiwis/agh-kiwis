@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
 import {
+  BaseEntity,
   BeforeInsert,
   BeforeUpdate,
   Column,

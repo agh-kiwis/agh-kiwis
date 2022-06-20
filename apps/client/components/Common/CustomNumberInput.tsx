@@ -8,6 +8,7 @@ import {
   HStack,
   Input,
   useNumberInput,
+  VStack,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
 
@@ -19,6 +20,7 @@ export type CustomNumberInputProps = {
   defaultValue: number;
   step: number;
   handleChange: (fieldName: string, value: number) => void;
+  variant?: 'vertical' | 'horizontal';
 };
 
 export const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
@@ -28,6 +30,7 @@ export const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
   defaultValue,
   step,
   handleChange,
+  variant,
   ...props
 }) => {
   const [field] = useField(props);
@@ -52,21 +55,49 @@ export const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
   }, [field.name, handleChange, valueAsNumber]);
 
   return (
-    <FormControl>
-      <Flex justify="center" align="center">
-        <Box w="80px">
-          <FormLabel htmlFor={field.name}>{label}</FormLabel>
-        </Box>
-        <HStack justifySelf="right">
-          <Button variant="outline" {...dec}>
-            -
-          </Button>
-          <Input {...input} w="80px" textAlign="center" />
-          <Button variant="outline" {...inc}>
-            +
-          </Button>
-        </HStack>
-      </Flex>
-    </FormControl>
+    <>
+      {variant === 'vertical' ? (
+        <FormControl>
+          <VStack align="stretch">
+            <Box my={0} py={0}>
+              <FormLabel
+                htmlFor={field.name}
+                justifyContent="bottom"
+                my={0}
+                py={0}
+              >
+                {label}
+              </FormLabel>
+            </Box>
+            <HStack justifySelf="right">
+              <Button variant="outline" {...dec}>
+                -
+              </Button>
+              <Input {...input} textAlign="center" />
+              <Button variant="outline" {...inc}>
+                +
+              </Button>
+            </HStack>
+          </VStack>
+        </FormControl>
+      ) : (
+        <FormControl>
+          <Flex justify="center" align="center">
+            <Box w="80px">
+              <FormLabel htmlFor={field.name}>{label}</FormLabel>
+            </Box>
+            <HStack justifySelf="right">
+              <Button variant="outline" {...dec}>
+                -
+              </Button>
+              <Input {...input} w="80px" textAlign="center" />
+              <Button variant="outline" {...inc}>
+                +
+              </Button>
+            </HStack>
+          </Flex>
+        </FormControl>
+      )}
+    </>
   );
 };

@@ -13,7 +13,7 @@ export class CreateFloatTaskInput extends CreateTaskInput {
   @Field(() => Interval)
   estimation: Duration;
 
-  @Field(() => String)
+  @Field(() => Date)
   deadline: Date;
 
   @Field()

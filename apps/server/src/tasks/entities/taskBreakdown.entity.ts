@@ -8,11 +8,11 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Repeat } from './repeat.entity';
+import { Task } from './task.entity';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
-import { Repeat } from './repeat.entity';
-import { Task } from './task.entity';
 
 @Entity()
 @ObjectType()

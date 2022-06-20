@@ -1,9 +1,8 @@
-import * as react from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
 import React from 'react';
+import { Form, Formik } from 'formik';
+import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
-import { CustomNumberInput } from '../Common/CustomNumberInput';
 import { InputField } from '../Common/InputField';
 import { ToggleSwitch } from '../Common/ToggleSwitch';
 import { Wrapper } from '../Containers/Wrapper';
@@ -13,102 +12,67 @@ import { DependentTimeEstimationField } from '../DependentFields/DependentTimeEs
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import {
-  LongIntervalAmountType,
-  LongIntervalSelectType,
-} from '../Pickers/LongIntervalPicker';
+import { floatTaskType } from '../../types/TaskTypes';
+import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunkTimeField';
+import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
+import { CustomNumberInput } from '../Common/CustomNumberInput';
+import { DependentMinTimeBetweenChunksField } from '../DependentFields/DependentMinTimeBetweenChunksField';
+import { TaskSwitchFloat } from '../Buttons/TaskSwitchFloat';
+import { Header } from '../Common/Header';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;
-  durationInputFields: NumberInputType[];
+  estimationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
-  repeatEverySelectField: LongIntervalSelectType;
-  repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values) => void;
-};
-
-export type floatTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
-  deadline: {
-    date: string;
-    time: string;
-  };
-  deadlineFacade: string;
-  timeEstimation: {
-    hours: number;
-    minutes: number;
-  };
-  timeEstimationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
-  priority: string;
-  chunking: {
-    shouldChunk: boolean;
-    numberOfChunks: number;
-    repeatEvery: {
-      type: string;
-      amount: number;
-    };
-  };
-  repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
+  minChunkTimeInputFields: NumberInputType[];
+  maxChunkTimeInputFields: NumberInputType[];
+  minTimeBetweenChunksInputFields: NumberInputType[];
+  onSubmit: (values: floatTaskType) => void;
 };
 
 export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
   initialValues,
-  durationInputFields,
+  estimationInputFields,
   chillTimeInputFields,
-  repeatEverySelectField,
-  repeatEveryAmountFields,
+  minChunkTimeInputFields,
+  maxChunkTimeInputFields,
+  minTimeBetweenChunksInputFields,
   onSubmit,
 }) => {
   return (
     <Wrapper>
-      <react.Heading textAlign={'center'} color="secondary" mb={4}>
-        Add new task
-      </react.Heading>
+      <Header text="Add new task" />
+      <TaskSwitchFloat />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
-            <react.VStack spacing={4} align="stretch">
-              <react.Box>
-                <react.Stack>
-                  <react.InputGroup>
+            <VStack spacing={4} align="stretch">
+              <Box>
+                <Stack>
+                  <InputGroup>
                     <ColorPicker
                       modalTitle="Category color"
                       handleChange={setFieldValue}
                       name="category.color"
                     >
-                      <ControlledInputAddon
-                        addonContent="color"
-                        name="category.color"
-                      />
+                      <ControlledInputAddon name="category.color" />
                     </ColorPicker>
                     <InputField
                       name="category.name"
                       placeholder="Category"
                       borderLeftRadius={0}
                     />
-                  </react.InputGroup>
-                </react.Stack>
-              </react.Box>
+                  </InputGroup>
+                </Stack>
+              </Box>
 
-              <react.Box>
+              <Box>
                 <InputField
                   name="taskName"
                   placeholder="Task name"
                   label="Task name"
                 />
-              </react.Box>
+              </Box>
               <DateTimePicker
                 modalTitle="Deadline"
                 handleChange={setFieldValue}
@@ -117,17 +81,17 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
               >
                 <DependentDeadlineField name="deadlineFacade" />
               </DateTimePicker>
-              <react.Flex justify="space-between">
-                <react.Box w="50%" mr={2}>
+              <Flex justify="space-between">
+                <Box w="50%" mr={2}>
                   <IntervalPicker
-                    modalTitle="Time Estimation"
-                    inputFields={durationInputFields}
+                    modalTitle="Time estimation"
+                    inputFields={estimationInputFields}
                     handleChange={setFieldValue}
                   >
                     <DependentTimeEstimationField name="timeEstimationFacade" />
                   </IntervalPicker>
-                </react.Box>
-                <react.Box w="50%" ml={2}>
+                </Box>
+                <Box w="50%" ml={2}>
                   <IntervalPicker
                     modalTitle="Chill time"
                     inputFields={chillTimeInputFields}
@@ -135,66 +99,98 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                   >
                     <DependentChillTimeField name="chillTimeFacade" />
                   </IntervalPicker>
-                </react.Box>
-              </react.Flex>
-              <react.Box>
+                </Box>
+              </Flex>
+              <Box>
                 <InputField
                   name="priority"
                   placeholder="Priority"
                   label="Priority"
                 />
-              </react.Box>
+              </Box>
               {values.chunking.shouldChunk ? (
-                <react.Box boxShadow="inner" borderRadius={8} p={4}>
-                  <ToggleSwitch
-                    name="chunking.shouldChunk"
-                    label="Chunking"
-                    handleChange={setFieldValue}
-                  />
-                  <CustomNumberInput
-                    minValue={1}
-                    maxValue={10}
-                    defaultValue={1}
-                    step={1}
-                    label="Chunks"
-                    name="chunking.numberOfChunks"
-                    handleChange={setFieldValue}
-                  />
-                </react.Box>
+                <Box boxShadow="inner" borderRadius={8} p={4}>
+                  <VStack spacing={4} align="stretch">
+                    <ToggleSwitch
+                      name="chunking.shouldChunk"
+                      label="Chunking"
+                      handleChange={setFieldValue}
+                    />
+                    <Box>
+                      <IntervalPicker
+                        modalTitle="Min chunk time"
+                        inputFields={minChunkTimeInputFields}
+                        handleChange={setFieldValue}
+                      >
+                        <DependentMinChunkTimeField name="minChunkTimeFacade" />
+                      </IntervalPicker>
+                    </Box>
+                    <Box>
+                      <IntervalPicker
+                        modalTitle="Max chunk time"
+                        inputFields={maxChunkTimeInputFields}
+                        handleChange={setFieldValue}
+                      >
+                        <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
+                      </IntervalPicker>
+                    </Box>
+                    <Box>
+                      <CustomNumberInput
+                        minValue={1}
+                        maxValue={20}
+                        defaultValue={4}
+                        step={1}
+                        label="Max chunks number"
+                        name="chunks.maxChunksNumber"
+                        handleChange={setFieldValue}
+                        variant="vertical"
+                      />
+                    </Box>
+                    <Box>
+                      <IntervalPicker
+                        modalTitle="Min time between Chunks"
+                        inputFields={minTimeBetweenChunksInputFields}
+                        handleChange={setFieldValue}
+                      >
+                        <DependentMinTimeBetweenChunksField name="minTimeBetweenChunksFacade" />
+                      </IntervalPicker>
+                    </Box>
+                  </VStack>
+                </Box>
               ) : (
-                <react.Box>
+                <Box>
                   <ToggleSwitch
                     name="chunking.shouldChunk"
                     label="Chunking"
                     handleChange={setFieldValue}
                   />
-                </react.Box>
+                </Box>
               )}
 
-              <react.Box>
+              <Box>
                 <ToggleSwitch
                   name="notify"
                   label="Notify"
                   handleChange={setFieldValue}
                 />
-              </react.Box>
-              <react.Box>
+              </Box>
+              <Box>
                 <ToggleSwitch
                   name="autoresolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}
                 />
-              </react.Box>
+              </Box>
 
-              <react.Box>
+              <Box>
                 <CommonButton
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
                   buttonText="Add"
                 />
-              </react.Box>
-            </react.VStack>
+              </Box>
+            </VStack>
           </Form>
         )}
       </Formik>

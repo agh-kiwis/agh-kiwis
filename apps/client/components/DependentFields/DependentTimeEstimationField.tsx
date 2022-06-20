@@ -1,7 +1,7 @@
-import { useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
-import { floatTaskType } from '../Tasks/FloatTaskForm';
+import { floatTaskType } from '../../types/TaskTypes';
 
 type DependentTimeEstimationFieldProps = {
   name: string;
@@ -15,6 +15,8 @@ export const DependentTimeEstimationField: React.FC<
   useEffect(() => {
     if (values.timeEstimation.hours === 0) {
       setFieldValue(name, `${values.timeEstimation.minutes}min`);
+    } else if (values.timeEstimation.minutes === 0) {
+      setFieldValue(name, `${values.timeEstimation.hours}h`);
     } else {
       setFieldValue(
         name,
@@ -28,11 +30,5 @@ export const DependentTimeEstimationField: React.FC<
     values.timeEstimation.minutes,
   ]);
 
-  return (
-    <InputField
-      name="timeEstimationFacade"
-      placeholder="Time estimation"
-      label="Time estimation"
-    />
-  );
+  return <InputField name={name} label="Estimation" />;
 };
