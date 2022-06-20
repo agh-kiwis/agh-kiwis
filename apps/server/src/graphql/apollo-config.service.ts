@@ -30,7 +30,7 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
       },
       cors: {
         // origin: '*',
-        origin: this.configService.get('app.corsOrigin'),
+        origin: "http://localhost:4200",
         credentials: true,
       },
     };

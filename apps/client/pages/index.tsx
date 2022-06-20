@@ -1,6 +1,7 @@
-import { Text } from '@chakra-ui/react';
 import { NavBar } from '../components/Login/NavBar';
 import { Wrapper } from '../components/Containers/Wrapper';
+import { TodoList } from '../components/TodoList/TodoList';
+import Login from './login';
 
 export function Index() {
   /*
@@ -10,9 +11,8 @@ export function Index() {
    */
   return (
     <>
-      <NavBar />
       <Wrapper>
-        <Text fontSize="4xl">Hello in main</Text>
+        <TodoList />
       </Wrapper>
     </>
   );
