@@ -1,13 +1,6 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  InputGroup,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
 import React from 'react';
+import { Form, Formik } from 'formik';
+import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -25,6 +18,9 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
+import { constTaskType } from '../../types/TaskTypes';
+import { TaskSwitchConst } from '../Buttons/TaskSwitchConst';
+import { Header } from '../Common/Header';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;
@@ -32,43 +28,7 @@ type ConstTaskCreationFormProps = {
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values) => void;
-};
-
-export type constTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
-  startTime: {
-    date: string;
-    time: string;
-  };
-  startTimeFacade: string;
-  duration: {
-    hours: number;
-    minutes: number;
-  };
-  durationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
-  priority: string;
-  repeat: {
-    shouldRepeat: boolean;
-    startFrom: string;
-    repeatEvery: {
-      type: string;
-      amount: number;
-    };
-  };
-  repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
+  onSubmit: (values: constTaskType) => void;
 };
 
 export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
@@ -81,9 +41,8 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
 }) => {
   return (
     <Wrapper>
-      <Heading textAlign={'center'} color="secondary" mb={4}>
-        Add new task
-      </Heading>
+      <Header text="Add new task" />
+      <TaskSwitchConst />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
@@ -96,10 +55,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                       handleChange={setFieldValue}
                       name="category.color"
                     >
-                      <ControlledInputAddon
-                        addonContent="color"
-                        name="category.color"
-                      />
+                      <ControlledInputAddon name="category.color" />
                     </ColorPicker>
                     <InputField
                       name="category.name"

@@ -1,7 +1,7 @@
-import { constTaskType } from 'apps/client/pages/add/const-task';
-import { useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
+import { constTaskType } from '../../types/TaskTypes';
 
 type DependentChillTimeFieldProps = {
   name: string;
@@ -16,11 +16,5 @@ export const DependentChillTimeField: React.FC<
     setFieldValue(name, `${values.chillTime.minutes}min`);
   }, [name, setFieldValue, values.chillTime.minutes]);
 
-  return (
-    <InputField
-      name="chillTimeFacade"
-      placeholder="Chill time"
-      label="Chill time"
-    />
-  );
+  return <InputField name={name} label="Chill time" />;
 };

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Duration } from 'moment';
 import { Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';

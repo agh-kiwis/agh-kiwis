@@ -14,7 +14,7 @@ export class TasksResolver {
   @Mutation(() => Task)
   addConstTask(
     @Context('req') contextRequest: ContextRequest,
-    @Args('CreateConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
+    @Args('createConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
   ) {
     return this.tasksService.createConst(
       contextRequest.user,

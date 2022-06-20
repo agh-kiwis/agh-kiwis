@@ -1,7 +1,7 @@
-import { useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
-import { floatTaskType } from '../Tasks/FloatTaskForm';
+import { floatTaskType } from '../../types/TaskTypes';
 
 type DependentDeadlineFieldProps = {
   name: string;
@@ -21,7 +21,5 @@ export const DependentDeadlineField: React.FC<DependentDeadlineFieldProps> = ({
     }
   }, [name, setFieldValue, values.deadline.date, values.deadline.time]);
 
-  return (
-    <InputField name="deadlineFacade" placeholder="Deadline" label="Deadline" />
-  );
+  return <InputField name={name} label="Deadline" />;
 };
