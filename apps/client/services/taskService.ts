@@ -25,7 +25,7 @@ export const constTaskFormToAddTaskMutationMapper = (
       repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
     },
     start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-    shouldAutoResolve: false,
+    shouldAutoResolve: variables.autoresolve,
     timeBeforeNotification: null,
   };
 };
@@ -51,7 +51,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
     name: variables.taskName,
     // TODO replace not to be hardcoded
     priorityId: 1,
-    shouldAutoResolve: false,
+    shouldAutoResolve: variables.autoresolve,
     // TODO what is start regarding float task?
     start: new Date(),
     timeBeforeNotification: null,

@@ -99,12 +99,6 @@ export class AuthService {
   }
 
   me(contextRequest: ContextRequest): User {
-    const string = 'P0Y0M0DT0H0M2S';
-
-    const parsedString = moment.duration(string);
-
-    console.log(parsedString);
-
     return contextRequest.user;
   }
 }

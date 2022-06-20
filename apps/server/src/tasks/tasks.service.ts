@@ -18,7 +18,6 @@ import { Task } from './entities/task.entity';
 import { TaskBreakdown } from './entities/taskBreakdown.entity';
 
 @Injectable()
-// TODO Move this to helpers
 export class TasksService {
   async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
     const category = await getCategory(user, createConstTaskInput.category);
