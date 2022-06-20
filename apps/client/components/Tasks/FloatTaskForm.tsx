@@ -1,13 +1,6 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import {
-  Box,
-  Flex,
-  Heading,
-  InputGroup,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -24,6 +17,8 @@ import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunk
 import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
 import { CustomNumberInput } from '../Common/CustomNumberInput';
 import { DependentMinTimeBetweenChunksField } from '../DependentFields/DependentMinTimeBetweenChunksField';
+import { TaskSwitchFloat } from '../Buttons/TaskSwitchFloat';
+import { Header } from '../Common/Header';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;
@@ -46,9 +41,8 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
 }) => {
   return (
     <Wrapper>
-      <Heading textAlign={'center'} color="secondary" mb={4}>
-        Add new task
-      </Heading>
+      <Header text="Add new task" />
+      <TaskSwitchFloat />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>

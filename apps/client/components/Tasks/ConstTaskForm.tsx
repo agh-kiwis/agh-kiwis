@@ -1,13 +1,6 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import {
-  Box,
-  Flex,
-  Heading,
-  InputGroup,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -26,6 +19,8 @@ import {
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
 import { constTaskType } from '../../types/TaskTypes';
+import { TaskSwitchConst } from '../Buttons/TaskSwitchConst';
+import { Header } from '../Common/Header';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;
@@ -46,9 +41,8 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
 }) => {
   return (
     <Wrapper>
-      <Heading textAlign={'center'} color="secondary" mb={4}>
-        Add new task
-      </Heading>
+      <Header text="Add new task" />
+      <TaskSwitchConst />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
