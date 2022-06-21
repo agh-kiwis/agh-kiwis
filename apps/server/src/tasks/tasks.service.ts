@@ -90,6 +90,7 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
       where: {
         user: user,
         ...getTasksInput.filterOptions,
