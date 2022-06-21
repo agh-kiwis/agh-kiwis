@@ -114,7 +114,7 @@ export type FilterOptions = {
 };
 
 export type GetTasksInput = {
-  filterOptions: FilterOptions;
+  filterOptions?: InputMaybe<FilterOptions>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
 };
