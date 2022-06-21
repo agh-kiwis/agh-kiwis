@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
@@ -39,6 +40,8 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
   minTimeBetweenChunksInputFields,
   onSubmit,
 }) => {
+  const router = useRouter();
+
   return (
     <Wrapper>
       <Header text="Add new task" />
@@ -186,6 +189,13 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                   type="submit"
                   isLoading={isSubmitting}
                   buttonText="Add"
+                />
+              </Box>
+              <Box>
+                <CommonButton
+                  variant="outline"
+                  buttonText="Cancel"
+                  onClick={() => router.push('/')}
                 />
               </Box>
             </VStack>

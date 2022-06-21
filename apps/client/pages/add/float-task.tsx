@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
 import {
   chillTimeInputFields,
@@ -13,6 +14,7 @@ import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService
 import { floatTaskType } from '../../types/TaskTypes';
 
 const FloatTask: React.FC = () => {
+  const router = useRouter();
   const [addFloatTaskMutation] = useAddFloatTaskMutation();
 
   const handleSubmit = async (values: floatTaskType) => {
@@ -28,6 +30,7 @@ const FloatTask: React.FC = () => {
     if (taskResponse) {
       // TODO handle success
       console.log(taskResponse.data);
+      router.push('/');
     }
   };
 

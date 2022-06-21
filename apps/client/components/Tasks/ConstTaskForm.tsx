@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
@@ -39,6 +40,8 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
 }) => {
+  const router = useRouter();
+
   return (
     <Wrapper>
       <Header text="Add new task" />
@@ -165,6 +168,13 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                   type="submit"
                   isLoading={isSubmitting}
                   buttonText="Add"
+                />
+              </Box>
+              <Box>
+                <CommonButton
+                  variant="outline"
+                  buttonText="Cancel"
+                  onClick={() => router.push('/')}
                 />
               </Box>
             </VStack>
