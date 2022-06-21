@@ -110,52 +110,50 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
               </Box>
               {values.chunking.shouldChunk ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
-                  <VStack spacing={4} align="stretch">
-                    <ToggleSwitch
-                      name="chunking.shouldChunk"
-                      label="Chunking"
+                  <ToggleSwitch
+                    name="chunking.shouldChunk"
+                    label="Chunking"
+                    handleChange={setFieldValue}
+                  />
+                  <Box my={4}>
+                    <IntervalPicker
+                      modalTitle="Min chunk time"
+                      inputFields={minChunkTimeInputFields}
                       handleChange={setFieldValue}
+                    >
+                      <DependentMinChunkTimeField name="minChunkTimeFacade" />
+                    </IntervalPicker>
+                  </Box>
+                  <Box my={4}>
+                    <IntervalPicker
+                      modalTitle="Max chunk time"
+                      inputFields={maxChunkTimeInputFields}
+                      handleChange={setFieldValue}
+                    >
+                      <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
+                    </IntervalPicker>
+                  </Box>
+                  <Box my={4}>
+                    <CustomNumberInput
+                      minValue={1}
+                      maxValue={20}
+                      defaultValue={4}
+                      step={1}
+                      label="Max chunks number"
+                      name="chunks.maxChunksNumber"
+                      handleChange={setFieldValue}
+                      variant="vertical"
                     />
-                    <Box>
-                      <IntervalPicker
-                        modalTitle="Min chunk time"
-                        inputFields={minChunkTimeInputFields}
-                        handleChange={setFieldValue}
-                      >
-                        <DependentMinChunkTimeField name="minChunkTimeFacade" />
-                      </IntervalPicker>
-                    </Box>
-                    <Box>
-                      <IntervalPicker
-                        modalTitle="Max chunk time"
-                        inputFields={maxChunkTimeInputFields}
-                        handleChange={setFieldValue}
-                      >
-                        <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
-                      </IntervalPicker>
-                    </Box>
-                    <Box>
-                      <CustomNumberInput
-                        minValue={1}
-                        maxValue={20}
-                        defaultValue={4}
-                        step={1}
-                        label="Max chunks number"
-                        name="chunks.maxChunksNumber"
-                        handleChange={setFieldValue}
-                        variant="vertical"
-                      />
-                    </Box>
-                    <Box>
-                      <IntervalPicker
-                        modalTitle="Min time between Chunks"
-                        inputFields={minTimeBetweenChunksInputFields}
-                        handleChange={setFieldValue}
-                      >
-                        <DependentMinTimeBetweenChunksField name="minTimeBetweenChunksFacade" />
-                      </IntervalPicker>
-                    </Box>
-                  </VStack>
+                  </Box>
+                  <Box>
+                    <IntervalPicker
+                      modalTitle="Min time between Chunks"
+                      inputFields={minTimeBetweenChunksInputFields}
+                      handleChange={setFieldValue}
+                    >
+                      <DependentMinTimeBetweenChunksField name="minTimeBetweenChunksFacade" />
+                    </IntervalPicker>
+                  </Box>
                 </Box>
               ) : (
                 <Box>
