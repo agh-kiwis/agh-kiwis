@@ -1,7 +1,15 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  FormLabel,
+  InputGroup,
+  Select,
+  Stack,
+  VStack,
+} from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -105,11 +113,15 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                 </Box>
               </Flex>
               <Box>
-                <InputField
+                <FormLabel htmlFor="priority">Priority</FormLabel>
+                <Select
                   name="priority"
-                  placeholder="Priority"
-                  label="Priority"
-                />
+                  onChange={(e) => setFieldValue('priority', e.target.value)}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </Select>
               </Box>
               {values.chunking.shouldChunk ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>

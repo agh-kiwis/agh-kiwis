@@ -9,6 +9,7 @@ import { constTaskType, floatTaskType } from '../types/TaskTypes';
 export const constTaskFormToAddTaskMutationMapper = (
   variables: constTaskType
 ): CreateConstTaskInput => {
+  console.log(variables);
   return {
     // TODO replace not to be hardcoded
     category: {
@@ -17,8 +18,7 @@ export const constTaskFormToAddTaskMutationMapper = (
     chillTime: getIntervalISOString(variables.chillTime),
     duration: getIntervalISOString(variables.duration),
     name: variables.taskName,
-    // TODO replace not to be hardcoded
-    priorityId: 1,
+    priorityId: mapPriority(variables.priority),
     repeat: {
       repeatEvery: variables.repeat.repeatEvery.amount,
       startFrom: mapToDateTime(variables.startTime.date),
@@ -49,8 +49,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
     deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
     estimation: getIntervalISOString(variables.timeEstimation),
     name: variables.taskName,
-    // TODO replace not to be hardcoded
-    priorityId: 1,
+    priorityId: mapPriority(variables.priority),
     shouldAutoResolve: variables.autoresolve,
     // TODO what is start regarding float task?
     start: new Date(),
@@ -94,4 +93,17 @@ const mapToDateTime = (date: string, time?: string): Date => {
   dateTime.setMinutes(parseInt(splitedTime[1]));
 
   return dateTime;
+};
+
+const mapPriority = (priority: string): number => {
+  switch (priority) {
+    case 'low':
+      return 1;
+    case 'medium':
+      return 2;
+    case 'high':
+      return 3;
+    default:
+      return 1;
+  }
 };
