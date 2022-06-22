@@ -1,6 +1,15 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import { Box, Flex, InputGroup, Stack, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  FormLabel,
+  InputGroup,
+  Select,
+  Stack,
+  VStack,
+} from '@chakra-ui/react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -39,6 +48,8 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
 }) => {
+  const router = useRouter();
+
   return (
     <Wrapper>
       <Header text="Add new task" />
@@ -102,11 +113,15 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                 </Box>
               </Flex>
               <Box>
-                <InputField
+                <FormLabel htmlFor="priority">Priority</FormLabel>
+                <Select
                   name="priority"
-                  placeholder="Priority"
-                  label="Priority"
-                />
+                  onChange={(e) => setFieldValue('priority', e.target.value)}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </Select>
               </Box>
               {values.repeat.shouldRepeat ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
@@ -165,6 +180,13 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                   type="submit"
                   isLoading={isSubmitting}
                   buttonText="Add"
+                />
+              </Box>
+              <Box>
+                <CommonButton
+                  variant="outline"
+                  buttonText="Cancel"
+                  onClick={() => router.push('/')}
                 />
               </Box>
             </VStack>
