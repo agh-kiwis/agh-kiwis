@@ -64,7 +64,7 @@ export const TodoList = () => {
         {data?.getTasks.map((task, key) => (
           <Task key={key} task={task} />
         ))}
-        <Box position="absolute" right="7rem" bottom="7rem">
+        <Box position="absolute" right="6rem" bottom="6rem">
           <Icon
             as={HiOutlinePlusCircle}
             fontSize="10vh"
@@ -76,7 +76,7 @@ export const TodoList = () => {
           />
         </Box>
       </Stack>
-      <FilterModal isOpen={open} close={() => setOpen(false)} />
+      <FilterModal isOpen={open} close={() => setOpen(false)}/>
     </>
   );
 };

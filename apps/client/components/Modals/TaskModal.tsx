@@ -13,7 +13,7 @@ import { Chunks } from '../TodoList/Chunks';
 
 export const TaskModal = (props) => {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.close}>
+    <Modal isOpen={props.isOpen} onClose={props.close} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
