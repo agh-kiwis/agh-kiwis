@@ -34,6 +34,7 @@ export const TodoList = () => {
     return <Spinner />;
   }
   if (error) {
+    router.push('/login');
     return (
       <Alert status="error">
         <AlertIcon />

@@ -30,7 +30,7 @@ export const constTaskInitialValues: constTaskType = {
     minutes: 5,
   },
   chillTimeFacade: '',
-  priority: '',
+  priority: 'low',
   repeat: {
     shouldRepeat: false,
     startFrom: moment().format('yyyy-MM-DD'),
@@ -66,7 +66,7 @@ export const floatTaskInitialValues: floatTaskType = {
     minutes: 5,
   },
   chillTimeFacade: '',
-  priority: '',
+  priority: 'low',
   chunking: {
     shouldChunk: false,
     minChunkTime: {
