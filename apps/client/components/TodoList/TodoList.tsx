@@ -63,11 +63,11 @@ export const TodoList = () => {
         {data?.getTasks.map((task, key) => (
           <Task key={key} task={task} />
         ))}
-        <Box position="absolute" right="8rem" bottom="8rem">
+        <Box position="absolute" right="7rem" bottom="7rem">
           <Icon
             as={HiOutlinePlusCircle}
-            fontSize="100"
-            borderRadius="3rem"
+            fontSize="10vh"
+            borderRadius="100%"
             backgroundColor="white"
             color="blue.600"
             position="fixed"

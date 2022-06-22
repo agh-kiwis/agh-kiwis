@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Box, Button, Text } from '@chakra-ui/react';
 import {
   Modal,
@@ -11,11 +10,6 @@ import {
 } from '@chakra-ui/react';
 import { Chunks } from '../TodoList/Chunks';
 
-function dataConvert(milliseconds: number) {
-  return moment(milliseconds, 'x').format('DD MMM');
-}
-
-const chunkNumber = 5;
 
 export const TaskModal = (props) => {
   return (
@@ -30,12 +24,18 @@ export const TaskModal = (props) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {!props.task.isFloat ? null : (
-            <Box>
-              <Text>Deadline: {dataConvert(props.task.deadline)}</Text>
-              <Chunks chunkNumber={chunkNumber} />
-            </Box>
-          )}
+          {!props.task.isFloat ? null :
+            (
+              <Box>
+                <Text>Deadline: {props.deadline}</Text>
+                <Chunks
+                  timeConvert={props.timeConvert}
+                  timeInterval={props.timeInterval}
+                  chunks={props.task.taskBreakdowns}
+                />
+              </Box>
+            )}
+
         </ModalBody>
 
         <ModalFooter>
