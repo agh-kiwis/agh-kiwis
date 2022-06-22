@@ -52,7 +52,9 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
 
   return (
     <Wrapper>
-      <Header text="Add new task" />
+      <Box mb={4}>
+        <Header text="Add new task" />
+      </Box>
       <TaskSwitchFloat />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (

@@ -52,7 +52,9 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
 
   return (
     <Wrapper>
-      <Header text="Add new task" />
+      <Box mb={4}>
+        <Header text="Add new task" />
+      </Box>
       <TaskSwitchConst />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (

@@ -7,7 +7,7 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ text }) => {
   return (
-    <Heading textAlign={'center'} color="secondary" mb={4}>
+    <Heading textAlign={'center'} color="secondary">
       {text}
     </Heading>
   );

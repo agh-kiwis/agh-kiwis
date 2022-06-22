@@ -9,6 +9,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  HStack,
 } from '@chakra-ui/react';
 import { HiFilter, HiOutlinePlusCircle } from 'react-icons/hi';
 import { useState } from 'react';
@@ -16,6 +17,8 @@ import { useRouter } from 'next/router';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import { FilterModal } from '../Modals/FilterModal';
 import { Task } from './Task';
+import { Header } from '../Common/Header';
+import { CommonButton } from '../Buttons/CommonButton';
 
 export const TodoList = () => {
   const router = useRouter();
@@ -45,38 +48,38 @@ export const TodoList = () => {
   }
   return (
     <>
-      <Stack
-        paddingBottom="2rem"
-        color="white"
-        display="flex"
-        flexDirection="row"
-        justifyContent={'space-around'}
-      >
-        <Text fontSize="3xl" color="blue.600">
-          Tasks to do
-        </Text>
-        <Button backgroundColor="gray.400" onClick={() => setOpen(true)}>
+      <HStack mb={4} justifyContent={'space-around'}>
+        <Header text="Tasks to do" />
+
+        <Button backgroundColor="secondary" onClick={() => setOpen(true)}>
           <Icon as={HiFilter} />
         </Button>
-      </Stack>
+      </HStack>
 
       <Stack overflowX="scroll" height="80vh" position="relative">
         {data?.getTasks.map((task, key) => (
           <Task key={key} task={task} />
         ))}
-        <Box position="absolute" right="6rem" bottom="6rem">
+        {/* <Box position="absolute" right="5rem" bottom="5rem">
           <Icon
             as={HiOutlinePlusCircle}
-            fontSize="10vh"
+            fontSize="70px"
+            color="primary"
             borderRadius="100%"
             backgroundColor="white"
-            color="blue.600"
             position="fixed"
-            onClick={() => router.push('/add/float-task')}
+            onClick={() => router.push('/add/const-task')}
           />
-        </Box>
+        </Box> */}
       </Stack>
-      <FilterModal isOpen={open} close={() => setOpen(false)}/>
+      <Box mt={4}>
+        <CommonButton
+          variant="outline"
+          buttonText="Add new task"
+          onClick={() => router.push('/add/const-task')}
+        />
+      </Box>
+      <FilterModal isOpen={open} close={() => setOpen(false)} />
     </>
   );
 };

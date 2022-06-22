@@ -28,7 +28,7 @@ const Register = () => {
     });
     if (response) {
       // Handle response somehow
-      router.push('/');
+      router.push('/login');
     }
   };
 

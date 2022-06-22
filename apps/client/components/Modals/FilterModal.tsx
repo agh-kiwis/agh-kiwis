@@ -15,7 +15,7 @@ export const FilterModal = ({ isOpen, close }) => {
   return (
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent mx={4}>
         <ModalHeader>Filter options</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -23,10 +23,10 @@ export const FilterModal = ({ isOpen, close }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={close}>
+          <Button variant="outline" mr={3} onClick={close}>
             Close
           </Button>
-          <Button colorScheme="blue">Apply filters</Button>
+          <Button>Apply filters</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

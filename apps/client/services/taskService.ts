@@ -36,7 +36,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
   return {
     // TODO replace not to be hardcoded
     category: {
-      id: 1,
+      id: 2,
     },
     chillTime: getIntervalISOString(variables.chillTime),
     chunkInfo: {

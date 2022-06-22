@@ -1,4 +1,4 @@
-import { Text, Icon, Stack, Flex } from '@chakra-ui/react';
+import { Text, Icon, Stack, Flex, Box } from '@chakra-ui/react';
 import { IoTimerOutline, IoCalendarClearOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import { TaskModal } from '../Modals/TaskModal';
@@ -17,8 +17,8 @@ const timeConvert = (start: moment.Moment) => {
 const timeInterval = (breakdown: any) => {
   const start = timeConvert(breakdown.start);
   const end = timeConvert(moment(breakdown.start).add(breakdown.duration));
-  return start + " - " + end;
-}
+  return start + ' - ' + end;
+};
 
 export type TaskProps = any;
 
@@ -36,10 +36,7 @@ export const Task = (props: TaskProps) => {
         width="100%"
         onClick={() => openModal(true)}
       >
-        <Flex
-          justifyContent="center"
-          paddingBottom="0.5rem"
-        >
+        <Flex justifyContent="center" pb={2} align="center">
           <Text
             textOverflow="ellipsis"
             whiteSpace="nowrap"
@@ -48,28 +45,34 @@ export const Task = (props: TaskProps) => {
           >
             {props.task.name}
           </Text>
-          <PriorityIcon priority={props.task.priority.name} marginRight="auto" />
+          <Box mx={1} fontSize="2xl">
+            <PriorityIcon priority={props.task.priority.id} />
+          </Box>
         </Flex>
 
         <Flex justifyContent={'center'} paddingBottom={'0.5rem'}>
-          {props.task.isFloat ?
-            (
-              <Flex>
-                <Icon as={IoCalendarClearOutline} fontSize="2xl" marginRight="0.5rem" />
-                <Text>{deadlineConvert(props.task.deadline)}</Text>
-              </Flex>) :
-            (
-              <Flex>
-                <Icon as={IoTimerOutline} fontSize="2xl" marginRight="0.5rem" />
-                <Text>{timeInterval(props.task.taskBreakdowns[0])}</Text>
-              </Flex>
-            )
-          }
+          {props.task.isFloat ? (
+            <Flex>
+              <Icon
+                as={IoCalendarClearOutline}
+                fontSize="2xl"
+                marginRight="0.5rem"
+              />
+              <Text>{deadlineConvert(props.task.deadline)}</Text>
+            </Flex>
+          ) : (
+            <Flex>
+              <Icon as={IoTimerOutline} fontSize="2xl" marginRight="0.5rem" />
+              <Text>{timeInterval(props.task.taskBreakdowns[0])}</Text>
+            </Flex>
+          )}
         </Flex>
 
         {props.task.isFloat ? (
           <Flex justifyContent={'center'} paddingBottom={'0.5rem'}>
-            <Text fontSize="md">Chunks done: 0/{props.task.taskBreakdowns.length}</Text>
+            <Text fontSize="md">
+              Chunks done: 0/{props.task.taskBreakdowns.length}
+            </Text>
           </Flex>
         ) : null}
       </Stack>

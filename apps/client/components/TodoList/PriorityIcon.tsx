@@ -8,11 +8,11 @@ export const PriorityIcon = (props) => {
     <>
       {(() => {
         switch (props.priority) {
-          case 'Low':
+          case 1:
             return <HiChevronDown />;
-          case 'Medium':
+          case 2:
             return <HiChevronUp />;
-          case 'High':
+          case 3:
             return <HiChevronDoubleUp />;
           default:
             return null;
