@@ -79,6 +79,7 @@ export class TasksService {
       notifications: notification,
       priority: priority,
       deadline: createFloatTaskInput.deadline,
+      estimation: createFloatTaskInput.estimation,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
     }).save();

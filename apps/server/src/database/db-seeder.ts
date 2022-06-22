@@ -141,7 +141,7 @@ export const seedDatabase = async () => {
     // Can start now
     start: moment().startOf('day').add(1, 'days').toDate(),
 
-    estimation: moment.duration({ hour: 10 }),
+    estimation: moment.duration({ minutes: 40 }),
     chunkInfo: {
       maxChunkDuration: moment.duration({ minutes: 20 }),
       minChunkDuration: moment.duration({ minutes: 10 }),
