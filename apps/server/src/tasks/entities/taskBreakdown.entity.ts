@@ -35,8 +35,8 @@ export class TaskBreakdown extends GeneralEntity {
   @ManyToOne(() => Task, (task) => task.taskBreakdowns)
   task: Task;
 
-  @Field()
+  @Field({ nullable: true })
   @OneToOne(() => Repeat)
   @JoinColumn()
-  repeat: Repeat;
+  repeat?: Repeat;
 }
