@@ -2,9 +2,15 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -136,61 +142,49 @@ export type Mutation = {
   updateUser: User;
 };
 
-
 export type MutationAddConstTaskArgs = {
   createConstTaskInput: CreateConstTaskInput;
 };
-
 
 export type MutationAddFloatTaskArgs = {
   createFloatTaskInput: CreateFloatTaskInput;
 };
 
-
 export type MutationCreateCategoryArgs = {
   createCategoryInput: CreateCategoryInput;
 };
-
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
 
-
 export type MutationLoginArgs = {
   loginDto: AuthEmailLoginInput;
 };
-
 
 export type MutationRegisterArgs = {
   registerDto: AuthEmailRegisterInput;
 };
 
-
 export type MutationRemoveCategoryArgs = {
   id: Scalars['Int'];
 };
-
 
 export type MutationRemoveTaskArgs = {
   id: Scalars['Int'];
 };
 
-
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
 };
-
 
 export type MutationUpdateCategoryArgs = {
   updateCategoryInput: UpdateCategoryInput;
 };
 
-
 export type MutationUpdateTaskArgs = {
   updateTaskInput: UpdateTaskInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
@@ -217,21 +211,17 @@ export type Query = {
   users: Array<User>;
 };
 
-
 export type QueryFindCategoryByPrefixArgs = {
   prefix: Scalars['String'];
 };
-
 
 export type QueryFindOneArgs = {
   id: Scalars['Int'];
 };
 
-
 export type QueryGetTasksArgs = {
   getTasksInput: GetTasksInput;
 };
-
 
 export type QueryUserArgs = {
   id: Scalars['Int'];
@@ -255,7 +245,7 @@ export enum RepeatType {
   Days = 'DAYS',
   Months = 'MONTHS',
   Weeks = 'WEEKS',
-  Years = 'YEARS'
+  Years = 'YEARS',
 }
 
 export type Task = {
@@ -321,177 +311,520 @@ export type AddConstTaskMutationVariables = Exact<{
   createConstTaskInput: CreateConstTaskInput;
 }>;
 
-
-export type AddConstTaskMutation = { __typename?: 'Mutation', addConstTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+export type AddConstTaskMutation = {
+  __typename?: 'Mutation';
+  addConstTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  };
+};
 
 export type AddFloatTaskMutationVariables = Exact<{
   createFloatTaskInput: CreateFloatTaskInput;
 }>;
 
-
-export type AddFloatTaskMutation = { __typename?: 'Mutation', addFloatTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+export type AddFloatTaskMutation = {
+  __typename?: 'Mutation';
+  addFloatTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  };
+};
 
 export type CreateCategoryMutationVariables = Exact<{
   createCategoryInput: CreateCategoryInput;
 }>;
 
-
-export type CreateCategoryMutation = { __typename?: 'Mutation', createCategory: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } } };
+export type CreateCategoryMutation = {
+  __typename?: 'Mutation';
+  createCategory: {
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  };
+};
 
 export type CreateUserMutationVariables = Exact<{
   createUserInput: CreateUserInput;
 }>;
 
-
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  };
+};
 
 export type LoginMutationVariables = Exact<{
   loginDto: AuthEmailLoginInput;
 }>;
 
+export type LoginMutation = {
+  __typename?: 'Mutation';
+  login: {
+    __typename?: 'AuthResponse';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+    token?: string | null;
+  };
+};
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
 
 export type RegisterMutationVariables = Exact<{
   registerDto: AuthEmailRegisterInput;
 }>;
 
-
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
+export type RegisterMutation = {
+  __typename?: 'Mutation';
+  register: {
+    __typename?: 'AuthResponse';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+    token?: string | null;
+  };
+};
 
 export type RemoveCategoryMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
-
-export type RemoveCategoryMutation = { __typename?: 'Mutation', removeCategory: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } } };
+export type RemoveCategoryMutation = {
+  __typename?: 'Mutation';
+  removeCategory: {
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  };
+};
 
 export type RemoveTaskMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
-
-export type RemoveTaskMutation = { __typename?: 'Mutation', removeTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+export type RemoveTaskMutation = {
+  __typename?: 'Mutation';
+  removeTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  };
+};
 
 export type RemoveUserMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
-
-export type RemoveUserMutation = { __typename?: 'Mutation', removeUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type RemoveUserMutation = {
+  __typename?: 'Mutation';
+  removeUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  };
+};
 
 export type UpdateCategoryMutationVariables = Exact<{
   updateCategoryInput: UpdateCategoryInput;
 }>;
 
-
-export type UpdateCategoryMutation = { __typename?: 'Mutation', updateCategory: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } } };
+export type UpdateCategoryMutation = {
+  __typename?: 'Mutation';
+  updateCategory: {
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  };
+};
 
 export type UpdateTaskMutationVariables = Exact<{
   updateTaskInput: UpdateTaskInput;
 }>;
 
-
-export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+export type UpdateTaskMutation = {
+  __typename?: 'Mutation';
+  updateTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  };
+};
 
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
 
-
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type UpdateUserMutation = {
+  __typename?: 'Mutation';
+  updateUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  };
+};
 
 export type FindCategoryByPrefixQueryVariables = Exact<{
   prefix: Scalars['String'];
 }>;
 
-
-export type FindCategoryByPrefixQuery = { __typename?: 'Query', findCategoryByPrefix: Array<{ __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }> };
+export type FindCategoryByPrefixQuery = {
+  __typename?: 'Query';
+  findCategoryByPrefix: Array<{
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  }>;
+};
 
 export type FindOneQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
-
-export type FindOneQuery = { __typename?: 'Query', findOne: { __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null } };
+export type FindOneQuery = {
+  __typename?: 'Query';
+  findOne: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  };
+};
 
 export type GetTasksQueryVariables = Exact<{
   getTasksInput: GetTasksInput;
 }>;
 
+export type GetTasksQuery = {
+  __typename?: 'Query';
+  getTasks: Array<{
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    priority: { __typename?: 'Priority'; id: number; name: string };
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      };
+    }> | null;
+  }>;
+};
 
-export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, priority: { __typename?: 'Priority', id: number, name: string }, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } }> | null }> };
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type MeQuery = {
+  __typename?: 'Query';
+  me: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  };
+};
 
 export type UserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
+export type UserQuery = {
+  __typename?: 'Query';
+  user: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  };
+};
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type UsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null }> };
-
+export type UsersQuery = {
+  __typename?: 'Query';
+  users: Array<{
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    name?: string | null;
+  }>;
+};
 
 export const AddConstTaskDocument = gql`
-    mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
-  addConstTask(createConstTaskInput: $createConstTaskInput) {
-    category {
-      color {
-        hexCode
+  mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
+    addConstTask(createConstTaskInput: $createConstTaskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
-export type AddConstTaskMutationFn = Apollo.MutationFunction<AddConstTaskMutation, AddConstTaskMutationVariables>;
+`;
+export type AddConstTaskMutationFn = Apollo.MutationFunction<
+  AddConstTaskMutation,
+  AddConstTaskMutationVariables
+>;
 
 /**
  * __useAddConstTaskMutation__
@@ -510,60 +843,77 @@ export type AddConstTaskMutationFn = Apollo.MutationFunction<AddConstTaskMutatio
  *   },
  * });
  */
-export function useAddConstTaskMutation(baseOptions?: Apollo.MutationHookOptions<AddConstTaskMutation, AddConstTaskMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddConstTaskMutation, AddConstTaskMutationVariables>(AddConstTaskDocument, options);
-      }
-export type AddConstTaskMutationHookResult = ReturnType<typeof useAddConstTaskMutation>;
-export type AddConstTaskMutationResult = Apollo.MutationResult<AddConstTaskMutation>;
-export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<AddConstTaskMutation, AddConstTaskMutationVariables>;
+export function useAddConstTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddConstTaskMutation,
+    AddConstTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddConstTaskMutation,
+    AddConstTaskMutationVariables
+  >(AddConstTaskDocument, options);
+}
+export type AddConstTaskMutationHookResult = ReturnType<
+  typeof useAddConstTaskMutation
+>;
+export type AddConstTaskMutationResult =
+  Apollo.MutationResult<AddConstTaskMutation>;
+export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<
+  AddConstTaskMutation,
+  AddConstTaskMutationVariables
+>;
 export const AddFloatTaskDocument = gql`
-    mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
-  addFloatTask(createFloatTaskInput: $createFloatTaskInput) {
-    category {
-      color {
-        hexCode
+  mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
+    addFloatTask(createFloatTaskInput: $createFloatTaskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
-export type AddFloatTaskMutationFn = Apollo.MutationFunction<AddFloatTaskMutation, AddFloatTaskMutationVariables>;
+`;
+export type AddFloatTaskMutationFn = Apollo.MutationFunction<
+  AddFloatTaskMutation,
+  AddFloatTaskMutationVariables
+>;
 
 /**
  * __useAddFloatTaskMutation__
@@ -582,26 +932,43 @@ export type AddFloatTaskMutationFn = Apollo.MutationFunction<AddFloatTaskMutatio
  *   },
  * });
  */
-export function useAddFloatTaskMutation(baseOptions?: Apollo.MutationHookOptions<AddFloatTaskMutation, AddFloatTaskMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddFloatTaskMutation, AddFloatTaskMutationVariables>(AddFloatTaskDocument, options);
-      }
-export type AddFloatTaskMutationHookResult = ReturnType<typeof useAddFloatTaskMutation>;
-export type AddFloatTaskMutationResult = Apollo.MutationResult<AddFloatTaskMutation>;
-export type AddFloatTaskMutationOptions = Apollo.BaseMutationOptions<AddFloatTaskMutation, AddFloatTaskMutationVariables>;
-export const CreateCategoryDocument = gql`
-    mutation createCategory($createCategoryInput: CreateCategoryInput!) {
-  createCategory(createCategoryInput: $createCategoryInput) {
-    color {
-      hexCode
-      id
-    }
-    id
-    name
-  }
+export function useAddFloatTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddFloatTaskMutation,
+    AddFloatTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddFloatTaskMutation,
+    AddFloatTaskMutationVariables
+  >(AddFloatTaskDocument, options);
 }
-    `;
-export type CreateCategoryMutationFn = Apollo.MutationFunction<CreateCategoryMutation, CreateCategoryMutationVariables>;
+export type AddFloatTaskMutationHookResult = ReturnType<
+  typeof useAddFloatTaskMutation
+>;
+export type AddFloatTaskMutationResult =
+  Apollo.MutationResult<AddFloatTaskMutation>;
+export type AddFloatTaskMutationOptions = Apollo.BaseMutationOptions<
+  AddFloatTaskMutation,
+  AddFloatTaskMutationVariables
+>;
+export const CreateCategoryDocument = gql`
+  mutation createCategory($createCategoryInput: CreateCategoryInput!) {
+    createCategory(createCategoryInput: $createCategoryInput) {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
+export type CreateCategoryMutationFn = Apollo.MutationFunction<
+  CreateCategoryMutation,
+  CreateCategoryMutationVariables
+>;
 
 /**
  * __useCreateCategoryMutation__
@@ -620,25 +987,42 @@ export type CreateCategoryMutationFn = Apollo.MutationFunction<CreateCategoryMut
  *   },
  * });
  */
-export function useCreateCategoryMutation(baseOptions?: Apollo.MutationHookOptions<CreateCategoryMutation, CreateCategoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCategoryMutation, CreateCategoryMutationVariables>(CreateCategoryDocument, options);
-      }
-export type CreateCategoryMutationHookResult = ReturnType<typeof useCreateCategoryMutation>;
-export type CreateCategoryMutationResult = Apollo.MutationResult<CreateCategoryMutation>;
-export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<CreateCategoryMutation, CreateCategoryMutationVariables>;
-export const CreateUserDocument = gql`
-    mutation createUser($createUserInput: CreateUserInput!) {
-  createUser(createUserInput: $createUserInput) {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+export function useCreateCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateCategoryMutation,
+    CreateCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateCategoryMutation,
+    CreateCategoryMutationVariables
+  >(CreateCategoryDocument, options);
 }
-    `;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+export type CreateCategoryMutationHookResult = ReturnType<
+  typeof useCreateCategoryMutation
+>;
+export type CreateCategoryMutationResult =
+  Apollo.MutationResult<CreateCategoryMutation>;
+export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<
+  CreateCategoryMutation,
+  CreateCategoryMutationVariables
+>;
+export const CreateUserDocument = gql`
+  mutation createUser($createUserInput: CreateUserInput!) {
+    createUser(createUserInput: $createUserInput) {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
+  }
+`;
+export type CreateUserMutationFn = Apollo.MutationFunction<
+  CreateUserMutation,
+  CreateUserMutationVariables
+>;
 
 /**
  * __useCreateUserMutation__
@@ -657,26 +1041,43 @@ export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, C
  *   },
  * });
  */
-export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
-      }
-export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
-export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
-export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
-export const LoginDocument = gql`
-    mutation login($loginDto: AuthEmailLoginInput!) {
-  login(loginDto: $loginDto) {
-    birthDate
-    email
-    gender
-    id
-    name
-    token
-  }
+export function useCreateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUserMutation,
+    CreateUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(
+    CreateUserDocument,
+    options
+  );
 }
-    `;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+export type CreateUserMutationHookResult = ReturnType<
+  typeof useCreateUserMutation
+>;
+export type CreateUserMutationResult =
+  Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserMutation,
+  CreateUserMutationVariables
+>;
+export const LoginDocument = gql`
+  mutation login($loginDto: AuthEmailLoginInput!) {
+    login(loginDto: $loginDto) {
+      birthDate
+      email
+      gender
+      id
+      name
+      token
+    }
+  }
+`;
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
 
 /**
  * __useLoginMutation__
@@ -695,19 +1096,33 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  *   },
  * });
  */
-export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
+export function useLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    options
+  );
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
+>;
 export const LogoutDocument = gql`
-    mutation logout {
-  logout
-}
-    `;
-export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+  mutation logout {
+    logout
+  }
+`;
+export type LogoutMutationFn = Apollo.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 
 /**
  * __useLogoutMutation__
@@ -725,26 +1140,40 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  *   },
  * });
  */
-export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
-      }
+export function useLogoutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LogoutMutation,
+    LogoutMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    options
+  );
+}
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 export const RegisterDocument = gql`
-    mutation register($registerDto: AuthEmailRegisterInput!) {
-  register(registerDto: $registerDto) {
-    birthDate
-    email
-    gender
-    id
-    name
-    token
+  mutation register($registerDto: AuthEmailRegisterInput!) {
+    register(registerDto: $registerDto) {
+      birthDate
+      email
+      gender
+      id
+      name
+      token
+    }
   }
-}
-    `;
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+`;
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
 
 /**
  * __useRegisterMutation__
@@ -763,26 +1192,40 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  *   },
  * });
  */
-export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
-      }
+export function useRegisterMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RegisterMutation,
+    RegisterMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
+    RegisterDocument,
+    options
+  );
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
 export const RemoveCategoryDocument = gql`
-    mutation removeCategory($id: Int!) {
-  removeCategory(id: $id) {
-    color {
-      hexCode
+  mutation removeCategory($id: Int!) {
+    removeCategory(id: $id) {
+      color {
+        hexCode
+        id
+      }
       id
+      name
     }
-    id
-    name
   }
-}
-    `;
-export type RemoveCategoryMutationFn = Apollo.MutationFunction<RemoveCategoryMutation, RemoveCategoryMutationVariables>;
+`;
+export type RemoveCategoryMutationFn = Apollo.MutationFunction<
+  RemoveCategoryMutation,
+  RemoveCategoryMutationVariables
+>;
 
 /**
  * __useRemoveCategoryMutation__
@@ -801,60 +1244,77 @@ export type RemoveCategoryMutationFn = Apollo.MutationFunction<RemoveCategoryMut
  *   },
  * });
  */
-export function useRemoveCategoryMutation(baseOptions?: Apollo.MutationHookOptions<RemoveCategoryMutation, RemoveCategoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveCategoryMutation, RemoveCategoryMutationVariables>(RemoveCategoryDocument, options);
-      }
-export type RemoveCategoryMutationHookResult = ReturnType<typeof useRemoveCategoryMutation>;
-export type RemoveCategoryMutationResult = Apollo.MutationResult<RemoveCategoryMutation>;
-export type RemoveCategoryMutationOptions = Apollo.BaseMutationOptions<RemoveCategoryMutation, RemoveCategoryMutationVariables>;
+export function useRemoveCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveCategoryMutation,
+    RemoveCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RemoveCategoryMutation,
+    RemoveCategoryMutationVariables
+  >(RemoveCategoryDocument, options);
+}
+export type RemoveCategoryMutationHookResult = ReturnType<
+  typeof useRemoveCategoryMutation
+>;
+export type RemoveCategoryMutationResult =
+  Apollo.MutationResult<RemoveCategoryMutation>;
+export type RemoveCategoryMutationOptions = Apollo.BaseMutationOptions<
+  RemoveCategoryMutation,
+  RemoveCategoryMutationVariables
+>;
 export const RemoveTaskDocument = gql`
-    mutation removeTask($id: Int!) {
-  removeTask(id: $id) {
-    category {
-      color {
-        hexCode
+  mutation removeTask($id: Int!) {
+    removeTask(id: $id) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
-export type RemoveTaskMutationFn = Apollo.MutationFunction<RemoveTaskMutation, RemoveTaskMutationVariables>;
+`;
+export type RemoveTaskMutationFn = Apollo.MutationFunction<
+  RemoveTaskMutation,
+  RemoveTaskMutationVariables
+>;
 
 /**
  * __useRemoveTaskMutation__
@@ -873,25 +1333,42 @@ export type RemoveTaskMutationFn = Apollo.MutationFunction<RemoveTaskMutation, R
  *   },
  * });
  */
-export function useRemoveTaskMutation(baseOptions?: Apollo.MutationHookOptions<RemoveTaskMutation, RemoveTaskMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveTaskMutation, RemoveTaskMutationVariables>(RemoveTaskDocument, options);
-      }
-export type RemoveTaskMutationHookResult = ReturnType<typeof useRemoveTaskMutation>;
-export type RemoveTaskMutationResult = Apollo.MutationResult<RemoveTaskMutation>;
-export type RemoveTaskMutationOptions = Apollo.BaseMutationOptions<RemoveTaskMutation, RemoveTaskMutationVariables>;
-export const RemoveUserDocument = gql`
-    mutation removeUser($id: Int!) {
-  removeUser(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+export function useRemoveTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveTaskMutation,
+    RemoveTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveTaskMutation, RemoveTaskMutationVariables>(
+    RemoveTaskDocument,
+    options
+  );
 }
-    `;
-export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, RemoveUserMutationVariables>;
+export type RemoveTaskMutationHookResult = ReturnType<
+  typeof useRemoveTaskMutation
+>;
+export type RemoveTaskMutationResult =
+  Apollo.MutationResult<RemoveTaskMutation>;
+export type RemoveTaskMutationOptions = Apollo.BaseMutationOptions<
+  RemoveTaskMutation,
+  RemoveTaskMutationVariables
+>;
+export const RemoveUserDocument = gql`
+  mutation removeUser($id: Int!) {
+    removeUser(id: $id) {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
+  }
+`;
+export type RemoveUserMutationFn = Apollo.MutationFunction<
+  RemoveUserMutation,
+  RemoveUserMutationVariables
+>;
 
 /**
  * __useRemoveUserMutation__
@@ -910,26 +1387,43 @@ export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, R
  *   },
  * });
  */
-export function useRemoveUserMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserMutation, RemoveUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(RemoveUserDocument, options);
-      }
-export type RemoveUserMutationHookResult = ReturnType<typeof useRemoveUserMutation>;
-export type RemoveUserMutationResult = Apollo.MutationResult<RemoveUserMutation>;
-export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<RemoveUserMutation, RemoveUserMutationVariables>;
-export const UpdateCategoryDocument = gql`
-    mutation updateCategory($updateCategoryInput: UpdateCategoryInput!) {
-  updateCategory(updateCategoryInput: $updateCategoryInput) {
-    color {
-      hexCode
-      id
-    }
-    id
-    name
-  }
+export function useRemoveUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveUserMutation,
+    RemoveUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(
+    RemoveUserDocument,
+    options
+  );
 }
-    `;
-export type UpdateCategoryMutationFn = Apollo.MutationFunction<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
+export type RemoveUserMutationHookResult = ReturnType<
+  typeof useRemoveUserMutation
+>;
+export type RemoveUserMutationResult =
+  Apollo.MutationResult<RemoveUserMutation>;
+export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
+  RemoveUserMutation,
+  RemoveUserMutationVariables
+>;
+export const UpdateCategoryDocument = gql`
+  mutation updateCategory($updateCategoryInput: UpdateCategoryInput!) {
+    updateCategory(updateCategoryInput: $updateCategoryInput) {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
+export type UpdateCategoryMutationFn = Apollo.MutationFunction<
+  UpdateCategoryMutation,
+  UpdateCategoryMutationVariables
+>;
 
 /**
  * __useUpdateCategoryMutation__
@@ -948,60 +1442,77 @@ export type UpdateCategoryMutationFn = Apollo.MutationFunction<UpdateCategoryMut
  *   },
  * });
  */
-export function useUpdateCategoryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCategoryMutation, UpdateCategoryMutationVariables>(UpdateCategoryDocument, options);
-      }
-export type UpdateCategoryMutationHookResult = ReturnType<typeof useUpdateCategoryMutation>;
-export type UpdateCategoryMutationResult = Apollo.MutationResult<UpdateCategoryMutation>;
-export type UpdateCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
+export function useUpdateCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateCategoryMutation,
+    UpdateCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateCategoryMutation,
+    UpdateCategoryMutationVariables
+  >(UpdateCategoryDocument, options);
+}
+export type UpdateCategoryMutationHookResult = ReturnType<
+  typeof useUpdateCategoryMutation
+>;
+export type UpdateCategoryMutationResult =
+  Apollo.MutationResult<UpdateCategoryMutation>;
+export type UpdateCategoryMutationOptions = Apollo.BaseMutationOptions<
+  UpdateCategoryMutation,
+  UpdateCategoryMutationVariables
+>;
 export const UpdateTaskDocument = gql`
-    mutation updateTask($updateTaskInput: UpdateTaskInput!) {
-  updateTask(updateTaskInput: $updateTaskInput) {
-    category {
-      color {
-        hexCode
+  mutation updateTask($updateTaskInput: UpdateTaskInput!) {
+    updateTask(updateTaskInput: $updateTaskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
-export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, UpdateTaskMutationVariables>;
+`;
+export type UpdateTaskMutationFn = Apollo.MutationFunction<
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables
+>;
 
 /**
  * __useUpdateTaskMutation__
@@ -1020,25 +1531,42 @@ export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, U
  *   },
  * });
  */
-export function useUpdateTaskMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTaskMutation, UpdateTaskMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(UpdateTaskDocument, options);
-      }
-export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutation>;
-export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
-export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
-export const UpdateUserDocument = gql`
-    mutation updateUser($updateUserInput: UpdateUserInput!) {
-  updateUser(updateUserInput: $updateUserInput) {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+export function useUpdateTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateTaskMutation,
+    UpdateTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(
+    UpdateTaskDocument,
+    options
+  );
 }
-    `;
-export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+export type UpdateTaskMutationHookResult = ReturnType<
+  typeof useUpdateTaskMutation
+>;
+export type UpdateTaskMutationResult =
+  Apollo.MutationResult<UpdateTaskMutation>;
+export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables
+>;
+export const UpdateUserDocument = gql`
+  mutation updateUser($updateUserInput: UpdateUserInput!) {
+    updateUser(updateUserInput: $updateUserInput) {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
+  }
+`;
+export type UpdateUserMutationFn = Apollo.MutationFunction<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
 
 /**
  * __useUpdateUserMutation__
@@ -1057,25 +1585,39 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *   },
  * });
  */
-export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
-      }
-export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
-export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
-export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const FindCategoryByPrefixDocument = gql`
-    query findCategoryByPrefix($prefix: String!) {
-  findCategoryByPrefix(prefix: $prefix) {
-    color {
-      hexCode
-      id
-    }
-    id
-    name
-  }
+export function useUpdateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
+    UpdateUserDocument,
+    options
+  );
 }
-    `;
+export type UpdateUserMutationHookResult = ReturnType<
+  typeof useUpdateUserMutation
+>;
+export type UpdateUserMutationResult =
+  Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
+export const FindCategoryByPrefixDocument = gql`
+  query findCategoryByPrefix($prefix: String!) {
+    findCategoryByPrefix(prefix: $prefix) {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useFindCategoryByPrefixQuery__
@@ -1093,63 +1635,86 @@ export const FindCategoryByPrefixDocument = gql`
  *   },
  * });
  */
-export function useFindCategoryByPrefixQuery(baseOptions: Apollo.QueryHookOptions<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>(FindCategoryByPrefixDocument, options);
-      }
-export function useFindCategoryByPrefixLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>(FindCategoryByPrefixDocument, options);
-        }
-export type FindCategoryByPrefixQueryHookResult = ReturnType<typeof useFindCategoryByPrefixQuery>;
-export type FindCategoryByPrefixLazyQueryHookResult = ReturnType<typeof useFindCategoryByPrefixLazyQuery>;
-export type FindCategoryByPrefixQueryResult = Apollo.QueryResult<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>;
+export function useFindCategoryByPrefixQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >(FindCategoryByPrefixDocument, options);
+}
+export function useFindCategoryByPrefixLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >(FindCategoryByPrefixDocument, options);
+}
+export type FindCategoryByPrefixQueryHookResult = ReturnType<
+  typeof useFindCategoryByPrefixQuery
+>;
+export type FindCategoryByPrefixLazyQueryHookResult = ReturnType<
+  typeof useFindCategoryByPrefixLazyQuery
+>;
+export type FindCategoryByPrefixQueryResult = Apollo.QueryResult<
+  FindCategoryByPrefixQuery,
+  FindCategoryByPrefixQueryVariables
+>;
 export const FindOneDocument = gql`
-    query findOne($id: Int!) {
-  findOne(id: $id) {
-    category {
-      color {
-        hexCode
+  query findOne($id: Int!) {
+    findOne(id: $id) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useFindOneQuery__
@@ -1167,63 +1732,76 @@ export const FindOneDocument = gql`
  *   },
  * });
  */
-export function useFindOneQuery(baseOptions: Apollo.QueryHookOptions<FindOneQuery, FindOneQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindOneQuery, FindOneQueryVariables>(FindOneDocument, options);
-      }
-export function useFindOneLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindOneQuery, FindOneQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindOneQuery, FindOneQueryVariables>(FindOneDocument, options);
-        }
+export function useFindOneQuery(
+  baseOptions: Apollo.QueryHookOptions<FindOneQuery, FindOneQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindOneQuery, FindOneQueryVariables>(
+    FindOneDocument,
+    options
+  );
+}
+export function useFindOneLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindOneQuery, FindOneQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindOneQuery, FindOneQueryVariables>(
+    FindOneDocument,
+    options
+  );
+}
 export type FindOneQueryHookResult = ReturnType<typeof useFindOneQuery>;
 export type FindOneLazyQueryHookResult = ReturnType<typeof useFindOneLazyQuery>;
-export type FindOneQueryResult = Apollo.QueryResult<FindOneQuery, FindOneQueryVariables>;
+export type FindOneQueryResult = Apollo.QueryResult<
+  FindOneQuery,
+  FindOneQueryVariables
+>;
 export const GetTasksDocument = gql`
-    query getTasks($getTasksInput: GetTasksInput!) {
-  getTasks(getTasksInput: $getTasksInput) {
-    category {
-      color {
-        hexCode
+  query getTasks($getTasksInput: GetTasksInput!) {
+    getTasks(getTasksInput: $getTasksInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority {
+        id
+        name
+      }
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTasksQuery__
@@ -1241,28 +1819,46 @@ export const GetTasksDocument = gql`
  *   },
  * });
  */
-export function useGetTasksQuery(baseOptions: Apollo.QueryHookOptions<GetTasksQuery, GetTasksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTasksQuery, GetTasksQueryVariables>(GetTasksDocument, options);
-      }
-export function useGetTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTasksQuery, GetTasksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTasksQuery, GetTasksQueryVariables>(GetTasksDocument, options);
-        }
-export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
-export type GetTasksLazyQueryHookResult = ReturnType<typeof useGetTasksLazyQuery>;
-export type GetTasksQueryResult = Apollo.QueryResult<GetTasksQuery, GetTasksQueryVariables>;
-export const MeDocument = gql`
-    query me {
-  me {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+export function useGetTasksQuery(
+  baseOptions: Apollo.QueryHookOptions<GetTasksQuery, GetTasksQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTasksQuery, GetTasksQueryVariables>(
+    GetTasksDocument,
+    options
+  );
 }
-    `;
+export function useGetTasksLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTasksQuery,
+    GetTasksQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTasksQuery, GetTasksQueryVariables>(
+    GetTasksDocument,
+    options
+  );
+}
+export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
+export type GetTasksLazyQueryHookResult = ReturnType<
+  typeof useGetTasksLazyQuery
+>;
+export type GetTasksQueryResult = Apollo.QueryResult<
+  GetTasksQuery,
+  GetTasksQueryVariables
+>;
+export const MeDocument = gql`
+  query me {
+    me {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useMeQuery__
@@ -1279,28 +1875,32 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-      }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-        }
+export function useMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export function useMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserDocument = gql`
-    query user($id: Int!) {
-  user(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
+  query user($id: Int!) {
+    user(id: $id) {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useUserQuery__
@@ -1318,28 +1918,35 @@ export const UserDocument = gql`
  *   },
  * });
  */
-export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-      }
-export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-        }
+export function useUserQuery(
+  baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+}
+export function useUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    options
+  );
+}
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
-    query users {
-  users {
-    birthDate
-    email
-    gender
-    id
-    name
+  query users {
+    users {
+      birthDate
+      email
+      gender
+      id
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useUsersQuery__
@@ -1356,25 +1963,37 @@ export const UsersDocument = gql`
  *   },
  * });
  */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-      }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-        }
+export function useUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UsersQuery, UsersQueryVariables>(
+    UsersDocument,
+    options
+  );
+}
+export function useUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(
+    UsersDocument,
+    options
+  );
+}
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export type UsersQueryResult = Apollo.QueryResult<
+  UsersQuery,
+  UsersQueryVariables
+>;
 
-      export interface PossibleTypesResultData {
-        possibleTypes: {
-          [key: string]: string[]
-        }
-      }
-      const result: PossibleTypesResultData = {
-  "possibleTypes": {}
+export interface PossibleTypesResultData {
+  possibleTypes: {
+    [key: string]: string[];
+  };
+}
+const result: PossibleTypesResultData = {
+  possibleTypes: {},
 };
-      export default result;
-    
+export default result;
