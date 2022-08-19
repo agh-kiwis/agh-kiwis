@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
-import { constTaskType } from '../Tasks/ConstTaskForm';
+import { constTaskType } from '../../types/TaskTypes';
 
 type DependentStartTimeFieldProps = {
   name: string;
@@ -21,11 +21,5 @@ export const DependentStartTimeField: React.FC<
     }
   }, [name, setFieldValue, values.startTime.date, values.startTime.time]);
 
-  return (
-    <InputField
-      name="startTimeFacade"
-      placeholder="Start time"
-      label="Start time"
-    />
-  );
+  return <InputField name={name} label="Start time" />;
 };

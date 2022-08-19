@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { InputField } from '../Common/InputField';
-import { constTaskType } from '../Tasks/ConstTaskForm';
+import { constTaskType } from '../../types/TaskTypes';
 
 type DependentRepeatEveryFieldProps = {
   name: string;
@@ -26,11 +26,5 @@ export const DependentRepeatEveryField: React.FC<
     values.repeat.repeatEvery.type,
   ]);
 
-  return (
-    <InputField
-      name="repeatEveryFacade"
-      placeholder="Repeat every"
-      label="Repeat every"
-    />
-  );
+  return <InputField name={name} label="Repeat every" />;
 };

@@ -1,13 +1,15 @@
+import React from 'react';
+import { useRouter } from 'next/router';
+import { Form, Formik } from 'formik';
 import {
   Box,
   Flex,
-  Heading,
+  FormLabel,
   InputGroup,
+  Select,
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import React from 'react';
 import { CommonButton } from '../Buttons/CommonButton';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
@@ -25,6 +27,9 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
+import { constTaskType } from '../../types/TaskTypes';
+import { TaskSwitchConst } from '../Buttons/TaskSwitchConst';
+import { Header } from '../Common/Header';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;
@@ -32,43 +37,7 @@ type ConstTaskCreationFormProps = {
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values) => void;
-};
-
-export type constTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
-  startTime: {
-    date: string;
-    time: string;
-  };
-  startTimeFacade: string;
-  duration: {
-    hours: number;
-    minutes: number;
-  };
-  durationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
-  priority: string;
-  repeat: {
-    shouldRepeat: boolean;
-    startFrom: string;
-    repeatEvery: {
-      type: string;
-      amount: number;
-    };
-  };
-  repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
+  onSubmit: (values: constTaskType) => void;
 };
 
 export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
@@ -79,11 +48,14 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
 }) => {
+  const router = useRouter();
+
   return (
     <Wrapper>
-      <Heading textAlign={'center'} color="secondary" mb={4}>
-        Add new task
-      </Heading>
+      <Box mb={4}>
+        <Header text="Add new task" />
+      </Box>
+      <TaskSwitchConst />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
@@ -96,10 +68,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                       handleChange={setFieldValue}
                       name="category.color"
                     >
-                      <ControlledInputAddon
-                        addonContent="color"
-                        name="category.color"
-                      />
+                      <ControlledInputAddon name="category.color" />
                     </ColorPicker>
                     <InputField
                       name="category.name"
@@ -146,11 +115,15 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                 </Box>
               </Flex>
               <Box>
-                <InputField
+                <FormLabel htmlFor="priority">Priority</FormLabel>
+                <Select
                   name="priority"
-                  placeholder="Priority"
-                  label="Priority"
-                />
+                  onChange={(e) => setFieldValue('priority', e.target.value)}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </Select>
               </Box>
               {values.repeat.shouldRepeat ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
@@ -209,6 +182,13 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                   type="submit"
                   isLoading={isSubmitting}
                   buttonText="Add"
+                />
+              </Box>
+              <Box>
+                <CommonButton
+                  variant="outline"
+                  buttonText="Cancel"
+                  onClick={() => router.push('/')}
                 />
               </Box>
             </VStack>

@@ -4,9 +4,9 @@ import {
   LongIntervalSelectType,
 } from '../../components/Pickers/LongIntervalPicker';
 import { NumberInputType } from '../../components/Pickers/IntervalPicker';
-import { constTaskType } from '../../components/Tasks/ConstTaskForm';
-import { floatTaskType } from '../../components/Tasks/FloatTaskForm';
 import { roundToMinutes } from '../../components/Utils/MomentUtils';
+import { constTaskType } from '../../types/TaskTypes';
+import { floatTaskType } from '../../types/TaskTypes';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',
@@ -30,7 +30,7 @@ export const constTaskInitialValues: constTaskType = {
     minutes: 5,
   },
   chillTimeFacade: '',
-  priority: '',
+  priority: 'low',
   repeat: {
     shouldRepeat: false,
     startFrom: moment().format('yyyy-MM-DD'),
@@ -58,24 +58,33 @@ export const floatTaskInitialValues: floatTaskType = {
   },
   deadlineFacade: '',
   timeEstimation: {
-    hours: 0,
-    minutes: 15,
+    hours: 1,
+    minutes: 0,
   },
   timeEstimationFacade: '',
   chillTime: {
     minutes: 5,
   },
   chillTimeFacade: '',
-  priority: '',
+  priority: 'low',
   chunking: {
     shouldChunk: false,
-    numberOfChunks: 1,
-    repeatEvery: {
-      type: 'Day',
-      amount: 1,
+    minChunkTime: {
+      minutes: 10,
+    },
+    maxChunkTime: {
+      hours: 1,
+      minutes: 0,
+    },
+    maxChunksNumber: 4,
+    minTimeBetweenChunks: {
+      hours: 0,
+      minutes: 30,
     },
   },
-  repeatEveryFacade: '',
+  minChunkTimeFacade: '',
+  maxChunkTimeFacade: '',
+  minTimeBetweenChunksFacade: '',
   notify: false,
   autoresolve: false,
 };
@@ -84,7 +93,7 @@ export const durationInputFields: NumberInputType[] = [
   {
     minValue: 0,
     maxValue: 24,
-    defaultValue: 0,
+    defaultValue: constTaskInitialValues.duration.hours,
     step: 1,
     label: 'Hours',
     name: 'duration.hours',
@@ -92,7 +101,7 @@ export const durationInputFields: NumberInputType[] = [
   {
     minValue: 0,
     maxValue: 60,
-    defaultValue: 15,
+    defaultValue: constTaskInitialValues.duration.minutes,
     step: 5,
     label: 'Minutes',
     name: 'duration.minutes',
@@ -110,10 +119,78 @@ export const chillTimeInputFields: NumberInputType[] = [
   },
 ];
 
+export const estimationInputFields: NumberInputType[] = [
+  {
+    minValue: 0,
+    maxValue: 24,
+    defaultValue: floatTaskInitialValues.timeEstimation.hours,
+    step: 1,
+    label: 'Hours',
+    name: 'timeEstimation.hours',
+  },
+  {
+    minValue: 0,
+    maxValue: 60,
+    defaultValue: floatTaskInitialValues.timeEstimation.minutes,
+    step: 5,
+    label: 'Minutes',
+    name: 'timeEstimation.minutes',
+  },
+];
+
+export const minChunkTimeInputFields: NumberInputType[] = [
+  {
+    minValue: 0,
+    maxValue: 60,
+    defaultValue: floatTaskInitialValues.chunking.minChunkTime.minutes,
+    step: 5,
+    label: 'Minutes',
+    name: 'chunking.minChunkTime.minutes',
+  },
+];
+
+export const maxChunkTimeInputFields: NumberInputType[] = [
+  {
+    minValue: 0,
+    maxValue: 24,
+    defaultValue: floatTaskInitialValues.chunking.maxChunkTime.hours,
+    step: 1,
+    label: 'Hours',
+    name: 'chunking.maxChunkTime.hours',
+  },
+  {
+    minValue: 0,
+    maxValue: 60,
+    defaultValue: floatTaskInitialValues.chunking.maxChunkTime.minutes,
+    step: 5,
+    label: 'Minutes',
+    name: 'chunking.maxChunkTime.minutes',
+  },
+];
+
+export const minTimeBetweenChunksInputFields: NumberInputType[] = [
+  {
+    minValue: 0,
+    maxValue: 24,
+    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.hours,
+    step: 1,
+    label: 'Hours',
+    name: 'chunking.minTimeBetweenChunks.hours',
+  },
+  {
+    minValue: 0,
+    maxValue: 60,
+    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.minutes,
+    step: 5,
+    label: 'Minutes',
+    name: 'chunking.minTimeBetweenChunks.minutes',
+  },
+];
+
 export const repeatEverySelectField: LongIntervalSelectType = {
   name: 'repeat.repeatEvery.type',
   label: 'Type',
-  options: ['Day', 'Week', 'Month'],
+  options: ['Day', 'Week', 'Month', 'Year'],
 };
 
 export const repeatEveryAmountFields: LongIntervalAmountType[] = [
@@ -139,6 +216,14 @@ export const repeatEveryAmountFields: LongIntervalAmountType[] = [
     defaultValue: 1,
     step: 1,
     label: 'Month',
+    name: 'repeat.repeatEvery.amount',
+  },
+  {
+    minValue: 1,
+    maxValue: 10,
+    defaultValue: 1,
+    step: 1,
+    label: 'Year',
     name: 'repeat.repeatEvery.amount',
   },
 ];

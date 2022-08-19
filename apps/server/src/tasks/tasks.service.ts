@@ -79,6 +79,7 @@ export class TasksService {
       notifications: notification,
       priority: priority,
       deadline: createFloatTaskInput.deadline,
+      estimation: createFloatTaskInput.estimation,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
     }).save();
@@ -90,6 +91,7 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
       where: {
         user: user,
         ...getTasksInput.filterOptions,

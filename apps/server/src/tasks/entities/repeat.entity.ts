@@ -17,7 +17,7 @@ export class Repeat extends GeneralEntity {
   id: number;
 
   @Field()
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp with time zone' })
   startFrom: Date;
 
   @Field()

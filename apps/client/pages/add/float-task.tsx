@@ -1,23 +1,48 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
 import {
   chillTimeInputFields,
-  durationInputFields,
+  estimationInputFields,
   floatTaskInitialValues,
-  repeatEveryAmountFields,
-  repeatEverySelectField,
+  maxChunkTimeInputFields,
+  minChunkTimeInputFields,
+  minTimeBetweenChunksInputFields,
 } from './initialValues';
-import { addFloatTask } from '../../components/Tasks/TaskService';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
+import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
+import { floatTaskType } from '../../types/TaskTypes';
 
 const FloatTask: React.FC = () => {
+  const router = useRouter();
+  const [addFloatTaskMutation] = useAddFloatTaskMutation();
+
+  const handleSubmit = async (values: floatTaskType) => {
+    const taskResponse = await addFloatTaskMutation({
+      variables: {
+        createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+      },
+    }).catch((error) => {
+      // TODO handle error
+      console.log(error);
+    });
+
+    if (taskResponse) {
+      // TODO handle success
+      console.log(taskResponse.data);
+      router.push('/');
+    }
+  };
+
   return (
     <FloatTaskCreationForm
       initialValues={floatTaskInitialValues}
-      durationInputFields={durationInputFields}
+      estimationInputFields={estimationInputFields}
       chillTimeInputFields={chillTimeInputFields}
-      repeatEverySelectField={repeatEverySelectField}
-      repeatEveryAmountFields={repeatEveryAmountFields}
-      onSubmit={addFloatTask}
+      minChunkTimeInputFields={minChunkTimeInputFields}
+      maxChunkTimeInputFields={maxChunkTimeInputFields}
+      minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
+      onSubmit={handleSubmit}
     />
   );
 };
