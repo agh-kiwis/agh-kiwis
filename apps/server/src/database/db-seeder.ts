@@ -57,6 +57,12 @@ export const seedDatabase = async () => {
     user: user,
   }).save();
 
+  const studiesCategory = await Category.create({
+    color: await Color.findOne({ where: { hexCode: InitialSeend.colors[3] } }),
+    name: 'Study',
+    user: user,
+  }).save();
+
   // Add priorities
 
   const lowPriority = await Priority.create({
@@ -64,10 +70,11 @@ export const seedDatabase = async () => {
   }).save();
 
   const mediumPriority = await Priority.create({
-    name: 'Low',
+    name: 'Medium',
   }).save();
-  await Priority.create({
-    name: 'Low',
+
+  const highPriority = await Priority.create({
+    name: 'High',
   }).save();
 
   // Add some tasks
@@ -79,7 +86,7 @@ export const seedDatabase = async () => {
   taskService.createConst(user, {
     category: { id: eatingCategory.id },
     name: 'Breakfast',
-    priorityId: mediumPriority.id,
+    priorityId: lowPriority.id,
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
@@ -92,10 +99,44 @@ export const seedDatabase = async () => {
     duration: moment.duration({ minutes: 20 }),
   });
 
+  // Temporary removal to show only one page
+  // taskService.createConst(user, {
+  //   category: { id: eatingCategory.id },
+  //   name: 'Supper',
+  //   priorityId: mediumPriority.id,
+  //   shouldAutoResolve: true,
+  //   chillTime: ten_minutes,
+  //   repeat: {
+  //     startFrom: moment().startOf('day').add(1, 'day').toDate(),
+  //     repeatEvery: 1,
+  //     repeatType: RepeatType.DAYS,
+  //   },
+  //   timeBeforeNotification: ten_minutes,
+  //   start: moment().startOf('day').add(1, 'days').add(14, 'hours').toDate(),
+  //   duration: moment.duration({ minutes: 40 }),
+  // });
+
+  // taskService.createConst(user, {
+  //   category: { id: eatingCategory.id },
+  //   name: 'Dinner',
+  //   priorityId: highPriority.id,
+  //   shouldAutoResolve: true,
+  //   chillTime: ten_minutes,
+  //   repeat: {
+  //     startFrom: moment().startOf('day').add(1, 'day').toDate(),
+  //     repeatEvery: 1,
+  //     repeatType: RepeatType.DAYS,
+  //   },
+  //   timeBeforeNotification: ten_minutes,
+  //   start: moment().startOf('day').add(18, 'hours').add(1, 'days').toDate(),
+  //   duration: moment.duration({ minutes: 40 }),
+  // });
+
+  // Sleeping category
   taskService.createConst(user, {
-    category: { id: eatingCategory.id },
-    name: 'Supper',
-    priorityId: mediumPriority.id,
+    category: { id: sleepingCategory.id },
+    name: 'Sleep',
+    priorityId: lowPriority.id,
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
@@ -104,14 +145,16 @@ export const seedDatabase = async () => {
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
-    start: moment().startOf('day').add(1, 'days').add(14, 'hours').toDate(),
-    duration: moment.duration({ minutes: 40 }),
+    start: moment().startOf('day').add(1, 'days').add(22, 'hours').toDate(),
+    duration: moment.duration({ hours: 8 }),
   });
 
+  // Sport category task
+
   taskService.createConst(user, {
-    category: { id: eatingCategory.id },
-    name: 'Dinner',
-    priorityId: mediumPriority.id,
+    category: { id: sportCategory.id },
+    name: 'Go to the gym',
+    priorityId: highPriority.id,
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
@@ -120,26 +163,19 @@ export const seedDatabase = async () => {
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
-    start: moment().startOf('day').add(18, 'hours').add(1, 'days').toDate(),
+    start: moment().startOf('day').add(6, 'hours').add(1, 'days').toDate(),
     duration: moment.duration({ minutes: 40 }),
   });
 
   // Float tasks:
-
   taskService.createFloatTask(user, {
-    category: { id: eatingCategory.id },
+    category: { id: studiesCategory.id },
     name: 'Get prepared for IO exam',
     priorityId: mediumPriority.id,
     shouldAutoResolve: true,
     chillTime: ten_minutes,
-    repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
-      repeatEvery: 1,
-      repeatType: RepeatType.DAYS,
-    },
     timeBeforeNotification: ten_minutes,
-    // Can start now
-    start: moment().startOf('day').add(1, 'days').toDate(),
+    start: moment().startOf('day').add(8, 'days').toDate(),
 
     estimation: moment.duration({ minutes: 40 }),
     chunkInfo: {

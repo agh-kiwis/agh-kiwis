@@ -1,5 +1,6 @@
 export const InitialSeend = {
   email: 'email@gmail.com',
   password: 'password1234',
-  colors: ['#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+
+  colors: ['#1EA896', '#0077B6', '#FF8C42', '#38A169', '#E0479E', '#F9DC5C'],
 };
