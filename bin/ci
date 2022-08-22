@@ -1,0 +1,5 @@
+# Add there steps for CI to run
+cp env-example .env
+yarn nx workspace-lint
+yarn nx format:check
+yarn test:e2e

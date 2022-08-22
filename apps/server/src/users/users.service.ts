@@ -1,23 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { EntityCondition } from '../utils/types/entity-condition.type';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { EntityCondition } from '../utils/types/entity-condition.type';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    // TODO Make it Active Record pattern there
-    @InjectRepository(User)
-    private usersRepository: Repository<User>
-  ) {}
-
   create(createUserInput: CreateUserInput) {
-    return this.usersRepository.save(
-      this.usersRepository.create(createUserInput)
-    );
+    return User.create(createUserInput).save();
   }
 
   findAll() {
@@ -25,7 +15,7 @@ export class UsersService {
   }
 
   findOne(fields: EntityCondition<User>) {
-    return this.usersRepository.findOne({
+    return User.findOne({
       where: fields,
     });
   }
@@ -39,6 +29,6 @@ export class UsersService {
   }
 
   async softDelete(id: number): Promise<void> {
-    await this.usersRepository.softDelete(id);
+    await User.delete(id);
   }
 }
