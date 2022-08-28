@@ -42,6 +42,7 @@ Thumbs.db
 
 # Environments
 *.env
+!apps/server/tests/.env
 
 # Auto-generated schemas
 *.gql

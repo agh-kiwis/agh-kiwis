@@ -1,6 +1,7 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  // We don't need to check eslint for tests by now
+  "ignorePatterns": ["!**/*", "tests"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
