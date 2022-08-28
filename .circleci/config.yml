@@ -11,7 +11,7 @@ jobs:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
           POSTGRES_HOST_AUTH_METHOD: 'trust'
-    resource_class: medium
+    resource_class: xlarge
     environment:
       NODE_ENV: test
       POSTGRES_USER: circleci
@@ -23,12 +23,12 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - checkout
       - restore_cache:
-          key: v1-deps-{{ checksum "package.json" }}
+          key: v1-deps-{{ checksum "yarn.lock" }}
       - run: yarn install
       - save_cache:
           paths:
             - node_modules
-          key: v1-deps-{{ checksum "package.json" }}
+          key: v1-deps-{{ checksum "yarn.lock" }}
       - nx/set-shas
 
       - run:
