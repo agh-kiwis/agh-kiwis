@@ -46,7 +46,8 @@
       "options": {
         "jestConfig": "apps/server/jest.config.ts",
         "passWithNoTests": true
-      }
+      },
+      "envFile": "apps/server/.env"
     }
   },
   "tags": []

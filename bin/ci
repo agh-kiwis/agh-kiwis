@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Add there steps for CI to run
+cp env-example .env
+yarn nx format:check
+yarn test

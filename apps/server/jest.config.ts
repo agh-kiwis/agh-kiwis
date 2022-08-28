@@ -8,6 +8,7 @@ export default {
     },
   },
   testEnvironment: 'node',
+  testRegex: '.e2e-spec.ts$',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },

@@ -6,13 +6,36 @@ jobs:
   main:
     docker:
       - image: cimg/node:lts-browsers
+      - image: cimg/postgres:10.17
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
+          POSTGRES_PASSWORD: password
+          POSTGRES_HOST_AUTH_METHOD: 'trust'
+    resource_class: large
+    environment:
+      NODE_ENV: test
+      DATABASE_USERNAME: circleci
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: circleci
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
     steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - checkout
-      - run: yarn install --frozen-lockfile
+      - restore_cache:
+          key: v1-deps-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "yarn.lock" }}
       - nx/set-shas
 
-      - run: yarn nx workspace-lint
-      - run: yarn nx format:check
+      - run:
+          name: Run tests
+          command: ./bin/ci
 
 workflows:
   build:

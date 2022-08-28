@@ -1,5 +1,3 @@
-# Temporary for smaller diffs
-yarn.lock
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
@@ -42,6 +40,7 @@ Thumbs.db
 
 # Environments
 *.env
+!apps/server/tests/.env
 
 # Auto-generated schemas
 *.gql
