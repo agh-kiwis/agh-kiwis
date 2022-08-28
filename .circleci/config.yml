@@ -30,9 +30,9 @@ jobs:
           key: v1-deps-{{ checksum "package.json" }}
       - nx/set-shas
 
-      - run: yarn nx workspace-lint
-      - run: yarn nx format:check
-      - run: yarn test:e2e
+      - run:
+          name: Run tests
+          command: ./bin/ci
 
 workflows:
   build:
