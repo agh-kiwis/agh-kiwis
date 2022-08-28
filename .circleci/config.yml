@@ -5,14 +5,14 @@ orbs:
 jobs:
   main:
     docker:
-      - image: mhart/alpine-node:latest
-      - image: postgres:12.3-alpine
+      - image: cimg/node:lts-browsers
+      - image: cimg/postgres:10.17-alphine
         environment:
           POSTGRES_USER: circleci
-          POSTGRES_PASSWORD: password
           POSTGRES_DB: circleci
+          POSTGRES_PASSWORD: password
           POSTGRES_HOST_AUTH_METHOD: 'trust'
-    resource_class: medium
+    resource_class: large
     environment:
       NODE_ENV: test
       DATABASE_USERNAME: circleci
