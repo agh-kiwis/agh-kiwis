@@ -11,6 +11,7 @@ jobs:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
           POSTGRES_HOST_AUTH_METHOD: 'trust'
+    resource_class: medium
     environment:
       NODE_ENV: test
       POSTGRES_USER: circleci
