@@ -27,7 +27,7 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
-import { constTaskType } from '../../types/TaskTypes';
+import { constTaskType } from '../../types/taskTypes';
 import { TaskSwitchConst } from '../Buttons/TaskSwitchConst';
 import { Header } from '../Common/Header';
 
