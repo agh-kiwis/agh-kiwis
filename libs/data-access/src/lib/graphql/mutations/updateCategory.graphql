@@ -1,10 +1,10 @@
-mutation updateCategory($updateCategoryInput: UpdateCategoryInput!) {
-  updateCategory(updateCategoryInput: $updateCategoryInput) {
-    color {
-      hexCode
-      id
+mutation updateCategory($updateCategoryInput: UpdateCategoryInput!){
+    updateCategory(updateCategoryInput: $updateCategoryInput){
+        color{
+            hexCode
+            id
+        }
+        id
+        name
     }
-    id
-    name
-  }
 }

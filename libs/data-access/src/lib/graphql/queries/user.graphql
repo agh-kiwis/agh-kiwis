@@ -1,9 +1,9 @@
-query user($id: Int!) {
-  user(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+query user($id: Int!){
+    user(id: $id){
+        birthDate
+        email
+        gender
+        id
+        name
+    }
 }

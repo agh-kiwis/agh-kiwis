@@ -4,6 +4,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
+import { Color } from './entities/color.entity';
 
 @Resolver(() => Category)
 export class CategoriesResolver {
@@ -30,7 +31,6 @@ export class CategoriesResolver {
   @Mutation(() => Category)
   updateCategory(
     @Context('req') contextRequest: ContextRequest,
-
     @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput
   ) {
     return this.categoriesService.update(
@@ -46,5 +46,10 @@ export class CategoriesResolver {
     @Args('id', { type: () => Int }) id: number
   ) {
     return this.categoriesService.remove(contextRequest.user, id);
+  }
+
+  @Query(() => [Color])
+  getColors() {
+    return this.categoriesService.getColors();
   }
 }

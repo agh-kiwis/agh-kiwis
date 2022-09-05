@@ -53,4 +53,8 @@ export class CategoriesService {
     // TODO
     return `This action removes a #${id} category`;
   }
+
+  async getColors() {
+    return await Color.find();
+  }
 }

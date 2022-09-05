@@ -1,10 +1,10 @@
-mutation removeCategory($id: Int!) {
-  removeCategory(id: $id) {
-    color {
-      hexCode
-      id
+mutation removeCategory($id: Int!){
+    removeCategory(id: $id){
+        color{
+            hexCode
+            id
+        }
+        id
+        name
     }
-    id
-    name
-  }
 }

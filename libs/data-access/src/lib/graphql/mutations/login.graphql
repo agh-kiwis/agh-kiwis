@@ -1,10 +1,10 @@
-mutation login($loginDto: AuthEmailLoginInput!) {
-  login(loginDto: $loginDto) {
-    birthDate
-    email
-    gender
-    id
-    name
-    token
-  }
+mutation login($loginDto: AuthEmailLoginInput!){
+    login(loginDto: $loginDto){
+        birthDate
+        email
+        gender
+        id
+        name
+        token
+    }
 }

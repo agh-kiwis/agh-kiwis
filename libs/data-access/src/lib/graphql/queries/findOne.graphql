@@ -1,44 +1,44 @@
-query findOne($id: Int!) {
-  findOne(id: $id) {
-    category {
-      color {
-        hexCode
+query findOne($id: Int!){
+    findOne(id: $id){
+        category{
+            color{
+                hexCode
+                id
+            }
+            id
+            name
+        }
+        chillTime
+        chunkInfo{
+            id
+            maxChunkDuration
+            minChunkDuration
+            minTimeBetweenChunks
+            start
+        }
+        deadline
+        estimation
         id
-      }
-      id
-      name
+        isDone
+        isFloat
+        name
+        notifications{
+            timeBefore
+        }
+        priority{
+            id
+            name
+        }
+        shouldAutoResolve
+        taskBreakdowns{
+            duration
+            isDone
+            repeat{
+                repeatEvery
+                repeatType
+                startFrom
+            }
+            start
+        }
     }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
-      isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
-      }
-      start
-    }
-  }
 }

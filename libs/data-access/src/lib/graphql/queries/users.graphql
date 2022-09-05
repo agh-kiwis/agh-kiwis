@@ -1,9 +1,9 @@
-query users {
-  users {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+query users{
+    users{
+        birthDate
+        email
+        gender
+        id
+        name
+    }
 }
