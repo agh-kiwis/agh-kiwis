@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, HStack, Text } from '@chakra-ui/react';
 import {
   Modal,
   ModalOverlay,
@@ -8,31 +8,28 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { Chunks } from '../TodoList/Chunks';
+import { Chunks } from './TaskBreakdowns';
 
 export const TaskModal = (props) => {
+  const task = props.task;
   return (
     <Modal isOpen={props.isOpen} onClose={props.close} isCentered>
       <ModalOverlay />
       <ModalContent mx={4}>
         <ModalHeader>
-          <Text fontSize={'xl'} marginRight="1rem">
-            {props.task.name}
+          <Text fontSize={'xl'} mr="1rem">
+            {task.name}
           </Text>
-          <Text fontSize={'sm'}>Priority: {props.task.priority.name}</Text>
+          <Text fontSize={'sm'}> Priority: {task.priority.name}</Text>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {!props.task.isFloat ? null : (
+          {task.isFloat ? (
             <Box>
-              <Text>Deadline: {props.deadline}</Text>
-              <Chunks
-                timeConvert={props.timeConvert}
-                timeInterval={props.timeInterval}
-                chunks={props.task.taskBreakdowns}
-              />
+              <Text> Deadline: {props.deadline}</Text>
+              <Chunks breakdowns={task.taskBreakdowns} />
             </Box>
-          )}
+          ) : null}
         </ModalBody>
 
         <ModalFooter>
@@ -40,7 +37,7 @@ export const TaskModal = (props) => {
             <Button variant="outline" mr={2}>
               Edit task
             </Button>
-            <Button>Mark task as done</Button>
+            <Button> Mark task as done </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>
