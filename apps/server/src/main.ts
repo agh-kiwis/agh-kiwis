@@ -7,7 +7,7 @@ import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // TODO Add helmet and other security modules here
+  // TODO Add helmet and other security modules here when deploying
   await setupApp();
 
   app.useGlobalPipes(new ValidationPipe(validationOptions));

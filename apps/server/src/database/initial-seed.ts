@@ -1,3 +1,4 @@
+// This is used for storing seeding data
 export const InitialSeend = {
   email: 'email@gmail.com',
   password: 'password1234',
