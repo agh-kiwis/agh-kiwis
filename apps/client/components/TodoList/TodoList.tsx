@@ -11,7 +11,7 @@ import {
   AlertDescription,
   HStack,
 } from '@chakra-ui/react';
-import { HiFilter, HiOutlinePlusCircle } from 'react-icons/hi';
+import { HiFilter } from 'react-icons/hi';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
