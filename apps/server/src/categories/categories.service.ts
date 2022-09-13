@@ -54,7 +54,13 @@ export class CategoriesService {
     return `This action removes a #${id} category`;
   }
 
-  async getColors() {
-    return await Color.find();
+  async getColors(user: User) {
+    const userCategories: Category[] = await Category.find({
+      where: {
+        user: user,
+      },
+    });
+
+    return userCategories.map((category) => category.color);
   }
 }

@@ -66,7 +66,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                     <ColorPicker
                       modalTitle="Category color"
                       handleChange={setFieldValue}
-                      name="category.color"
+                      name="category.id"
                     >
                       <ControlledInputAddon name="category.color" />
                     </ColorPicker>

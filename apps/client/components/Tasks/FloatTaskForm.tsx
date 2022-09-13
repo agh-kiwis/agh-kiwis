@@ -66,7 +66,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                     <ColorPicker
                       modalTitle="Category color"
                       handleChange={setFieldValue}
-                      name="category.color"
+                      name="category.id"
                     >
                       <ControlledInputAddon name="category.color" />
                     </ColorPicker>

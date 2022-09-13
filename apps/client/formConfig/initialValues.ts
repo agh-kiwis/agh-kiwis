@@ -10,8 +10,9 @@ import { constTaskType, floatTaskType } from '../types/taskTypes';
 export const constTaskInitialValues: constTaskType = {
   type: 'const',
   category: {
-    color: '#38A169',
+    id: 1,
     name: '',
+    color: '#38A169',
   },
   color: '',
   taskName: '',
@@ -46,8 +47,9 @@ export const constTaskInitialValues: constTaskType = {
 export const floatTaskInitialValues: floatTaskType = {
   type: 'const',
   category: {
-    color: '#38A169',
+    id: 1,
     name: '',
+    color: '#38A169',
   },
   color: '',
   taskName: '',

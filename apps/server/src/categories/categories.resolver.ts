@@ -49,7 +49,7 @@ export class CategoriesResolver {
   }
 
   @Query(() => [Color])
-  getColors() {
-    return this.categoriesService.getColors();
+  getColors(@Context('req') contextRequest: ContextRequest) {
+    return this.categoriesService.getColors(contextRequest.user);
   }
 }
