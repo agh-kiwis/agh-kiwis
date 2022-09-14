@@ -4,16 +4,15 @@ import {
   RepeatType,
 } from '@agh-kiwis/data-access';
 import moment from 'moment';
-import { constTaskType, floatTaskType } from '../types/TaskTypes';
+import { constTaskType, floatTaskType } from '../types/taskTypes';
 
 export const constTaskFormToAddTaskMutationMapper = (
   variables: constTaskType
 ): CreateConstTaskInput => {
   console.log(variables);
   return {
-    // TODO replace not to be hardcoded
     category: {
-      id: 1,
+      id: variables.category.id,
     },
     chillTime: getIntervalISOString(variables.chillTime),
     duration: getIntervalISOString(variables.duration),
@@ -34,9 +33,8 @@ export const floatTaskFormToAddTaskMutationMapper = (
   variables: floatTaskType
 ): CreateFloatTaskInput => {
   return {
-    // TODO replace not to be hardcoded
     category: {
-      id: 2,
+      id: variables.category.id,
     },
     chillTime: getIntervalISOString(variables.chillTime),
     chunkInfo: {
@@ -87,10 +85,10 @@ const mapToDateTime = (date: string, time?: string): Date => {
     return new Date(date);
   }
 
-  const splitedTime = time.split(':');
+  const splittedTime = time.split(':');
   const dateTime = new Date(date);
-  dateTime.setHours(parseInt(splitedTime[0]));
-  dateTime.setMinutes(parseInt(splitedTime[1]));
+  dateTime.setHours(parseInt(splittedTime[0]));
+  dateTime.setMinutes(parseInt(splittedTime[1]));
 
   return dateTime;
 };

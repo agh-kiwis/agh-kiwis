@@ -10,7 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { CommonButton } from '../Buttons/CommonButton';
+import { CommonButton } from '@agh-kiwis/ui-button';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
 import { ToggleSwitch } from '../Common/ToggleSwitch';
@@ -26,7 +26,7 @@ import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunk
 import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
 import { CustomNumberInput } from '../Common/CustomNumberInput';
 import { DependentMinTimeBetweenChunksField } from '../DependentFields/DependentMinTimeBetweenChunksField';
-import { TaskSwitchFloat } from '../Buttons/TaskSwitchFloat';
+import { TaskSwitchFloat } from '@agh-kiwis/ui-button';
 import { Header } from '../Common/Header';
 
 type FloatTaskCreationFormProps = {

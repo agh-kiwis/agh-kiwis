@@ -18,7 +18,7 @@ import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import { FilterModal } from '../Modals/FilterModal';
 import { Task } from './Task';
 import { Header } from '../Common/Header';
-import { CommonButton } from '../Buttons/CommonButton';
+import { CommonButton } from '@agh-kiwis/ui-button';
 
 export const TodoList = () => {
   const router = useRouter();
