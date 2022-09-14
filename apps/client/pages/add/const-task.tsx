@@ -7,8 +7,8 @@ import {
   constTaskInitialValues,
   repeatEveryAmountFields,
   repeatEverySelectField,
-} from '../../formConfig/initialValues';
-import { constTaskType } from '../../types/taskTypes';
+} from './initialValues';
+import { constTaskType } from '../../types/TaskTypes';
 import { ConstTaskCreationForm } from '../../components/Tasks/ConstTaskForm';
 import { constTaskFormToAddTaskMutationMapper } from '../../services/taskService';
 

@@ -2,10 +2,11 @@ import moment from 'moment';
 import {
   LongIntervalAmountType,
   LongIntervalSelectType,
-} from '../components/Pickers/LongIntervalPicker';
-import { NumberInputType } from '../components/Pickers/IntervalPicker';
-import { roundToMinutes } from '../components/Utils/MomentUtils';
-import { constTaskType, floatTaskType } from '../types/taskTypes';
+} from '../../components/Pickers/LongIntervalPicker';
+import { NumberInputType } from '../../components/Pickers/IntervalPicker';
+import { roundToMinutes } from '../../components/Utils/MomentUtils';
+import { constTaskType } from '../../types/TaskTypes';
+import { floatTaskType } from '../../types/TaskTypes';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',
