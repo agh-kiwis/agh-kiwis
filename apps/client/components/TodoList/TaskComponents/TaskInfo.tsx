@@ -11,6 +11,12 @@ type TaskInfoProps = {
   taskBreakdowns: TaskBreakdown[];
 };
 
+const doneChunks = (taskBreakdowns: TaskBreakdown[]) => {
+  return taskBreakdowns.filter((chunk) => {
+    return chunk.isDone == true;
+  }).length;
+};
+
 export const TaskInfo: React.FC<TaskInfoProps> = ({
   isFloat,
   deadline,
@@ -24,7 +30,9 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
           <Text>{deadlineToDate(deadline)}</Text>
         </Flex>
         <Flex justifyContent={'center'}>
-          <Text fontSize="md">Chunks done: 0/{taskBreakdowns.length}</Text>
+          <Text fontSize="md">
+            Chunks done: {doneChunks(taskBreakdowns)}/{taskBreakdowns.length}
+          </Text>
         </Flex>
       </Stack>
     );

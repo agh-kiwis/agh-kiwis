@@ -13,7 +13,7 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({ name, priority }) => {
   return (
     <Flex justifyContent={'center'} pb={'2'} align={'center'}>
       <TaskName name={name} />
-      <PriorityIcon priority={priority} mr={'0'} />
+      <PriorityIcon priority={priority} />
     </Flex>
   );
 };

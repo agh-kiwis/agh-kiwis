@@ -26,7 +26,9 @@ export const TodoList = () => {
   }
   if (error) {
     router.push('/login');
-    return <AlertModal message={error.message} />;
+    return (
+      <AlertModal status={'error'} title={'Error!'} message={error.message} />
+    );
   }
   return (
     <>

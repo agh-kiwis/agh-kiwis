@@ -7,14 +7,20 @@ import {
 import React from 'react';
 
 type AlertProps = {
+  status: 'info' | 'warning' | 'success' | 'error' | 'loading';
+  title: string;
   message: string;
 };
 
-export const AlertModal: React.FC<AlertProps> = ({ message }) => {
+export const AlertModal: React.FC<AlertProps> = ({
+  message,
+  status,
+  title,
+}) => {
   return (
-    <Alert status="error">
+    <Alert status={status}>
       <AlertIcon />
-      <AlertTitle>Error!</AlertTitle>
+      <AlertTitle>{title}</AlertTitle>
       <AlertDescription>{message}</AlertDescription>
     </Alert>
   );

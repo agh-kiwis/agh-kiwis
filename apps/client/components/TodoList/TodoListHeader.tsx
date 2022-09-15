@@ -4,7 +4,7 @@ import { Header } from '../Common/Header';
 import React from 'react';
 
 type TodoListHeaderProps = {
-  setOpen: any;
+  setOpen: (isOpen: boolean) => void;
 };
 
 export const TodoListHeader: React.FC<TodoListHeaderProps> = ({ setOpen }) => {
