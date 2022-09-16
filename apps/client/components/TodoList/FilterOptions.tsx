@@ -1,4 +1,4 @@
-import { Box, Checkbox, Stack } from '@chakra-ui/react';
+import { Box, Checkbox, HStack } from '@chakra-ui/react';
 import {
   Accordion,
   AccordionItem,
@@ -11,46 +11,32 @@ export const FilterOptions = () => {
   return (
     <Accordion allowMultiple>
       <AccordionItem>
-        <h2>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Task type
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
+        <AccordionButton>
+          <Box flex="1" textAlign="left">
+            Task type
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
         <AccordionPanel pb={4}>
-          <Stack
-            spacing={5}
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <HStack spacing={5} justifyContent="center">
             <Checkbox size="lg"> Const </Checkbox>
             <Checkbox size="lg"> Float </Checkbox>
-          </Stack>
+          </HStack>
         </AccordionPanel>
       </AccordionItem>
 
       <AccordionItem>
-        <h2>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Task status
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
+        <AccordionButton>
+          <Box flex="1" textAlign="left">
+            Task status
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
         <AccordionPanel pb={4}>
-          <Stack
-            spacing={5}
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Checkbox size="lg">Done </Checkbox>
-            <Checkbox size="lg">In progress </Checkbox>
-          </Stack>
+          <HStack spacing={5} justifyContent="center">
+            <Checkbox size="lg"> Done </Checkbox>
+            <Checkbox size="lg"> In progress </Checkbox>
+          </HStack>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
