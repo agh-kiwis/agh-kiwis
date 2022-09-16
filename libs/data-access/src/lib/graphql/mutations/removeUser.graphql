@@ -1,9 +1,9 @@
-mutation removeUser($id: Int!){
-    removeUser(id: $id){
-        birthDate
-        email
-        gender
-        id
-        name
-    }
+mutation removeUser($id: Int!) {
+  removeUser(id: $id) {
+    birthDate
+    email
+    gender
+    id
+    name
+  }
 }

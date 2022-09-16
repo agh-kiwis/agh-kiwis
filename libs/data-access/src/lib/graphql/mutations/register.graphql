@@ -1,10 +1,10 @@
-mutation register($registerDto: AuthEmailRegisterInput!){
-    register(registerDto: $registerDto){
-        birthDate
-        email
-        gender
-        id
-        name
-        token
-    }
+mutation register($registerDto: AuthEmailRegisterInput!) {
+  register(registerDto: $registerDto) {
+    birthDate
+    email
+    gender
+    id
+    name
+    token
+  }
 }
