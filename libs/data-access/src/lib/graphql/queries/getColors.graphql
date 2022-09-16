@@ -1,6 +1,6 @@
-query getColors{
-    getColors{
-        hexCode
-        id
-    }
+query getColors {
+  getColors {
+    hexCode
+    id
+  }
 }

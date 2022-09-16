@@ -1,9 +1,9 @@
-query me{
-    me{
-        birthDate
-        email
-        gender
-        id
-        name
-    }
+query me {
+  me {
+    birthDate
+    email
+    gender
+    id
+    name
+  }
 }

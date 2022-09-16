@@ -1,10 +1,10 @@
-query findCategoryByPrefix($prefix: String!){
-    findCategoryByPrefix(prefix: $prefix){
-        color{
-            hexCode
-            id
-        }
-        id
-        name
+query findCategoryByPrefix($prefix: String!) {
+  findCategoryByPrefix(prefix: $prefix) {
+    color {
+      hexCode
+      id
     }
+    id
+    name
+  }
 }
