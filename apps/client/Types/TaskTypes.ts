@@ -1,11 +1,21 @@
-export type constTaskType = {
+type taskType = {
   type: string;
   category: {
-    color: string;
+    id: number;
     name: string;
+    color: string;
   };
   color: string;
   taskName: string;
+  chillTime: {
+    minutes: number;
+  };
+  chillTimeFacade: string;
+  notify: boolean;
+  autoresolve: boolean;
+};
+
+export type constTaskType = taskType & {
   startTime: {
     date: string;
     time: string;
@@ -16,10 +26,6 @@ export type constTaskType = {
     minutes: number;
   };
   durationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
   priority: string;
   repeat: {
     shouldRepeat: boolean;
@@ -30,18 +36,9 @@ export type constTaskType = {
     };
   };
   repeatEveryFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
 };
 
-export type floatTaskType = {
-  type: string;
-  category: {
-    color: string;
-    name: string;
-  };
-  color: string;
-  taskName: string;
+export type floatTaskType = taskType & {
   deadline: {
     date: string;
     time: string;
@@ -52,10 +49,6 @@ export type floatTaskType = {
     minutes: number;
   };
   timeEstimationFacade: string;
-  chillTime: {
-    minutes: number;
-  };
-  chillTimeFacade: string;
   priority: string;
   chunking: {
     shouldChunk: boolean;
@@ -75,6 +68,4 @@ export type floatTaskType = {
   minChunkTimeFacade: string;
   maxChunkTimeFacade: string;
   minTimeBetweenChunksFacade: string;
-  notify: boolean;
-  autoresolve: boolean;
 };

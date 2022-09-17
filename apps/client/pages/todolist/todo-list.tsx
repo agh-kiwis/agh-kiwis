@@ -2,11 +2,11 @@ import { Spinner } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
-import { FilterModal } from 'apps/client/components/Modals/FilterModal';
-import { AlertModal } from 'apps/client/components/Common/AlertModal';
-import { TodoListHeader } from 'apps/client/components/TodoList/TodoListHeader';
-import { TasksStack } from 'apps/client/components/TodoList/TaskComponents/TasksStack';
-import { AddTask } from 'apps/client/components/TodoList/AddTask';
+import { FilterModal } from '../../components/Modals/FilterModal';
+import { AlertModal } from '../../components/Common/AlertModal';
+import { TodoListHeader } from '../../components/TodoList/TodoListHeader';
+import { TasksStack } from '../../components/TodoList/TaskComponents/TasksStack';
+import { AddTask } from '../../components/TodoList/AddTask';
 
 export const TodoList = () => {
   const router = useRouter();

@@ -9,15 +9,17 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Spinner,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import { Color, useGetColorsQuery } from '@agh-kiwis/data-access';
 
 type ColorPickerProps = {
   modalTitle: string;
   name: string;
   children: React.ReactNode;
-  handleChange: (fieldName: string, value: string) => void;
+  handleChange: (fieldName: string, value: number | string) => void;
 };
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
@@ -30,26 +32,20 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
 
-  const colors: string[] = [
-    '#1EA896',
-    '#0077B6',
-    '#FF8C42',
-    '#38A169',
-    '#E0479E',
-    '#F9DC5C',
-  ];
+  const { data, loading } = useGetColorsQuery();
 
-  const renderTiles = (colors: string[]): JSX.Element => (
+  const renderTiles = (colors: Color[]): JSX.Element => (
     <SimpleGrid columns={2} spacing={4}>
       {colors.map((color) => (
         <Box
-          key={color}
+          key={color.id}
           w="60px"
           h="60px"
-          bg={color}
+          bg={color.hexCode}
           borderRadius={4}
           onClick={() => {
-            handleChange(name, color);
+            handleChange(name, color.id);
+            handleChange('category.color', color.hexCode);
             onClose();
           }}
         />
@@ -57,6 +53,9 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
     </SimpleGrid>
   );
 
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <>
       <Box onClick={onOpen}>{children}</Box>
@@ -71,7 +70,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="center">{renderTiles(colors)}</VStack>
+            <VStack justify="center">{renderTiles(data.getColors)}</VStack>
           </ModalBody>
           <ModalFooter />
         </ModalContent>

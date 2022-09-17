@@ -8,10 +8,10 @@ import {
   maxChunkTimeInputFields,
   minChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
-} from './initialValues';
+} from '../../formConfig/initialValues';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
 import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
-import { floatTaskType } from '../../types/TaskTypes';
+import { floatTaskType } from '../../types/taskTypes';
 
 const FloatTask: React.FC = () => {
   const router = useRouter();
