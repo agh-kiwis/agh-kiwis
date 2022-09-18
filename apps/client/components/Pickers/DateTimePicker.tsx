@@ -13,7 +13,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { CustomDateTimeInput } from '../Common/CustomDateTimeInput';
+import { CustomDateTimeInput } from '@agh-kiwis/ui-components';
 
 type DateTimePickerProps = {
   modalTitle: string;

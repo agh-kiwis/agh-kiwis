@@ -3,8 +3,11 @@ import { useRouter } from 'next/router';
 import { Button, Box, Flex, Text, VStack, Divider } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useLoginMutation } from '@agh-kiwis/data-access';
-import { CommonButton, GoogleButton } from '@agh-kiwis/ui-components';
-import { InputField } from '../components/Common/InputField';
+import {
+  CommonButton,
+  GoogleButton,
+  InputField,
+} from '@agh-kiwis/ui-components';
 import { Wrapper } from '../components/Containers/Wrapper';
 import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';

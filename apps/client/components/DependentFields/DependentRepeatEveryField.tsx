@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { InputField } from '../Common/InputField';
 import { constTaskType } from '../../types/taskTypes';
+import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentRepeatEveryFieldProps = {
   name: string;

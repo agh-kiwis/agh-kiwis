@@ -15,7 +15,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { CustomNumberInput } from '../Common/CustomNumberInput';
+import { CustomNumberInput } from '@agh-kiwis/ui-components';
 
 export type LongIntervalSelectType = {
   name: string;

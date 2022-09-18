@@ -1,7 +1,7 @@
-import { HStack, Button, Icon } from '@chakra-ui/react';
-import { HiFilter } from 'react-icons/hi';
-import { Header } from '../Common/Header';
 import React from 'react';
+import { HiFilter } from 'react-icons/hi';
+import { HStack, Button, Icon } from '@chakra-ui/react';
+import { Header } from '@agh-kiwis/ui-components';
 
 type TodoListHeaderProps = {
   setOpen: (isOpen: boolean) => void;

@@ -10,10 +10,15 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { CommonButton, TaskSwitchFloat } from '@agh-kiwis/ui-components';
-import { ControlledInputAddon } from '../Common/ControlledInputAddon';
-import { InputField } from '../Common/InputField';
-import { ToggleSwitch } from '../Common/ToggleSwitch';
+import {
+  CommonButton,
+  ControlledInputAddon,
+  CustomNumberInput,
+  Header,
+  InputField,
+  TaskSwitchFloat,
+  ToggleSwitch,
+} from '@agh-kiwis/ui-components';
 import { Wrapper } from '../Containers/Wrapper';
 import { DependentChillTimeField } from '../DependentFields/DependentChillTimeField';
 import { DependentDeadlineField } from '../DependentFields/DependentDeadlineField';
@@ -24,9 +29,7 @@ import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 import { floatTaskType } from '../../types/taskTypes';
 import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunkTimeField';
 import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
-import { CustomNumberInput } from '../Common/CustomNumberInput';
 import { DependentMinTimeBetweenChunksField } from '../DependentFields/DependentMinTimeBetweenChunksField';
-import { Header } from '../Common/Header';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;

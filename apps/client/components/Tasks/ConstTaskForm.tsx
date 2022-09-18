@@ -10,10 +10,14 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { CommonButton, TaskSwitchConst } from '@agh-kiwis/ui-components';
-import { ControlledInputAddon } from '../Common/ControlledInputAddon';
-import { InputField } from '../Common/InputField';
-import { ToggleSwitch } from '../Common/ToggleSwitch';
+import {
+  CommonButton,
+  ControlledInputAddon,
+  Header,
+  InputField,
+  TaskSwitchConst,
+  ToggleSwitch,
+} from '@agh-kiwis/ui-components';
 import { Wrapper } from '../Containers/Wrapper';
 import { DependentChillTimeField } from '../DependentFields/DependentChillTimeField';
 import { DependentDurationField } from '../DependentFields/DependentDurationField';
@@ -28,7 +32,6 @@ import {
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
 import { constTaskType } from '../../types/taskTypes';
-import { Header } from '../Common/Header';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;

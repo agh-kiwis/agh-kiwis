@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import { FilterModal } from '../../components/Modals/FilterModal';
-import { AlertModal } from '../../components/Common/AlertModal';
 import { TodoListHeader } from '../../components/TodoList/TodoListHeader';
 import { TasksStack } from '../../components/TodoList/TaskComponents/TasksStack';
 import { AddTask } from '../../components/TodoList/AddTask';
+import { AlertModal } from '@agh-kiwis/ui-components';
 
 export const TodoList = () => {
   const router = useRouter();
