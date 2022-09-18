@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
+import { useRouter } from 'next/router';
 import {
   Box,
   Flex,
@@ -14,22 +14,22 @@ import {
   CommonButton,
   ControlledInputAddon,
   CustomNumberInput,
+  DependentChillTimeField,
+  DependentDeadlineField,
+  DependentMaxChunkTimeField,
+  DependentMinChunkTimeField,
+  DependentMinTimeBetweenChunksField,
+  DependentTimeEstimationField,
   Header,
   InputField,
   TaskSwitchFloat,
   ToggleSwitch,
 } from '@agh-kiwis/ui-components';
 import { Wrapper } from '../Containers/Wrapper';
-import { DependentChillTimeField } from '../DependentFields/DependentChillTimeField';
-import { DependentDeadlineField } from '../DependentFields/DependentDeadlineField';
-import { DependentTimeEstimationField } from '../DependentFields/DependentTimeEstimationField';
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 import { floatTaskType } from '../../types/taskTypes';
-import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunkTimeField';
-import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
-import { DependentMinTimeBetweenChunksField } from '../DependentFields/DependentMinTimeBetweenChunksField';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;

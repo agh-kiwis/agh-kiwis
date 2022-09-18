@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { floatTaskType } from '../../types/taskTypes';
 import { InputField } from '@agh-kiwis/ui-components';
+import { floatTaskType } from '@agh-kiwis/types';
 
 type DependentTimeEstimationFieldProps = {
   name: string;

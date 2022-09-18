@@ -13,16 +13,16 @@ import {
 import {
   CommonButton,
   ControlledInputAddon,
+  DependentChillTimeField,
+  DependentDurationField,
+  DependentRepeatEveryField,
+  DependentStartTimeField,
   Header,
   InputField,
   TaskSwitchConst,
   ToggleSwitch,
 } from '@agh-kiwis/ui-components';
 import { Wrapper } from '../Containers/Wrapper';
-import { DependentChillTimeField } from '../DependentFields/DependentChillTimeField';
-import { DependentDurationField } from '../DependentFields/DependentDurationField';
-import { DependentRepeatEveryField } from '../DependentFields/DependentRepeatEveryField';
-import { DependentStartTimeField } from '../DependentFields/DependentStartTimeField';
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';

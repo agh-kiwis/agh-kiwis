@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { constTaskType } from '../../types/taskTypes';
 import { InputField } from '@agh-kiwis/ui-components';
+import { constTaskType } from '@agh-kiwis/types';
 
 type DependentStartTimeFieldProps = {
   name: string;

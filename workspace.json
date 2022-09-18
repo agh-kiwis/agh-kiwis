@@ -6,6 +6,7 @@
     "client-e2e": "apps/client-e2e",
     "data-access": "libs/data-access",
     "server": "apps/server",
+    "types": "libs/types",
     "ui-components": "libs/ui-components",
     "workspace-constants": "libs/workspace-constants"
   }
