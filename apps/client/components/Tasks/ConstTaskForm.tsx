@@ -27,7 +27,7 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
-import { constTaskType } from '../../types/TaskTypes';
+import { constTaskType } from '../../types/taskTypes';
 import { TaskSwitchConst } from '@agh-kiwis/ui-button';
 import { Header } from '../Common/Header';
 
@@ -66,7 +66,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                     <ColorPicker
                       modalTitle="Category color"
                       handleChange={setFieldValue}
-                      name="category.color"
+                      name="category.id"
                     >
                       <ControlledInputAddon name="category.color" />
                     </ColorPicker>

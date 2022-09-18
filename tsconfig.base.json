@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@agh-kiwis/client": ["apps/client"],
       "@agh-kiwis/data-access": ["libs/data-access/src/index.ts"],
+      "@agh-kiwis/client": ["apps/client"],
       "@agh-kiwis/server": ["apps/server"],
       "@agh-kiwis/ui-button": ["libs/ui-button/src/index.ts"]
     }

@@ -21,7 +21,7 @@ import { DependentTimeEstimationField } from '../DependentFields/DependentTimeEs
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import { floatTaskType } from '../../types/TaskTypes';
+import { floatTaskType } from '../../types/taskTypes';
 import { DependentMinChunkTimeField } from '../DependentFields/DependentMinChunkTimeField';
 import { DependentMaxChunkTimeField } from '../DependentFields/DependentMaxChunkTimeField';
 import { CustomNumberInput } from '../Common/CustomNumberInput';
@@ -66,7 +66,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                     <ColorPicker
                       modalTitle="Category color"
                       handleChange={setFieldValue}
-                      name="category.color"
+                      name="category.id"
                     >
                       <ControlledInputAddon name="category.color" />
                     </ColorPicker>
