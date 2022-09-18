@@ -9,9 +9,9 @@ import {
   minChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
 } from '../../formConfig/initialValues';
-import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
 import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
 import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskCreationForm } from '@agh-kiwis/ui-components';
 
 const FloatTask: React.FC = () => {
   const router = useRouter();

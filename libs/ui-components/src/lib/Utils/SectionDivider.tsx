@@ -1,5 +1,5 @@
-import { Divider, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
+import { Divider, Flex, Text } from '@chakra-ui/react';
 
 export const SectionDivider: React.FC = () => {
   return (

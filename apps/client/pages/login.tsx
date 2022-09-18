@@ -7,12 +7,12 @@ import {
   CommonButton,
   GoogleButton,
   InputField,
+  Logo,
+  Wrapper,
 } from '@agh-kiwis/ui-components';
-import { Wrapper } from '../components/Containers/Wrapper';
-import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
 
-const Login = () => {
+const Login: React.FC = () => {
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
 

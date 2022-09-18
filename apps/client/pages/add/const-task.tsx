@@ -8,9 +8,9 @@ import {
   repeatEveryAmountFields,
   repeatEverySelectField,
 } from '../../formConfig/initialValues';
-import { ConstTaskCreationForm } from '../../components/Tasks/ConstTaskForm';
 import { constTaskFormToAddTaskMutationMapper } from '../../services/taskService';
 import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskCreationForm } from '@agh-kiwis/ui-components';
 
 const ConstTask: React.FC = () => {
   const router = useRouter();

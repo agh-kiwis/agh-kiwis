@@ -1,5 +1,5 @@
+import { FilterOptions } from '@agh-kiwis/ui-components';
 import { Button } from '@chakra-ui/react';
-import { FilterOptions } from '../TodoList/FilterOptions';
 import {
   Modal,
   ModalOverlay,
@@ -10,8 +10,12 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
+type FilterModalProps = {
+  isOpen: boolean;
+  close: () => void;
+};
 // TODO implement filtering logic (mocked currently)
-export const FilterModal = ({ isOpen, close }) => {
+export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, close }) => {
   return (
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />

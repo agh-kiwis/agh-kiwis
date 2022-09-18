@@ -1,7 +1,7 @@
-import { Stack, Text, Box } from '@chakra-ui/react';
-import { timeInterval, startToDate } from '../DateConvertor';
 import React from 'react';
+import { Stack, Text, Box } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
 
 type ChunkInfoProps = {
   checked: boolean;

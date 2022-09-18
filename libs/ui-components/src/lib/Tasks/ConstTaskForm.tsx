@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import { Form, Formik } from 'formik';
 import {
   Box,
   Flex,
@@ -11,43 +11,43 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import {
+  ColorPicker,
   CommonButton,
   ControlledInputAddon,
-  CustomNumberInput,
+  DateTimePicker,
   DependentChillTimeField,
-  DependentDeadlineField,
-  DependentMaxChunkTimeField,
-  DependentMinChunkTimeField,
-  DependentMinTimeBetweenChunksField,
-  DependentTimeEstimationField,
+  DependentDurationField,
+  DependentRepeatEveryField,
+  DependentStartTimeField,
   Header,
   InputField,
-  TaskSwitchFloat,
+  IntervalPicker,
+  LongIntervalAmountType,
+  LongIntervalPicker,
+  LongIntervalSelectType,
+  NumberInputType,
+  TaskSwitchConst,
   ToggleSwitch,
+  Wrapper,
 } from '@agh-kiwis/ui-components';
-import { Wrapper } from '../Containers/Wrapper';
-import { ColorPicker } from '../Pickers/ColorPicker';
-import { DateTimePicker } from '../Pickers/DateTimePicker';
-import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import { floatTaskType } from '@agh-kiwis/types';
 
-type FloatTaskCreationFormProps = {
-  initialValues: floatTaskType;
-  estimationInputFields: NumberInputType[];
+import { constTaskType } from '@agh-kiwis/types';
+
+type ConstTaskCreationFormProps = {
+  initialValues: constTaskType;
+  durationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
-  minChunkTimeInputFields: NumberInputType[];
-  maxChunkTimeInputFields: NumberInputType[];
-  minTimeBetweenChunksInputFields: NumberInputType[];
-  onSubmit: (values: floatTaskType) => void;
+  repeatEverySelectField: LongIntervalSelectType;
+  repeatEveryAmountFields: LongIntervalAmountType[];
+  onSubmit: (values: constTaskType) => void;
 };
 
-export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
+export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
   initialValues,
-  estimationInputFields,
+  durationInputFields,
   chillTimeInputFields,
-  minChunkTimeInputFields,
-  maxChunkTimeInputFields,
-  minTimeBetweenChunksInputFields,
+  repeatEverySelectField,
+  repeatEveryAmountFields,
   onSubmit,
 }) => {
   const router = useRouter();
@@ -57,7 +57,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
       <Box mb={4}>
         <Header text="Add new task" />
       </Box>
-      <TaskSwitchFloat />
+      <TaskSwitchConst />
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
@@ -89,21 +89,21 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                 />
               </Box>
               <DateTimePicker
-                modalTitle="Deadline"
+                modalTitle="Start time"
                 handleChange={setFieldValue}
-                label="Deadline"
-                name="deadline"
+                label="Start"
+                name="startTime"
               >
-                <DependentDeadlineField name="deadlineFacade" />
+                <DependentStartTimeField name="startTimeFacade" />
               </DateTimePicker>
               <Flex justify="space-between">
                 <Box w="50%" mr={2}>
                   <IntervalPicker
-                    modalTitle="Time estimation"
-                    inputFields={estimationInputFields}
+                    modalTitle="Duration"
+                    inputFields={durationInputFields}
                     handleChange={setFieldValue}
                   >
-                    <DependentTimeEstimationField name="timeEstimationFacade" />
+                    <DependentDurationField name="durationFacade" />
                   </IntervalPicker>
                 </Box>
                 <Box w="50%" ml={2}>
@@ -127,58 +127,37 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                   <option value="high">High</option>
                 </Select>
               </Box>
-              {values.chunking.shouldChunk ? (
+              {values.repeat.shouldRepeat ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
                   <ToggleSwitch
-                    name="chunking.shouldChunk"
-                    label="Chunking"
+                    name="repeat.shouldRepeat"
+                    label="Repeat"
                     handleChange={setFieldValue}
                   />
                   <Box my={4}>
-                    <IntervalPicker
-                      modalTitle="Min chunk time"
-                      inputFields={minChunkTimeInputFields}
-                      handleChange={setFieldValue}
-                    >
-                      <DependentMinChunkTimeField name="minChunkTimeFacade" />
-                    </IntervalPicker>
-                  </Box>
-                  <Box my={4}>
-                    <IntervalPicker
-                      modalTitle="Max chunk time"
-                      inputFields={maxChunkTimeInputFields}
-                      handleChange={setFieldValue}
-                    >
-                      <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
-                    </IntervalPicker>
-                  </Box>
-                  <Box my={4}>
-                    <CustomNumberInput
-                      minValue={1}
-                      maxValue={20}
-                      defaultValue={4}
-                      step={1}
-                      label="Max chunks number"
-                      name="chunks.maxChunksNumber"
-                      handleChange={setFieldValue}
-                      variant="vertical"
+                    <InputField
+                      type="date"
+                      label="Start from"
+                      name="repeat.startFrom"
                     />
                   </Box>
-                  <Box>
-                    <IntervalPicker
-                      modalTitle="Min time between Chunks"
-                      inputFields={minTimeBetweenChunksInputFields}
+                  <Box my={4}>
+                    <LongIntervalPicker
+                      modalTitle="Repeat every"
+                      selectField={repeatEverySelectField}
+                      amountFields={repeatEveryAmountFields}
+                      selectValue={values.repeat.repeatEvery.type}
                       handleChange={setFieldValue}
                     >
-                      <DependentMinTimeBetweenChunksField name="minTimeBetweenChunksFacade" />
-                    </IntervalPicker>
+                      <DependentRepeatEveryField name="repeatEveryFacade" />
+                    </LongIntervalPicker>
                   </Box>
                 </Box>
               ) : (
                 <Box>
                   <ToggleSwitch
-                    name="chunking.shouldChunk"
-                    label="Chunking"
+                    name="repeat.shouldRepeat"
+                    label="Repeat"
                     handleChange={setFieldValue}
                   />
                 </Box>

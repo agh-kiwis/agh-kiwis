@@ -31,7 +31,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-
   const { data, loading } = useGetColorsQuery();
 
   const renderTiles = (colors: Color[]): JSX.Element => (

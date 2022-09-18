@@ -1,9 +1,9 @@
-import { Flex, Stack, Text } from '@chakra-ui/react';
-import { TaskIcon } from './TaskIcon';
-import { IoTimerOutline, IoCalendarClearOutline } from 'react-icons/io5';
-import { timeInterval, deadlineToDate } from '../DateConvertor';
 import React from 'react';
+import { IoTimerOutline, IoCalendarClearOutline } from 'react-icons/io5';
+import { Flex, Stack, Text } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { TaskIcon } from './TaskIcon';
+import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
 
 type TaskInfoProps = {
   isFloat: boolean;
@@ -13,7 +13,7 @@ type TaskInfoProps = {
 
 const doneChunks = (taskBreakdowns: TaskBreakdown[]) => {
   return taskBreakdowns.filter((chunk) => {
-    return chunk.isDone == true;
+    return chunk.isDone === true;
   }).length;
 };
 
