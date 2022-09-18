@@ -31,7 +31,7 @@ import {
   LongIntervalPicker,
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
-import { constTaskType } from '../../types/taskTypes';
+import { constTaskType } from '@agh-kiwis/types';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;

@@ -11,7 +11,7 @@ import {
 } from '../../formConfig/initialValues';
 import { FloatTaskCreationForm } from '../../components/Tasks/FloatTaskForm';
 import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
-import { floatTaskType } from '../../types/taskTypes';
+import { floatTaskType } from '@agh-kiwis/types';
 
 const FloatTask: React.FC = () => {
   const router = useRouter();

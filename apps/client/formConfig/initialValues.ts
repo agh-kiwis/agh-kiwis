@@ -5,7 +5,7 @@ import {
 } from '../components/Pickers/LongIntervalPicker';
 import { NumberInputType } from '../components/Pickers/IntervalPicker';
 import { roundToMinutes } from '../components/Utils/MomentUtils';
-import { constTaskType, floatTaskType } from '../types/taskTypes';
+import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',

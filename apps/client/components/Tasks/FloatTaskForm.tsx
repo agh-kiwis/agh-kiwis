@@ -29,7 +29,7 @@ import { Wrapper } from '../Containers/Wrapper';
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import { floatTaskType } from '../../types/taskTypes';
+import { floatTaskType } from '@agh-kiwis/types';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;
