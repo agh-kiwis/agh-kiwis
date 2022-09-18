@@ -8,7 +8,8 @@ import { Wrapper } from '../components/Containers/Wrapper';
 import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
 import { SectionDivider } from '../components/Utils/SectionDivider';
-import { CommonButton } from '@agh-kiwis/ui-button';
+import { CommonButton } from '@agh-kiwis/ui-components';
+
 const Register = () => {
   const [registerMutation] = useRegisterMutation();
   const router = useRouter();

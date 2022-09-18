@@ -10,7 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { CommonButton } from '@agh-kiwis/ui-button';
+import { CommonButton, TaskSwitchConst } from '@agh-kiwis/ui-components';
 import { ControlledInputAddon } from '../Common/ControlledInputAddon';
 import { InputField } from '../Common/InputField';
 import { ToggleSwitch } from '../Common/ToggleSwitch';
@@ -28,7 +28,6 @@ import {
   LongIntervalSelectType,
 } from '../Pickers/LongIntervalPicker';
 import { constTaskType } from '../../types/taskTypes';
-import { TaskSwitchConst } from '@agh-kiwis/ui-button';
 import { Header } from '../Common/Header';
 
 type ConstTaskCreationFormProps = {
