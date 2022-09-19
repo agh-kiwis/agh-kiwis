@@ -1,3 +1,14 @@
 {
-  "singleQuote": true
+  "singleQuote": true,
+  "importOrder": [
+    "^react",
+    "^next",
+    "^formik",
+    "^moment",
+    "@fortawesome",
+    "^@chakra",
+    "^@agh-kiwis",
+    "^[./]"
+  ],
+  "importOrderSortSpecifiers": true
 }
