@@ -1,9 +1,8 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Button, Box, VStack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { Box, Button, VStack } from '@chakra-ui/react';
 import { useRegisterMutation } from '@agh-kiwis/data-access';
-import { toErrorMap } from '../utils/toErrorMap';
 import {
   CommonButton,
   InputField,
@@ -11,6 +10,7 @@ import {
   SectionDivider,
   Wrapper,
 } from '@agh-kiwis/ui-components';
+import { toErrorMap } from '../utils/toErrorMap';
 
 const Register: React.FC = () => {
   const [registerMutation] = useRegisterMutation();

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { TaskModal } from './TaskModal';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
 import { TaskInfo } from './TaskInfo';
+import { TaskModal } from './TaskModal';
 
 const taskColor = (props) => {
   if (!props.task.isDone) return props.task.category.color.hexCode;

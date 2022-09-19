@@ -1,10 +1,10 @@
+import moment from 'moment';
 import {
   CreateConstTaskInput,
   CreateFloatTaskInput,
   RepeatType,
 } from '@agh-kiwis/data-access';
 import { constTaskType, floatTaskType } from '@agh-kiwis/types';
-import moment from 'moment';
 
 export const constTaskFormToAddTaskMutationMapper = (
   variables: constTaskType

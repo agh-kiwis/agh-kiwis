@@ -10,6 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
+import { constTaskType } from '@agh-kiwis/types';
 import {
   ColorPicker,
   CommonButton,
@@ -30,8 +31,6 @@ import {
   ToggleSwitch,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-
-import { constTaskType } from '@agh-kiwis/types';
 
 type ConstTaskCreationFormProps = {
   initialValues: constTaskType;

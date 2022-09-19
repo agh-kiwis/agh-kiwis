@@ -1,8 +1,8 @@
-import { Checkbox } from '@chakra-ui/react';
 import { useState } from 'react';
+import { Checkbox } from '@chakra-ui/react';
+import { TaskBreakdown } from '@agh-kiwis/data-access';
 import { ChunkContainer } from './BreakdownContainer';
 import { ChunkInfo } from './BreakdownInfo';
-import { TaskBreakdown } from '@agh-kiwis/data-access';
 
 type ChunkProps = {
   index: number;

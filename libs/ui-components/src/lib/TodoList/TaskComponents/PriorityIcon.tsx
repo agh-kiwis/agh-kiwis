@@ -1,4 +1,4 @@
-import { HiChevronDown, HiChevronUp, HiChevronDoubleUp } from 'react-icons/hi';
+import { HiChevronDoubleUp, HiChevronDown, HiChevronUp } from 'react-icons/hi';
 
 type PriorityProps = {
   priority: string;

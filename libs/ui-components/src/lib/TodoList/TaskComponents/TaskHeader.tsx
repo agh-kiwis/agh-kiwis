@@ -1,8 +1,7 @@
-import { Flex } from '@chakra-ui/react';
-import { TaskName } from './TaskName';
-import { PriorityIcon } from './PriorityIcon';
-
 import React from 'react';
+import { Flex } from '@chakra-ui/react';
+import { PriorityIcon } from './PriorityIcon';
+import { TaskName } from './TaskName';
 
 type TaskHeaderProps = {
   name: string;

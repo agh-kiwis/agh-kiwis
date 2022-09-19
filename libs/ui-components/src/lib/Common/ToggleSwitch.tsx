@@ -1,6 +1,6 @@
-import { Flex, FormControl, FormLabel, Spacer, Switch } from '@chakra-ui/react';
-import { useField } from 'formik';
 import React from 'react';
+import { useField } from 'formik';
+import { Flex, FormControl, FormLabel, Spacer, Switch } from '@chakra-ui/react';
 
 type ToggleSwitchProps = {
   label: string;

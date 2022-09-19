@@ -1,6 +1,6 @@
 import React from 'react';
 import { HiFilter } from 'react-icons/hi';
-import { HStack, Button, Icon } from '@chakra-ui/react';
+import { Button, HStack, Icon } from '@chakra-ui/react';
 import { Header } from '../Common/Header';
 
 type TodoListHeaderProps = {

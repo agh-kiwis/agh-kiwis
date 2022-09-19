@@ -10,8 +10,8 @@ import {
   ModalOverlay,
   SimpleGrid,
   Spinner,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Color, useGetColorsQuery } from '@agh-kiwis/data-access';
 

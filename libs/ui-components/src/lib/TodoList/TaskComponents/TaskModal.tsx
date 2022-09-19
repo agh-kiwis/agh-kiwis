@@ -1,12 +1,12 @@
 import { Box, Button, HStack, Text } from '@chakra-ui/react';
 import {
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { Chunks } from './TaskBreakdowns';
 

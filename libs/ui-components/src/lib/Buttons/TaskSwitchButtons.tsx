@@ -1,7 +1,10 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { Box, Button, Flex } from '@chakra-ui/react';
-import { ADD_CONST_TASK_URL, ADD_FLOAT_TASK_URL } from '@agh-kiwis/workspace-constants';
+import {
+  ADD_CONST_TASK_URL,
+  ADD_FLOAT_TASK_URL,
+} from '@agh-kiwis/workspace-constants';
 
 export const TaskSwitchConst: React.FC = () => {
   return (

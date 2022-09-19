@@ -1,16 +1,16 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
+import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskCreationForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
-  durationInputFields,
   constTaskInitialValues,
+  durationInputFields,
   repeatEveryAmountFields,
   repeatEverySelectField,
 } from '../../formConfig/initialValues';
 import { constTaskFormToAddTaskMutationMapper } from '../../services/taskService';
-import { constTaskType } from '@agh-kiwis/types';
-import { ConstTaskCreationForm } from '@agh-kiwis/ui-components';
 
 const ConstTask: React.FC = () => {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import { Form, Formik } from 'formik';
 import {
   Box,
   Flex,
@@ -10,6 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
+import { floatTaskType } from '@agh-kiwis/types';
 import {
   CommonButton,
   ControlledInputAddon,
@@ -29,7 +30,6 @@ import {
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
-import { floatTaskType } from '@agh-kiwis/types';
 
 type FloatTaskCreationFormProps = {
   initialValues: floatTaskType;

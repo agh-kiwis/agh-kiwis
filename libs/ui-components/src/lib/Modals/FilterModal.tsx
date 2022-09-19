@@ -1,14 +1,14 @@
-import { FilterOptions } from '@agh-kiwis/ui-components';
 import { Button } from '@chakra-ui/react';
 import {
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
+import { FilterOptions } from '@agh-kiwis/ui-components';
 
 type FilterModalProps = {
   isOpen: boolean;

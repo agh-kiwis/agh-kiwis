@@ -1,7 +1,7 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Button, Box, Flex, Text, VStack, Divider } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import { useLoginMutation } from '@agh-kiwis/data-access';
 import {
   CommonButton,
