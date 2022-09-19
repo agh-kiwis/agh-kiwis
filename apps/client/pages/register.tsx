@@ -3,14 +3,16 @@ import { useRouter } from 'next/router';
 import { Button, Box, VStack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useRegisterMutation } from '@agh-kiwis/data-access';
-import { InputField } from '../components/Common/InputField';
-import { Wrapper } from '../components/Containers/Wrapper';
-import { Logo } from '../components/Utils/Logo';
 import { toErrorMap } from '../utils/toErrorMap';
-import { SectionDivider } from '../components/Utils/SectionDivider';
-import { CommonButton } from '../components/Buttons/CommonButton';
+import {
+  CommonButton,
+  InputField,
+  Logo,
+  SectionDivider,
+  Wrapper,
+} from '@agh-kiwis/ui-components';
 
-const Register = () => {
+const Register: React.FC = () => {
   const [registerMutation] = useRegisterMutation();
   const router = useRouter();
 

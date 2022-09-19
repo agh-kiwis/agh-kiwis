@@ -3,8 +3,8 @@ import {
   CreateFloatTaskInput,
   RepeatType,
 } from '@agh-kiwis/data-access';
+import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 import moment from 'moment';
-import { constTaskType, floatTaskType } from '../types/taskTypes';
 
 export const constTaskFormToAddTaskMutationMapper = (
   variables: constTaskType

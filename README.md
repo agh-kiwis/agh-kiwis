@@ -58,4 +58,12 @@ You need to rename .gql files to .graphql files.
 nx run data-access:generate
 ```
 
+# Libraries
+
+## To create new library run:
+
+```
+nx g @nrwl/workspace:lib <library-name>
+```
+
 # More info in [docs](docs/Docs.md)

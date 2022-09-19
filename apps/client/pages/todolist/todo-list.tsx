@@ -2,13 +2,15 @@ import { Spinner } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
-import { FilterModal } from '../../components/Modals/FilterModal';
-import { AlertModal } from '../../components/Common/AlertModal';
-import { TodoListHeader } from '../../components/TodoList/TodoListHeader';
-import { TasksStack } from '../../components/TodoList/TaskComponents/TasksStack';
-import { AddTask } from '../../components/TodoList/AddTask';
+import {
+  AddTask,
+  AlertModal,
+  FilterModal,
+  TasksStack,
+  TodoListHeader,
+} from '@agh-kiwis/ui-components';
 
-export const TodoList = () => {
+const TodoList: React.FC = () => {
   const router = useRouter();
   const { data, loading, error } = useGetTasksQuery({
     variables: {
@@ -39,3 +41,5 @@ export const TodoList = () => {
     </>
   );
 };
+
+export default TodoList;
