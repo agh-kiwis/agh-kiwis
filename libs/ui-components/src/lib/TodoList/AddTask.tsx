@@ -1,5 +1,6 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
+import { Button } from '@chakra-ui/react';
+import { ADD_CONST_TASK_URL } from '@agh-kiwis/workspace-constants';
 
 type AddTaskProps = {
   router: any;
@@ -11,7 +12,7 @@ export const AddTask: React.FC<AddTaskProps> = ({ router }) => {
       w={'100%'}
       bgColor={'primary'}
       color={'white'}
-      onClick={() => router.push('/add/const-task')}
+      onClick={() => router.push({ ADD_CONST_TASK_URL })}
     >
       {' '}
       Add task{' '}
