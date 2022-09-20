@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Box, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { useField } from 'formik';
+import { Box, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
 
 export type CustomDateTimeInputProps = {
   type: string;

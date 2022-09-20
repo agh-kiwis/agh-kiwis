@@ -1,7 +1,7 @@
 import React from 'react';
-import { VStack, Heading } from '@chakra-ui/react';
 import { faKiwiBird } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Heading, VStack } from '@chakra-ui/react';
 
 export const Logo: React.FC = () => {
   return (

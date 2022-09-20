@@ -1,10 +1,10 @@
 import { Box, Checkbox, HStack } from '@chakra-ui/react';
 import {
   Accordion,
-  AccordionItem,
   AccordionButton,
-  AccordionPanel,
   AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
 } from '@chakra-ui/react';
 
 export const FilterOptions = () => {

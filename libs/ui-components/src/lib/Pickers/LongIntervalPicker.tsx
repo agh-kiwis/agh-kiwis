@@ -12,8 +12,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { CustomNumberInput } from '@agh-kiwis/ui-components';
 

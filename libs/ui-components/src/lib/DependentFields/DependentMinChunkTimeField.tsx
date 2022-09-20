@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { InputField } from '@agh-kiwis/ui-components';
 import { floatTaskType } from '@agh-kiwis/types';
+import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentMinChunkTimeFieldProps = {
   name: string;

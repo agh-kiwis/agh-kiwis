@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
+import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskCreationForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
   estimationInputFields,
@@ -10,8 +12,6 @@ import {
   minTimeBetweenChunksInputFields,
 } from '../../formConfig/initialValues';
 import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
-import { floatTaskType } from '@agh-kiwis/types';
-import { FloatTaskCreationForm } from '@agh-kiwis/ui-components';
 
 const FloatTask: React.FC = () => {
   const router = useRouter();

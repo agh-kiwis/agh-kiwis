@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useField } from 'formik';
 import {
   Box,
   Button,
@@ -7,10 +8,9 @@ import {
   FormLabel,
   HStack,
   Input,
-  useNumberInput,
   VStack,
+  useNumberInput,
 } from '@chakra-ui/react';
-import { useField } from 'formik';
 
 export type CustomNumberInputProps = {
   label: string;

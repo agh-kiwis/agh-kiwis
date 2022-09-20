@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Text, Box } from '@chakra-ui/react';
+import { Box, Stack, Text } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
 import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
 

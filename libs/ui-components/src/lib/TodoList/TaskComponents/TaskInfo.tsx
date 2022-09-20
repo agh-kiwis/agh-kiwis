@@ -1,9 +1,9 @@
 import React from 'react';
-import { IoTimerOutline, IoCalendarClearOutline } from 'react-icons/io5';
+import { IoCalendarClearOutline, IoTimerOutline } from 'react-icons/io5';
 import { Flex, Stack, Text } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
-import { TaskIcon } from './TaskIcon';
 import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
+import { TaskIcon } from './TaskIcon';
 
 type TaskInfoProps = {
   isFloat: boolean;

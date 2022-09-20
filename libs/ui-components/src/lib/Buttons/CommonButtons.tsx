@@ -1,6 +1,6 @@
 import React from 'react';
-import { GOOGLE_ICON_PATH } from '@agh-kiwis/workspace-constants';
 import { Button, Image, Wrap, WrapItem } from '@chakra-ui/react';
+import { GOOGLE_ICON_PATH } from '@agh-kiwis/workspace-constants';
 
 type ButtonProps = {
   buttonText: string;

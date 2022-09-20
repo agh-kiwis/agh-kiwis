@@ -10,8 +10,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { CustomDateTimeInput } from '@agh-kiwis/ui-components';
 

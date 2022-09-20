@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { roundToMinutes } from '@agh-kiwis/moment-service';
+import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 import {
   LongIntervalAmountType,
   LongIntervalSelectType,
   NumberInputType,
 } from '@agh-kiwis/ui-components';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 
 export const constTaskInitialValues: constTaskType = {
   type: 'const',

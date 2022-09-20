@@ -1,8 +1,7 @@
-import { Stack } from '@chakra-ui/react';
-import { Task } from './Task';
-import { GetTasksQuery } from '@agh-kiwis/data-access';
-
 import React from 'react';
+import { Stack } from '@chakra-ui/react';
+import { GetTasksQuery } from '@agh-kiwis/data-access';
+import { Task } from './Task';
 
 type TasksStackProps = {
   data: GetTasksQuery;

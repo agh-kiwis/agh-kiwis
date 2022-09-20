@@ -1,5 +1,5 @@
-import { InputLeftAddon } from '@chakra-ui/react';
 import { useField } from 'formik';
+import { InputLeftAddon } from '@chakra-ui/react';
 
 type ControlledInputAddonProps = {
   name: string;

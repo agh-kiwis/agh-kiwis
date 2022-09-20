@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@chakra-ui/react';
 import { IconType } from 'react-icons/lib';
+import { Icon } from '@chakra-ui/react';
 
 type TaskIconProps = {
   icon: IconType;
