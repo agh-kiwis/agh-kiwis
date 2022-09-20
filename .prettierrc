@@ -5,7 +5,7 @@
     "^next",
     "^formik",
     "^moment",
-    "@fortawesome",
+    "^@fortawesome",
     "^@chakra",
     "^@agh-kiwis",
     "^[./]"
