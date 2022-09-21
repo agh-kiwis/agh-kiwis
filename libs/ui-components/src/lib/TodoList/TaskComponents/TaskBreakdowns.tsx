@@ -1,16 +1,19 @@
 import { TaskBreakdown } from '@agh-kiwis/data-access';
-import { Chunk } from '../BreakdownComponents/Breakdown';
+import { Breakdown } from '../BreakdownComponents/Breakdown';
+import { ScrollStack } from '../../Common/ScrollStack';
 
-type BreakdownsProps = {
+type TaskBreakdownsProps = {
   breakdowns: TaskBreakdown[];
 };
 
-export const Chunks: React.FC<BreakdownsProps> = ({ breakdowns }) => {
+export const TaskBreakdowns: React.FC<TaskBreakdownsProps> = ({
+  breakdowns,
+}) => {
   return (
-    <>
+    <ScrollStack h={'30vh'}>
       {breakdowns.map((breakdown, key) => (
-        <Chunk key={key} index={key} breakdown={breakdown} />
+        <Breakdown key={key} index={key} breakdown={breakdown} />
       ))}
-    </>
+    </ScrollStack>
   );
 };

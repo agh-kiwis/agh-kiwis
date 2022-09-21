@@ -3,13 +3,13 @@ import { Box, Stack, Text } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
 import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
 
-type ChunkInfoProps = {
+type BreakdownInfoProps = {
   checked: boolean;
   id: number;
   breakdown: TaskBreakdown;
 };
 
-export const ChunkInfo: React.FC<ChunkInfoProps> = ({
+export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
   id,
   breakdown,
   checked,
