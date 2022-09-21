@@ -3,13 +3,13 @@ import { timeInterval, startToDate } from '../DateConvertor';
 import React from 'react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
 
-type ChunkInfoProps = {
+type BreakdownInfoProps = {
   checked: boolean;
   id: number;
   breakdown: TaskBreakdown;
 };
 
-export const ChunkInfo: React.FC<ChunkInfoProps> = ({
+export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
   id,
   breakdown,
   checked,

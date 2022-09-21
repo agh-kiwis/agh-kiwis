@@ -1,11 +1,11 @@
 import { HStack } from '@chakra-ui/react';
 
-type ChunkContainerProps = {
+type BreakdownContainerProps = {
   children: React.ReactNode;
   checked: boolean;
 };
 
-export const ChunkContainer: React.FC<ChunkContainerProps> = ({
+export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
   children,
   checked,
 }) => {

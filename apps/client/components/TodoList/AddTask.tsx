@@ -9,6 +9,8 @@ export const AddTask: React.FC<AddTaskProps> = ({ router }) => {
   return (
     <Button
       w={'100%'}
+      h={'7vh'}
+      mt={'3'}
       bgColor={'primary'}
       color={'white'}
       onClick={() => router.push('/add/const-task')}
