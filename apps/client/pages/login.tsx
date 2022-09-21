@@ -1,18 +1,22 @@
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import { useLoginMutation } from '@agh-kiwis/data-access';
+import { validateEmail, validateNotEmpty } from '@agh-kiwis/form-validators';
 import {
+  AlertModal,
   CommonButton,
   GoogleButton,
   InputField,
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-import { toErrorMap } from '../utils/toErrorMap';
+import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
 
 const Login: React.FC = () => {
+  const [loginError, setLoginError] = useState('');
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
 
@@ -25,7 +29,12 @@ const Login: React.FC = () => {
         },
       },
     }).catch((caughtError) => {
-      setErrors(toErrorMap(caughtError));
+      setLoginError('Wrong email or password.');
+      setTimeout(() => {
+        setLoginError('');
+      }, ERROR_MODAL_TIMEOUT);
+      // imo for the sake of security the best approach during failed login is displaying only generic error
+      // setErrors(toErrorMap(caughtError));
     });
     if (response) {
       // Handle response somehow
@@ -43,7 +52,12 @@ const Login: React.FC = () => {
         {({ isSubmitting }) => (
           <Form>
             <Box>
-              <InputField name="email" placeholder="Email" label="Email" />
+              <InputField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                validate={validateEmail}
+              />
             </Box>
             <Box mt={4}>
               <InputField
@@ -51,6 +65,7 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 label="Password"
                 type="password"
+                validate={validateNotEmpty}
               />
             </Box>
             <Flex justify={'right'} mt={1}>
@@ -60,6 +75,17 @@ const Login: React.FC = () => {
                 </Button>
               </NextLink>
             </Flex>
+
+            {loginError && (
+              <Box mt={4} mb={6}>
+                <AlertModal
+                  status={'error'}
+                  title={'Login failed!'}
+                  message={loginError}
+                />
+              </Box>
+            )}
+
             <VStack mt={4} spacing={4}>
               <CommonButton
                 variant="solid"
@@ -77,7 +103,7 @@ const Login: React.FC = () => {
               <Divider mx={4} />
             </Flex>
             <NextLink href="/register" passHref>
-              <Button variant="outline" w={'100%'}>
+              <Button variant="outline" w="100%">
                 Sign up
               </Button>
             </NextLink>

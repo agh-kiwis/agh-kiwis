@@ -14,6 +14,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   isTextArea?: boolean;
   displayedValue?: string;
   borderLeftRadius?: number;
+  validate?: (value: string | number) => string;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
