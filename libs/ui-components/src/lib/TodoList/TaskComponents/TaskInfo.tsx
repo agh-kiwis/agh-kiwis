@@ -1,14 +1,14 @@
 import React from 'react';
 import { IoCalendarClearOutline, IoTimerOutline } from 'react-icons/io5';
 import { Flex, Stack, Text } from '@chakra-ui/react';
-import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { Maybe, TaskBreakdown } from '@agh-kiwis/data-access';
 import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
 import { TaskIcon } from './TaskIcon';
 
 type TaskInfoProps = {
   isFloat: boolean;
-  deadline: number;
-  taskBreakdowns: TaskBreakdown[];
+  deadline: Maybe<string> | undefined;
+  taskBreakdowns: Maybe<TaskBreakdown[]> | undefined;
 };
 
 const doneChunks = (taskBreakdowns: TaskBreakdown[]) => {
@@ -31,7 +31,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
         </Flex>
         <Flex justifyContent={'center'}>
           <Text fontSize="md">
-            Chunks done: {doneChunks(taskBreakdowns)}/{taskBreakdowns.length}
+            Chunks done: {doneChunks(taskBreakdowns!)}/{taskBreakdowns!.length}
           </Text>
         </Flex>
       </Stack>
@@ -40,7 +40,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
     return (
       <Flex justifyContent={'center'}>
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(taskBreakdowns[0])}</Text>
+        <Text>{timeInterval(taskBreakdowns![0])}</Text>
       </Flex>
     );
   }

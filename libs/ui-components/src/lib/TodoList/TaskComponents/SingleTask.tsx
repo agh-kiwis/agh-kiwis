@@ -1,20 +1,25 @@
+import { Task } from '@agh-kiwis/data-access';
 import { useState } from 'react';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
 import { TaskInfo } from './TaskInfo';
 import { TaskModal } from './TaskModal';
 
-const taskColor = (props) => {
-  if (!props.task.isDone) return props.task.category.color.hexCode;
+type TaskProps = {
+  key: number;
+  task: Task;
+};
+
+const taskColor = (task: Task) => {
+  if (!task.isDone) return task.category.color.hexCode;
   else return 'secondary';
 };
 
-export const Task = (props) => {
+export const SingleTask: React.FC<TaskProps> = ({ task }) => {
   const [closeModal, openModal] = useState(false);
-  const task = props.task;
   return (
     <>
-      <TaskContainer bgColor={taskColor(props)} onClick={() => openModal(true)}>
+      <TaskContainer bgColor={taskColor(task)} onClick={() => openModal(true)}>
         <TaskHeader name={task.name} priority={task.priority.name} />
         <TaskInfo
           isFloat={task.isFloat}
@@ -25,7 +30,7 @@ export const Task = (props) => {
 
       <TaskModal
         isOpen={closeModal}
-        task={props.task}
+        task={task}
         close={() => openModal(false)}
       />
     </>

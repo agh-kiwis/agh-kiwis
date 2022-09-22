@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Text } from '@chakra-ui/react';
-import { deadlineToDate } from '../DateConvertor';
+import { deadlineToDate } from '@agh-kiwis/moment-service';
 import {
   Modal,
   ModalBody,
@@ -10,11 +10,21 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { TaskBreakdowns } from './TaskBreakdowns';
+import { Task } from '@agh-kiwis/data-access';
 
-export const TaskModal = (props) => {
-  const task = props.task;
+type TaskModalProps = {
+  isOpen: boolean;
+  task: Task;
+  close: () => void;
+};
+
+export const TaskModal: React.FC<TaskModalProps> = ({
+  isOpen,
+  task,
+  close,
+}) => {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.close} isCentered>
+    <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
       <ModalContent mx={4}>
         <ModalHeader>
@@ -27,8 +37,8 @@ export const TaskModal = (props) => {
         <ModalBody>
           {task.isFloat ? (
             <Box>
-              <Text> Deadline: {deadlineToDate(task.deadline)}</Text>
-              <TaskBreakdowns breakdowns={task.taskBreakdowns} />
+              <Text> Deadline: {deadlineToDate(task.deadline!)}</Text>
+              <TaskBreakdowns breakdowns={task.taskBreakdowns!} />
             </Box>
           ) : null}
         </ModalBody>

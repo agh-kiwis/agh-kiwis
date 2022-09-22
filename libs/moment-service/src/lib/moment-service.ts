@@ -12,7 +12,7 @@ export const timeInterval = (breakdown: any) => {
   return start + ' - ' + end;
 };
 
-export const deadlineToDate = (deadline: number) => {
+export const deadlineToDate = (deadline: any) => {
   return moment(deadline, 'x').format('DD MMM');
 };
 
