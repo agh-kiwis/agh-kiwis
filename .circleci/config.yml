@@ -35,7 +35,7 @@ jobs:
 
       - run:
           name: Run tests
-          command: ./bin/ci
+          command: bash ./bin/ci
 
 workflows:
   build:
