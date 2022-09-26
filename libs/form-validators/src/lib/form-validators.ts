@@ -1,15 +1,16 @@
-export const validateEmail = (value: string): string => {
-  if (!value) {
-    return 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-    return 'Invalid email address';
-  }
-  return '';
-};
+import * as Yup from 'yup';
+import { MAX_INPUT_LENGTH } from '@agh-kiwis/workspace-constants';
 
-export const validateNotEmpty = (value: string): string => {
-  if (!value) {
-    return 'Required';
-  }
-  return '';
-};
+export const CredentialSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address!').required('Required!'),
+  password: Yup.string().required('Required!'),
+});
+
+export const TaskSchema = Yup.object({
+  category: Yup.object().shape({
+    name: Yup.string().max(MAX_INPUT_LENGTH, 'Too Long!').required('Required!'),
+  }),
+  taskName: Yup.string()
+    .max(MAX_INPUT_LENGTH, 'Too Long!')
+    .required('Required!'),
+});
