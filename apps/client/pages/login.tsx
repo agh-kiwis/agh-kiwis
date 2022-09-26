@@ -29,15 +29,12 @@ const Login: React.FC = () => {
         },
       },
     }).catch((caughtError) => {
-      setLoginError('Wrong email or password.');
+      setLoginError('Wrong email or password!');
       setTimeout(() => {
         setLoginError('');
       }, ERROR_MODAL_TIMEOUT);
-      // imo for the sake of security the best approach during failed login is displaying only generic error
-      // setErrors(toErrorMap(caughtError));
     });
     if (response) {
-      // Handle response somehow
       console.log(response.data.login.token);
       // Set authorization cookie to response token (if we are working at different domains and it's not set automatically)
       // cookieCutter.set('authorization', response.data.login.token);
