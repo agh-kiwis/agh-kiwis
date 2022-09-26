@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import { useLoginMutation } from '@agh-kiwis/data-access';
-import { validateEmail, validateNotEmpty } from '@agh-kiwis/form-validators';
+import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
   AlertModal,
   CommonButton,
@@ -48,16 +48,16 @@ const Login: React.FC = () => {
   return (
     <Wrapper>
       <Logo />
-      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={CredentialSchema}
+      >
         {({ isSubmitting }) => (
           <Form>
             <Box>
-              <InputField
-                name="email"
-                placeholder="Email"
-                label="Email"
-                validate={validateEmail}
-              />
+              <InputField name="email" placeholder="Email" label="Email" />
             </Box>
             <Box mt={4}>
               <InputField
@@ -65,7 +65,6 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 label="Password"
                 type="password"
-                validate={validateNotEmpty}
               />
             </Box>
             <Flex justify={'right'} mt={1}>

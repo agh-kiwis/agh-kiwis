@@ -12,7 +12,7 @@ export const AddTask: React.FC<AddTaskProps> = ({ router }) => {
       w={'100%'}
       bgColor={'primary'}
       color={'white'}
-      onClick={() => router.push({ ADD_CONST_TASK_URL })}
+      onClick={() => router.push(ADD_CONST_TASK_URL)}
     >
       {' '}
       Add task{' '}

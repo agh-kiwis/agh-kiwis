@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Button, VStack } from '@chakra-ui/react';
 import { useRegisterMutation } from '@agh-kiwis/data-access';
+import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
   CommonButton,
   InputField,
@@ -37,7 +38,12 @@ const Register: React.FC = () => {
   return (
     <Wrapper variant="small">
       <Logo />
-      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={CredentialSchema}
+      >
         {({ isSubmitting }) => (
           <Form>
             <InputField name="email" placeholder="Email" label="Email" />
