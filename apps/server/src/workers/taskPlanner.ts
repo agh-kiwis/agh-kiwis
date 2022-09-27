@@ -1,15 +1,19 @@
-import moment = require('moment');
+import { Logger } from '@nestjs/common';
 import { createQueryBuilder } from 'typeorm';
 import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
+
+
+import moment = require('moment');
+
 
 export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
   if (!task || !task.isFloat) {
     throw new Error('Error while planning task');
   }
 
-  console.log(`Planning task: ${task.name}`);
+  Logger.log(`Planning task: ${task.name}`);
 
   //   Remove all previous task breakdowns
   await TaskBreakdown.delete({ task: task });

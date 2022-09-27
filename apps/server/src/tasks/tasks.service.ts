@@ -63,8 +63,6 @@ export class TasksService {
 
     const priority = await getPriority(createFloatTaskInput.priorityId);
 
-    console.log(createFloatTaskInput.start);
-
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
       start: createFloatTaskInput.start,

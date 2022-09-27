@@ -3,6 +3,8 @@ import { Transform } from 'class-transformer';
 import { IsExist } from '../../utils/validators/is-exists.validator';
 import { Field, InputType } from '@nestjs/graphql';
 
+// TODO We need to somehow catch validation errors to not be thrown
+// But that is not important for now as it's just on the error log level
 @InputType()
 export class AuthEmailLoginInput {
   @Transform(({ value }) => value.toLowerCase().trim())

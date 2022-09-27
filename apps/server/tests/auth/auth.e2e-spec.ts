@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../../src/app/app.module';
 import connection from '../connection';
@@ -24,13 +24,20 @@ describe('Auth (e2e)', () => {
 
   const gql = '/graphql';
 
+  const registerMutation = () => `
+    mutation {
+      register(registerDto: {email: "email@gmail.com", password: "password1234"}) {
+        email
+      }
+    }
+  `;
+
   describe('auth', () => {
     it('register', () => {
       return request(app.getHttpServer())
         .post(gql)
         .send({
-          query:
-            'mutation {register(registerDto: {email: "email@gmail.com",password: "password1234"}) {email}}',
+          query: registerMutation(),
         })
         .expect(200)
         .expect((res: any) => {

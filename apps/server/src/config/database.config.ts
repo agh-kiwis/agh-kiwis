@@ -1,11 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-console.log('databaseee name');
-console.log(process.env.DATABASE_NAME);
-
-console.log('process.env.NODE_ENV');
-console.log(process.env.NODE_ENV);
-
+// TODO There we need to add descriptions to params
 export default registerAs('database', () => ({
   url: process.env.DATABASE_URL,
   type: process.env.DATABASE_TYPE,

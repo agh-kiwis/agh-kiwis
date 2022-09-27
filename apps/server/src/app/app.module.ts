@@ -21,6 +21,8 @@ import { AppService } from './app.service';
 
 @Module({
   imports: [
+    // This is needed to granulate env vars usage
+    // And mock tests in future
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig, appConfig, authConfig],
