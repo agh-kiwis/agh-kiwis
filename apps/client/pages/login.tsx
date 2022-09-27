@@ -1,18 +1,22 @@
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import { useLoginMutation } from '@agh-kiwis/data-access';
+import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
+  AlertModal,
   CommonButton,
   GoogleButton,
   InputField,
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-import { toErrorMap } from '../utils/toErrorMap';
+import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
 
 const Login: React.FC = () => {
+  const [loginError, setLoginError] = useState('');
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
 
@@ -25,10 +29,12 @@ const Login: React.FC = () => {
         },
       },
     }).catch((caughtError) => {
-      setErrors(toErrorMap(caughtError));
+      setLoginError('Wrong email or password!');
+      setTimeout(() => {
+        setLoginError('');
+      }, ERROR_MODAL_TIMEOUT);
     });
     if (response) {
-      // Handle response somehow
       console.log(response.data.login.token);
       // Set authorization cookie to response token (if we are working at different domains and it's not set automatically)
       // cookieCutter.set('authorization', response.data.login.token);
@@ -39,7 +45,12 @@ const Login: React.FC = () => {
   return (
     <Wrapper>
       <Logo />
-      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={CredentialSchema}
+      >
         {({ isSubmitting }) => (
           <Form>
             <Box>
@@ -60,6 +71,17 @@ const Login: React.FC = () => {
                 </Button>
               </NextLink>
             </Flex>
+
+            {loginError && (
+              <Box mt={4} mb={6}>
+                <AlertModal
+                  status={'error'}
+                  title={'Login failed!'}
+                  message={loginError}
+                />
+              </Box>
+            )}
+
             <VStack mt={4} spacing={4}>
               <CommonButton
                 variant="solid"
@@ -77,7 +99,7 @@ const Login: React.FC = () => {
               <Divider mx={4} />
             </Flex>
             <NextLink href="/register" passHref>
-              <Button variant="outline" w={'100%'}>
+              <Button variant="outline" w="100%">
                 Sign up
               </Button>
             </NextLink>
