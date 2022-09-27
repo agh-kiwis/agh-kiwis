@@ -1,16 +1,22 @@
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Button, Box, VStack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { Box, Button, VStack } from '@chakra-ui/react';
 import { useRegisterMutation } from '@agh-kiwis/data-access';
-import { InputField } from '../components/Common/InputField';
-import { Wrapper } from '../components/Containers/Wrapper';
-import { Logo } from '../components/Utils/Logo';
-import { toErrorMap } from '../utils/toErrorMap';
-import { SectionDivider } from '../components/Utils/SectionDivider';
-import { CommonButton } from '../components/Buttons/CommonButton';
+import { CredentialSchema } from '@agh-kiwis/form-validators';
+import {
+  AlertModal,
+  CommonButton,
+  InputField,
+  Logo,
+  SectionDivider,
+  Wrapper,
+} from '@agh-kiwis/ui-components';
+import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
 
-const Register = () => {
+const Register: React.FC = () => {
+  const [loginError, setLoginError] = useState('');
   const [registerMutation] = useRegisterMutation();
   const router = useRouter();
 
@@ -23,11 +29,12 @@ const Register = () => {
         },
       },
     }).catch((caughtError) => {
-      console.log(caughtError.graphQLErrors);
-      setErrors(toErrorMap(caughtError));
+      setLoginError('User with given email is already registered!');
+      setTimeout(() => {
+        setLoginError('');
+      }, ERROR_MODAL_TIMEOUT);
     });
     if (response) {
-      // Handle response somehow
       router.push('/login');
     }
   };
@@ -35,7 +42,12 @@ const Register = () => {
   return (
     <Wrapper variant="small">
       <Logo />
-      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={CredentialSchema}
+      >
         {({ isSubmitting }) => (
           <Form>
             <InputField name="email" placeholder="Email" label="Email" />
@@ -47,6 +59,17 @@ const Register = () => {
                 type="password"
               />
             </Box>
+
+            {loginError && (
+              <Box mt={4} mb={6}>
+                <AlertModal
+                  status={'error'}
+                  title={'Sign up failed!'}
+                  message={loginError}
+                />
+              </Box>
+            )}
+
             <VStack mt={4} spacing={4}>
               <CommonButton
                 variant="solid"

@@ -1,0 +1,6 @@
+query getColors {
+  getColors {
+    hexCode
+    id
+  }
+}

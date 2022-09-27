@@ -1,12 +1,12 @@
-import { Wrapper } from '../components/Containers/Wrapper';
-import { TodoList } from '../components/TodoList/TodoList';
+import { Wrapper } from '@agh-kiwis/ui-components';
+import TodoList from './todolist/todo-list';
 
-export function Index() {
+const Index: React.FC = () => {
   return (
     <Wrapper>
       <TodoList />
     </Wrapper>
   );
-}
+};
 
 export default Index;
