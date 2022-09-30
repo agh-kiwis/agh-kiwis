@@ -13,8 +13,8 @@ export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
     <HStack
       justifyContent={'space-between'}
       borderRadius={'0.5rem'}
-      mb={'0.6rem'}
       color={'white'}
+      px="2"
       bgColor={checked ? 'insignificant' : 'primary'}
     >
       {children}

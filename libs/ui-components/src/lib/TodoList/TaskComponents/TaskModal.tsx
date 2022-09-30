@@ -1,4 +1,18 @@
-import { Box, Button, HStack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
 import {
   Modal,
   ModalBody,
@@ -23,24 +37,41 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   task,
   close,
 }) => {
+  console.log('file: TaskModal.tsx -> line 26 -> task', task);
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
-      <ModalContent mx={4}>
+      <ModalContent mx="4">
         <ModalHeader>
-          <Text fontSize="xl" mr="1rem">
-            {task.name}
-          </Text>
-          <Text fontSize="sm"> Priority: {task.priority.name}</Text>
+          <TableContainer fontSize="md">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Category:</Th>
+                  <Th>{task.category.name}</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Name:</Td>
+                  <Td>{task.name}</Td>
+                </Tr>
+                <Tr>
+                  <Td>Priority:</Td>
+                  <Td>{task.priority.name}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {task.isFloat ? (
+          {task.isFloat && (
             <Box>
               <Text> Deadline: {deadlineToDate(task.deadline!)}</Text>
               <TaskBreakdowns breakdowns={task.taskBreakdowns!} />
             </Box>
-          ) : null}
+          )}
         </ModalBody>
 
         <ModalFooter>
