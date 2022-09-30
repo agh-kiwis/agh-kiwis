@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import {
-  AddTask,
+  AddTaskButton,
   AlertModal,
   FilterModal,
   TasksStack,
@@ -36,7 +36,7 @@ const TodoList: React.FC = () => {
     <>
       <TodoListHeader setOpen={setOpen} />
       <TasksStack data={data} />
-      <AddTask router={router} />
+      <AddTaskButton />
       <FilterModal isOpen={open} close={() => setOpen(false)} />
     </>
   );
