@@ -24,23 +24,23 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
 }) => {
   if (isFloat) {
     return (
-      <Stack justifyContent={'center'}>
-        <Flex justifyContent={'center'}>
+      <Stack justifyContent="center">
+        <Flex justifyContent="center">
           <TaskIcon icon={IoCalendarClearOutline} />
           <Text>{deadlineToDate(deadline)}</Text>
         </Flex>
-        <Flex justifyContent={'center'}>
+        <Flex justifyContent="center">
           <Text fontSize="md">
-            Chunks done: {doneChunks(taskBreakdowns)}/{taskBreakdowns.length}
+            Chunks done: {doneChunks(taskBreakdowns!)}/{taskBreakdowns!.length}
           </Text>
         </Flex>
       </Stack>
     );
   } else {
     return (
-      <Flex justifyContent={'center'}>
+      <Flex justifyContent="center">
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(taskBreakdowns[0])}</Text>
+        <Text>{timeInterval(taskBreakdowns![0])}</Text>
       </Flex>
     );
   }

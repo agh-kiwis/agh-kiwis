@@ -1,7 +1,7 @@
 import React from 'react';
-import { Stack } from '@chakra-ui/react';
 import { GetTasksQuery } from '@agh-kiwis/data-access';
-import { TaskTile } from './TaskTile';
+import { ScrollStack } from '../../Common/ScrollStack';
+import { SingleTask } from './SingleTask';
 
 type TasksStackProps = {
   data: GetTasksQuery;
@@ -9,10 +9,10 @@ type TasksStackProps = {
 
 export const TasksStack: React.FC<TasksStackProps> = ({ data }) => {
   return (
-    <Stack overflowX="scroll" mb="6">
+    <ScrollStack h="80vh">
       {data?.getTasks.map((task, key) => (
-        <TaskTile key={key} task={task} />
+        <SingleTask key={key} task={task} />
       ))}
-    </Stack>
+    </ScrollStack>
   );
 };
