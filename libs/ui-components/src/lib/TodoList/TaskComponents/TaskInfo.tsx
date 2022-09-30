@@ -1,14 +1,14 @@
 import React from 'react';
 import { IoCalendarClearOutline, IoTimerOutline } from 'react-icons/io5';
 import { Flex, Stack, Text } from '@chakra-ui/react';
-import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { Maybe, TaskBreakdown } from '@agh-kiwis/data-access';
 import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
 import { TaskIcon } from './TaskIcon';
 
 type TaskInfoProps = {
   isFloat: boolean;
-  deadline: number;
-  taskBreakdowns: TaskBreakdown[];
+  deadline: Maybe<string> | undefined;
+  taskBreakdowns: Maybe<TaskBreakdown[]> | undefined;
 };
 
 const doneChunks = (taskBreakdowns: TaskBreakdown[]) => {
