@@ -7,5 +7,5 @@ type TaskIconProps = {
 };
 
 export const TaskIcon: React.FC<TaskIconProps> = ({ icon }) => {
-  return <Icon as={icon} fontSize='2xl' mr='0.5rem' />;
+  return <Icon as={icon} fontSize="2xl" mr="0.5rem" />;
 };

@@ -10,6 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
+import { TaskSchema } from '@agh-kiwis/form-validators';
 import { floatTaskType } from '@agh-kiwis/types';
 import {
   CommonButton,
@@ -58,7 +59,12 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
         <Header text="Add new task" />
       </Box>
       <TaskSwitchFloat />
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={TaskSchema}
+      >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">

@@ -28,10 +28,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       <ModalOverlay />
       <ModalContent mx={4}>
         <ModalHeader>
-          <Text fontSize='xl' mr="1rem">
+          <Text fontSize="xl" mr="1rem">
             {task.name}
           </Text>
-          <Text fontSize='sm'> Priority: {task.priority.name}</Text>
+          <Text fontSize="sm"> Priority: {task.priority.name}</Text>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

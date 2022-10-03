@@ -10,6 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
+import { TaskSchema } from '@agh-kiwis/form-validators';
 import { constTaskType } from '@agh-kiwis/types';
 import {
   ColorPicker,
@@ -57,7 +58,12 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
         <Header text="Add new task" />
       </Box>
       <TaskSwitchConst />
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validateOnChange={false}
+        validationSchema={TaskSchema}
+      >
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">

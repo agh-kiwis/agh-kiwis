@@ -5,6 +5,7 @@
     "client": "apps/client",
     "client-e2e": "apps/client-e2e",
     "data-access": "libs/data-access",
+    "form-validators": "libs/form-validators",
     "moment-service": "libs/moment-service",
     "server": "apps/server",
     "types": "libs/types",
