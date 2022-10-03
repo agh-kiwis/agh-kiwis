@@ -2,15 +2,17 @@ import { Stack } from '@chakra-ui/react';
 
 type ScrollStackProps = {
   children: React.ReactNode;
-  h: string;
+  height: string;
+  marginBot: string;
 };
 
-export const ScrollStack: React.FC<ScrollStackProps> = ({ children, h }) => {
+export const ScrollStack: React.FC<ScrollStackProps> = ({ children, height, marginBot }) => {
   return (
     <Stack
       sx={{ '::-webkit-scrollbar': { display: 'none' } }}
       overflowY="scroll"
-      h={h}
+      h={height}
+      mb={marginBot}
     >
       {children}
     </Stack>

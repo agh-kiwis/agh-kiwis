@@ -11,7 +11,7 @@ export const TaskContainer: React.FC<TaskContainerProps> = ({
   ...props
 }) => {
   return (
-    <Stack borderRadius={'0.7rem'} p={'2rem'} color={'white'} {...props}>
+    <Stack borderRadius='0.7rem' p='2rem' color='white' {...props}>
       {children}
     </Stack>
   );

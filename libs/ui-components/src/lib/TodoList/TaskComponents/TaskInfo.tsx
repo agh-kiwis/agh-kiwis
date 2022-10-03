@@ -27,7 +27,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
       <Stack justifyContent={'center'}>
         <Flex justifyContent={'center'}>
           <TaskIcon icon={IoCalendarClearOutline} />
-          <Text>{deadlineToDate(deadline)}</Text>
+          <Text>{deadlineToDate(deadline!)}</Text>
         </Flex>
         <Flex justifyContent={'center'}>
           <Text fontSize="md">

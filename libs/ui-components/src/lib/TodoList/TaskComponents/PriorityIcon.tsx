@@ -5,13 +5,13 @@ type PriorityProps = {
 };
 
 export const PriorityIcon: React.FC<PriorityProps> = ({ priority }) => {
-  const PriorityVariants = {
+  const PriorityVariants: {[priority: string]: JSX.Element} = {
     Low: <HiChevronDown />,
     Medium: <HiChevronUp />,
     High: <HiChevronDoubleUp />,
   };
 
-  return <>{PriorityVariants[priority]}</>;
+  return PriorityVariants[priority];
 };
 
 export default PriorityIcon;

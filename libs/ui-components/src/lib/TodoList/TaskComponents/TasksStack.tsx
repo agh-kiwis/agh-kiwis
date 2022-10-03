@@ -9,7 +9,7 @@ type TasksStackProps = {
 
 export const TasksStack: React.FC<TasksStackProps> = ({ data }) => {
   return (
-    <ScrollStack h={'80vh'}>
+    <ScrollStack height='80vh' marginBot='0.6rem'>
       {data?.getTasks.map((task, key) => (
         <SingleTask key={key} task={task} />
       ))}
