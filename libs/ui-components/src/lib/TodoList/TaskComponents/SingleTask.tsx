@@ -1,4 +1,5 @@
 import { Task } from '@agh-kiwis/data-access';
+import { DONE_TASK_COLOR } from '@agh-kiwis/workspace-constants';
 import { useState } from 'react';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
@@ -10,16 +11,11 @@ type TaskProps = {
   task: Task;
 };
 
-const taskColor = (task: Task) => {
-  if (!task.isDone) return task.category.color.hexCode;
-  else return 'secondary';
-};
-
 export const SingleTask: React.FC<TaskProps> = ({ task }) => {
-  const [closeModal, openModal] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
   return (
     <>
-      <TaskContainer bgColor={taskColor(task)} onClick={() => openModal(true)}>
+      <TaskContainer bgColor={getTaskColor(task)} onClick={() => setModalOpened(true)}>
         <TaskHeader name={task.name} priority={task.priority.name} />
         <TaskInfo
           isFloat={task.isFloat}
@@ -29,10 +25,14 @@ export const SingleTask: React.FC<TaskProps> = ({ task }) => {
       </TaskContainer>
 
       <TaskModal
-        isOpen={closeModal}
+        isOpen={modalOpened}
         task={task}
-        close={() => openModal(false)}
+        close={() => setModalOpened(false)}
       />
     </>
   );
+};
+
+const getTaskColor = (task: Task) => {
+  return task.isDone ? DONE_TASK_COLOR : task.category.color.hexCode;
 };

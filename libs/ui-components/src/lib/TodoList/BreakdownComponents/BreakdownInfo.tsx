@@ -16,14 +16,14 @@ export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
 }) => {
   if (checked) {
     return (
-      <Stack justifyContent={'center'}>
+      <Stack justifyContent="center">
         <Text mr="1rem">Chunk {id + 1}</Text>
         <Text>Done</Text>
       </Stack>
     );
   } else {
     return (
-      <Stack justifyContent={'center'}>
+      <Stack justifyContent="center">
         <Text mr="1rem">Chunk {id + 1}</Text>
         <Box>
           <Text mr="1rem"> {startToDate(breakdown.start)} </Text>
