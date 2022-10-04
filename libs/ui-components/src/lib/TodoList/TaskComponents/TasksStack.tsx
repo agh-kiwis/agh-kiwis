@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollStack } from '../../Common/ScrollStack';
 import { GetTasksQuery } from '@agh-kiwis/data-access';
+import { ScrollStack } from '../../Common/ScrollStack';
 import { SingleTask } from './SingleTask';
 
 type TasksStackProps = {

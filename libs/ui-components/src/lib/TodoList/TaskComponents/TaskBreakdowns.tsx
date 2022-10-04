@@ -1,6 +1,6 @@
 import { TaskBreakdown } from '@agh-kiwis/data-access';
-import { Breakdown } from '../BreakdownComponents/Breakdown';
 import { ScrollStack } from '../../Common/ScrollStack';
+import { Breakdown } from '../BreakdownComponents/Breakdown';
 
 type TaskBreakdownsProps = {
   breakdowns: TaskBreakdown[];
