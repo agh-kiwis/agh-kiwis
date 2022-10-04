@@ -23,7 +23,6 @@ export * from './lib/Modals/FilterModal';
 export * from './lib/TodoList/FilterOptions';
 export * from './lib/TodoList/TodoListHeader';
 export * from './lib/TodoList/TaskComponents/TasksStack';
-export * from './lib/TodoList/AddTask';
 export * from './lib/Pickers/ColorPicker';
 export * from './lib/Pickers/DateTimePicker';
 export * from './lib/Pickers/IntervalPicker';
