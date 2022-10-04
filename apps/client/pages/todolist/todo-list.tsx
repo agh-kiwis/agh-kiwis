@@ -37,7 +37,10 @@ const TodoList: React.FC = () => {
     <>
       <TodoListHeader setOpen={setOpen} />
       <TasksStack data={data} />
-      <CommonButton buttonText='Add Task' onClick={() => router.push(ADD_CONST_TASK_URL)} />
+      <CommonButton
+        buttonText="Add Task"
+        onClick={() => router.push(ADD_CONST_TASK_URL)}
+      />
       <FilterModal isOpen={open} close={() => setOpen(false)} />
     </>
   );

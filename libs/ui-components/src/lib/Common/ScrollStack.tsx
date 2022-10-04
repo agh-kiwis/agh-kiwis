@@ -5,7 +5,10 @@ type ScrollStackProps = {
   height: string;
 };
 
-export const ScrollStack: React.FC<ScrollStackProps> = ({ children, height }) => {
+export const ScrollStack: React.FC<ScrollStackProps> = ({
+  children,
+  height,
+}) => {
   return (
     <Stack
       sx={{ '::-webkit-scrollbar': { display: 'none' } }}
