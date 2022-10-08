@@ -16,10 +16,10 @@ export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
 }) => {
   if (checked) {
     return (
-      <Stack justifyContent="center">
+      <HStack justifyContent="center" spacing="8" h="4rem">
         <Text>Chunk {id + 1}</Text>
         <Text>Done</Text>
-      </Stack>
+      </HStack>
     );
   } else {
     return (
