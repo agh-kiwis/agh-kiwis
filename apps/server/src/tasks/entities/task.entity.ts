@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Duration } from 'moment';
 import {
   Column,
   Entity,
@@ -10,6 +9,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Duration } from 'moment';
 import { Category } from '../../categories/entities/category.entity';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { User } from '../../users/entities/user.entity';
@@ -77,6 +77,6 @@ export class Task extends GeneralEntity {
   @ManyToOne(() => Notification, (notification) => notification.tasks)
   notifications: Notification;
 
-  @ManyToOne(() => User, (user) => user.tasks)
+  @ManyToOne(() => User, (user: User) => user.tasks)
   user: Promise<User>;
 }

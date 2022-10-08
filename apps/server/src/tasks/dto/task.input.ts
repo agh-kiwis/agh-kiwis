@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
-import { Interval } from '../../utils/interval.scalar';
 import { NullableField } from '../../utils/NullableField';
+import { Interval } from '../../utils/interval.scalar';
 import { CategoryInput } from './category.input';
 import { ChunkInfoInput } from './chunkInfo.input';
 import { RepeatInput } from './repeat.input';
@@ -9,11 +9,11 @@ import { RepeatInput } from './repeat.input';
 // TODO Change this to ONLY PROPS THAT CAN BE UPDATED
 @InputType()
 export class TaskInput {
-    @Field()
-    id: number;
+  @Field()
+  id: number;
 
-    // All tasks fields
- @NullableField()
+  // All tasks fields
+  @NullableField()
   name: string;
   @NullableField()
   start: Date;
@@ -28,12 +28,11 @@ export class TaskInput {
   @NullableField(() => Interval)
   timeBeforeNotification: Duration;
   // TODO There always need to be a priority in the database for this to work
-  @NullableField((() => Number))
+  @NullableField(() => Number)
   priorityId: number;
-    
-    
-    // Float task fields (without duplicating start field)
- @NullableField(() => ChunkInfoInput)
+
+  // Float task fields (without duplicating start field)
+  @NullableField(() => ChunkInfoInput)
   chunkInfo: ChunkInfoInput;
 
   @NullableField(() => Interval)
@@ -42,12 +41,10 @@ export class TaskInput {
   @NullableField(() => Date)
   deadline: Date;
 
-    
-    // Const task fields
-      @NullableField(() => Interval)
-    duration: Duration;  
-    
-    @NullableField()
-    isDone: boolean;
-    
+  // Const task fields
+  @NullableField(() => Interval)
+  duration: Duration;
+
+  @NullableField()
+  isDone: boolean;
 }

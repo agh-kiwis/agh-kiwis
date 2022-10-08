@@ -17,10 +17,7 @@ export class TasksResolver {
     @CurrentUser() user: User,
     @Args('createConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
   ) {
-    return this.tasksService.createConst(
-      user,
-      CreateConstTaskInput
-    );
+    return this.tasksService.createConst(user, CreateConstTaskInput);
   }
 
   @Mutation(() => Task)
@@ -28,10 +25,7 @@ export class TasksResolver {
     @CurrentUser() user: User,
     @Args('createFloatTaskInput') createFloatTaskInput: CreateFloatTaskInput
   ) {
-    return this.tasksService.createFloatTask(
-      user,
-      createFloatTaskInput
-    );
+    return this.tasksService.createFloatTask(user, createFloatTaskInput);
   }
 
   @Query(() => [Task])
@@ -50,15 +44,15 @@ export class TasksResolver {
   @Mutation(() => Task)
   async updateTask(
     @CurrentUser() user: User,
-    @Args('taskInput') taskInput: TaskInput) {
-    // TODO Check if task belongs to the current user
+    @Args('taskInput') taskInput: TaskInput
+  ) {
     const task = await Task.findOne(taskInput.id);
-    
+
     if (!task) {
       throw new Error('Task not found');
     }
     if ((await task.user).id !== user?.id) {
-        throw new Error('Task does not belong to user');
+      throw new Error('Task does not belong to user');
     }
 
     const result = await this.tasksService.update(taskInput);
@@ -66,8 +60,20 @@ export class TasksResolver {
   }
 
   @Mutation(() => Task)
-  removeTask(@Args('id', { type: () => Int }) id: number) {
+  async removeTask(
+    @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number
+  ) {
     // TODO Check if task belongs to the current user
+    const task = await Task.findOne(id);
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    if ((await task.user).id !== user?.id) {
+      throw new Error('Task does not belong to user');
+    }
+
     return this.tasksService.remove(id);
   }
 }

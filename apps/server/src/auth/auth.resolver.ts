@@ -1,6 +1,6 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
-import {CustomContext } from '../types/context.type';
+import { CustomContext } from '../types/context.type';
 import { User } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { AuthEmailLoginInput } from './dto/auth-email-login.input';
@@ -36,9 +36,7 @@ export class AuthResolver {
   }
 
   @Query(() => User)
-  async me(
-    @CurrentUser() user: User,
-  ) {
+  async me(@CurrentUser() user: User) {
     return user;
   }
 }

@@ -9,7 +9,7 @@ export class UsersService {
   create(createUserInput: CreateUserInput) {
     return User.create(createUserInput).save();
   }
-  
+
   findOne(fields: EntityCondition<User>) {
     return User.findOne({
       where: fields,

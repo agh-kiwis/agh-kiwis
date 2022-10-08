@@ -15,10 +15,7 @@ export class CategoriesResolver {
     @CurrentUser() user: User,
     @Args('createCategoryInput') createCategoryInput: CreateCategoryInput
   ) {
-    return this.categoriesService.create(
-      user,
-      createCategoryInput
-    );
+    return this.categoriesService.create(user, createCategoryInput);
   }
 
   @Query(() => [Category])
@@ -50,9 +47,7 @@ export class CategoriesResolver {
   }
 
   @Query(() => [Color])
-  getColors(
-    @CurrentUser() user: User,
-  ) {
+  getColors(@CurrentUser() user: User) {
     return this.categoriesService.getColors(user);
   }
 }

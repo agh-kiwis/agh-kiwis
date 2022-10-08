@@ -1,21 +1,17 @@
-import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { ForbiddenError } from 'apollo-server-errors';
+import { CurrentUser } from '../providers/user.provider';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { CurrentUser } from '../providers/user.provider';
-import { ForbiddenError } from 'apollo-server-errors';
+import { User } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  createUser(
-    @Args('createUserInput') createUserInput: CreateUserInput
-  ) {
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.usersService.create(createUserInput);
   }
 
@@ -37,7 +33,7 @@ export class UsersResolver {
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number
   ) {
-      if (user.id !== id) {
+    if (user.id !== id) {
       throw new ForbiddenError('You can only update your own user');
     }
     // There we need to check if given user can perform given action
@@ -45,5 +41,4 @@ export class UsersResolver {
   }
 
   // TODO Resolve me
-
 }

@@ -1,6 +1,5 @@
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 import { CreateUserInput } from './create-user.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
-
 
 // Add more fields that can be updated here
 @InputType()

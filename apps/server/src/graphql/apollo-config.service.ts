@@ -1,10 +1,10 @@
 import { ApolloDriverConfig, ApolloDriverConfigFactory } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { join } from 'path';
-import { get } from 'lodash';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { registerEnumType } from '@nestjs/graphql';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { get } from 'lodash';
+import { join } from 'path';
 import { RepeatType } from '../tasks/entities/repeat.entity';
 
 @Injectable()
