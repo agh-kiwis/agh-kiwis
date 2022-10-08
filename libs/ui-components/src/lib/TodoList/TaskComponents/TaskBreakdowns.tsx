@@ -10,7 +10,7 @@ export const TaskBreakdowns: React.FC<TaskBreakdownsProps> = ({
   breakdowns,
 }) => {
   return (
-    <ScrollStack h="30vh">
+    <ScrollStack height="30vh">
       {breakdowns.map((breakdown, key) => (
         <Breakdown key={key} index={key} breakdown={breakdown} />
       ))}

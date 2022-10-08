@@ -11,11 +11,11 @@ export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
 }) => {
   return (
     <HStack
-      justifyContent={'space-between'}
-      borderRadius={'0.5rem'}
-      color={'white'}
-      px="2"
+      justifyContent="space-between"
+      color="white"
       bgColor={checked ? 'insignificant' : 'primary'}
+      borderRadius="0.5rem"
+      px="2"
     >
       {children}
     </HStack>
