@@ -21,7 +21,11 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { Task } from '@agh-kiwis/data-access';
-import { deadlineToDate } from '@agh-kiwis/moment-service';
+import {
+  deadlineToDate,
+  startToDate,
+  startToTime,
+} from '@agh-kiwis/moment-service';
 import { TaskBreakdowns } from './TaskBreakdowns';
 
 type TaskModalProps = {
@@ -58,6 +62,29 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                   <Td>Priority:</Td>
                   <Td>{task.priority.name}</Td>
                 </Tr>
+                {task.isFloat && (
+                  <Tr>
+                    <Td>Deadline:</Td>
+                    <Td>{deadlineToDate(task.deadline!, 'DD MMM YYYY')}</Td>
+                  </Tr>
+                )}
+                {!task.isFloat && (
+                  <>
+                    <Tr>
+                      <Td>Date:</Td>
+                      <Td>
+                        {startToDate(
+                          task.taskBreakdowns![0].start,
+                          'DD MMM YYYY'
+                        )}
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Time:</Td>
+                      <Td>{startToTime(task.taskBreakdowns![0].start)}</Td>
+                    </Tr>
+                  </>
+                )}
               </Tbody>
             </Table>
           </TableContainer>
@@ -66,7 +93,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({
         <ModalBody>
           {task.isFloat && (
             <Box>
-              <Text> Deadline: {deadlineToDate(task.deadline!)}</Text>
               <TaskBreakdowns breakdowns={task.taskBreakdowns!} />
             </Box>
           )}
