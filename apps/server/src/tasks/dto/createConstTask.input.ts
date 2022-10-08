@@ -6,5 +6,5 @@ import { CreateTaskInput } from './createTask.input';
 @InputType()
 export class CreateConstTaskInput extends CreateTaskInput {
   @Field(() => Interval)
-  duration: Duration;
+  duration: Duration;  
 }

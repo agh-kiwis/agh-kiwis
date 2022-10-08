@@ -30,7 +30,7 @@ export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
         deadline: task.deadline,
       }
     )
-    .andWhere('task.user = :user_id', { user_id: task.user.id })
+    .andWhere('task.user = :user_id', { user_id: (await task.user).id })
     .orderBy('TaskBreakdown.start', 'ASC')
     .getMany();
 

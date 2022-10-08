@@ -1,11 +1,10 @@
-import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
-import { ContextRequest } from '../types/context.type';
 import { User } from '../users/entities/user.entity';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
-import { UpdateTaskInput } from './dto/update-task.input';
+import { TaskInput } from './dto/task.input';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
@@ -49,12 +48,26 @@ export class TasksResolver {
   }
 
   @Mutation(() => Task)
-  updateTask(@Args('updateTaskInput') updateTaskInput: UpdateTaskInput) {
-    return this.tasksService.update(updateTaskInput.id, updateTaskInput);
+  async updateTask(
+    @CurrentUser() user: User,
+    @Args('taskInput') taskInput: TaskInput) {
+    // TODO Check if task belongs to the current user
+    const task = await Task.findOne(taskInput.id);
+    
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    if ((await task.user).id !== user?.id) {
+        throw new Error('Task does not belong to user');
+    }
+
+    const result = await this.tasksService.update(taskInput);
+    return result;
   }
 
   @Mutation(() => Task)
   removeTask(@Args('id', { type: () => Int }) id: number) {
+    // TODO Check if task belongs to the current user
     return this.tasksService.remove(id);
   }
 }

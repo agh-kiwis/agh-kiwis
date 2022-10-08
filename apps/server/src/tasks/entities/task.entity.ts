@@ -78,5 +78,5 @@ export class Task extends GeneralEntity {
   notifications: Notification;
 
   @ManyToOne(() => User, (user) => user.tasks)
-  user: User;
+  user: Promise<User>;
 }
