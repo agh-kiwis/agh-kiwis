@@ -1,21 +1,20 @@
 import { HStack } from '@chakra-ui/react';
 
-type ChunkContainerProps = {
+type BreakdownContainerProps = {
   children: React.ReactNode;
   checked: boolean;
 };
 
-export const ChunkContainer: React.FC<ChunkContainerProps> = ({
+export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
   children,
   checked,
 }) => {
   return (
     <HStack
-      justifyContent={'space-between'}
-      borderRadius={'0.5rem'}
-      mb={'0.6rem'}
-      color={'white'}
+      justifyContent="space-between"
       bgColor={checked ? 'insignificant' : 'primary'}
+      borderRadius="0.5rem"
+      color="white"
     >
       {children}
     </HStack>

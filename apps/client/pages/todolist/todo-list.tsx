@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
+import { CommonButton } from '@agh-kiwis/ui-components';
 import {
-  AddTask,
   AlertModal,
   FilterModal,
   TasksStack,
   TodoListHeader,
 } from '@agh-kiwis/ui-components';
+import { ADD_CONST_TASK_URL } from '@agh-kiwis/workspace-constants';
 
 const TodoList: React.FC = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const TodoList: React.FC = () => {
       },
     },
   });
-
+  console.log(data);
   const [open, setOpen] = useState(false);
   if (loading) {
     return <Spinner />;
@@ -36,7 +37,10 @@ const TodoList: React.FC = () => {
     <>
       <TodoListHeader setOpen={setOpen} />
       <TasksStack data={data} />
-      <AddTask router={router} />
+      <CommonButton
+        buttonText="Add Task"
+        onClick={() => router.push(ADD_CONST_TASK_URL)}
+      />
       <FilterModal isOpen={open} close={() => setOpen(false)} />
     </>
   );
