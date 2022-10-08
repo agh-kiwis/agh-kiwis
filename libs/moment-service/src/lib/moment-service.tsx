@@ -17,10 +17,10 @@ export const deadlineToDate = (deadline: string, dateFormat = 'DD MMM') => {
   return moment(deadline, 'x').format(dateFormat);
 };
 
-export const startToTime = (start: moment.Moment) => {
-  return moment(start).format('HH:mm');
-};
-
 export const startToDate = (start: moment.Moment, dateFormat = 'DD MMM') => {
   return moment(start).format(dateFormat);
+};
+
+export const startToTime = (start: moment.Moment) => {
+  return moment(start).format('HH:mm');
 };
