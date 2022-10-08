@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ForbiddenError, UserInputError } from 'apollo-server-errors';
 import * as bcrypt from 'bcryptjs';
-import { ContextRequest, CustomContext } from '../types/context.type';
+import { CustomContext } from '../types/context.type';
 import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -95,9 +95,5 @@ export class AuthService {
     }
 
     return undefined;
-  }
-
-  me(contextRequest: ContextRequest): User {
-    return contextRequest.user;
   }
 }

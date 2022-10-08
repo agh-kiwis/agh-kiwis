@@ -4,9 +4,7 @@ import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
 
-
 import moment = require('moment');
-
 
 export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
   if (!task || !task.isFloat) {

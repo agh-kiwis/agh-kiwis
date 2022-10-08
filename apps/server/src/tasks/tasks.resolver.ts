@@ -1,5 +1,7 @@
 import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../providers/user.provider';
 import { ContextRequest } from '../types/context.type';
+import { User } from '../users/entities/user.entity';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
@@ -13,32 +15,32 @@ export class TasksResolver {
 
   @Mutation(() => Task)
   addConstTask(
-    @Context('req') contextRequest: ContextRequest,
+    @CurrentUser() user: User,
     @Args('createConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
   ) {
     return this.tasksService.createConst(
-      contextRequest.user,
+      user,
       CreateConstTaskInput
     );
   }
 
   @Mutation(() => Task)
   addFloatTask(
-    @Context('req') contextRequest: ContextRequest,
+    @CurrentUser() user: User,
     @Args('createFloatTaskInput') createFloatTaskInput: CreateFloatTaskInput
   ) {
     return this.tasksService.createFloatTask(
-      contextRequest.user,
+      user,
       createFloatTaskInput
     );
   }
 
   @Query(() => [Task])
   getTasks(
-    @Context('req') contextRequest: ContextRequest,
+    @CurrentUser() user: User,
     @Args('getTasksInput') getTasksInput: GetTasksInput
   ) {
-    return this.tasksService.getTasks(contextRequest.user, getTasksInput);
+    return this.tasksService.getTasks(user, getTasksInput);
   }
 
   @Query(() => Task)

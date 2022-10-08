@@ -1,35 +1,49 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { CurrentUser } from '../providers/user.provider';
+import { ForbiddenError } from 'apollo-server-errors';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+  ) {}
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput
+  ) {
     return this.usersService.create(createUserInput);
   }
 
-  @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
-  }
+  @Mutation(() => User)
+  updateUser(
+    @CurrentUser() user: User,
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne({ id: +id });
+    @Args('updateUserInput') updateUserInput: UpdateUserInput
+  ) {
+    if (user.id !== updateUserInput.id) {
+      throw new ForbiddenError('You can only update your own user');
+    }
+    // There we need to check if given user can perform given action
+    return this.usersService.update(updateUserInput);
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+  async removeUser(
+    @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number
+  ) {
+      if (user.id !== id) {
+      throw new ForbiddenError('You can only update your own user');
+    }
+    // There we need to check if given user can perform given action
+    return await this.usersService.softDelete(id);
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
-  }
+  // TODO Resolve me
+
 }

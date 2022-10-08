@@ -1,5 +1,4 @@
 import { Logger } from '@nestjs/common';
-import moment = require('moment');
 import { getConnection } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -9,9 +8,11 @@ import { TasksService } from '../tasks/tasks.service';
 import { User } from '../users/entities/user.entity';
 import { InitialSeend } from './initial-seed';
 
+import moment = require('moment');
+
 // TODO This needs to be changed to adapt new functionality
 export const seedDatabase = async () => {
-  Logger.log('Clearing the database')
+  Logger.log('Clearing the database');
 
   const entities = getConnection().entityMetadatas;
   for (const entity of entities) {
