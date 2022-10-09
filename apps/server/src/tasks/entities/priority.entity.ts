@@ -1,4 +1,3 @@
-import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -6,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Task } from './task.entity';
 

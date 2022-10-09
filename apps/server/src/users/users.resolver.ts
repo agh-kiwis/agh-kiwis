@@ -1,5 +1,5 @@
-import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
 import { ForbiddenError } from 'apollo-server-errors';
+import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';

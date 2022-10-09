@@ -1,6 +1,6 @@
-import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { IsEmail, Length, Validate } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsExist } from '../../utils/validators/is-exists.validator';
 
 // TODO We need to somehow catch validation errors to not be thrown

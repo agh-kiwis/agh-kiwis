@@ -1,5 +1,5 @@
-import { Logger } from '@nestjs/common';
 import { getConnection } from 'typeorm';
+import { Logger } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { Priority } from '../tasks/entities/priority.entity';

@@ -36,11 +36,6 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
-  @Query(() => Task)
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.tasksService.findOne(id);
-  }
-
   @Mutation(() => Task)
   async updateTask(
     @CurrentUser() user: User,
@@ -64,7 +59,6 @@ export class TasksResolver {
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number
   ) {
-    // TODO Check if task belongs to the current user
     const task = await Task.findOne(id);
 
     if (!task) {

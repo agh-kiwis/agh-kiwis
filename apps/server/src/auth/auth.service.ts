@@ -1,8 +1,8 @@
+import { ForbiddenError, UserInputError } from 'apollo-server-errors';
+import * as bcrypt from 'bcryptjs';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ForbiddenError, UserInputError } from 'apollo-server-errors';
-import * as bcrypt from 'bcryptjs';
 import { CustomContext } from '../types/context.type';
 import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';

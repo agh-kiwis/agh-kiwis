@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
+import { Injectable } from '@nestjs/common';
 import { Duration } from 'moment';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -10,7 +10,6 @@ import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
-import { UpdateTaskInput } from './dto/update-task.input';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
 import { Priority } from './entities/priority.entity';
@@ -103,10 +102,6 @@ export class TasksService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
-  }
-
   async update(updateTaskInput: TaskInput) {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
@@ -118,6 +113,7 @@ export class TasksService {
   }
 }
 
+// TODO Move these functions to a separate file
 export const getCategory = async (user: User, categoryInput: CategoryInput) => {
   let category: Category;
   if (categoryInput.id) {

@@ -1,4 +1,3 @@
-import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -9,6 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Duration } from 'moment';
 import { Category } from '../../categories/entities/category.entity';
 import { IntervalColumn } from '../../types/IntervalColumn';
