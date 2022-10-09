@@ -10,8 +10,7 @@ export enum RepeatType {
 }
 
 @Entity()
-@ObjectType()
-// Applicable only for const tasks
+@ObjectType({ description: 'Applicable only to const tasks repeat property.' })
 export class Repeat extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;

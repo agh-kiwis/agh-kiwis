@@ -1,12 +1,15 @@
+import { IsEnum } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
 import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
+import { Priority } from '../entities/priority.enum';
 import { CategoryInput } from './category.input';
 import { ChunkInfoInput } from './chunkInfo.input';
 import { RepeatInput } from './repeat.input';
 
 // TODO Change this to ONLY PROPS THAT CAN BE UPDATED
+// And add description to fields
 @InputType()
 export class TaskInput {
   @Field()
@@ -19,6 +22,10 @@ export class TaskInput {
   start: Date;
   @NullableField(() => Interval)
   chillTime: Duration;
+
+  @NullableField()
+  isFloat: boolean;
+
   @NullableField()
   shouldAutoResolve: boolean;
   @NullableField(() => CategoryInput)
@@ -27,11 +34,11 @@ export class TaskInput {
   repeat?: RepeatInput;
   @NullableField(() => Interval)
   timeBeforeNotification: Duration;
-  // TODO There always need to be a priority in the database for this to work
-  @NullableField(() => Number)
-  priorityId: number;
 
-  // Float task fields (without duplicating start field)
+  @NullableField(() => String)
+  @IsEnum(Priority)
+  priority: string;
+
   @NullableField(() => ChunkInfoInput)
   chunkInfo: ChunkInfoInput;
 
@@ -41,7 +48,6 @@ export class TaskInput {
   @NullableField(() => Date)
   deadline: Date;
 
-  // Const task fields
   @NullableField(() => Interval)
   duration: Duration;
 

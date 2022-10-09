@@ -25,10 +25,7 @@ mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
     notifications {
       timeBefore
     }
-    priority {
-      id
-      name
-    }
+    priority
     shouldAutoResolve
     taskBreakdowns {
       duration

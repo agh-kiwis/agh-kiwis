@@ -9,7 +9,6 @@ import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 export const constTaskFormToAddTaskMutationMapper = (
   variables: constTaskType
 ): CreateConstTaskInput => {
-  console.log(variables);
   return {
     category: {
       id: variables.category.id,
@@ -17,7 +16,7 @@ export const constTaskFormToAddTaskMutationMapper = (
     chillTime: getIntervalISOString(variables.chillTime),
     duration: getIntervalISOString(variables.duration),
     name: variables.taskName,
-    priorityId: mapPriority(variables.priority),
+    priority: variables.priority,
     repeat: {
       repeatEvery: variables.repeat.repeatEvery.amount,
       startFrom: mapToDateTime(variables.startTime.date),
@@ -47,7 +46,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
     deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
     estimation: getIntervalISOString(variables.timeEstimation),
     name: variables.taskName,
-    priorityId: mapPriority(variables.priority),
+    priority: variables.priority,
     shouldAutoResolve: variables.autoresolve,
     // TODO what is start regarding float task?
     start: new Date(),

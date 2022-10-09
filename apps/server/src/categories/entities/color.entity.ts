@@ -1,18 +1,10 @@
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { GeneralEntity } from '../../utils/GeneralEntity';
 
 @ObjectType()
 @Entity()
-export class Color extends BaseEntity {
+export class Color extends GeneralEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,13 +13,4 @@ export class Color extends BaseEntity {
   @Index()
   @Column()
   hexCode: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

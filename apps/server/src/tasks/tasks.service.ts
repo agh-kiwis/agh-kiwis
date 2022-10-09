@@ -12,7 +12,6 @@ import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
-import { Priority } from './entities/priority.entity';
 import { Repeat } from './entities/repeat.entity';
 import { Task } from './entities/task.entity';
 import { TaskBreakdown } from './entities/taskBreakdown.entity';
@@ -22,24 +21,28 @@ export class TasksService {
   async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
     const category = await getCategory(user, createConstTaskInput.category);
 
-    const repeat = await Repeat.create(createConstTaskInput.repeat).save();
+    let repeat: Repeat;
+    if (createConstTaskInput.repeat) {
+      repeat = await Repeat.create(createConstTaskInput.repeat).save();
+    }
 
     const notification = await getNotification(
       createConstTaskInput.timeBeforeNotification
     );
 
-    const priority = await getPriority(createConstTaskInput.priorityId);
-
-    const task = await Task.create({
-      user: Promise.resolve(user),
+    let task = Task.create({
       category: category,
       isFloat: false,
       name: createConstTaskInput.name,
       chillTime: createConstTaskInput.chillTime,
       notifications: notification,
-      priority: priority,
+      priority: createConstTaskInput.priority,
       shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
-    }).save();
+    });
+
+    task.user = Promise.resolve(user);
+
+    task = await task.save();
 
     await TaskBreakdown.create({
       task: task,
@@ -61,26 +64,27 @@ export class TasksService {
       createFloatTaskInput.timeBeforeNotification
     );
 
-    const priority = await getPriority(createFloatTaskInput.priorityId);
-
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
       start: createFloatTaskInput.start,
     }).save();
 
-    const task = await Task.create({
-      user: Promise.resolve(user),
+    let task = Task.create({
       category: category,
       isFloat: true,
       name: createFloatTaskInput.name,
       chillTime: createFloatTaskInput.chillTime,
       notifications: notification,
-      priority: priority,
+      priority: createFloatTaskInput.priority,
       deadline: createFloatTaskInput.deadline,
       estimation: createFloatTaskInput.estimation,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
-    }).save();
+    });
+
+    task.user = Promise.resolve(user);
+
+    task = await task.save();
 
     planTask(task, chunkInfo);
 
@@ -113,7 +117,6 @@ export class TasksService {
   }
 }
 
-// TODO Move these functions to a separate file
 export const getCategory = async (user: User, categoryInput: CategoryInput) => {
   let category: Category;
   if (categoryInput.id) {
@@ -151,13 +154,4 @@ export const getNotification = async (timeBeforeNotification: Duration) => {
     }).save();
   }
   return notification;
-};
-
-export const getPriority = async (priorityId: number) => {
-  const priority = await Priority.findOne(priorityId);
-
-  if (!priority) {
-    throw new UserInputError('Priority not found');
-  }
-  return priority;
 };

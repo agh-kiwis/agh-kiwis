@@ -1,4 +1,4 @@
-mutation removeCategory($id: Int!) {
+query removeCategory($id: Int!) {
   removeCategory(id: $id) {
     color {
       hexCode

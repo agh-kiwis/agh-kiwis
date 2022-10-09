@@ -3,7 +3,6 @@ import { CurrentUser } from '../providers/user.provider';
 import { User } from '../users/entities/user.entity';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
 import { Color } from './entities/color.entity';
 
@@ -26,28 +25,16 @@ export class CategoriesResolver {
     return this.categoriesService.findByPrefix(user, prefix);
   }
 
-  @Mutation(() => Category)
-  updateCategory(
-    @CurrentUser() user: User,
-    @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput
-  ) {
-    return this.categoriesService.update(
-      user,
-      updateCategoryInput.id,
-      updateCategoryInput
-    );
+  @Query(() => [Color])
+  getColors(@CurrentUser() user: User) {
+    return this.categoriesService.getColors(user);
   }
 
-  @Mutation(() => Category)
+  @Query(() => Category)
   removeCategory(
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number
   ) {
     return this.categoriesService.remove(user, id);
-  }
-
-  @Query(() => [Color])
-  getColors(@CurrentUser() user: User) {
-    return this.categoriesService.getColors(user);
   }
 }

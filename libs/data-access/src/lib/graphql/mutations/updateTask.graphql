@@ -1,5 +1,5 @@
-mutation updateTask($updateTaskInput: UpdateTaskInput!) {
-  updateTask(updateTaskInput: $updateTaskInput) {
+mutation updateTask($taskInput: TaskInput!) {
+  updateTask(taskInput: $taskInput) {
     category {
       color {
         hexCode
@@ -25,10 +25,7 @@ mutation updateTask($updateTaskInput: UpdateTaskInput!) {
     notifications {
       timeBefore
     }
-    priority {
-      id
-      name
-    }
+    priority
     shouldAutoResolve
     taskBreakdowns {
       duration

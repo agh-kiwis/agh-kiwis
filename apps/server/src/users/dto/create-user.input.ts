@@ -1,10 +1,9 @@
-import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, MinLength, Validate } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
 
 @InputType()
-// TODO For now this duplicates auth inputs, should be changed
 export class CreateUserInput {
   @Transform(({ value }) => value?.toLowerCase().trim())
   @IsNotEmpty()

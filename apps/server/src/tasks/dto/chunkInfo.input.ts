@@ -3,7 +3,7 @@ import { Duration } from 'moment';
 import { Interval } from '../../utils/interval.scalar';
 
 @InputType()
-// TODO Add validation (maybe add validation lib to use there and in frontend)
+// TODO Add validation library to validate those timings (in lib folder, set of constructs and functions)
 export class ChunkInfoInput {
   @Field(() => Interval)
   minTimeBetweenChunks: Duration;
