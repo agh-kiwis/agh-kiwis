@@ -68,7 +68,7 @@
     "@nrwl/linter": "14.1.5",
     "@nrwl/nest": "14.1.5",
     "@nrwl/node": "14.1.5",
-    "@nrwl/nx-cloud": "latest",
+    "@nrwl/nx-cloud": "13.1.6",
     "@nrwl/react": "14.1.7",
     "@nrwl/web": "14.1.7",
     "@nrwl/workspace": "14.1.5",
