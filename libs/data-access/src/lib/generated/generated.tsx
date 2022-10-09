@@ -13,9 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
-  /** Interval string for Postgres, read more in docs */
   Interval: any;
 };
 
@@ -188,7 +186,7 @@ export type MutationUpdateCategoryArgs = {
 
 
 export type MutationUpdateTaskArgs = {
-  updateTaskInput: UpdateTaskInput;
+  taskInput: TaskInput;
 };
 
 
@@ -214,8 +212,6 @@ export type Query = {
   getColors: Array<Color>;
   getTasks: Array<Task>;
   me: User;
-  user: User;
-  users: Array<User>;
 };
 
 
@@ -231,11 +227,6 @@ export type QueryFindOneArgs = {
 
 export type QueryGetTasksArgs = {
   getTasksInput: GetTasksInput;
-};
-
-
-export type QueryUserArgs = {
-  id: Scalars['Int'];
 };
 
 export type Repeat = {
@@ -284,23 +275,27 @@ export type TaskBreakdown = {
   start: Scalars['DateTime'];
 };
 
-export type UpdateCategoryInput = {
-  colorId?: InputMaybe<Scalars['Float']>;
-  id: Scalars['Float'];
-  name?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateTaskInput = {
+export type TaskInput = {
   category?: InputMaybe<CategoryInput>;
   chillTime?: InputMaybe<Scalars['Interval']>;
+  chunkInfo?: InputMaybe<ChunkInfoInput>;
+  deadline?: InputMaybe<Scalars['DateTime']>;
   duration?: InputMaybe<Scalars['Interval']>;
-  id: Scalars['Int'];
+  estimation?: InputMaybe<Scalars['Interval']>;
+  id: Scalars['Float'];
+  isDone?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   priorityId?: InputMaybe<Scalars['Float']>;
   repeat?: InputMaybe<RepeatInput>;
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
   start?: InputMaybe<Scalars['DateTime']>;
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
+};
+
+export type UpdateCategoryInput = {
+  colorId?: InputMaybe<Scalars['Float']>;
+  id: Scalars['Float'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
@@ -394,7 +389,7 @@ export type UpdateCategoryMutationVariables = Exact<{
 export type UpdateCategoryMutation = { __typename?: 'Mutation', updateCategory: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } } };
 
 export type UpdateTaskMutationVariables = Exact<{
-  updateTaskInput: UpdateTaskInput;
+  taskInput: TaskInput;
 }>;
 
 
@@ -437,18 +432,6 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
-
-export type UserQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
-
-export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null }> };
 
 
 export const AddConstTaskDocument = gql`
@@ -962,8 +945,8 @@ export type UpdateCategoryMutationHookResult = ReturnType<typeof useUpdateCatego
 export type UpdateCategoryMutationResult = Apollo.MutationResult<UpdateCategoryMutation>;
 export type UpdateCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
 export const UpdateTaskDocument = gql`
-    mutation updateTask($updateTaskInput: UpdateTaskInput!) {
-  updateTask(updateTaskInput: $updateTaskInput) {
+    mutation updateTask($taskInput: TaskInput!) {
+  updateTask(taskInput: $taskInput) {
     category {
       color {
         hexCode
@@ -1022,7 +1005,7 @@ export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, U
  * @example
  * const [updateTaskMutation, { data, loading, error }] = useUpdateTaskMutation({
  *   variables: {
- *      updateTaskInput: // value for 'updateTaskInput'
+ *      taskInput: // value for 'taskInput'
  *   },
  * });
  */
@@ -1331,83 +1314,6 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const UserDocument = gql`
-    query user($id: Int!) {
-  user(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useUserQuery__
- *
- * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-      }
-export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-        }
-export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
-export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
-export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
-export const UsersDocument = gql`
-    query users {
-  users {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useUsersQuery__
- *
- * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUsersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-      }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-        }
-export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
-export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {
