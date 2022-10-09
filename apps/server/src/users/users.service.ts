@@ -10,18 +10,14 @@ export class UsersService {
     return User.create(createUserInput).save();
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
   findOne(fields: EntityCondition<User>) {
     return User.findOne({
       where: fields,
     });
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  update(updateUserInput: UpdateUserInput) {
+    return `This action updates a #${updateUserInput.id} user`;
   }
 
   remove(id: number) {

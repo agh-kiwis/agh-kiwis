@@ -1,28 +1,26 @@
-import moment = require('moment');
+import { Logger } from '@nestjs/common';
+import { getConnection } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
-import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
-import { Notification } from '../tasks/entities/notification.entity';
 import { Priority } from '../tasks/entities/priority.entity';
-import { Repeat, RepeatType } from '../tasks/entities/repeat.entity';
-import { Task } from '../tasks/entities/task.entity';
-import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
+import { RepeatType } from '../tasks/entities/repeat.entity';
 import { TasksService } from '../tasks/tasks.service';
 import { User } from '../users/entities/user.entity';
 import { InitialSeend } from './initial-seed';
 
+import moment = require('moment');
+
+// TODO This needs to be changed to adapt new functionality
 export const seedDatabase = async () => {
-  // TODO This is ugly and needs to be replaced with db deletion & creation
-  // TODO And overall we would like to use migrations
-  await TaskBreakdown.delete({});
-  await Repeat.delete({});
-  await Task.delete({});
-  await Category.delete({});
-  await Priority.delete({});
-  await Color.delete({});
-  await ChunkInfo.delete({});
-  await Notification.delete({});
-  await User.delete({});
+  Logger.log('Clearing the database');
+
+  const entities = getConnection().entityMetadatas;
+  for (const entity of entities) {
+    const repository = getConnection().getRepository(entity.name);
+    await repository.query(
+      `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
+    );
+  }
 
   // Add user
   const user = await User.create({
@@ -38,7 +36,6 @@ export const seedDatabase = async () => {
   }
 
   // Introduction setup
-
   const sleepingCategory = await Category.create({
     color: await Color.findOne({ where: { hexCode: InitialSeend.colors[0] } }),
     name: 'Sleeping',

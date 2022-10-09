@@ -1,8 +1,9 @@
+import { Logger } from '@nestjs/common';
 import { seedDatabase } from '../database/db-seeder';
 
 export const setupApp = async () => {
   if (process.env.APP_SEED_DATABASE === 'true') {
-    console.log('Seeding database');
+    Logger.log('Seeding database');
     seedDatabase();
   }
 };

@@ -9,6 +9,7 @@ import { CategoryInput } from './dto/category.input';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
+import { TaskInput } from './dto/task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
@@ -31,7 +32,7 @@ export class TasksService {
     const priority = await getPriority(createConstTaskInput.priorityId);
 
     const task = await Task.create({
-      user: user,
+      user: Promise.resolve(user),
       category: category,
       isFloat: false,
       name: createConstTaskInput.name,
@@ -63,15 +64,13 @@ export class TasksService {
 
     const priority = await getPriority(createFloatTaskInput.priorityId);
 
-    console.log(createFloatTaskInput.start);
-
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput.chunkInfo,
       start: createFloatTaskInput.start,
     }).save();
 
     const task = await Task.create({
-      user: user,
+      user: Promise.resolve(user),
       category: category,
       isFloat: true,
       name: createFloatTaskInput.name,
@@ -108,16 +107,16 @@ export class TasksService {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskInput: UpdateTaskInput) {
-    return `This action updates a #${id} task`;
+  async update(updateTaskInput: TaskInput) {
+    await Task.update(updateTaskInput.id, updateTaskInput);
+
+    return Task.findOne(updateTaskInput.id);
   }
 
   remove(id: number) {
     return `This action removes a #${id} task`;
   }
 }
-
-// TODO Move helpers to another place
 
 export const getCategory = async (user: User, categoryInput: CategoryInput) => {
   let category: Category;
