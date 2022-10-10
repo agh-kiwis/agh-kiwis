@@ -19,7 +19,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { Task } from '@agh-kiwis/data-access';
+import { Task, useUpdateTaskMutation } from '@agh-kiwis/data-access';
 import {
   deadlineToDate,
   startToDate,
@@ -39,6 +39,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   close,
 }) => {
   console.log('file: TaskModal.tsx -> line 26 -> task', task);
+  const [updateTaskMutation] = useUpdateTaskMutation({
+    variables: {
+      taskInput: {
+        id: task.id,
+        isDone: !task.isDone,
+      },
+    },
+  });
+
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
@@ -73,14 +82,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                       <Td>Date:</Td>
                       <Td>
                         {startToDate(
-                          task.taskBreakdowns![0].start,
+                          task.taskBreakdowns && task.taskBreakdowns[0].start,
                           'DD MMM YYYY'
                         )}
                       </Td>
                     </Tr>
                     <Tr>
                       <Td>Time:</Td>
-                      <Td>{startToTime(task.taskBreakdowns![0].start)}</Td>
+                      <Td>
+                        {startToTime(
+                          task.taskBreakdowns && task.taskBreakdowns[0].start
+                        )}
+                      </Td>
                     </Tr>
                   </>
                 )}
@@ -102,7 +115,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <Button variant="outline" mr="2">
               Edit task
             </Button>
-            <Button> Mark task as done </Button>
+            <Button onClick={() => updateTaskMutation()}>
+              {task.isDone ? 'Mark task as undone' : 'Mark task as done'}
+            </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>

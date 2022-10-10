@@ -40,7 +40,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
     return (
       <Flex justifyContent="center">
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(taskBreakdowns![0])}</Text>
+        <Text>{timeInterval(taskBreakdowns && taskBreakdowns[0])}</Text>
       </Flex>
     );
   }

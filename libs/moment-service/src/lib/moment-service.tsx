@@ -8,8 +8,8 @@ export const roundToMinutes = (date: moment.Moment, minutes: number) => {
 };
 
 export const timeInterval = (breakdown: TaskBreakdown) => {
-  const start = startToTime(breakdown.start);
-  const end = startToTime(moment(breakdown.start).add(breakdown.duration));
+  const start = startToTime(breakdown?.start);
+  const end = startToTime(moment(breakdown?.start).add(breakdown?.duration));
   return start + ' - ' + end;
 };
 
