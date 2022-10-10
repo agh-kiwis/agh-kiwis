@@ -25,10 +25,7 @@ mutation updateTask($taskInput: TaskInput!) {
     notifications {
       timeBefore
     }
-    priority {
-      id
-      name
-    }
+    priority
     shouldAutoResolve
     taskBreakdowns {
       duration

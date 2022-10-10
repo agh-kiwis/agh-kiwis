@@ -1,27 +1,54 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { Interval } from '../../utils/interval.scalar';
-import { RepeatInput } from './repeat.input';
-import { CategoryInput } from './category.input';
+import { IsEnum } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
+import { NullableField } from '../../utils/NullableField';
+import { Interval } from '../../utils/interval.scalar';
+import { Priority } from '../entities/priority.enum';
+import { CategoryInput } from './category.input';
+import { RepeatInput } from './repeat.input';
 
 // TODO Add Validation
 @InputType()
 export class CreateTaskInput {
-  @Field()
+  @Field({
+    description:
+      'The name of the task, which is assigned by the user and can be changed in the future.',
+  })
   name: string;
-  @Field()
+
+  @Field({
+    description:
+      'The time when task should start. This can be different from taskBreakdown.start, as it is just informative data unrelated with real planed entity.',
+  })
   start: Date;
-  @Field(() => Interval)
+
+  @Field(() => Interval, {
+    description:
+      'A minimum time gap that user wants to have between this task and another tasks.',
+  })
   chillTime: Duration;
-  @Field({ nullable: true })
+
+  @Field({
+    defaultValue: false,
+    description:
+      'Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed.',
+  })
   shouldAutoResolve: boolean;
-  @Field(() => CategoryInput)
+
+  @Field(() => CategoryInput, {
+    description: 'Either existing category id or new category name and color.',
+  })
   category: CategoryInput;
-  @Field(() => RepeatInput, { nullable: true })
+
+  @NullableField(() => RepeatInput, { description: 'Repeat options.' })
   repeat?: RepeatInput;
-  @Field(() => Interval, { nullable: true })
+
+  @NullableField(() => Interval, {
+    description: 'The time before user wants to receive task notification.',
+  })
   timeBeforeNotification: Duration;
-  // TODO There always need to be a priority in the database for this to work
-  @Field({ nullable: true, defaultValue: 1 })
-  priorityId: number;
+
+  @Field({ defaultValue: 'medium' })
+  @IsEnum(Priority)
+  priority: string;
 }

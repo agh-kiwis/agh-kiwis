@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TasksService } from './tasks.service';
-import { TasksResolver } from './tasks.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Task } from './entities/task.entity';
-import { ChunkInfo } from './entities/chunkInfo.entity';
-import { Color } from '../categories/entities/color.entity';
-import { Priority } from './entities/priority.entity';
-import { TaskBreakdown } from './entities/taskBreakdown.entity';
-import { Repeat } from './entities/repeat.entity';
-import { Notification } from './entities/notification.entity';
 import { AuthModule } from '../auth/auth.module';
+import { Color } from '../categories/entities/color.entity';
+import { ChunkInfo } from './entities/chunkInfo.entity';
+import { Notification } from './entities/notification.entity';
+import { Repeat } from './entities/repeat.entity';
+import { Task } from './entities/task.entity';
+import { TaskBreakdown } from './entities/taskBreakdown.entity';
+import { TasksResolver } from './tasks.resolver';
+import { TasksService } from './tasks.service';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { AuthModule } from '../auth/auth.module';
       ChunkInfo,
       Color,
       Notification,
-      Priority,
       TaskBreakdown,
       Repeat,
     ]),

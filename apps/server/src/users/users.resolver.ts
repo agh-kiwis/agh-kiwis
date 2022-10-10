@@ -1,5 +1,5 @@
-import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
 import { ForbiddenError } from 'apollo-server-errors';
+import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -24,7 +24,6 @@ export class UsersResolver {
     if (user.id !== updateUserInput.id) {
       throw new ForbiddenError('You can only update your own user');
     }
-    // There we need to check if given user can perform given action
     return this.usersService.update(updateUserInput);
   }
 
@@ -36,9 +35,6 @@ export class UsersResolver {
     if (user.id !== id) {
       throw new ForbiddenError('You can only update your own user');
     }
-    // There we need to check if given user can perform given action
     return await this.usersService.softDelete(id);
   }
-
-  // TODO Resolve me
 }

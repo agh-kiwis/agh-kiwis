@@ -1,6 +1,6 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Duration } from 'moment';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
@@ -12,8 +12,10 @@ export class ChunkInfo extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // We need to have information on when the task needs to be started
-  @Field()
+  @Field({
+    description:
+      'The time when task should start. This can be different from taskBreakdown.start, as it is just informative data unrelated with real planed entity.',
+  })
   @Column({ type: 'timestamp with time zone' })
   start: Date;
 

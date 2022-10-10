@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import { Like } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import { CustomValidationErrors } from '../utils/CustomValidationError';
 import { sanitizeInput } from '../utils/sanitizers/inputSanitizer';
 import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities/category.entity';
 import { Color } from './entities/color.entity';
 
@@ -35,23 +34,11 @@ export class CategoriesService {
 
   async findByPrefix(user: User, prefix: string) {
     const sanitizedPrefix = sanitizeInput(prefix);
-    return await Category.find({
-      where: {
-        user: user,
-        // TODO This is case sensitive, we want it not to be
-        name: Like(`${sanitizedPrefix}%`),
-      },
-    });
-  }
 
-  update(user: User, id: number, updateCategoryInput: UpdateCategoryInput) {
-    // TODO
-    return `This action updates a #${id} category`;
-  }
-
-  remove(user: User, id: number) {
-    // TODO
-    return `This action removes a #${id} category`;
+    return await Category.createQueryBuilder('category')
+      .where('category.name ILIKE :prefix', { prefix: `${sanitizedPrefix}%` })
+      .andWhere('category.userId = :userId', { userId: user.id })
+      .getMany();
   }
 
   async getColors(user: User) {
@@ -62,5 +49,26 @@ export class CategoriesService {
     });
 
     return userCategories.map((category) => category.color);
+  }
+
+  async remove(user: User, id: number) {
+    const category = await Category.findOne({
+      where: {
+        user: user,
+        id: id,
+      },
+    });
+
+    if (!category)
+      throw new CustomValidationErrors({
+        errors: [
+          {
+            message: 'Category not found',
+            field: 'category',
+          },
+        ],
+      });
+
+    return Category.remove(category);
   }
 }
