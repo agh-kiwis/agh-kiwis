@@ -18,7 +18,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
         bgColor={getTaskColor(task)}
         onClick={() => setModalOpened(true)}
       >
-        <TaskHeader name={task.name} priority={task.priority.name} />
+        <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo
           isFloat={task.isFloat}
           deadline={task.deadline}

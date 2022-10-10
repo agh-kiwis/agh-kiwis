@@ -68,7 +68,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                 </Tr>
                 <Tr>
                   <Td>Priority:</Td>
-                  <Td>{task.priority.name}</Td>
+                  <Td>{task.priority}</Td>
                 </Tr>
                 {task.isFloat && (
                   <Tr>
