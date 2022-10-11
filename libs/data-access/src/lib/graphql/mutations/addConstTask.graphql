@@ -25,10 +25,7 @@ mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
     notifications {
       timeBefore
     }
-    priority {
-      id
-      name
-    }
+    priority
     shouldAutoResolve
     taskBreakdowns {
       duration

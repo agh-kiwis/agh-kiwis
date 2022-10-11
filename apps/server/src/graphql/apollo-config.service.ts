@@ -1,9 +1,9 @@
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { get } from 'lodash';
+import { join } from 'path';
 import { ApolloDriverConfig, ApolloDriverConfigFactory } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { join } from 'path';
-import { get } from 'lodash';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { registerEnumType } from '@nestjs/graphql';
 import { RepeatType } from '../tasks/entities/repeat.entity';
 
@@ -12,6 +12,7 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
   constructor(private configService: ConfigService) {}
 
   createGqlOptions(): ApolloDriverConfig {
+    // TODO This smells bad for me
     registerEnumType(RepeatType, {
       name: 'RepeatType',
       description: 'Supported repeat types',
@@ -31,6 +32,7 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
       cors: {
         // origin: '*',
         origin: this.configService.get('app.corsOrigin'),
+        // We need credentials to accept Auth cookies
         credentials: true,
       },
     };

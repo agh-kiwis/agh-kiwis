@@ -1,5 +1,5 @@
-import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 
 export enum RepeatType {
@@ -10,8 +10,7 @@ export enum RepeatType {
 }
 
 @Entity()
-@ObjectType()
-// Applicable only for const tasks
+@ObjectType({ description: 'Applicable only to const tasks repeat property.' })
 export class Repeat extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;

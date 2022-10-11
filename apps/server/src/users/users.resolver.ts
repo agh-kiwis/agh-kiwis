@@ -1,8 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { ForbiddenError } from 'apollo-server-errors';
+import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../providers/user.provider';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -13,23 +15,26 @@ export class UsersResolver {
     return this.usersService.create(createUserInput);
   }
 
-  @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
-  }
+  @Mutation(() => User)
+  updateUser(
+    @CurrentUser() user: User,
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne({ id: +id });
+    @Args('updateUserInput') updateUserInput: UpdateUserInput
+  ) {
+    if (user.id !== updateUserInput.id) {
+      throw new ForbiddenError('You can only update your own user');
+    }
+    return this.usersService.update(updateUserInput);
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
-  }
-
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+  async removeUser(
+    @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number
+  ) {
+    if (user.id !== id) {
+      throw new ForbiddenError('You can only update your own user');
+    }
+    return await this.usersService.softDelete(id);
   }
 }

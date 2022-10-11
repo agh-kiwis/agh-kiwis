@@ -2,8 +2,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { getRepository } from 'typeorm';
 import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments';
+import { getRepository } from 'typeorm';
 
 type ValidationEntity =
   | {

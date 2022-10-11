@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
+// TODO Add description to params & default fallbacks
 export default registerAs('app', () => ({
   nodeEnv: process.env.NODE_ENV,
   production: process.env.NODE_ENV === 'production',

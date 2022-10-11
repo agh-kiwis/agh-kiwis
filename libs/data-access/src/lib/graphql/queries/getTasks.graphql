@@ -25,10 +25,7 @@ query getTasks($getTasksInput: GetTasksInput!) {
     notifications {
       timeBefore
     }
-    priority {
-      id
-      name
-    }
+    priority
     shouldAutoResolve
     taskBreakdowns {
       duration
