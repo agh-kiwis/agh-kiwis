@@ -11,6 +11,5 @@
     "^@agh-kiwis",
     "^[./]"
   ],
-  "importOrderSortSpecifiers": true,
-  "importOrderParserPlugins": ["typescript", "decorators-legacy"]
+  "importOrderSortSpecifiers": true
 }
