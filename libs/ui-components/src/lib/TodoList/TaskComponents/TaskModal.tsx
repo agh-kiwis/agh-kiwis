@@ -38,7 +38,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   task,
   close,
 }) => {
-  console.log('file: TaskModal.tsx -> line 26 -> task', task);
   const [updateTaskMutation] = useUpdateTaskMutation({
     variables: {
       taskInput: {
