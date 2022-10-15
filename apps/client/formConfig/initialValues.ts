@@ -12,7 +12,7 @@ export const constTaskInitialValues: constTaskType = {
   category: {
     id: 1,
     name: '',
-    color: '#38A169',
+    color: '#0077B6',
   },
   color: '',
   taskName: '',
@@ -49,7 +49,7 @@ export const floatTaskInitialValues: floatTaskType = {
   category: {
     id: 1,
     name: '',
-    color: '#38A169',
+    color: '#0077B6',
   },
   color: '',
   taskName: '',

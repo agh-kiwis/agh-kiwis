@@ -44,6 +44,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       taskInput: {
         id: task.id,
         isDone: !task.isDone,
+        priority: task.priority,
       },
     },
   });
@@ -115,7 +116,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <Button variant="outline" mr="2">
               Edit task
             </Button>
-            <Button onClick={() => updateTaskMutation()}>
+            <Button
+              onClick={() => {
+                updateTaskMutation();
+                close();
+              }}
+            >
               {task.isDone ? 'Mark task as undone' : 'Mark task as done'}
             </Button>
           </HStack>

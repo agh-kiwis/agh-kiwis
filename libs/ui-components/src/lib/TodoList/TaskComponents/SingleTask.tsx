@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Task } from '@agh-kiwis/data-access';
-import { DONE_TASK_COLOR } from '@agh-kiwis/workspace-constants';
+import { INSIGNIFICANT_COLOR } from '@agh-kiwis/workspace-constants';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
 import { TaskInfo } from './TaskInfo';
@@ -20,6 +20,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
       >
         <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo
+          isDone={task.isDone}
           isFloat={task.isFloat}
           deadline={task.deadline}
           taskBreakdowns={task.taskBreakdowns}
@@ -36,5 +37,5 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
 };
 
 const getTaskColor = (task: Task) => {
-  return task.isDone ? DONE_TASK_COLOR : task.category.color.hexCode;
+  return task.isDone ? INSIGNIFICANT_COLOR : task.category.color.hexCode;
 };

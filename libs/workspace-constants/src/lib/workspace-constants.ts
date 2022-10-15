@@ -7,4 +7,5 @@ export const ERROR_MODAL_TIMEOUT = 3000;
 
 export const MAX_INPUT_LENGTH = 50;
 
-export const DONE_TASK_COLOR = 'secondary';
+export const DEFAULT_COLOR = 'primary';
+export const INSIGNIFICANT_COLOR = 'insignificant';

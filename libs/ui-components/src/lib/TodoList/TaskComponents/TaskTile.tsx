@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Task } from '@agh-kiwis/data-access';
-import { DONE_TASK_COLOR } from '@agh-kiwis/workspace-constants';
+import { INSIGNIFICANT_COLOR } from '@agh-kiwis/workspace-constants';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
 import { TaskInfo } from './TaskInfo';
@@ -19,9 +19,10 @@ export const TaskTile: React.FC<TaskTileProps> = ({ task }) => {
         bgColor={getTaskColor(task)}
         onClick={() => setModalOpened(true)}
       >
-        <TaskHeader name={task.name} priority={task.priority.name} />
+        <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo
           isFloat={task.isFloat}
+          isDone={task.isDone}
           deadline={task.deadline}
           taskBreakdowns={task.taskBreakdowns}
         />
@@ -37,5 +38,5 @@ export const TaskTile: React.FC<TaskTileProps> = ({ task }) => {
 };
 
 const getTaskColor = (task: Task) => {
-  return task.isDone ? DONE_TASK_COLOR : task.category.color.hexCode;
+  return task.isDone ? INSIGNIFICANT_COLOR : task.category.color.hexCode;
 };
