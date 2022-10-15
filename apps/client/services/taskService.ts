@@ -91,16 +91,3 @@ const mapToDateTime = (date: string, time?: string): Date => {
 
   return dateTime;
 };
-
-const mapPriority = (priority: string): number => {
-  switch (priority) {
-    case 'low':
-      return 1;
-    case 'medium':
-      return 2;
-    case 'high':
-      return 3;
-    default:
-      return 1;
-  }
-};

@@ -204,8 +204,7 @@ export type Query = {
   getColors: Array<Color>;
   getTasks: Array<Task>;
   me: User;
-  user: User;
-  users: Array<User>;
+  removeCategory: Category;
 };
 
 export type QueryFindCategoryByPrefixArgs = {
@@ -216,11 +215,11 @@ export type QueryGetTasksArgs = {
   getTasksInput: GetTasksInput;
 };
 
-
-export type QueryUserArgs = {
+export type QueryRemoveCategoryArgs = {
   id: Scalars['Int'];
 };
 
+/** Applicable only to const tasks repeat property. */
 export type Repeat = {
   __typename?: 'Repeat';
   repeatEvery: Scalars['Float'];
@@ -285,7 +284,10 @@ export type TaskInput = {
   chunkInfo?: InputMaybe<ChunkInfoInput>;
   deadline?: InputMaybe<Scalars['DateTime']>;
   duration?: InputMaybe<Scalars['Interval']>;
-  id: Scalars['Int'];
+  estimation?: InputMaybe<Scalars['Interval']>;
+  id: Scalars['Float'];
+  isDone?: InputMaybe<Scalars['Boolean']>;
+  isFloat?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   priority?: InputMaybe<Scalars['String']>;
   repeat?: InputMaybe<RepeatInput>;
@@ -679,20 +681,19 @@ export type MeQuery = {
   };
 };
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
-
-export type UserQueryVariables = Exact<{
+export type RemoveCategoryQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
-
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
-
-export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null }> };
-
+export type RemoveCategoryQuery = {
+  __typename?: 'Query';
+  removeCategory: {
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  };
+};
 
 export const AddConstTaskDocument = gql`
   mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
@@ -1264,52 +1265,52 @@ export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserMutationVariables
 >;
 export const UpdateTaskDocument = gql`
-    mutation updateTask($updateTaskInput: UpdateTaskInput!) {
-  updateTask(updateTaskInput: $updateTaskInput) {
-    category {
-      color {
-        hexCode
+  mutation updateTask($taskInput: TaskInput!) {
+    updateTask(taskInput: $taskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
         id
+        name
       }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
       id
-      name
-    }
-    chillTime
-    chunkInfo {
-      id
-      maxChunkDuration
-      minChunkDuration
-      minTimeBetweenChunks
-      start
-    }
-    deadline
-    estimation
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority {
-      id
-      name
-    }
-    shouldAutoResolve
-    taskBreakdowns {
-      duration
       isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
+      isFloat
+      name
+      notifications {
+        timeBefore
       }
-      start
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
     }
   }
-}
-    `;
-export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, UpdateTaskMutationVariables>;
+`;
+export type UpdateTaskMutationFn = Apollo.MutationFunction<
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables
+>;
 
 /**
  * __useUpdateTaskMutation__
@@ -1650,83 +1651,69 @@ export function useMeLazyQuery(
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const UserDocument = gql`
-    query user($id: Int!) {
-  user(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
+export const RemoveCategoryDocument = gql`
+  query removeCategory($id: Int!) {
+    removeCategory(id: $id) {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
- * __useUserQuery__
+ * __useRemoveCategoryQuery__
  *
- * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRemoveCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRemoveCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUserQuery({
+ * const { data, loading, error } = useRemoveCategoryQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-      }
-export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-        }
-export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
-export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
-export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
-export const UsersDocument = gql`
-    query users {
-  users {
-    birthDate
-    email
-    gender
-    id
-    name
-  }
+export function useRemoveCategoryQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    RemoveCategoryQuery,
+    RemoveCategoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<RemoveCategoryQuery, RemoveCategoryQueryVariables>(
+    RemoveCategoryDocument,
+    options
+  );
 }
-    `;
-
-/**
- * __useUsersQuery__
- *
- * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUsersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-      }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-        }
-export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
-export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export function useRemoveCategoryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    RemoveCategoryQuery,
+    RemoveCategoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<RemoveCategoryQuery, RemoveCategoryQueryVariables>(
+    RemoveCategoryDocument,
+    options
+  );
+}
+export type RemoveCategoryQueryHookResult = ReturnType<
+  typeof useRemoveCategoryQuery
+>;
+export type RemoveCategoryLazyQueryHookResult = ReturnType<
+  typeof useRemoveCategoryLazyQuery
+>;
+export type RemoveCategoryQueryResult = Apollo.QueryResult<
+  RemoveCategoryQuery,
+  RemoveCategoryQueryVariables
+>;
 
 export interface PossibleTypesResultData {
   possibleTypes: {
@@ -1736,4 +1723,4 @@ export interface PossibleTypesResultData {
 const result: PossibleTypesResultData = {
   possibleTypes: {},
 };
-      export default result;
+export default result;
