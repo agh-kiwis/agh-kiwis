@@ -1,3 +1,16 @@
 {
+  "singleQuote": true,
+  "importOrder": [
+    "^react",
+    "^@nestjs",
+    "^next",
+    "^formik",
+    "^moment",
+    "^@fortawesome",
+    "^@chakra",
+    "^@agh-kiwis",
+    "^[./]"
+  ],
+  "importOrderSortSpecifiers": true,
   "importOrderParserPlugins": ["typescript", "decorators-legacy"]
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack, Text } from '@chakra-ui/react';
+import { Box, HStack, Stack, Text } from '@chakra-ui/react';
 import { TaskBreakdown } from '@agh-kiwis/data-access';
 import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
 
@@ -16,20 +16,22 @@ export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
 }) => {
   if (checked) {
     return (
-      <Stack justifyContent="center">
-        <Text mr="1rem">Chunk {id + 1}</Text>
+      <HStack justifyContent="center" spacing="8" h="4rem">
+        <Text>Chunk {id + 1}</Text>
         <Text>Done</Text>
-      </Stack>
+      </HStack>
     );
   } else {
     return (
-      <Stack justifyContent="center">
-        <Text mr="1rem">Chunk {id + 1}</Text>
+      <HStack justifyContent="center" spacing="8" h="4rem">
+        <Text>Chunk {id + 1}</Text>
         <Box>
-          <Text mr="1rem"> {startToDate(breakdown.start)} </Text>
+          <Text> {startToDate(breakdown.start)} </Text>
+        </Box>
+        <Box>
           <Text>{timeInterval(breakdown)}</Text>
         </Box>
-      </Stack>
+      </HStack>
     );
   }
 };

@@ -8,19 +8,19 @@ export const roundToMinutes = (date: moment.Moment, minutes: number) => {
 };
 
 export const timeInterval = (breakdown: TaskBreakdown) => {
-  const start = startToTime(breakdown.start);
-  const end = startToTime(moment(breakdown.start).add(breakdown.duration));
+  const start = startToTime(breakdown?.start);
+  const end = startToTime(moment(breakdown?.start).add(breakdown?.duration));
   return start + ' - ' + end;
 };
 
-export const deadlineToDate = (deadline: string) => {
-  return moment(deadline, 'x').format('DD MMM');
+export const deadlineToDate = (deadline: string, dateFormat = 'DD MMM') => {
+  return moment(deadline, 'x').format(dateFormat);
+};
+
+export const startToDate = (start: moment.Moment, dateFormat = 'DD MMM') => {
+  return moment(start).format(dateFormat);
 };
 
 export const startToTime = (start: moment.Moment) => {
   return moment(start).format('HH:mm');
-};
-
-export const startToDate = (start: moment.Moment) => {
-  return moment(start).format('DD MMM');
 };

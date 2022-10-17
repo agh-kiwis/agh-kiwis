@@ -6,12 +6,13 @@ import { TaskHeader } from './TaskHeader';
 import { TaskInfo } from './TaskInfo';
 import { TaskModal } from './TaskModal';
 
-type SingleTaskProps = {
+type TaskTileProps = {
   task: Task;
 };
 
-export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
+export const TaskTile: React.FC<TaskTileProps> = ({ task }) => {
   const [modalOpened, setModalOpened] = useState(false);
+
   return (
     <>
       <TaskContainer
@@ -20,8 +21,8 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
       >
         <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo
-          isDone={task.isDone}
           isFloat={task.isFloat}
+          isDone={task.isDone}
           deadline={task.deadline}
           taskBreakdowns={task.taskBreakdowns}
         />

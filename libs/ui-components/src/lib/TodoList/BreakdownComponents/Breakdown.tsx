@@ -18,8 +18,8 @@ export const Breakdown: React.FC<BreakdownProps> = ({ index, breakdown }) => {
 
   return (
     <BreakdownContainer checked={checked}>
-      <Checkbox ml="1rem" checked={checked} onChange={() => handleChange()} />
       <BreakdownInfo checked={checked} id={index} breakdown={breakdown} />
+      <Checkbox px="4" checked={checked} onChange={() => handleChange()} />
     </BreakdownContainer>
   );
 };

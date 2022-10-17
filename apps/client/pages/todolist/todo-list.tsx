@@ -22,7 +22,7 @@ const TodoList: React.FC = () => {
       },
     },
   });
-  console.log(data);
+
   const [open, setOpen] = useState(false);
   if (loading) {
     return <Spinner />;

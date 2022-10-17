@@ -1,4 +1,8 @@
 import { HStack } from '@chakra-ui/react';
+import {
+  DEFAULT_COLOR,
+  INSIGNIFICANT_COLOR,
+} from '@agh-kiwis/workspace-constants';
 
 type BreakdownContainerProps = {
   children: React.ReactNode;
@@ -12,9 +16,10 @@ export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
   return (
     <HStack
       justifyContent="space-between"
-      bgColor={checked ? 'insignificant' : 'primary'}
-      borderRadius="0.5rem"
       color="white"
+      bgColor={checked ? INSIGNIFICANT_COLOR : DEFAULT_COLOR}
+      borderRadius="0.5rem"
+      px="2"
     >
       {children}
     </HStack>

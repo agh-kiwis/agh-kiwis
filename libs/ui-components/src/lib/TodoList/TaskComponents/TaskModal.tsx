@@ -1,5 +1,15 @@
-import { Box, Button, HStack, Text } from '@chakra-ui/react';
-import { deadlineToDate } from '@agh-kiwis/moment-service';
+import {
+  Box,
+  Button,
+  HStack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
 import {
   Modal,
   ModalBody,
@@ -9,8 +19,13 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import { Task, useUpdateTaskMutation } from '@agh-kiwis/data-access';
+import {
+  deadlineToDate,
+  startToDate,
+  startToTime,
+} from '@agh-kiwis/moment-service';
 import { TaskBreakdowns } from './TaskBreakdowns';
-import { Task } from '@agh-kiwis/data-access';
 
 type TaskModalProps = {
   isOpen: boolean;
@@ -23,32 +38,91 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   task,
   close,
 }) => {
+  const [updateTaskMutation] = useUpdateTaskMutation({
+    variables: {
+      taskInput: {
+        id: task.id,
+        isDone: !task.isDone,
+        priority: task.priority,
+      },
+    },
+  });
+
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
-      <ModalContent mx={4}>
+      <ModalContent mx="4">
         <ModalHeader>
-          <Text fontSize="xl" mr="1rem">
-            {task.name}
-          </Text>
-          <Text fontSize="sm"> Priority: {task.priority.name}</Text>
+          <TableContainer fontSize="md">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Category:</Th>
+                  <Th>{task.category.name}</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Name:</Td>
+                  <Td>{task.name}</Td>
+                </Tr>
+                <Tr>
+                  <Td>Priority:</Td>
+                  <Td>{task.priority}</Td>
+                </Tr>
+                {task.isFloat && (
+                  <Tr>
+                    <Td>Deadline:</Td>
+                    <Td>{deadlineToDate(task.deadline!, 'DD MMM YYYY')}</Td>
+                  </Tr>
+                )}
+                {!task.isFloat && (
+                  <>
+                    <Tr>
+                      <Td>Date:</Td>
+                      <Td>
+                        {startToDate(
+                          task.taskBreakdowns && task.taskBreakdowns[0].start,
+                          'DD MMM YYYY'
+                        )}
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Time:</Td>
+                      <Td>
+                        {startToTime(
+                          task.taskBreakdowns && task.taskBreakdowns[0].start
+                        )}
+                      </Td>
+                    </Tr>
+                  </>
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {task.isFloat ? (
+          {task.isFloat && (
             <Box>
-              <Text> Deadline: {deadlineToDate(task.deadline!)}</Text>
               <TaskBreakdowns breakdowns={task.taskBreakdowns!} />
             </Box>
-          ) : null}
+          )}
         </ModalBody>
 
         <ModalFooter>
           <HStack>
-            <Button variant="outline" mr={2}>
+            <Button variant="outline" mr="2">
               Edit task
             </Button>
-            <Button> Mark task as done </Button>
+            <Button
+              onClick={() => {
+                updateTaskMutation();
+                close();
+              }}
+            >
+              {task.isDone ? 'Mark task as undone' : 'Mark task as done'}
+            </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>
