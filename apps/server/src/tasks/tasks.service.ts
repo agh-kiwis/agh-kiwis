@@ -109,7 +109,12 @@ export class TasksService {
   async update(updateTaskInput: TaskInput) {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
-    return Task.findOne(updateTaskInput.id);
+    return await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
   }
 
   remove(id: number) {
