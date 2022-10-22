@@ -93,10 +93,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
           <>
             <ModalHeader>
               <Box mt="8">
-                <Header
-                  text={'Are You sure You want to delete this task?'}
-                  size="md"
-                />
+                <Header text={'do You want to delete this task?'} size="md" />
               </Box>
             </ModalHeader>
             <ModalCloseButton />
