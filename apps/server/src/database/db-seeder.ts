@@ -59,6 +59,18 @@ export const seedDatabase = async () => {
     user: user,
   }).save();
 
+  const hobbyCategory = await Category.create({
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[4] } }),
+    name: 'Hobby',
+    user: user,
+  }).save();
+
+  const otherCategory = await Category.create({
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[5] } }),
+    name: 'Other',
+    user: user,
+  }).save();
+
   // Add some tasks
   const ten_minutes = moment.duration({ minutes: 10 });
   const taskService = new TasksService();
