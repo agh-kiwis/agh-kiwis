@@ -2,7 +2,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
 import { constTaskType } from '@agh-kiwis/types';
-import { ConstTaskCreationForm } from '@agh-kiwis/ui-components';
+import { ConstTaskForm } from '@agh-kiwis/ui-components';
+import { ADD_TASK } from '@agh-kiwis/workspace-constants';
 import {
   chillTimeInputFields,
   constTaskInitialValues,
@@ -34,13 +35,14 @@ const ConstTask: React.FC = () => {
   };
 
   return (
-    <ConstTaskCreationForm
+    <ConstTaskForm
       initialValues={constTaskInitialValues}
       durationInputFields={durationInputFields}
       chillTimeInputFields={chillTimeInputFields}
       repeatEverySelectField={repeatEverySelectField}
       repeatEveryAmountFields={repeatEveryAmountFields}
       onSubmit={handleSubmit}
+      submitButtonText={ADD_TASK}
     />
   );
 };
