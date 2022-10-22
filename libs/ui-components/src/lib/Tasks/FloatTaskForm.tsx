@@ -58,7 +58,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text="Add new task" />
+        <Header text="Add new task" size="lg" />
       </Box>
       <TaskSwitchFloat />
       <Formik

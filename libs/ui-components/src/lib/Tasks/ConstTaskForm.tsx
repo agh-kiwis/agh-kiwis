@@ -57,7 +57,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text="Add new task" />
+        <Header text="Add new task" size="lg" />
       </Box>
       <TaskSwitchConst />
       <Formik
