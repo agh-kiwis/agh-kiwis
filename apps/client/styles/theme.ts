@@ -4,6 +4,7 @@ export const theme = extendTheme({
   colors: {
     primary: '#2F855A',
     secondary: '#2D3748',
+    danger: '#E53E3E',
     insignificant: '#718096',
   },
   fonts: {
