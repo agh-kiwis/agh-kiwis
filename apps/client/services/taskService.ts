@@ -94,6 +94,51 @@ export const taskToConstTaskType = (task: Task): constTaskType => ({
   autoresolve: task.shouldAutoResolve,
 });
 
+export const taskToFloatTaskType = (task: Task): floatTaskType => ({
+  type: 'const',
+  category: {
+    id: task.category.id,
+    name: task.category.name,
+    color: task.category.color.hexCode,
+  },
+  color: task.category.color.hexCode,
+  taskName: task.name,
+  deadline: {
+    date: moment(task.deadline).format('yyyy-MM-DD'),
+    time: roundToMinutes(moment(task.deadline), 10),
+  },
+  deadlineFacade: '',
+  timeEstimation: {
+    hours: moment.duration(task.estimation).hours(),
+    minutes: moment.duration(task.estimation).minutes(),
+  },
+  timeEstimationFacade: '',
+  chillTime: {
+    minutes: moment.duration(task.chillTime).minutes(),
+  },
+  chillTimeFacade: '',
+  priority: task.priority,
+  chunking: {
+    shouldChunk: !!task.chunkInfo,
+    minChunkTime: {
+      minutes: moment.duration(task.chunkInfo.minChunkDuration).minutes(),
+    },
+    maxChunkTime: {
+      hours: moment.duration(task.chunkInfo.maxChunkDuration).hours(),
+      minutes: moment.duration(task.chunkInfo.maxChunkDuration).minutes(),
+    },
+    minTimeBetweenChunks: {
+      hours: moment.duration(task.chunkInfo.minTimeBetweenChunks).hours(),
+      minutes: moment.duration(task.chunkInfo.minTimeBetweenChunks).minutes(),
+    },
+  },
+  minChunkTimeFacade: '',
+  maxChunkTimeFacade: '',
+  minTimeBetweenChunksFacade: '',
+  notify: !!task.notifications,
+  autoresolve: task.shouldAutoResolve,
+});
+
 // update
 // TODO improve update task mutation to update task breakdowns
 export const constTaskToUpdateTaskMutationMapper = (
@@ -115,6 +160,31 @@ export const constTaskToUpdateTaskMutationMapper = (
   // },
   // start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoresolve,
+  // timeBeforeNotification: null,
+});
+
+export const floatTaskToUpdateTaskMutationMapper = (
+  id: number,
+  variables: floatTaskType
+): TaskInput => ({
+  id: id,
+  category: {
+    id: variables.category.id,
+  },
+  chillTime: getIntervalISOString(variables.chillTime),
+  // chunkInfo: {
+  //   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
+  //   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
+  //   minTimeBetweenChunks: getIntervalISOString(
+  //     variables.chunking.minTimeBetweenChunks
+  //   ),
+  // },
+  deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
+  estimation: getIntervalISOString(variables.timeEstimation),
+  name: variables.taskName,
+  priority: variables.priority,
+  shouldAutoResolve: variables.autoresolve,
+  // start: new Date(),
   // timeBeforeNotification: null,
 });
 

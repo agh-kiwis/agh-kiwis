@@ -32,7 +32,7 @@ import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 
-type FloatTaskCreationFormProps = {
+type FloatTaskFormProps = {
   initialValues: floatTaskType;
   estimationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
@@ -40,9 +40,10 @@ type FloatTaskCreationFormProps = {
   maxChunkTimeInputFields: NumberInputType[];
   minTimeBetweenChunksInputFields: NumberInputType[];
   onSubmit: (values: floatTaskType) => void;
+  submitButtonText: string;
 };
 
-export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
+export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
   initialValues,
   estimationInputFields,
   chillTimeInputFields,
@@ -50,6 +51,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
   maxChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
   onSubmit,
+  submitButtonText,
 }) => {
   const router = useRouter();
 
@@ -158,18 +160,6 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                       <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
                     </IntervalPicker>
                   </Box>
-                  <Box my={4}>
-                    <CustomNumberInput
-                      minValue={1}
-                      maxValue={20}
-                      defaultValue={4}
-                      step={1}
-                      label="Max chunks number"
-                      name="chunks.maxChunksNumber"
-                      handleChange={setFieldValue}
-                      variant="vertical"
-                    />
-                  </Box>
                   <Box>
                     <IntervalPicker
                       modalTitle="Min time between Chunks"
@@ -210,7 +200,7 @@ export const FloatTaskCreationForm: React.FC<FloatTaskCreationFormProps> = ({
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
-                  buttonText="Add"
+                  buttonText={submitButtonText}
                 />
               </Box>
               <Box>

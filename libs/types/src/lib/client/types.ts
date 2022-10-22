@@ -59,7 +59,6 @@ export type floatTaskType = taskType & {
       hours: number;
       minutes: number;
     };
-    maxChunksNumber: number;
     minTimeBetweenChunks: {
       hours: number;
       minutes: number;

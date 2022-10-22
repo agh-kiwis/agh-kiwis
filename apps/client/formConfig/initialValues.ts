@@ -77,7 +77,6 @@ export const floatTaskInitialValues: floatTaskType = {
       hours: 1,
       minutes: 0,
     },
-    maxChunksNumber: 4,
     minTimeBetweenChunks: {
       hours: 0,
       minutes: 30,

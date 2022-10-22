@@ -2,7 +2,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
 import { floatTaskType } from '@agh-kiwis/types';
-import { FloatTaskCreationForm } from '@agh-kiwis/ui-components';
+import { FloatTaskForm } from '@agh-kiwis/ui-components';
+import { ADD_TASK } from '@agh-kiwis/workspace-constants';
 import {
   chillTimeInputFields,
   estimationInputFields,
@@ -35,7 +36,7 @@ const FloatTask: React.FC = () => {
   };
 
   return (
-    <FloatTaskCreationForm
+    <FloatTaskForm
       initialValues={floatTaskInitialValues}
       estimationInputFields={estimationInputFields}
       chillTimeInputFields={chillTimeInputFields}
@@ -43,6 +44,7 @@ const FloatTask: React.FC = () => {
       maxChunkTimeInputFields={maxChunkTimeInputFields}
       minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
       onSubmit={handleSubmit}
+      submitButtonText={ADD_TASK}
     />
   );
 };
