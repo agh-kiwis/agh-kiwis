@@ -41,6 +41,7 @@ type FloatTaskFormProps = {
   minTimeBetweenChunksInputFields: NumberInputType[];
   onSubmit: (values: floatTaskType) => void;
   submitButtonText: string;
+  headerText: string;
 };
 
 export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
@@ -52,13 +53,14 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
   minTimeBetweenChunksInputFields,
   onSubmit,
   submitButtonText,
+  headerText,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text="Add new task" size="lg" />
+        <Header text={headerText} size="xl" />
       </Box>
       <TaskSwitchFloat />
       <Formik

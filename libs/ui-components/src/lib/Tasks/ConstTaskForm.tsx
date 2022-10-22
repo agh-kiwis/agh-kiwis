@@ -41,6 +41,7 @@ type ConstTaskFormProps = {
   repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values: constTaskType) => void;
   submitButtonText: string;
+  headerText: string;
 };
 
 export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
@@ -51,13 +52,14 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
   submitButtonText,
+  headerText,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text="Add new task" size="lg" />
+        <Header text={headerText} size="xl" />
       </Box>
       <TaskSwitchConst />
       <Formik

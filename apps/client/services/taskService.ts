@@ -104,8 +104,8 @@ export const taskToFloatTaskType = (task: Task): floatTaskType => ({
   color: task.category.color.hexCode,
   taskName: task.name,
   deadline: {
-    date: moment(task.deadline).format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(task.deadline), 10),
+    date: moment(task.deadline, 'x').format('yyyy-MM-DD'),
+    time: roundToMinutes(moment(task.deadline, 'x'), 10),
   },
   deadlineFacade: '',
   timeEstimation: {
@@ -150,17 +150,17 @@ export const constTaskToUpdateTaskMutationMapper = (
     id: variables.category.id,
   },
   chillTime: getIntervalISOString(variables.chillTime),
-  // duration: getIntervalISOString(variables.duration),
+  duration: getIntervalISOString(variables.duration),
   name: variables.taskName,
   priority: variables.priority,
-  // repeat: {
-  //   repeatEvery: variables.repeat.repeatEvery.amount,
-  //   startFrom: mapToDateTime(variables.startTime.date),
-  //   repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
-  // },
-  // start: mapToDateTime(variables.startTime.date, variables.startTime.time),
+  repeat: {
+    repeatEvery: variables.repeat.repeatEvery.amount,
+    startFrom: mapToDateTime(variables.startTime.date),
+    repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
+  },
+  start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoresolve,
-  // timeBeforeNotification: null,
+  timeBeforeNotification: null,
 });
 
 export const floatTaskToUpdateTaskMutationMapper = (
@@ -172,20 +172,20 @@ export const floatTaskToUpdateTaskMutationMapper = (
     id: variables.category.id,
   },
   chillTime: getIntervalISOString(variables.chillTime),
-  // chunkInfo: {
-  //   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
-  //   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
-  //   minTimeBetweenChunks: getIntervalISOString(
-  //     variables.chunking.minTimeBetweenChunks
-  //   ),
-  // },
+  chunkInfo: {
+    minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
+    maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
+    minTimeBetweenChunks: getIntervalISOString(
+      variables.chunking.minTimeBetweenChunks
+    ),
+  },
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
   shouldAutoResolve: variables.autoresolve,
-  // start: new Date(),
-  // timeBeforeNotification: null,
+  start: new Date(),
+  timeBeforeNotification: null,
 });
 
 type intervalType = {
@@ -213,7 +213,6 @@ const mapRepeatType = (repeatType: string): RepeatType => {
 };
 
 const mapToDateTime = (date: string, time?: string): Date => {
-  console.log(date, time);
   if (!time) {
     return new Date(date);
   }
