@@ -73,6 +73,6 @@ export class TasksResolver {
       throw new Error('Task does not belong to user');
     }
 
-    return this.tasksService.remove(id);
+    return this.tasksService.remove(user, id);
   }
 }
