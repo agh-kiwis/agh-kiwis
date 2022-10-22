@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   Box,
   Button,
@@ -38,6 +39,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   task,
   close,
 }) => {
+  const router = useRouter();
   const [updateTaskMutation] = useUpdateTaskMutation({
     variables: {
       taskInput: {
@@ -112,7 +114,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
         <ModalFooter>
           <HStack>
-            <Button variant="outline" mr="2">
+            <Button
+              variant="outline"
+              mr="2"
+              onClick={() => router.push(`/edit/${task.id}`)}
+            >
               Edit task
             </Button>
             <Button

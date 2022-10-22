@@ -36,6 +36,11 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
+  @Query(() => Task)
+  getTask(@CurrentUser() user: User, @Args('id') id: string) {
+    return this.tasksService.getTask(user, id);
+  }
+
   @Mutation(() => Task)
   async updateTask(
     @CurrentUser() user: User,

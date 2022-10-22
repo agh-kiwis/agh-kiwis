@@ -106,6 +106,16 @@ export class TasksService {
     });
   }
 
+  async getTask(user: User, id: string) {
+    return await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        user: user,
+        id: id,
+      },
+    });
+  }
+
   async update(updateTaskInput: TaskInput) {
     await Task.update(updateTaskInput.id, updateTaskInput);
 

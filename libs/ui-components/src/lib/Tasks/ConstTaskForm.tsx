@@ -33,22 +33,24 @@ import {
   Wrapper,
 } from '@agh-kiwis/ui-components';
 
-type ConstTaskCreationFormProps = {
+type ConstTaskFormProps = {
   initialValues: constTaskType;
   durationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values: constTaskType) => void;
+  submitButtonText: string;
 };
 
-export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
+export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   initialValues,
   durationInputFields,
   chillTimeInputFields,
   repeatEverySelectField,
   repeatEveryAmountFields,
   onSubmit,
+  submitButtonText,
 }) => {
   const router = useRouter();
 
@@ -188,7 +190,7 @@ export const ConstTaskCreationForm: React.FC<ConstTaskCreationFormProps> = ({
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
-                  buttonText="Add"
+                  buttonText={submitButtonText}
                 />
               </Box>
               <Box>
