@@ -150,6 +150,8 @@ export type Mutation = {
   removeCategory: Category;
   removeTask: Task;
   removeUser: User;
+  updateConstTask: Task;
+  updateFloatTask: Task;
   updateTask: Task;
   updateUser: User;
 };
@@ -188,6 +190,14 @@ export type MutationRemoveTaskArgs = {
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
+};
+
+export type MutationUpdateConstTaskArgs = {
+  taskInput: TaskInput;
+};
+
+export type MutationUpdateFloatTaskArgs = {
+  taskInput: TaskInput;
 };
 
 export type MutationUpdateTaskArgs = {
@@ -552,6 +562,100 @@ export type RemoveUserMutation = {
     gender?: string | null;
     id: number;
     name?: string | null;
+  };
+};
+
+export type UpdateConstTaskMutationVariables = Exact<{
+  taskInput: TaskInput;
+}>;
+
+export type UpdateConstTaskMutation = {
+  __typename?: 'Mutation';
+  updateConstTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    priority: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat?: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      } | null;
+    }> | null;
+  };
+};
+
+export type UpdateFloatTaskMutationVariables = Exact<{
+  taskInput: TaskInput;
+}>;
+
+export type UpdateFloatTaskMutation = {
+  __typename?: 'Mutation';
+  updateFloatTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    priority: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat?: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      } | null;
+    }> | null;
   };
 };
 
@@ -1370,6 +1474,178 @@ export type RemoveUserMutationResult =
 export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserMutation,
   RemoveUserMutationVariables
+>;
+export const UpdateConstTaskDocument = gql`
+  mutation updateConstTask($taskInput: TaskInput!) {
+    updateConstTask(taskInput: $taskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
+        id
+        name
+      }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
+      id
+      isDone
+      isFloat
+      name
+      notifications {
+        timeBefore
+      }
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
+    }
+  }
+`;
+export type UpdateConstTaskMutationFn = Apollo.MutationFunction<
+  UpdateConstTaskMutation,
+  UpdateConstTaskMutationVariables
+>;
+
+/**
+ * __useUpdateConstTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateConstTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateConstTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateConstTaskMutation, { data, loading, error }] = useUpdateConstTaskMutation({
+ *   variables: {
+ *      taskInput: // value for 'taskInput'
+ *   },
+ * });
+ */
+export function useUpdateConstTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateConstTaskMutation,
+    UpdateConstTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateConstTaskMutation,
+    UpdateConstTaskMutationVariables
+  >(UpdateConstTaskDocument, options);
+}
+export type UpdateConstTaskMutationHookResult = ReturnType<
+  typeof useUpdateConstTaskMutation
+>;
+export type UpdateConstTaskMutationResult =
+  Apollo.MutationResult<UpdateConstTaskMutation>;
+export type UpdateConstTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateConstTaskMutation,
+  UpdateConstTaskMutationVariables
+>;
+export const UpdateFloatTaskDocument = gql`
+  mutation updateFloatTask($taskInput: TaskInput!) {
+    updateFloatTask(taskInput: $taskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
+        id
+        name
+      }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
+      id
+      isDone
+      isFloat
+      name
+      notifications {
+        timeBefore
+      }
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
+    }
+  }
+`;
+export type UpdateFloatTaskMutationFn = Apollo.MutationFunction<
+  UpdateFloatTaskMutation,
+  UpdateFloatTaskMutationVariables
+>;
+
+/**
+ * __useUpdateFloatTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateFloatTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFloatTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFloatTaskMutation, { data, loading, error }] = useUpdateFloatTaskMutation({
+ *   variables: {
+ *      taskInput: // value for 'taskInput'
+ *   },
+ * });
+ */
+export function useUpdateFloatTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateFloatTaskMutation,
+    UpdateFloatTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateFloatTaskMutation,
+    UpdateFloatTaskMutationVariables
+  >(UpdateFloatTaskDocument, options);
+}
+export type UpdateFloatTaskMutationHookResult = ReturnType<
+  typeof useUpdateFloatTaskMutation
+>;
+export type UpdateFloatTaskMutationResult =
+  Apollo.MutationResult<UpdateFloatTaskMutation>;
+export type UpdateFloatTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateFloatTaskMutation,
+  UpdateFloatTaskMutationVariables
 >;
 export const UpdateTaskDocument = gql`
   mutation updateTask($taskInput: TaskInput!) {

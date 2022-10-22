@@ -116,6 +116,87 @@ export class TasksService {
     });
   }
 
+  async updateConstTask(user: User, updateTaskInput: TaskInput) {
+    let task: Task = await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
+
+    const category = await getCategory(user, updateTaskInput.category);
+
+    const notification = await getNotification(
+      updateTaskInput.timeBeforeNotification
+    );
+
+    task.category = category;
+    task.isFloat = false;
+    task.name = updateTaskInput.name;
+    task.chillTime = updateTaskInput.chillTime;
+    task.notifications = notification;
+    task.priority = updateTaskInput.priority;
+    task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
+
+    task = await task.save();
+
+    const taskBreakdown = await TaskBreakdown.findOne({
+      where: {
+        task: task,
+      },
+    });
+
+    let repeat: Repeat;
+    if (updateTaskInput.repeat) {
+      repeat = await Repeat.create(updateTaskInput.repeat).save();
+    }
+
+    taskBreakdown.repeat = repeat;
+    taskBreakdown.duration = updateTaskInput.duration;
+    taskBreakdown.start = updateTaskInput.start;
+
+    await taskBreakdown.save();
+
+    return task;
+  }
+
+  async updateFloatTask(user: User, updateTaskInput: TaskInput) {
+    let task: Task = await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
+
+    const category = await getCategory(user, updateTaskInput.category);
+
+    const notification = await getNotification(
+      updateTaskInput.timeBeforeNotification
+    );
+
+    const chunkInfo = await ChunkInfo.create({
+      ...updateTaskInput.chunkInfo,
+      start: updateTaskInput.start,
+    }).save();
+
+    task.category = category;
+    task.isFloat = true;
+    task.name = updateTaskInput.name;
+    task.chillTime = updateTaskInput.chillTime;
+    task.notifications = notification;
+    task.priority = updateTaskInput.priority;
+    task.deadline = updateTaskInput.deadline;
+    task.estimation = updateTaskInput.estimation;
+    task.chunkInfo = chunkInfo;
+    task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
+
+    task = await task.save();
+
+    await planTask(task, chunkInfo);
+
+    return task;
+  }
+
   async update(updateTaskInput: TaskInput) {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
