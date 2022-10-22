@@ -1,14 +1,21 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Spinner } from '@chakra-ui/react';
-import { useGetTaskQuery, useUpdateTaskMutation } from '@agh-kiwis/data-access';
+import {
+  useGetTaskQuery,
+  useUpdateConstTaskMutation,
+  useUpdateFloatTaskMutation,
+} from '@agh-kiwis/data-access';
 import { constTaskType, floatTaskType } from '@agh-kiwis/types';
 import {
   AlertModal,
   ConstTaskForm,
   FloatTaskForm,
 } from '@agh-kiwis/ui-components';
-import { UPDATE_TASK } from '@agh-kiwis/workspace-constants';
+import {
+  UPDATE_EXISTING_TASK,
+  UPDATE_TASK,
+} from '@agh-kiwis/workspace-constants';
 import {
   chillTimeInputFields,
   durationInputFields,
@@ -29,7 +36,8 @@ import {
 const ConstTask: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [updateTaskMutation] = useUpdateTaskMutation();
+  const [updateConstTaskMutation] = useUpdateConstTaskMutation();
+  const [updateFloatTaskMutation] = useUpdateFloatTaskMutation();
 
   const { data, loading, error } = useGetTaskQuery({
     variables: {
@@ -38,7 +46,7 @@ const ConstTask: React.FC = () => {
   });
 
   const handleConstSubmit = async (values: constTaskType) => {
-    const taskResponse = await updateTaskMutation({
+    const taskResponse = await updateConstTaskMutation({
       variables: {
         taskInput: constTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
       },
@@ -52,7 +60,7 @@ const ConstTask: React.FC = () => {
   };
 
   const handleFloatSubmit = async (values: floatTaskType) => {
-    const taskResponse = await updateTaskMutation({
+    const taskResponse = await updateFloatTaskMutation({
       variables: {
         taskInput: floatTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
       },
@@ -86,6 +94,7 @@ const ConstTask: React.FC = () => {
           minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
           onSubmit={handleFloatSubmit}
           submitButtonText={UPDATE_TASK}
+          headerText={UPDATE_EXISTING_TASK}
         />
       ) : (
         <ConstTaskForm
@@ -96,6 +105,7 @@ const ConstTask: React.FC = () => {
           repeatEveryAmountFields={repeatEveryAmountFields}
           onSubmit={handleConstSubmit}
           submitButtonText={UPDATE_TASK}
+          headerText={UPDATE_EXISTING_TASK}
         />
       )}
     </>
