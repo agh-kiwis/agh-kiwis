@@ -13,10 +13,6 @@ import {
   FloatTaskForm,
 } from '@agh-kiwis/ui-components';
 import {
-  UPDATE_EXISTING_TASK,
-  UPDATE_TASK,
-} from '@agh-kiwis/workspace-constants';
-import {
   chillTimeInputFields,
   durationInputFields,
   estimationInputFields,
@@ -93,8 +89,7 @@ const ConstTask: React.FC = () => {
           maxChunkTimeInputFields={maxChunkTimeInputFields}
           minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
           onSubmit={handleFloatSubmit}
-          submitButtonText={UPDATE_TASK}
-          headerText={UPDATE_EXISTING_TASK}
+          isInEditMode={true}
         />
       ) : (
         <ConstTaskForm
@@ -104,8 +99,7 @@ const ConstTask: React.FC = () => {
           repeatEverySelectField={repeatEverySelectField}
           repeatEveryAmountFields={repeatEveryAmountFields}
           onSubmit={handleConstSubmit}
-          submitButtonText={UPDATE_TASK}
-          headerText={UPDATE_EXISTING_TASK}
+          isInEditMode={true}
         />
       )}
     </>

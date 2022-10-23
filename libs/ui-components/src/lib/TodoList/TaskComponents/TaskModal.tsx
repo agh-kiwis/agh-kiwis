@@ -192,7 +192,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                 <HStack>
                   <CommonButton
                     variant="outline"
-                    color="danger"
+                    colorScheme="red"
                     buttonText="Delete task"
                     onClick={() => setDeleteMode(true)}
                   />

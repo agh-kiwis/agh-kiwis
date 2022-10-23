@@ -7,7 +7,7 @@ type ButtonProps = {
   variant?: string;
   type?: 'button' | 'submit' | 'reset';
   isLoading?: boolean;
-  color?: string;
+  colorScheme?: string;
   onClick?: () => void;
 };
 
