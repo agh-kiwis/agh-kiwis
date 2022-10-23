@@ -147,8 +147,11 @@ export type Mutation = {
   login: AuthResponse;
   logout: Scalars['Boolean'];
   register: AuthResponse;
+  removeCategory: Category;
   removeTask: Task;
   removeUser: User;
+  updateConstTask: Task;
+  updateFloatTask: Task;
   updateTask: Task;
   updateUser: User;
 };
@@ -177,12 +180,24 @@ export type MutationRegisterArgs = {
   registerDto: AuthEmailRegisterInput;
 };
 
+export type MutationRemoveCategoryArgs = {
+  id: Scalars['Int'];
+};
+
 export type MutationRemoveTaskArgs = {
   id: Scalars['Int'];
 };
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
+};
+
+export type MutationUpdateConstTaskArgs = {
+  taskInput: TaskInput;
+};
+
+export type MutationUpdateFloatTaskArgs = {
+  taskInput: TaskInput;
 };
 
 export type MutationUpdateTaskArgs = {
@@ -202,21 +217,21 @@ export type Query = {
   __typename?: 'Query';
   findCategoryByPrefix: Array<Category>;
   getColors: Array<Color>;
+  getTask: Task;
   getTasks: Array<Task>;
   me: User;
-  removeCategory: Category;
 };
 
 export type QueryFindCategoryByPrefixArgs = {
   prefix: Scalars['String'];
 };
 
-export type QueryGetTasksArgs = {
-  getTasksInput: GetTasksInput;
+export type QueryGetTaskArgs = {
+  id: Scalars['String'];
 };
 
-export type QueryRemoveCategoryArgs = {
-  id: Scalars['Int'];
+export type QueryGetTasksArgs = {
+  getTasksInput: GetTasksInput;
 };
 
 /** Applicable only to const tasks repeat property. */
@@ -473,6 +488,20 @@ export type RegisterMutation = {
   };
 };
 
+export type RemoveCategoryMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+export type RemoveCategoryMutation = {
+  __typename?: 'Mutation';
+  removeCategory: {
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  };
+};
+
 export type RemoveTaskMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -533,6 +562,100 @@ export type RemoveUserMutation = {
     gender?: string | null;
     id: number;
     name?: string | null;
+  };
+};
+
+export type UpdateConstTaskMutationVariables = Exact<{
+  taskInput: TaskInput;
+}>;
+
+export type UpdateConstTaskMutation = {
+  __typename?: 'Mutation';
+  updateConstTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    priority: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat?: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      } | null;
+    }> | null;
+  };
+};
+
+export type UpdateFloatTaskMutationVariables = Exact<{
+  taskInput: TaskInput;
+}>;
+
+export type UpdateFloatTaskMutation = {
+  __typename?: 'Mutation';
+  updateFloatTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    priority: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat?: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      } | null;
+    }> | null;
   };
 };
 
@@ -620,6 +743,53 @@ export type GetColorsQuery = {
   getColors: Array<{ __typename?: 'Color'; hexCode: string; id: number }>;
 };
 
+export type GetTaskQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+export type GetTaskQuery = {
+  __typename?: 'Query';
+  getTask: {
+    __typename?: 'Task';
+    chillTime: any;
+    deadline?: string | null;
+    estimation?: any | null;
+    id: number;
+    isDone: boolean;
+    isFloat: boolean;
+    name: string;
+    priority: string;
+    shouldAutoResolve: boolean;
+    category: {
+      __typename?: 'Category';
+      id: number;
+      name: string;
+      color: { __typename?: 'Color'; hexCode: string; id: number };
+    };
+    chunkInfo?: {
+      __typename?: 'ChunkInfo';
+      id: number;
+      maxChunkDuration: any;
+      minChunkDuration: any;
+      minTimeBetweenChunks: any;
+      start: any;
+    } | null;
+    notifications?: { __typename?: 'Notification'; timeBefore: any } | null;
+    taskBreakdowns?: Array<{
+      __typename?: 'TaskBreakdown';
+      duration: any;
+      isDone: boolean;
+      start: any;
+      repeat?: {
+        __typename?: 'Repeat';
+        repeatEvery: number;
+        repeatType: string;
+        startFrom: any;
+      } | null;
+    }> | null;
+  };
+};
+
 export type GetTasksQueryVariables = Exact<{
   getTasksInput: GetTasksInput;
 }>;
@@ -678,20 +848,6 @@ export type MeQuery = {
     gender?: string | null;
     id: number;
     name?: string | null;
-  };
-};
-
-export type RemoveCategoryQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-export type RemoveCategoryQuery = {
-  __typename?: 'Query';
-  removeCategory: {
-    __typename?: 'Category';
-    id: number;
-    name: string;
-    color: { __typename?: 'Color'; hexCode: string; id: number };
   };
 };
 
@@ -1124,6 +1280,61 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
+export const RemoveCategoryDocument = gql`
+  mutation removeCategory($id: Int!) {
+    removeCategory(id: $id) {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
+export type RemoveCategoryMutationFn = Apollo.MutationFunction<
+  RemoveCategoryMutation,
+  RemoveCategoryMutationVariables
+>;
+
+/**
+ * __useRemoveCategoryMutation__
+ *
+ * To run a mutation, you first call `useRemoveCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeCategoryMutation, { data, loading, error }] = useRemoveCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveCategoryMutation,
+    RemoveCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RemoveCategoryMutation,
+    RemoveCategoryMutationVariables
+  >(RemoveCategoryDocument, options);
+}
+export type RemoveCategoryMutationHookResult = ReturnType<
+  typeof useRemoveCategoryMutation
+>;
+export type RemoveCategoryMutationResult =
+  Apollo.MutationResult<RemoveCategoryMutation>;
+export type RemoveCategoryMutationOptions = Apollo.BaseMutationOptions<
+  RemoveCategoryMutation,
+  RemoveCategoryMutationVariables
+>;
 export const RemoveTaskDocument = gql`
   mutation removeTask($id: Int!) {
     removeTask(id: $id) {
@@ -1263,6 +1474,178 @@ export type RemoveUserMutationResult =
 export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserMutation,
   RemoveUserMutationVariables
+>;
+export const UpdateConstTaskDocument = gql`
+  mutation updateConstTask($taskInput: TaskInput!) {
+    updateConstTask(taskInput: $taskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
+        id
+        name
+      }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
+      id
+      isDone
+      isFloat
+      name
+      notifications {
+        timeBefore
+      }
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
+    }
+  }
+`;
+export type UpdateConstTaskMutationFn = Apollo.MutationFunction<
+  UpdateConstTaskMutation,
+  UpdateConstTaskMutationVariables
+>;
+
+/**
+ * __useUpdateConstTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateConstTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateConstTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateConstTaskMutation, { data, loading, error }] = useUpdateConstTaskMutation({
+ *   variables: {
+ *      taskInput: // value for 'taskInput'
+ *   },
+ * });
+ */
+export function useUpdateConstTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateConstTaskMutation,
+    UpdateConstTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateConstTaskMutation,
+    UpdateConstTaskMutationVariables
+  >(UpdateConstTaskDocument, options);
+}
+export type UpdateConstTaskMutationHookResult = ReturnType<
+  typeof useUpdateConstTaskMutation
+>;
+export type UpdateConstTaskMutationResult =
+  Apollo.MutationResult<UpdateConstTaskMutation>;
+export type UpdateConstTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateConstTaskMutation,
+  UpdateConstTaskMutationVariables
+>;
+export const UpdateFloatTaskDocument = gql`
+  mutation updateFloatTask($taskInput: TaskInput!) {
+    updateFloatTask(taskInput: $taskInput) {
+      category {
+        color {
+          hexCode
+          id
+        }
+        id
+        name
+      }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
+      id
+      isDone
+      isFloat
+      name
+      notifications {
+        timeBefore
+      }
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
+    }
+  }
+`;
+export type UpdateFloatTaskMutationFn = Apollo.MutationFunction<
+  UpdateFloatTaskMutation,
+  UpdateFloatTaskMutationVariables
+>;
+
+/**
+ * __useUpdateFloatTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateFloatTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFloatTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFloatTaskMutation, { data, loading, error }] = useUpdateFloatTaskMutation({
+ *   variables: {
+ *      taskInput: // value for 'taskInput'
+ *   },
+ * });
+ */
+export function useUpdateFloatTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateFloatTaskMutation,
+    UpdateFloatTaskMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateFloatTaskMutation,
+    UpdateFloatTaskMutationVariables
+  >(UpdateFloatTaskDocument, options);
+}
+export type UpdateFloatTaskMutationHookResult = ReturnType<
+  typeof useUpdateFloatTaskMutation
+>;
+export type UpdateFloatTaskMutationResult =
+  Apollo.MutationResult<UpdateFloatTaskMutation>;
+export type UpdateFloatTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateFloatTaskMutation,
+  UpdateFloatTaskMutationVariables
 >;
 export const UpdateTaskDocument = gql`
   mutation updateTask($taskInput: TaskInput!) {
@@ -1520,6 +1903,90 @@ export type GetColorsQueryResult = Apollo.QueryResult<
   GetColorsQuery,
   GetColorsQueryVariables
 >;
+export const GetTaskDocument = gql`
+  query getTask($id: String!) {
+    getTask(id: $id) {
+      category {
+        color {
+          hexCode
+          id
+        }
+        id
+        name
+      }
+      chillTime
+      chunkInfo {
+        id
+        maxChunkDuration
+        minChunkDuration
+        minTimeBetweenChunks
+        start
+      }
+      deadline
+      estimation
+      id
+      isDone
+      isFloat
+      name
+      notifications {
+        timeBefore
+      }
+      priority
+      shouldAutoResolve
+      taskBreakdowns {
+        duration
+        isDone
+        repeat {
+          repeatEvery
+          repeatType
+          startFrom
+        }
+        start
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTaskQuery__
+ *
+ * To run a query within a React component, call `useGetTaskQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTaskQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTaskQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetTaskQuery(
+  baseOptions: Apollo.QueryHookOptions<GetTaskQuery, GetTaskQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTaskQuery, GetTaskQueryVariables>(
+    GetTaskDocument,
+    options
+  );
+}
+export function useGetTaskLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTaskQuery, GetTaskQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTaskQuery, GetTaskQueryVariables>(
+    GetTaskDocument,
+    options
+  );
+}
+export type GetTaskQueryHookResult = ReturnType<typeof useGetTaskQuery>;
+export type GetTaskLazyQueryHookResult = ReturnType<typeof useGetTaskLazyQuery>;
+export type GetTaskQueryResult = Apollo.QueryResult<
+  GetTaskQuery,
+  GetTaskQueryVariables
+>;
 export const GetTasksDocument = gql`
   query getTasks($getTasksInput: GetTasksInput!) {
     getTasks(getTasksInput: $getTasksInput) {
@@ -1651,69 +2118,6 @@ export function useMeLazyQuery(
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const RemoveCategoryDocument = gql`
-  query removeCategory($id: Int!) {
-    removeCategory(id: $id) {
-      color {
-        hexCode
-        id
-      }
-      id
-      name
-    }
-  }
-`;
-
-/**
- * __useRemoveCategoryQuery__
- *
- * To run a query within a React component, call `useRemoveCategoryQuery` and pass it any options that fit your needs.
- * When your component renders, `useRemoveCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRemoveCategoryQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useRemoveCategoryQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    RemoveCategoryQuery,
-    RemoveCategoryQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<RemoveCategoryQuery, RemoveCategoryQueryVariables>(
-    RemoveCategoryDocument,
-    options
-  );
-}
-export function useRemoveCategoryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    RemoveCategoryQuery,
-    RemoveCategoryQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<RemoveCategoryQuery, RemoveCategoryQueryVariables>(
-    RemoveCategoryDocument,
-    options
-  );
-}
-export type RemoveCategoryQueryHookResult = ReturnType<
-  typeof useRemoveCategoryQuery
->;
-export type RemoveCategoryLazyQueryHookResult = ReturnType<
-  typeof useRemoveCategoryLazyQuery
->;
-export type RemoveCategoryQueryResult = Apollo.QueryResult<
-  RemoveCategoryQuery,
-  RemoveCategoryQueryVariables
->;
 
 export interface PossibleTypesResultData {
   possibleTypes: {

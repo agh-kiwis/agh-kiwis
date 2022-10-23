@@ -1,7 +1,7 @@
 // This is used for storing seeding data
-export const InitialSeend = {
+export const InitialSeed = {
   email: 'email@gmail.com',
-  password: 'password1234',
+  password: 'password123',
 
-  colors: ['#1EA896', '#0077B6', '#FF8C42', '#38A169', '#E0479E', '#F9DC5C'],
+  colors: ['#0077B6', '#1EA896', '#FF8C42', '#E53E3E', '#E0479E', '#ECC94B'],
 };
