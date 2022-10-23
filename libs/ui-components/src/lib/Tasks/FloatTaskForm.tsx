@@ -28,6 +28,12 @@ import {
   ToggleSwitch,
   Wrapper,
 } from '@agh-kiwis/ui-components';
+import {
+  ADD_NEW_TASK,
+  ADD_TASK,
+  UPDATE_EXISTING_TASK,
+  UPDATE_TASK,
+} from '@agh-kiwis/workspace-constants';
 import { ColorPicker } from '../Pickers/ColorPicker';
 import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
@@ -40,8 +46,7 @@ type FloatTaskFormProps = {
   maxChunkTimeInputFields: NumberInputType[];
   minTimeBetweenChunksInputFields: NumberInputType[];
   onSubmit: (values: floatTaskType) => void;
-  submitButtonText: string;
-  headerText: string;
+  isInEditMode: boolean;
 };
 
 export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
@@ -52,17 +57,19 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
   maxChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
   onSubmit,
-  submitButtonText,
-  headerText,
+  isInEditMode,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text={headerText} size="xl" />
+        <Header
+          text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
+          size="xl"
+        />
       </Box>
-      <TaskSwitchFloat />
+      <TaskSwitchFloat isDisabled={isInEditMode} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -202,7 +209,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
-                  buttonText={submitButtonText}
+                  buttonText={isInEditMode ? UPDATE_TASK : ADD_TASK}
                 />
               </Box>
               <Box>

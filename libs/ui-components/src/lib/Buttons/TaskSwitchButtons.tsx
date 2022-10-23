@@ -6,13 +6,23 @@ import {
   ADD_FLOAT_TASK_URL,
 } from '@agh-kiwis/workspace-constants';
 
-export const TaskSwitchConst: React.FC = () => {
+type TaskSwitchProps = {
+  isDisabled: boolean;
+};
+
+export const TaskSwitchConst: React.FC<TaskSwitchProps> = ({ isDisabled }) => {
   return (
     <Flex justifyContent="center" mb={6}>
       <Box>
-        <Button borderRightRadius={0}>CONST</Button>
+        <Button borderRightRadius={0} isDisabled={isDisabled}>
+          CONST
+        </Button>
         <NextLink href={ADD_FLOAT_TASK_URL} passHref>
-          <Button variant="outline" borderLeftRadius={0}>
+          <Button
+            variant="outline"
+            borderLeftRadius={0}
+            isDisabled={isDisabled}
+          >
             FLOAT
           </Button>
         </NextLink>
@@ -21,16 +31,22 @@ export const TaskSwitchConst: React.FC = () => {
   );
 };
 
-export const TaskSwitchFloat: React.FC = () => {
+export const TaskSwitchFloat: React.FC<TaskSwitchProps> = ({ isDisabled }) => {
   return (
     <Flex justifyContent="center" mb={6}>
       <Box>
         <NextLink href={ADD_CONST_TASK_URL} passHref>
-          <Button variant="outline" borderRightRadius={0}>
+          <Button
+            variant="outline"
+            borderRightRadius={0}
+            isDisabled={isDisabled}
+          >
             CONST
           </Button>
         </NextLink>
-        <Button borderLeftRadius={0}>FLOAT</Button>
+        <Button borderLeftRadius={0} isDisabled={isDisabled}>
+          FLOAT
+        </Button>
       </Box>
     </Flex>
   );

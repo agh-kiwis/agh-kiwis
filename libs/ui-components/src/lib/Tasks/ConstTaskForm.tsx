@@ -32,6 +32,12 @@ import {
   ToggleSwitch,
   Wrapper,
 } from '@agh-kiwis/ui-components';
+import {
+  ADD_NEW_TASK,
+  ADD_TASK,
+  UPDATE_EXISTING_TASK,
+  UPDATE_TASK,
+} from '@agh-kiwis/workspace-constants';
 
 type ConstTaskFormProps = {
   initialValues: constTaskType;
@@ -40,8 +46,7 @@ type ConstTaskFormProps = {
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values: constTaskType) => void;
-  submitButtonText: string;
-  headerText: string;
+  isInEditMode: boolean;
 };
 
 export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
@@ -51,17 +56,19 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   repeatEverySelectField,
   repeatEveryAmountFields,
   onSubmit,
-  submitButtonText,
-  headerText,
+  isInEditMode,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
       <Box mb={4}>
-        <Header text={headerText} size="xl" />
+        <Header
+          text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
+          size="xl"
+        />
       </Box>
-      <TaskSwitchConst />
+      <TaskSwitchConst isDisabled={isInEditMode} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -192,7 +199,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
-                  buttonText={submitButtonText}
+                  buttonText={isInEditMode ? UPDATE_TASK : ADD_TASK}
                 />
               </Box>
               <Box>

@@ -2,10 +2,11 @@
   "singleQuote": true,
   "importOrder": [
     "^react",
-    "^@nestjs",
     "^next",
+    "^typeorm",
     "^formik",
     "^moment",
+    "^@nestjs",
     "^@fortawesome",
     "^@chakra",
     "^@agh-kiwis",

@@ -10,7 +10,7 @@ type TodoListHeaderProps = {
 export const TodoListHeader: React.FC<TodoListHeaderProps> = ({ setOpen }) => {
   return (
     <HStack mb="5" justifyContent="space-around" h="3vh">
-      <Header text="Tasks to do" />
+      <Header text="Tasks to do" size="xl" />
       <Button bgColor="secondary" onClick={() => setOpen(true)}>
         <Icon as={HiFilter} />
       </Button>

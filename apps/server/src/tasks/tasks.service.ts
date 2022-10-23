@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import { Injectable } from '@nestjs/common';
 import { Duration } from 'moment';
+import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
@@ -208,8 +208,18 @@ export class TasksService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(user: User, id: number) {
+    const task: Task = await Task.findOne({
+      where: {
+        id: id,
+        user: user,
+      },
+    });
+
+    if (task) {
+      await Task.delete(id);
+      return task;
+    }
   }
 }
 
