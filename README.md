@@ -67,3 +67,11 @@ nx g @nrwl/workspace:lib <library-name>
 ```
 
 # More info in [docs](docs/Docs.md)
+
+
+# Tests
+
+To run single test:
+```
+nx test --testFile apps/server/tests/tasks/addTask.e2e-spec.ts
+```

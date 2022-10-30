@@ -50,6 +50,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
+    "supertest-graphql": "^1.1.4",
     "tslib": "^2.3.0",
     "typeorm": "^0.2.25",
     "yup": "^0.32.11"

@@ -1,8 +1,11 @@
-import * as request from 'supertest';
+import { assertWrappingType } from 'graphql';
+import gql from 'graphql-tag';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app/app.module';
 import connection from '../connection';
+import { makeRequest } from '../testUtils';
+
 
 describe('Auth (e2e)', () => {
   let app: INestApplication;
@@ -22,29 +25,24 @@ describe('Auth (e2e)', () => {
     await app.close();
   });
 
-  const gql = '/graphql';
-
-  const registerMutation = () => `
-    mutation {
-      register(registerDto: {email: "email@gmail.com", password: "password1234"}) {
+  const registerMutation = gql`
+    mutation ($registerDto: AuthEmailRegisterInput!) {
+      register(registerDto: $registerDto) {
         email
       }
     }
   `;
 
   describe('auth', () => {
-    it('register', () => {
-      return request(app.getHttpServer())
-        .post(gql)
-        .send({
-          query: registerMutation(),
-        })
-        .expect(200)
-        .expect((res: any) => {
-          expect(res.body.data.register).toEqual({
-            email: 'email@gmail.com',
-          });
-        });
+    it('register', async () => {
+      const { register } = await makeRequest(app, registerMutation, {
+        registerDto: {
+          email: 'email@gmail.com',
+          password: 'password1234',
+        },
+      });
+
+      expect(register.email).toBe('email@gmail.com');
     });
   });
 });
