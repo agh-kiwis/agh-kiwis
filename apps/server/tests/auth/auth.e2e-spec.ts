@@ -1,6 +1,6 @@
+import gql from 'graphql-tag';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import gql from 'graphql-tag';
 import { AppModule } from '../../src/app/app.module';
 import { User } from '../../src/users/entities/user.entity';
 import connection from '../connection';
@@ -11,7 +11,6 @@ const PASSWORD = 'password1234';
 
 describe('Auth (e2e)', () => {
   let app: INestApplication;
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
