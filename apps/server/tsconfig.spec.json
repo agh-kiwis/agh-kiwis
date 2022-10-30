@@ -11,5 +11,6 @@
     "**/*.spec.ts",
     "**/*.d.ts",
     "test/auth.e2e-spec.ts"
-  ]
+  ],
+  "composite": true
 }
