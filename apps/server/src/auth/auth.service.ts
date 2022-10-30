@@ -31,6 +31,10 @@ export class AuthService {
       email: loginInput.email,
     });
 
+    if (!user) {
+      throw new UserInputError('Invalid credentials');
+    }
+
     if (user.provider !== AuthProvidersEnum.email) {
       // Apollo exceptions: https://www.apollographql.com/docs/apollo-server/data/errors/
       throw new ForbiddenError('Invalid login provider');

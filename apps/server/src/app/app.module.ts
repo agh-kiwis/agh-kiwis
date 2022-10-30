@@ -18,6 +18,7 @@ import { IntervalScalar } from '../utils/interval.scalar';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+
 @Module({
   imports: [
     // This is needed to granulate env vars usage
@@ -50,4 +51,6 @@ import { AppService } from './app.service';
     IntervalScalar,
   ],
 })
-export class AppModule {}
+export class AppModule { }
+
+// Export this module

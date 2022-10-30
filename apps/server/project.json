@@ -45,7 +45,9 @@
       "outputs": ["coverage/apps/server"],
       "options": {
         "jestConfig": "apps/server/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        // single process executing all tests (slow)
+        "runInBand": true
       },
       "envFile": "apps/server/.env"
     }
