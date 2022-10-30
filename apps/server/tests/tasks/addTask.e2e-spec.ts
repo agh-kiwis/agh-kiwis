@@ -1,17 +1,11 @@
 import gql from 'graphql-tag';
-import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app/app.module';
-import { User } from '../../src/users/entities/user.entity';
 import connection from '../connection';
 import { makeRequest } from '../testUtils';
 
-// TODO Seems that those tests are interfering with each other
-
-describe.only('addTasks (e2e)', () => {
-  // Add address to the type
-
+describe('Tasks (e2e)', () => {
   let app: INestApplication | any;
 
   beforeAll(async () => {
@@ -33,10 +27,9 @@ describe.only('addTasks (e2e)', () => {
     await app.close();
   });
 
-  const loginMutation = gql`
-    mutation {
-      login(loginDto: { email: "email@gmail.com", password: "password1234" }) {
-        id
+  const registerMutation = gql`
+    mutation ($registerDto: AuthEmailRegisterInput!) {
+      register(registerDto: $registerDto) {
         token
       }
     }
@@ -89,19 +82,17 @@ describe.only('addTasks (e2e)', () => {
 
   describe('task', () => {
     it('AddTask', async () => {
-      //   Add user with email email@gmail.com
-      await User.create({
-        email: 'email@gmail.com',
-        password: 'password1234',
-      }).save();
-
-      const { login } = await makeRequest(app, loginMutation);
-
-      const { addConstTask } = await makeRequest(app, addConstTaskMutation, {
-        token: login.token,
+      const { register } = await makeRequest(app, registerMutation, {
+        registerDto: {
+          email: 'email@gmail.com',
+          password: 'password1234',
+        },
       });
 
-      // Assert that to
+      const { addConstTask } = await makeRequest(app, addConstTaskMutation, {
+        token: register.token,
+      });
+
       expect(addConstTask).toEqual({
         chillTime: 'P3Y6M4DT12H30M5S',
         chunkInfo: null,

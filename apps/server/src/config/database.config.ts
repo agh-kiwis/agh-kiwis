@@ -1,6 +1,5 @@
 import { registerAs } from '@nestjs/config';
 
-// TODO There we need to add descriptions to params
 export default registerAs('database', () => ({
   url: process.env.DATABASE_URL,
   type: process.env.DATABASE_TYPE,
@@ -16,4 +15,5 @@ export default registerAs('database', () => ({
   ca: process.env.DATABASE_CA,
   key: process.env.DATABASE_KEY,
   cert: process.env.DATABASE_CERT,
+  dropSchema: process.env.DROP_SCHEMA === 'false',
 }));
