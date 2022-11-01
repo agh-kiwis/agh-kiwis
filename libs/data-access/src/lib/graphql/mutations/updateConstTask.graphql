@@ -1,41 +1,41 @@
-mutation updateConstTask($taskInput: TaskInput!){
-    updateConstTask(taskInput: $taskInput){
-        category{
-            color{
-                hexCode
-                id
-            }
-            id
-            name
-        }
-        chillTime
-        chunkInfo{
-            id
-            maxChunkDuration
-            minChunkDuration
-            minTimeBetweenChunks
-            start
-        }
-        deadline
-        estimation
+mutation updateConstTask($taskInput: TaskInput!) {
+  updateConstTask(taskInput: $taskInput) {
+    category {
+      color {
+        hexCode
         id
-        isDone
-        isFloat
-        name
-        notifications{
-            timeBefore
-        }
-        priority
-        shouldAutoResolve
-        taskBreakdowns{
-            duration
-            isDone
-            repeat{
-                repeatEvery
-                repeatType
-                startFrom
-            }
-            start
-        }
+      }
+      id
+      name
     }
+    chillTime
+    chunkInfo {
+      id
+      maxChunkDuration
+      minChunkDuration
+      minTimeBetweenChunks
+      start
+    }
+    deadline
+    estimation
+    id
+    isDone
+    isFloat
+    name
+    notifications {
+      timeBefore
+    }
+    priority
+    shouldAutoResolve
+    taskBreakdowns {
+      duration
+      isDone
+      repeat {
+        repeatEvery
+        repeatType
+        startFrom
+      }
+      start
+    }
+  }
 }
