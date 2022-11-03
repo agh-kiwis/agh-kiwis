@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
-import { CommonButton } from '@agh-kiwis/ui-components';
+import { CommonButton, mapper, useFilters } from '@agh-kiwis/ui-components';
 import {
   AlertModal,
   FilterModal,
@@ -13,26 +13,34 @@ import { ADD_CONST_TASK_URL } from '@agh-kiwis/workspace-constants';
 
 const TodoList: React.FC = () => {
   const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const { filters, setFilters } = useFilters();
+
   const { data, loading, error } = useGetTasksQuery({
     variables: {
       getTasksInput: {
         limit: 20,
         offset: 0,
-        filterOptions: {},
+        filterOptions: {
+          isDone: mapper(filters).status,
+          isFloat: mapper(filters).type,
+          category: mapper(filters).category,
+          priority: mapper(filters).priority,
+        },
       },
     },
   });
 
-  const [open, setOpen] = useState(false);
   if (loading) {
     return <Spinner />;
   }
   if (error) {
-    router.push('/login');
     return (
       <AlertModal status={'error'} title={'Error!'} message={error.message} />
     );
   }
+
   return (
     <>
       <TodoListHeader setOpen={setOpen} />
@@ -41,7 +49,12 @@ const TodoList: React.FC = () => {
         buttonText="Add Task"
         onClick={() => router.push(ADD_CONST_TASK_URL)}
       />
-      <FilterModal isOpen={open} close={() => setOpen(false)} />
+      <FilterModal
+        filters={filters}
+        setFilters={setFilters}
+        isOpen={open}
+        close={() => setOpen(false)}
+      />
     </>
   );
 };

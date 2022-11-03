@@ -1,21 +1,28 @@
-import { Button } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { FilterOptions } from '@agh-kiwis/ui-components';
+import { Filters } from './Filters';
+import { FilterInterface } from './filterConstants';
 
 type FilterModalProps = {
   isOpen: boolean;
   close: () => void;
+  filters: FilterInterface[];
+  setFilters: Dispatch<SetStateAction<FilterInterface[]>>;
 };
-// TODO implement filtering logic (mocked currently)
-export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, close }) => {
+
+export const FilterModal: React.FC<FilterModalProps> = ({
+  isOpen,
+  close,
+  filters,
+  setFilters,
+}) => {
   return (
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
@@ -23,15 +30,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, close }) => {
         <ModalHeader>Filter options</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FilterOptions />
+          <Filters filters={filters} setFilters={setFilters} />
         </ModalBody>
-
-        <ModalFooter>
-          <Button variant="outline" mr={3} onClick={close}>
-            Close
-          </Button>
-          <Button>Apply filters</Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

@@ -51,6 +51,16 @@ export class CategoriesService {
     return userCategories.map((category) => category.color);
   }
 
+  async getCategories(user: User) {
+    const userCategories: Category[] = await Category.find({
+      where: {
+        user: user,
+      },
+    });
+
+    return userCategories;
+  }
+
   async remove(user: User, id: number) {
     const category = await Category.findOne({
       where: {
