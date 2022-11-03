@@ -5,7 +5,7 @@ import { FilterInterface, FilterNames, FilterType } from './filterConstants';
 
 type SingleFilterProps = {
   options: FilterType;
-  onClick: (option: any) => void;
+  onClick: (option: string) => void;
   filters: FilterInterface[];
   name: FilterNames;
 };

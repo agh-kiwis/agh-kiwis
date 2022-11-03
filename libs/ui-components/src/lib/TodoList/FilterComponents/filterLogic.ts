@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { GetCategoriesQuery } from '@agh-kiwis/data-access';
 import {
   FilterInterface,
@@ -22,7 +23,7 @@ export const getCategories = (data: GetCategoriesQuery) => {
 
 export const updateFilter = (
   filters: FilterInterface[],
-  setFilters: any,
+  setFilters: Dispatch<SetStateAction<FilterInterface[]>>,
   name: FilterNames,
   option: string
 ) => {
