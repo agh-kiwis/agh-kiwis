@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Task } from '@agh-kiwis/data-access';
+import { setCurrentTask } from '@agh-kiwis/redux';
 import { INSIGNIFICANT_COLOR } from '@agh-kiwis/workspace-constants';
 import { TaskContainer } from './TaskContainer';
 import { TaskHeader } from './TaskHeader';
@@ -12,11 +14,16 @@ type SingleTaskProps = {
 
 export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   const [modalOpened, setModalOpened] = useState(false);
+  const dispatch = useDispatch();
+
   return (
     <>
       <TaskContainer
         bgColor={getTaskColor(task)}
-        onClick={() => setModalOpened(true)}
+        onClick={() => {
+          setModalOpened(true);
+          dispatch(setCurrentTask(task));
+        }}
       >
         <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo

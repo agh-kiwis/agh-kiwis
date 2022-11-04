@@ -1,0 +1,41 @@
+query getTask($id: String!) {
+  getTask(id: $id) {
+    category {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+    chillTime
+    chunkInfo {
+      id
+      maxChunkDuration
+      minChunkDuration
+      minTimeBetweenChunks
+      start
+    }
+    deadline
+    estimation
+    id
+    isDone
+    isFloat
+    name
+    notifications {
+      timeBefore
+    }
+    priority
+    shouldAutoResolve
+    taskBreakdowns {
+      duration
+      isDone
+      repeat {
+        repeatEvery
+        repeatType
+        startFrom
+      }
+      start
+    }
+  }
+}

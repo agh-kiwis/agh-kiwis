@@ -5,7 +5,7 @@ import { Color } from '../categories/entities/color.entity';
 import { RepeatType } from '../tasks/entities/repeat.entity';
 import { TasksService } from '../tasks/tasks.service';
 import { User } from '../users/entities/user.entity';
-import { InitialSeend } from './initial-seed';
+import { InitialSeed } from './initial-seed';
 
 import moment = require('moment');
 
@@ -23,12 +23,12 @@ export const seedDatabase = async () => {
 
   // Add user
   const user = await User.create({
-    email: InitialSeend.email,
-    password: InitialSeend.password,
+    email: InitialSeed.email,
+    password: InitialSeed.password,
   }).save();
 
   // Add colors to database
-  for (const color of InitialSeend.colors) {
+  for (const color of InitialSeed.colors) {
     await Color.create({
       hexCode: color,
     }).save();
@@ -36,26 +36,38 @@ export const seedDatabase = async () => {
 
   // Introduction setup
   const sleepingCategory = await Category.create({
-    color: await Color.findOne({ where: { hexCode: InitialSeend.colors[0] } }),
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[0] } }),
     name: 'Sleeping',
     user: user,
   }).save();
 
   const eatingCategory = await Category.create({
-    color: await Color.findOne({ where: { hexCode: InitialSeend.colors[1] } }),
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[1] } }),
     name: 'Eating',
     user: user,
   }).save();
 
   const sportCategory = await Category.create({
-    color: await Color.findOne({ where: { hexCode: InitialSeend.colors[2] } }),
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[2] } }),
     name: 'Sport',
     user: user,
   }).save();
 
   const studiesCategory = await Category.create({
-    color: await Color.findOne({ where: { hexCode: InitialSeend.colors[3] } }),
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[3] } }),
     name: 'Study',
+    user: user,
+  }).save();
+
+  const hobbyCategory = await Category.create({
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[4] } }),
+    name: 'Hobby',
+    user: user,
+  }).save();
+
+  const otherCategory = await Category.create({
+    color: await Color.findOne({ where: { hexCode: InitialSeed.colors[5] } }),
+    name: 'Other',
     user: user,
   }).save();
 
@@ -77,14 +89,14 @@ export const seedDatabase = async () => {
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
-    start: moment().startOf('day').add(1, 'days').add(8, 'hours').toDate(),
+    start: moment().startOf('day').add(1, 'days').add(7, 'hours').toDate(),
     duration: moment.duration({ minutes: 20 }),
   });
 
   // Temporary removal to show only one page
   taskService.createConst(user, {
     category: { id: eatingCategory.id },
-    name: 'Supper',
+    name: 'Dinner',
     priority: 'medium',
     shouldAutoResolve: true,
     chillTime: ten_minutes,
@@ -100,7 +112,7 @@ export const seedDatabase = async () => {
 
   taskService.createConst(user, {
     category: { id: eatingCategory.id },
-    name: 'Dinner',
+    name: 'Supper',
     priority: 'high',
     shouldAutoResolve: true,
     chillTime: ten_minutes,
@@ -157,14 +169,14 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     timeBeforeNotification: ten_minutes,
-    start: moment().startOf('day').add(8, 'days').toDate(),
+    start: moment().startOf('day').add(3, 'days').toDate(),
 
-    estimation: moment.duration({ minutes: 40 }),
+    estimation: moment.duration({ hours: 2, minutes: 40 }),
     chunkInfo: {
-      maxChunkDuration: moment.duration({ minutes: 20 }),
-      minChunkDuration: moment.duration({ minutes: 10 }),
+      maxChunkDuration: moment.duration({ minutes: 40 }),
+      minChunkDuration: moment.duration({ minutes: 20 }),
       minTimeBetweenChunks: moment.duration({ minutes: 10 }),
     },
-    deadline: moment().startOf('day').add(3, 'days').add(12, 'hours').toDate(),
+    deadline: moment().startOf('day').add(8, 'days').add(12, 'hours').toDate(),
   });
 };

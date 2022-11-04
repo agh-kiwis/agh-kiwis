@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import { Injectable } from '@nestjs/common';
 import { Duration } from 'moment';
+import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
@@ -106,14 +106,120 @@ export class TasksService {
     });
   }
 
+  async getTask(user: User, id: string) {
+    return await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        user: user,
+        id: id,
+      },
+    });
+  }
+
+  async updateConstTask(user: User, updateTaskInput: TaskInput) {
+    let task: Task = await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
+
+    const category = await getCategory(user, updateTaskInput.category);
+
+    const notification = await getNotification(
+      updateTaskInput.timeBeforeNotification
+    );
+
+    task.category = category;
+    task.isFloat = false;
+    task.name = updateTaskInput.name;
+    task.chillTime = updateTaskInput.chillTime;
+    task.notifications = notification;
+    task.priority = updateTaskInput.priority;
+    task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
+
+    task = await task.save();
+
+    const taskBreakdown = await TaskBreakdown.findOne({
+      where: {
+        task: task,
+      },
+    });
+
+    let repeat: Repeat;
+    if (updateTaskInput.repeat) {
+      repeat = await Repeat.create(updateTaskInput.repeat).save();
+    }
+
+    taskBreakdown.repeat = repeat;
+    taskBreakdown.duration = updateTaskInput.duration;
+    taskBreakdown.start = updateTaskInput.start;
+
+    await taskBreakdown.save();
+
+    return task;
+  }
+
+  async updateFloatTask(user: User, updateTaskInput: TaskInput) {
+    let task: Task = await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
+
+    const category = await getCategory(user, updateTaskInput.category);
+
+    const notification = await getNotification(
+      updateTaskInput.timeBeforeNotification
+    );
+
+    const chunkInfo = await ChunkInfo.create({
+      ...updateTaskInput.chunkInfo,
+      start: updateTaskInput.start,
+    }).save();
+
+    task.category = category;
+    task.isFloat = true;
+    task.name = updateTaskInput.name;
+    task.chillTime = updateTaskInput.chillTime;
+    task.notifications = notification;
+    task.priority = updateTaskInput.priority;
+    task.deadline = updateTaskInput.deadline;
+    task.estimation = updateTaskInput.estimation;
+    task.chunkInfo = chunkInfo;
+    task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
+
+    task = await task.save();
+
+    await planTask(task, chunkInfo);
+
+    return task;
+  }
+
   async update(updateTaskInput: TaskInput) {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
-    return Task.findOne(updateTaskInput.id);
+    return await Task.findOne({
+      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      where: {
+        id: updateTaskInput.id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(user: User, id: number) {
+    const task: Task = await Task.findOne({
+      where: {
+        id: id,
+        user: user,
+      },
+    });
+
+    if (task) {
+      await Task.delete(id);
+      return task;
+    }
   }
 }
 

@@ -9,3 +9,8 @@ export const MAX_INPUT_LENGTH = 50;
 
 export const DEFAULT_COLOR = 'primary';
 export const INSIGNIFICANT_COLOR = 'insignificant';
+
+export const ADD_TASK = 'Add';
+export const UPDATE_TASK = 'Update';
+export const ADD_NEW_TASK = 'Add new task';
+export const UPDATE_EXISTING_TASK = 'Update existing task';

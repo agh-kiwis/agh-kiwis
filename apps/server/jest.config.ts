@@ -14,4 +14,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/server',
+  setupFiles: ['<rootDir>/tests/setup-tests.ts'],
 };

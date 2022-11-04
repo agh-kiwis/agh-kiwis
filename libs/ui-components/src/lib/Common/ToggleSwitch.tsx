@@ -24,6 +24,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
           {...field}
           {...props}
           id={field.name}
+          isChecked={field.value}
           onChange={() => {
             handleChange(field.name, !field.value);
           }}

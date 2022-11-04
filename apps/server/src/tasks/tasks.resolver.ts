@@ -36,8 +36,13 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
+  @Query(() => Task)
+  getTask(@CurrentUser() user: User, @Args('id') id: string) {
+    return this.tasksService.getTask(user, id);
+  }
+
   @Mutation(() => Task)
-  async updateTask(
+  async updateConstTask(
     @CurrentUser() user: User,
     @Args('taskInput') taskInput: TaskInput
   ) {
@@ -50,6 +55,40 @@ export class TasksResolver {
       throw new Error('Task does not belong to user');
     }
 
+    const result = await this.tasksService.updateConstTask(user, taskInput);
+    return result;
+  }
+
+  @Mutation(() => Task)
+  async updateFloatTask(
+    @CurrentUser() user: User,
+    @Args('taskInput') taskInput: TaskInput
+  ) {
+    const task = await Task.findOne(taskInput.id);
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    if ((await task.user).id !== user?.id) {
+      throw new Error('Task does not belong to user');
+    }
+
+    const result = await this.tasksService.updateFloatTask(user, taskInput);
+    return result;
+  }
+
+  @Mutation(() => Task)
+  async updateTask(
+    @CurrentUser() user: User,
+    @Args('taskInput') taskInput: TaskInput
+  ) {
+    const task = await Task.findOne(taskInput.id);
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    if ((await task.user).id !== user?.id) {
+      throw new Error('Task does not belong to user');
+    }
     const result = await this.tasksService.update(taskInput);
     return result;
   }
@@ -68,6 +107,6 @@ export class TasksResolver {
       throw new Error('Task does not belong to user');
     }
 
-    return this.tasksService.remove(id);
+    return this.tasksService.remove(user, id);
   }
 }
