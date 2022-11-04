@@ -1,13 +1,17 @@
 import moment from 'moment';
 import { roundToMinutes } from '@agh-kiwis/moment-service';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
+import {
+  ConstTaskType,
+  FloatTaskType,
+  UserDetailsType,
+} from '@agh-kiwis/types';
 import {
   LongIntervalAmountType,
   LongIntervalSelectType,
   NumberInputType,
 } from '@agh-kiwis/ui-components';
 
-export const constTaskInitialValues: constTaskType = {
+export const constTaskInitialValues: ConstTaskType = {
   type: 'const',
   category: {
     id: 1,
@@ -44,7 +48,7 @@ export const constTaskInitialValues: constTaskType = {
   autoresolve: false,
 };
 
-export const floatTaskInitialValues: floatTaskType = {
+export const floatTaskInitialValues: FloatTaskType = {
   type: 'const',
   category: {
     id: 1,
@@ -227,3 +231,9 @@ export const repeatEveryAmountFields: LongIntervalAmountType[] = [
     name: 'repeat.repeatEvery.amount',
   },
 ];
+
+export const initialUserDetails: UserDetailsType = {
+  name: '',
+  birthDate: '',
+  gender: '',
+};
