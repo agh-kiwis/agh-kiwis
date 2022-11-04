@@ -23,21 +23,19 @@ const SleepPreferences: React.FC = () => {
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <Flex w="100%" justifyContent="center">
-              <Text fontSize="4xl">When do You usually sleep?</Text>
+              <Text fontSize="4xl">When do You sleep?</Text>
             </Flex>
             <Box my="4">
               <InputField
                 name="sleep"
-                placeholder="I usually go to bed at..."
-                label="sleep"
+                label="I usually go to bed at..."
                 type="time"
               />
             </Box>
             <Box my="4">
               <InputField
                 name="wakeUp"
-                placeholder="I usually go to bed at..."
-                label="wakeUp"
+                label="I usually wake up at..."
                 type="time"
               />
             </Box>
