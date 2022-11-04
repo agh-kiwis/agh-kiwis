@@ -7,11 +7,11 @@ import {
   TaskInput,
 } from '@agh-kiwis/data-access';
 import { roundToMinutes } from '@agh-kiwis/moment-service';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
+import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 
 // create
 export const constTaskFormToAddTaskMutationMapper = (
-  variables: constTaskType
+  variables: ConstTaskType
 ): CreateConstTaskInput => ({
   category: {
     id: variables.category.id,
@@ -31,7 +31,7 @@ export const constTaskFormToAddTaskMutationMapper = (
 });
 
 export const floatTaskFormToAddTaskMutationMapper = (
-  variables: floatTaskType
+  variables: FloatTaskType
 ): CreateFloatTaskInput => ({
   category: {
     id: variables.category.id,
@@ -55,7 +55,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
 });
 
 // prepopulate
-export const taskToConstTaskType = (task: Task): constTaskType => ({
+export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   type: 'const',
   category: {
     id: task.category.id,
@@ -94,7 +94,7 @@ export const taskToConstTaskType = (task: Task): constTaskType => ({
   autoresolve: task.shouldAutoResolve,
 });
 
-export const taskToFloatTaskType = (task: Task): floatTaskType => ({
+export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
   type: 'const',
   category: {
     id: task.category.id,
@@ -143,7 +143,7 @@ export const taskToFloatTaskType = (task: Task): floatTaskType => ({
 // TODO improve update task mutation to update task breakdowns
 export const constTaskToUpdateTaskMutationMapper = (
   id: number,
-  variables: constTaskType
+  variables: ConstTaskType
 ): TaskInput => ({
   id: id,
   category: {
@@ -165,7 +165,7 @@ export const constTaskToUpdateTaskMutationMapper = (
 
 export const floatTaskToUpdateTaskMutationMapper = (
   id: number,
-  variables: floatTaskType
+  variables: FloatTaskType
 ): TaskInput => ({
   id: id,
   category: {
