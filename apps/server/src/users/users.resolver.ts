@@ -18,7 +18,6 @@ export class UsersResolver {
   @Mutation(() => User)
   updateUser(
     @CurrentUser() user: User,
-
     @Args('updateUserInput') updateUserInput: UpdateUserInput
   ) {
     if (user.id !== updateUserInput.id) {

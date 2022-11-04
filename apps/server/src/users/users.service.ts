@@ -16,8 +16,18 @@ export class UsersService {
     });
   }
 
-  update(updateUserInput: UpdateUserInput) {
-    return `This action updates a #${updateUserInput.id} user`;
+  async update(updateUserInput: UpdateUserInput) {
+    const user: User = await User.findOne({
+      where: {
+        id: updateUserInput.id,
+      },
+    });
+
+    user.name = updateUserInput.name;
+    user.birthDate = updateUserInput.birthDate;
+    user.gender = updateUserInput.gender;
+
+    return await user.save();
   }
 
   remove(id: number) {

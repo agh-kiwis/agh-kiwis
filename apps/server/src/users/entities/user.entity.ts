@@ -63,7 +63,7 @@ export class User extends GeneralEntity {
   provider: string;
 
   @Column({ default: false })
-  hasCompletedIntroduction: boolean;
+  introductionCompleted: boolean;
 
   @Column({ default: true })
   isEnabled: boolean;

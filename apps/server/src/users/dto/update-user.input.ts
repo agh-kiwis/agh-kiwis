@@ -8,11 +8,14 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   id: number;
 
   @NullableField(() => String)
+  gender: string;
+
+  @NullableField(() => String)
   name: string;
 
   @NullableField(() => Date)
   birthDate: Date;
 
   @NullableField(() => Boolean)
-  hasCompletedIntroduction: boolean;
+  introductionCompleted: boolean;
 }
