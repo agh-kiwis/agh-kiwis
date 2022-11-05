@@ -6,7 +6,11 @@ import {
   Task,
   TaskInput,
 } from '@agh-kiwis/data-access';
-import { roundToMinutes } from '@agh-kiwis/moment-service';
+import {
+  getIntervalISOString,
+  mapToDateTime,
+  roundToMinutes,
+} from '@agh-kiwis/moment-service';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 
 // create
@@ -188,17 +192,6 @@ export const floatTaskToUpdateTaskMutationMapper = (
   timeBeforeNotification: null,
 });
 
-type intervalType = {
-  weeks?: number;
-  days?: number;
-  hours?: number;
-  minutes?: number;
-};
-
-const getIntervalISOString = (interval: intervalType): string => {
-  return moment.duration(interval).toISOString();
-};
-
 const mapRepeatType = (repeatType: string): RepeatType => {
   switch (repeatType) {
     case 'Day':
@@ -210,17 +203,4 @@ const mapRepeatType = (repeatType: string): RepeatType => {
     case 'Year':
       return RepeatType.Years;
   }
-};
-
-const mapToDateTime = (date: string, time?: string): Date => {
-  if (!time) {
-    return new Date(date);
-  }
-
-  const splittedTime = time.split(':');
-  const dateTime = new Date(date);
-  dateTime.setHours(parseInt(splittedTime[0]));
-  dateTime.setMinutes(parseInt(splittedTime[1]));
-
-  return dateTime;
 };

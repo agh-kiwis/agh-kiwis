@@ -1,3 +1,10 @@
+export type IntervalType = {
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+};
+
 type TaskType = {
   type: string;
   category: {
@@ -74,4 +81,9 @@ export type UserDetailsType = {
   name: string;
   birthDate: string;
   gender: string;
+};
+
+export type SleepPreferencesType = {
+  sleep: string;
+  wakeUp: string;
 };
