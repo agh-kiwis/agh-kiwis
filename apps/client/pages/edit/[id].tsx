@@ -1,15 +1,15 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Spinner } from '@chakra-ui/react';
 import {
   useGetTaskQuery,
   useUpdateConstTaskMutation,
   useUpdateFloatTaskMutation,
 } from '@agh-kiwis/data-access';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
+import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 import {
   AlertModal,
   ConstTaskForm,
+  CustomSpinner,
   FloatTaskForm,
 } from '@agh-kiwis/ui-components';
 import {
@@ -41,7 +41,7 @@ const ConstTask: React.FC = () => {
     },
   });
 
-  const handleConstSubmit = async (values: constTaskType) => {
+  const handleConstSubmit = async (values: ConstTaskType) => {
     const taskResponse = await updateConstTaskMutation({
       variables: {
         taskInput: constTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
@@ -55,7 +55,7 @@ const ConstTask: React.FC = () => {
     }
   };
 
-  const handleFloatSubmit = async (values: floatTaskType) => {
+  const handleFloatSubmit = async (values: FloatTaskType) => {
     const taskResponse = await updateFloatTaskMutation({
       variables: {
         taskInput: floatTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
@@ -70,7 +70,7 @@ const ConstTask: React.FC = () => {
   };
 
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   if (error) {
     router.push('/');

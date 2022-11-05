@@ -5,7 +5,6 @@ import {
   Flex,
   Radio,
   RadioGroup,
-  Spinner,
   Stack,
   Text,
   VStack,
@@ -14,30 +13,33 @@ import { useMeQuery, useUpdateUserMutation } from '@agh-kiwis/data-access';
 import { UserDetailsType } from '@agh-kiwis/types';
 import {
   CommonButton,
+  CustomSpinner,
   InputField,
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-import { initialUserDetails } from '../../formConfig/initialValues';
-import { mapUpdateUserMutation } from '../../services/userService';
+import { initialUserDetails } from '../../formConfig/introductionInitialValues';
+import { mapUserDetailsToUpdateUserMutation } from '../../services/introductionService';
 
 const UserDetails: React.FC = () => {
   const router = useRouter();
   const { data, loading } = useMeQuery();
-
   const [updateUserMutation] = useUpdateUserMutation();
 
   const onSubmit = (values: UserDetailsType) => {
     updateUserMutation({
       variables: {
-        updateUserInput: mapUpdateUserMutation(data?.me?.id, values),
+        updateUserInput: mapUserDetailsToUpdateUserMutation(
+          data?.me?.id,
+          values
+        ),
       },
     });
     router.push('/introduction/sleep-preferences');
   };
 
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   return (
     <Wrapper>

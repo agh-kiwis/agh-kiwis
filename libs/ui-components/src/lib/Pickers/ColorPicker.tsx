@@ -9,11 +9,11 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
-  Spinner,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Color, useGetColorsQuery } from '@agh-kiwis/data-access';
+import { CustomSpinner } from '../Utils/CustomSpinner';
 
 type ColorPickerProps = {
   modalTitle: string;
@@ -53,7 +53,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   );
 
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   return (
     <>
