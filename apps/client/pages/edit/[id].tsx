@@ -37,7 +37,7 @@ const ConstTask: React.FC = () => {
 
   const { data, loading, error } = useGetTaskQuery({
     variables: {
-      id: id[0],
+      id: id ? id[0] : null,
     },
   });
 
