@@ -1,26 +1,41 @@
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
+import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
+import { SleepPreferencesType } from '@agh-kiwis/types';
 import {
   CommonButton,
   InputField,
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
+import { mapSleepPreferencesToAddConstTaskMutation } from '../..//services/introductionService';
+import { initialSleepPreferences } from '../../formConfig/introductionInitialValues';
 
 const SleepPreferences: React.FC = () => {
-  const onSubmit = (values) => {
-    console.log(values);
+  const router = useRouter();
+  const [addConstTaskMutation] = useAddConstTaskMutation();
+
+  const onSubmit = (sleepPreferences: SleepPreferencesType) => {
+    console.log(mapSleepPreferencesToAddConstTaskMutation(sleepPreferences));
+    addConstTaskMutation({
+      variables: {
+        createConstTaskInput:
+          mapSleepPreferencesToAddConstTaskMutation(sleepPreferences),
+      },
+    });
+    router.push('/introduction/tmp');
   };
 
   return (
     <Wrapper>
       <Logo textVisible={false} />
       <Formik
-        initialValues={{ sleep: '', wakeUp: '' }}
+        initialValues={initialSleepPreferences}
         onSubmit={onSubmit}
         validateOnChange={false}
       >
-        {({ isSubmitting, setFieldValue }) => (
+        {({ isSubmitting }) => (
           <Form>
             <Flex w="100%" justifyContent="center">
               <Text fontSize="4xl">When do You sleep?</Text>

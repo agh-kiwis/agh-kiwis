@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
-import { CommonButton } from '@agh-kiwis/ui-components';
+import { CommonButton, CustomSpinner } from '@agh-kiwis/ui-components';
 import {
   AlertModal,
   FilterModal,
@@ -25,7 +24,7 @@ const TodoList: React.FC = () => {
 
   const [open, setOpen] = useState(false);
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   if (error) {
     router.push('/login');
