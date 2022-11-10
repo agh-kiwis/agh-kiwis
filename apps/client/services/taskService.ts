@@ -66,7 +66,6 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
     name: task.category.name,
     color: task.category.color.hexCode,
   },
-  color: task.category.color.hexCode,
   taskName: task.name,
   startTime: {
     date: moment(task.taskBreakdowns[0].start).format('YYYY-MM-DD'),
@@ -105,7 +104,6 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
     name: task.category.name,
     color: task.category.color.hexCode,
   },
-  color: task.category.color.hexCode,
   taskName: task.name,
   deadline: {
     date: moment(task.deadline, 'x').format('yyyy-MM-DD'),

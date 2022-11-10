@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import { ConstTaskForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
@@ -16,7 +16,7 @@ const ConstTask: React.FC = () => {
   const router = useRouter();
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
-  const handleSubmit = async (values: constTaskType) => {
+  const handleSubmit = async (values: ConstTaskType) => {
     const taskResponse = await addConstTaskMutation({
       variables: {
         createConstTaskInput: constTaskFormToAddTaskMutationMapper(values),

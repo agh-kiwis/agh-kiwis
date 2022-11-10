@@ -11,10 +11,9 @@ export const constTaskInitialValues: ConstTaskType = {
   type: 'const',
   category: {
     id: 1,
-    name: '',
-    color: '#0077B6',
+    name: 'choose your category',
+    color: '#a2a2a2',
   },
-  color: '',
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
@@ -48,10 +47,9 @@ export const floatTaskInitialValues: FloatTaskType = {
   type: 'const',
   category: {
     id: 1,
-    name: '',
-    color: '#0077B6',
+    name: 'choose your category',
+    color: '#a2a2a2',
   },
-  color: '',
   taskName: '',
   deadline: {
     date: moment().add(7, 'd').format('yyyy-MM-DD'),

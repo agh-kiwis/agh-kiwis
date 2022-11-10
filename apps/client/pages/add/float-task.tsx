@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import { FloatTaskForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
@@ -17,7 +17,7 @@ const FloatTask: React.FC = () => {
   const router = useRouter();
   const [addFloatTaskMutation] = useAddFloatTaskMutation();
 
-  const handleSubmit = async (values: floatTaskType) => {
+  const handleSubmit = async (values: FloatTaskType) => {
     const taskResponse = await addFloatTaskMutation({
       variables: {
         createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),

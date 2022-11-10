@@ -12,7 +12,6 @@ type TaskType = {
     name: string;
     color: string;
   };
-  color: string;
   taskName: string;
   chillTime: {
     minutes: number;
