@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import {
   ColorPicker,
   CommonButton,
@@ -40,12 +40,12 @@ import {
 } from '@agh-kiwis/workspace-constants';
 
 type ConstTaskFormProps = {
-  initialValues: constTaskType;
+  initialValues: ConstTaskType;
   durationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values: constTaskType) => void;
+  onSubmit: (values: ConstTaskType) => void;
   isInEditMode: boolean;
 };
 
@@ -79,22 +79,13 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
-                <Stack>
-                  <InputGroup>
-                    <ColorPicker
-                      modalTitle="Category color"
-                      handleChange={setFieldValue}
-                      name="category.id"
-                    >
-                      <ControlledInputAddon name="category.color" />
-                    </ColorPicker>
-                    <InputField
-                      name="category.name"
-                      placeholder="Category"
-                      borderLeftRadius={0}
-                    />
-                  </InputGroup>
-                </Stack>
+                <ColorPicker
+                  modalTitle="Category color"
+                  handleChange={setFieldValue}
+                  name="category.id"
+                >
+                  <ControlledInputAddon name="category" />
+                </ColorPicker>
               </Box>
 
               <Box>

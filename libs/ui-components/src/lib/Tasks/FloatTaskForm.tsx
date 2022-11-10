@@ -11,11 +11,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import {
   CommonButton,
   ControlledInputAddon,
-  CustomNumberInput,
   DependentChillTimeField,
   DependentDeadlineField,
   DependentMaxChunkTimeField,
@@ -39,13 +38,13 @@ import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 
 type FloatTaskFormProps = {
-  initialValues: floatTaskType;
+  initialValues: FloatTaskType;
   estimationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
   minChunkTimeInputFields: NumberInputType[];
   maxChunkTimeInputFields: NumberInputType[];
   minTimeBetweenChunksInputFields: NumberInputType[];
-  onSubmit: (values: floatTaskType) => void;
+  onSubmit: (values: FloatTaskType) => void;
   isInEditMode: boolean;
 };
 
@@ -80,22 +79,13 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
-                <Stack>
-                  <InputGroup>
-                    <ColorPicker
-                      modalTitle="Category color"
-                      handleChange={setFieldValue}
-                      name="category.id"
-                    >
-                      <ControlledInputAddon name="category.color" />
-                    </ColorPicker>
-                    <InputField
-                      name="category.name"
-                      placeholder="Category"
-                      borderLeftRadius={0}
-                    />
-                  </InputGroup>
-                </Stack>
+                <ColorPicker
+                  modalTitle="Category color"
+                  handleChange={setFieldValue}
+                  name="category.id"
+                >
+                  <ControlledInputAddon name="category" />
+                </ColorPicker>
               </Box>
 
               <Box>
