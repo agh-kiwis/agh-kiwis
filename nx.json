@@ -16,13 +16,23 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
+      "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "MzQyZjk0OTYtNTdkOS00Yjk3LTgyM2YtMGZmODFkY2JiMjA1fHJlYWQtd3JpdGU="
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
+  // Cloud task running
+  // "tasksRunnerOptions": {
+  //   "default": {
+  //     "runner": "@nrwl/nx-cloud",
+  //     "options": {
+  //       "cacheableOperations": ["build", "lint", "test", "e2e"]
+  //       // There we need to pass access_token later on
+  //       // "accessToken": ${NX_CLOUD_AUTH_TOKEN}
+  //     }
+  //   }
+  // },
   "targetDependencies": {
     "build": [
       {

@@ -40,6 +40,7 @@ Thumbs.db
 
 # Environments
 *.env
+*.env.production
 !apps/server/tests/.env
 
 # Auto-generated schemas
