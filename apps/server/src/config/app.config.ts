@@ -9,9 +9,8 @@ export default registerAs('app', () => ({
   workingDirectory: process.env.PWD || process.cwd(),
   frontendDomain: process.env.FRONTEND_DOMAIN,
   backendDomain: process.env.BACKEND_DOMAIN,
-  port: parseInt(process.env.APP_PORT || process.env.PORT, 10) || 3000,
-  apiPrefix: process.env.API_PREFIX || 'api',
-  fallbackLanguage: process.env.APP_FALLBACK_LANGUAGE || 'en',
+  port: parseInt(process.env.BACKEND_PORT, 10) || 3000,
+  apiPrefix: process.env.NEXT_PUBLIC_API_PREFIX || 'graphql',
   seedDatabase: process.env.APP_SEED_DATABASE != 'false' || false,
   corsOrigin: process.env.CORS_ORIGIN || '*',
 }));
