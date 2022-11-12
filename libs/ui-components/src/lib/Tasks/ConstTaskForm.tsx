@@ -1,15 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import {
-  Box,
-  Flex,
-  FormLabel,
-  InputGroup,
-  Select,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, FormLabel, Select, VStack } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
 import { ConstTaskType } from '@agh-kiwis/types';
 import {
@@ -179,7 +171,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
               </Box>
               <Box>
                 <ToggleSwitch
-                  name="autoresolve"
+                  name="autoResolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}
                 />

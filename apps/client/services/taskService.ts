@@ -27,7 +27,7 @@ export const constTaskFormToAddTaskMutationMapper = (
   repeat: variables.repeat.shouldRepeat
     ? {
         repeatEvery: variables.repeat.repeatEvery.amount,
-        startFrom: mapToDateTime(variables.startTime.date),
+        startFrom: mapToDateTime(variables.repeat.startFrom),
         repeatType: mapFormRepeatToRepeatType(
           variables.repeat.repeatEvery.type
         ),
@@ -72,7 +72,7 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   },
   taskName: task.name,
   startTime: {
-    date: moment(task.taskBreakdowns[0].start).format('YYYY-MM-DD'),
+    date: moment(task.taskBreakdowns[0].start).format('yyyy-MM-DD'),
     time: roundToMinutes(moment(task.taskBreakdowns[0].start), 10),
   },
   startTimeFacade: '',
@@ -95,7 +95,9 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
       type: mapRepeatTypeToFormRepeat(
         task.taskBreakdowns[0].repeat?.repeatType
       ),
-      amount: task.taskBreakdowns[0].repeat?.repeatEvery,
+      amount: task.taskBreakdowns[0].repeat?.repeatEvery
+        ? task.taskBreakdowns[0].repeat?.repeatEvery
+        : 1,
     },
   },
   repeatEveryFacade: '',
@@ -219,5 +221,7 @@ const mapRepeatTypeToFormRepeat = (repeatType: string): string => {
       return 'Month';
     case 'Years':
       return 'Year';
+    default:
+      return 'Day';
   }
 };

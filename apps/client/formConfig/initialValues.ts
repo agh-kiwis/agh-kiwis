@@ -44,7 +44,7 @@ export const constTaskInitialValues: ConstTaskType = {
 };
 
 export const floatTaskInitialValues: FloatTaskType = {
-  type: 'const',
+  type: 'float',
   category: {
     id: 1,
     name: 'Choose your category',
