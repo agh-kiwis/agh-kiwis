@@ -1,3 +1,4 @@
+import router from 'next/router';
 import moment from 'moment';
 import {
   CreateConstTaskInput,
@@ -223,5 +224,46 @@ const mapRepeatTypeToFormRepeat = (repeatType: string): string => {
       return 'Year';
     default:
       return 'Day';
+  }
+};
+
+export const handleConstTaskSubmit = async (
+  values: ConstTaskType,
+  addConstTaskMutation,
+  route = '/'
+) => {
+  const taskResponse = await addConstTaskMutation({
+    variables: {
+      createConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
+    },
+  }).catch((error) => {
+    // TODO handle error
+    console.log(error);
+  });
+
+  if (taskResponse) {
+    // TODO handle success
+    console.log(taskResponse.data);
+    router.push(route);
+  }
+};
+
+export const handleFloatTaskSubmit = async (
+  values: FloatTaskType,
+  addFloatTaskMutation
+) => {
+  const taskResponse = await addFloatTaskMutation({
+    variables: {
+      createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+    },
+  }).catch((error) => {
+    // TODO handle error
+    console.log(error);
+  });
+
+  if (taskResponse) {
+    // TODO handle success
+    console.log(taskResponse.data);
+    router.push('/');
   }
 };
