@@ -6,7 +6,6 @@ import { store } from '@agh-kiwis/redux';
 import { theme } from '../styles/theme';
 
 function KiwisApp({ Component, pageProps }: AppProps) {
-  console.log(process.env.NEXT_PUBLIC_BACKEND_DOMAIN);
   const client = new ApolloClient({
     uri: `${process.env.NEXT_PUBLIC_BACKEND_DOMAIN}/${process.env.NEXT_PUBLIC_API_PREFIX}`,
     cache: new InMemoryCache(),
