@@ -40,7 +40,7 @@ export const constTaskInitialValues: ConstTaskType = {
   },
   repeatEveryFacade: '',
   notify: false,
-  autoresolve: false,
+  autoResolve: false,
 };
 
 export const floatTaskInitialValues: FloatTaskType = {
@@ -84,7 +84,7 @@ export const floatTaskInitialValues: FloatTaskType = {
   maxChunkTimeFacade: '',
   minTimeBetweenChunksFacade: '',
   notify: false,
-  autoresolve: false,
+  autoResolve: false,
 };
 
 export const durationInputFields: NumberInputType[] = [

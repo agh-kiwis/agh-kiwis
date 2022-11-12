@@ -18,7 +18,7 @@ type TaskType = {
   };
   chillTimeFacade: string;
   notify: boolean;
-  autoresolve: boolean;
+  autoResolve: boolean;
 };
 
 export type ConstTaskType = TaskType & {

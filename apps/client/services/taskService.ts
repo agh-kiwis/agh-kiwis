@@ -34,7 +34,7 @@ export const constTaskFormToAddTaskMutationMapper = (
       }
     : undefined,
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
 
@@ -56,7 +56,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   // TODO what is start regarding float task?
   start: new Date(),
   timeBeforeNotification: null,
@@ -100,7 +100,7 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   },
   repeatEveryFacade: '',
   notify: !!task.notifications,
-  autoresolve: task.shouldAutoResolve,
+  autoResolve: task.shouldAutoResolve,
 });
 
 export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
@@ -144,7 +144,7 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
   maxChunkTimeFacade: '',
   minTimeBetweenChunksFacade: '',
   notify: !!task.notifications,
-  autoresolve: task.shouldAutoResolve,
+  autoResolve: task.shouldAutoResolve,
 });
 
 // update
@@ -167,7 +167,7 @@ export const constTaskToUpdateTaskMutationMapper = (
     repeatType: mapFormRepeatToRepeatType(variables.repeat.repeatEvery.type),
   },
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
 
@@ -191,7 +191,7 @@ export const floatTaskToUpdateTaskMutationMapper = (
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   start: new Date(),
   timeBeforeNotification: null,
 });
