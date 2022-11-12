@@ -24,12 +24,15 @@ const SleepPreferences: React.FC = () => {
           mapSleepPreferencesToAddConstTaskMutation(sleepPreferences),
       },
     });
-    router.push('/introduction/tmp');
+    router.push('/introduction/meals/breakfast');
   };
 
   return (
     <Wrapper>
       <Logo textVisible={false} />
+      <Flex w="100%" justifyContent="center">
+        <Text fontSize="4xl">When do You sleep?</Text>
+      </Flex>
       <Formik
         initialValues={initialSleepPreferences}
         onSubmit={onSubmit}
@@ -37,9 +40,6 @@ const SleepPreferences: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Flex w="100%" justifyContent="center">
-              <Text fontSize="4xl">When do You sleep?</Text>
-            </Flex>
             <Box my="4">
               <InputField
                 name="sleep"
@@ -55,7 +55,7 @@ const SleepPreferences: React.FC = () => {
               />
             </Box>
 
-            <VStack mt={4} spacing={4}>
+            <VStack mt="4" spacing="4">
               <CommonButton
                 variant="solid"
                 type="submit"
