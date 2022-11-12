@@ -72,15 +72,14 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={TaskSchema}
       >
-        {({ isSubmitting, setFieldValue, values }) => (
+        {({ touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
                 <ColorPicker
-                  modalTitle="Category color"
+                  modalTitle="Category"
                   handleChange={setFieldValue}
                   name="category.id"
                 >
@@ -93,6 +92,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                   name="taskName"
                   placeholder="Task name"
                   label="Task name"
+                  touched={!!touched.taskName}
                 />
               </Box>
               <DateTimePicker

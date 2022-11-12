@@ -48,13 +48,17 @@ const Login: React.FC = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={CredentialSchema}
       >
-        {({ isSubmitting }) => (
+        {({ touched, isSubmitting }) => (
           <Form>
             <Box>
-              <InputField name="email" placeholder="Email" label="Email" />
+              <InputField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                touched={!!touched.email}
+              />
             </Box>
             <Box mt={4}>
               <InputField
@@ -62,6 +66,7 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 label="Password"
                 type="password"
+                touched={!!touched.password}
               />
             </Box>
             <Flex justify={'right'} mt={1}>

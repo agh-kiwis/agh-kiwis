@@ -3,6 +3,7 @@ import { Input } from '@chakra-ui/react';
 
 type ControlledInputAddonProps = {
   name: string;
+  touched?: boolean;
 };
 
 export const ControlledInputAddon: React.FC<ControlledInputAddonProps> = ({
@@ -16,6 +17,7 @@ export const ControlledInputAddon: React.FC<ControlledInputAddonProps> = ({
       textAlign="center"
       color="white"
       value={field.value.name}
+      readOnly
     />
   );
 };
