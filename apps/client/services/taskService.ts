@@ -24,11 +24,15 @@ export const constTaskFormToAddTaskMutationMapper = (
   duration: getIntervalISOString(variables.duration),
   name: variables.taskName,
   priority: variables.priority,
-  repeat: {
-    repeatEvery: variables.repeat.repeatEvery.amount,
-    startFrom: mapToDateTime(variables.startTime.date),
-    repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
-  },
+  repeat: variables.repeat.shouldRepeat
+    ? {
+        repeatEvery: variables.repeat.repeatEvery.amount,
+        startFrom: mapToDateTime(variables.startTime.date),
+        repeatType: mapFormRepeatToRepeatType(
+          variables.repeat.repeatEvery.type
+        ),
+      }
+    : undefined,
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoresolve,
   timeBeforeNotification: null,
@@ -84,12 +88,14 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   priority: task.priority,
   repeat: {
     shouldRepeat: !!task.taskBreakdowns[0].repeat,
-    startFrom: moment(task.taskBreakdowns[0].repeat.startFrom).format(
+    startFrom: moment(task.taskBreakdowns[0].repeat?.startFrom).format(
       'yyyy-MM-DD'
     ),
     repeatEvery: {
-      type: 'Day', // to be mapped
-      amount: 1, // to be mapped
+      type: mapRepeatTypeToFormRepeat(
+        task.taskBreakdowns[0].repeat?.repeatType
+      ),
+      amount: task.taskBreakdowns[0].repeat?.repeatEvery,
     },
   },
   repeatEveryFacade: '',
@@ -158,7 +164,7 @@ export const constTaskToUpdateTaskMutationMapper = (
   repeat: {
     repeatEvery: variables.repeat.repeatEvery.amount,
     startFrom: mapToDateTime(variables.startTime.date),
-    repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
+    repeatType: mapFormRepeatToRepeatType(variables.repeat.repeatEvery.type),
   },
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoresolve,
@@ -190,7 +196,7 @@ export const floatTaskToUpdateTaskMutationMapper = (
   timeBeforeNotification: null,
 });
 
-const mapRepeatType = (repeatType: string): RepeatType => {
+const mapFormRepeatToRepeatType = (repeatType: string): RepeatType => {
   switch (repeatType) {
     case 'Day':
       return RepeatType.Days;
@@ -200,5 +206,18 @@ const mapRepeatType = (repeatType: string): RepeatType => {
       return RepeatType.Months;
     case 'Year':
       return RepeatType.Years;
+  }
+};
+
+const mapRepeatTypeToFormRepeat = (repeatType: string): string => {
+  switch (repeatType) {
+    case 'Days':
+      return 'Day';
+    case 'Weeks':
+      return 'Week';
+    case 'Months':
+      return 'Month';
+    case 'Years':
+      return 'Year';
   }
 };

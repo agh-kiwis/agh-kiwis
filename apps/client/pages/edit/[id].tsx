@@ -37,14 +37,17 @@ const ConstTask: React.FC = () => {
 
   const { data, loading, error } = useGetTaskQuery({
     variables: {
-      id: id[0],
+      id: Array.isArray(id) ? id[0] : id,
     },
   });
 
   const handleConstSubmit = async (values: ConstTaskType) => {
     const taskResponse = await updateConstTaskMutation({
       variables: {
-        taskInput: constTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
+        taskInput: constTaskToUpdateTaskMutationMapper(
+          parseInt(Array.isArray(id) ? id[0] : id),
+          values
+        ),
       },
     }).catch((error) => {
       console.log(error);
