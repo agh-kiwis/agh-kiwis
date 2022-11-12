@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import { Box, Flex, FormLabel, Select, VStack } from '@chakra-ui/react';
+import { Box, Flex, FormLabel, Select, Text, VStack } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
 import { ConstTaskType } from '@agh-kiwis/types';
 import {
@@ -16,6 +16,7 @@ import {
   Header,
   InputField,
   IntervalPicker,
+  Logo,
   LongIntervalAmountType,
   LongIntervalPicker,
   LongIntervalSelectType,
@@ -39,6 +40,8 @@ type ConstTaskFormProps = {
   repeatEveryAmountFields: LongIntervalAmountType[];
   onSubmit: (values: ConstTaskType) => void;
   isInEditMode: boolean;
+  isInIntroductionMode?: boolean;
+  customText?: string;
 };
 
 export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
@@ -49,18 +52,34 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
   isInEditMode,
+  isInIntroductionMode,
+  customText,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
-      <Box mb={4}>
-        <Header
-          text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
-          size="xl"
-        />
-      </Box>
-      <TaskSwitchConst isDisabled={isInEditMode} />
+      {isInIntroductionMode ? (
+        <>
+          <Logo textVisible={false} />
+          <Flex w="100%" justifyContent="center" mb="4">
+            <Text fontSize="4xl" textAlign="center">
+              {customText}
+            </Text>
+          </Flex>
+        </>
+      ) : (
+        <>
+          <Box mb={4}>
+            <Header
+              text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
+              size="xl"
+            />
+          </Box>
+          <TaskSwitchConst isDisabled={isInEditMode} />
+        </>
+      )}
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
