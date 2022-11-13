@@ -1,14 +1,14 @@
+import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
+import { ConstTaskType } from '@agh-kiwis/types';
+import { ConstTaskForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
   durationInputFields,
   repeatEveryAmountFields,
   repeatEverySelectField,
-} from 'apps/client/formConfig/initialValues';
-import { handleConstTaskSubmit } from 'apps/client/services/taskService';
-import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
-import { ConstTaskType } from '@agh-kiwis/types';
-import { ConstTaskForm } from '@agh-kiwis/ui-components';
+} from '../../../formConfig/initialValues';
 import { initialBreakfastPreferences } from '../../../formConfig/introductionInitialValues';
+import { handleConstTaskSubmit } from '../../../services/taskService';
 
 const Breakfast: React.FC = () => {
   const [addConstTaskMutation] = useAddConstTaskMutation();
