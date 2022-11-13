@@ -62,6 +62,7 @@ export class User extends GeneralEntity {
   @Column({ default: AuthProvidersEnum.email })
   provider: string;
 
+  @Field()
   @Column({ default: false })
   introductionCompleted: boolean;
 

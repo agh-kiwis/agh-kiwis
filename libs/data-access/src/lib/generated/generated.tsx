@@ -33,6 +33,7 @@ export type AuthResponse = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
@@ -337,6 +338,7 @@ export type User = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
 };
 
@@ -366,14 +368,14 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 export type LoginMutationVariables = Exact<{
   loginDto: AuthEmailLoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null, token?: string | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -385,7 +387,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null, token?: string | null } };
 
 export type RemoveCategoryMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -406,7 +408,7 @@ export type RemoveUserMutationVariables = Exact<{
 }>;
 
 
-export type RemoveUserMutation = { __typename?: 'Mutation', removeUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type RemoveUserMutation = { __typename?: 'Mutation', removeUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 export type UpdateConstTaskMutationVariables = Exact<{
   taskInput: TaskInput;
@@ -434,7 +436,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 export type FindCategoryByPrefixQueryVariables = Exact<{
   prefix: Scalars['String'];
@@ -470,7 +472,7 @@ export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 
 export const AddConstTaskDocument = gql`
@@ -656,6 +658,7 @@ export const CreateUserDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
   }
 }
@@ -693,6 +696,7 @@ export const LoginDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
     token
   }
@@ -761,6 +765,7 @@ export const RegisterDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
     token
   }
@@ -906,6 +911,7 @@ export const RemoveUserDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
   }
 }
@@ -1150,6 +1156,7 @@ export const UpdateUserDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
   }
 }
@@ -1443,6 +1450,7 @@ export const MeDocument = gql`
     email
     gender
     id
+    introductionCompleted
     name
   }
 }

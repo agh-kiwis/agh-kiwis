@@ -4,6 +4,7 @@ mutation register($registerDto: AuthEmailRegisterInput!) {
     email
     gender
     id
+    introductionCompleted
     name
     token
   }
