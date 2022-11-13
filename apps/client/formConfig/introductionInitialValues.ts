@@ -20,8 +20,8 @@ export const initialBreakfastPreferences: ConstTaskType = {
   type: 'const',
   category: {
     id: 2,
-    name: 'Eating',
-    color: '#1EA896',
+    name: 'Meals',
+    color: '#E0479E',
   },
   taskName: 'Breakfast',
   startTime: {
@@ -56,8 +56,8 @@ export const initialDinnerPreferences: ConstTaskType = {
   type: 'const',
   category: {
     id: 2,
-    name: 'Eating',
-    color: '#1EA896',
+    name: 'Meals',
+    color: '#E0479E',
   },
   taskName: 'Dinner',
   startTime: {
@@ -92,8 +92,8 @@ export const initialSupperPreferences: ConstTaskType = {
   type: 'const',
   category: {
     id: 2,
-    name: 'Eating',
-    color: '#1EA896',
+    name: 'Meals',
+    color: '#E0479E',
   },
   taskName: 'Supper',
   startTime: {
