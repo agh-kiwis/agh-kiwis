@@ -14,7 +14,11 @@ const Supper: React.FC = () => {
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const handleSubmit = async (values: ConstTaskType) => {
-    handleConstTaskSubmit(values, addConstTaskMutation, '/');
+    handleConstTaskSubmit(
+      values,
+      addConstTaskMutation,
+      '/introduction/summary'
+    );
   };
 
   return (
@@ -28,7 +32,7 @@ const Supper: React.FC = () => {
       isInEditMode={false}
       isInIntroductionMode={true}
       customText="When do You eat supper?"
-      nextStep="/"
+      nextStep="/introduction/summary"
     />
   );
 };
