@@ -32,6 +32,7 @@ const Dinner: React.FC = () => {
       isInEditMode={false}
       isInIntroductionMode={true}
       customText="When do You eat dinner?"
+      nextStep="/introduction/meals/supper"
     />
   );
 };
