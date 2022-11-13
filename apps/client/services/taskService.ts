@@ -74,7 +74,7 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   taskName: task.name,
   startTime: {
     date: moment(task.taskBreakdowns[0].start).format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(task.taskBreakdowns[0].start), 10),
+    time: moment(task.taskBreakdowns[0].start).format('HH:mm'),
   },
   startTimeFacade: '',
   duration: {
@@ -116,7 +116,7 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
   taskName: task.name,
   deadline: {
     date: moment(task.deadline, 'x').format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(task.deadline, 'x'), 10),
+    time: moment(task.deadline, 'x').format('HH:mm'),
   },
   deadlineFacade: '',
   timeEstimation: {
@@ -243,7 +243,6 @@ export const handleConstTaskSubmit = async (
 
   if (taskResponse) {
     // TODO handle success
-    console.log(taskResponse.data);
     router.push(route);
   }
 };
@@ -263,7 +262,6 @@ export const handleFloatTaskSubmit = async (
 
   if (taskResponse) {
     // TODO handle success
-    console.log(taskResponse.data);
     router.push('/');
   }
 };
