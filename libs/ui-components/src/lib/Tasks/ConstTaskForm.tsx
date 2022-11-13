@@ -42,6 +42,7 @@ type ConstTaskFormProps = {
   isInEditMode: boolean;
   isInIntroductionMode?: boolean;
   customText?: string;
+  nextStep?: string;
 };
 
 export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
@@ -54,6 +55,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   isInEditMode,
   isInIntroductionMode,
   customText,
+  nextStep,
 }) => {
   const router = useRouter();
 
@@ -205,11 +207,19 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                 />
               </Box>
               <Box>
-                <CommonButton
-                  variant="outline"
-                  buttonText="Cancel"
-                  onClick={() => router.push('/')}
-                />
+                {isInIntroductionMode ? (
+                  <CommonButton
+                    variant="outline"
+                    buttonText="Skip"
+                    onClick={() => router.push(`${nextStep}`)}
+                  />
+                ) : (
+                  <CommonButton
+                    variant="outline"
+                    buttonText="Cancel"
+                    onClick={() => router.push('/')}
+                  />
+                )}
               </Box>
             </VStack>
           </Form>
