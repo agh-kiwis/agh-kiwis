@@ -7,11 +7,7 @@ import {
   Task,
   TaskInput,
 } from '@agh-kiwis/data-access';
-import {
-  getIntervalISOString,
-  mapToDateTime,
-  roundToMinutes,
-} from '@agh-kiwis/moment-service';
+import { getIntervalISOString, mapToDateTime } from '@agh-kiwis/moment-service';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 
 // create
