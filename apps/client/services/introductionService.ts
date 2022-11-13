@@ -19,6 +19,7 @@ export const mapUserDetailsToUpdateUserMutation = (
   name: formData.name,
   birthDate: new Date(formData.birthDate),
   gender: formData.gender,
+  introductionCompleted: true,
 });
 
 export const mapSleepPreferencesToAddConstTaskMutation = (

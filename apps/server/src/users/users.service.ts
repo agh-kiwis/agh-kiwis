@@ -45,6 +45,7 @@ export class UsersService {
     user.name = updateUserInput.name;
     user.birthDate = updateUserInput.birthDate;
     user.gender = updateUserInput.gender;
+    user.introductionCompleted = updateUserInput.introductionCompleted;
 
     return await user.save();
   }
