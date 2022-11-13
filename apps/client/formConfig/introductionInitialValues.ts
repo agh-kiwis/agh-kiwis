@@ -8,7 +8,7 @@ import {
 export const initialUserDetails: UserDetailsType = {
   name: '',
   birthDate: '',
-  gender: '',
+  gender: 'male',
 };
 
 export const initialSleepPreferences: SleepPreferencesType = {
