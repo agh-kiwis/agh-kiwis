@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Add there steps for CI to run
+cp env-example .env
+nx run client:build
