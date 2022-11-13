@@ -13,8 +13,8 @@ export const FilterContainer: React.FC<FilterContainerProps> = ({
   return (
     <Flex
       justifyContent={options.length === 2 ? 'center' : 'space-around'}
-      flexWrap={'wrap'}
-      gap={'1rem'}
+      flexWrap="wrap"
+      gap="1rem"
     >
       {children}
     </Flex>

@@ -19,7 +19,7 @@ export const SingleFilter: React.FC<SingleFilterProps> = ({
   return (
     <AccordionItem>
       <FilterName name={name} />
-      <AccordionPanel pb={4}>
+      <AccordionPanel pb="4">
         <FilterContainer options={options}>
           {options.map((value: string, key) => (
             <Checkbox

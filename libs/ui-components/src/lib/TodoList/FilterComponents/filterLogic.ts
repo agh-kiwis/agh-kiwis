@@ -4,6 +4,7 @@ import {
   FilterInterface,
   FilterNames,
   FilterType,
+  Priority,
   Status,
   Type,
 } from './filterConstants';
@@ -52,32 +53,28 @@ export const updateFilter = (
   }
 };
 
-// TODO when back-end will be ready: number -> number[], string -> string[]
-interface FinalFilter {
+export interface MappedFilter {
   type: boolean | undefined;
   status: boolean | undefined;
-  category: number | undefined;
-  priority: string | undefined;
+  category: number[] | undefined;
+  priority: string[] | undefined;
 }
 
-export const mapper = (filters: FilterInterface[]) => {
-  const result: FinalFilter = {
-    type: undefined,
-    status: undefined,
-    category: undefined,
-    priority: undefined,
-  };
+export const mapToGraphQLFields = (
+  filterOptions: MappedFilter,
+  filters: FilterInterface[]
+) => {
   filters.forEach((filter: FilterInterface) => {
     if (filter.name === FilterNames.Type)
-      result.type = typeHandler(filter.options);
+      filterOptions.type = typeHandler(filter.options);
     else if (filter.name === FilterNames.Status)
-      result.status = statusHandler(filter.options);
+      filterOptions.status = statusHandler(filter.options);
     else if (filter.name === FilterNames.Category)
-      result.category = categoryHandler(filter.options);
+      filterOptions.category = categoryHandler(filter.options);
     else if (filter.name === FilterNames.Priority)
-      result.priority = filter.options[0];
+      filterOptions.priority = priorityHandler(filter.options);
   });
-  return result;
+  return filterOptions;
 };
 
 const typeHandler = (optionsArray: FilterType) => {
@@ -92,12 +89,25 @@ const statusHandler = (optionsArray: FilterType) => {
   else return false;
 };
 
-const categoryHandler = (optionsArray: FilterType) => {
+export const categoryHandler = (optionsArray: FilterType) => {
+  if (categories_map && optionsArray.length === 0) {
+    return Array.from(categories_map.values());
+  }
   const ids: number[] = [];
+  // if (optionsArray.length === 0) {
+  //   return Array.from(Array(100).keys());
+  // }
   optionsArray.map((opt) => {
     if (categories_map.has(opt)) {
       ids.push(categories_map.get(opt)!);
     }
   });
-  return ids[0];
+  return ids;
+};
+
+const priorityHandler = (optionsArray: FilterType) => {
+  if (optionsArray.length === 0) {
+    return Object.values(Priority);
+  }
+  return optionsArray;
 };

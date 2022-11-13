@@ -121,10 +121,10 @@ export type CreateUserInput = {
 };
 
 export type FilterOptions = {
-  category?: InputMaybe<Scalars['Float']>;
+  category?: InputMaybe<Array<Scalars['Float']>>;
   isDone?: InputMaybe<Scalars['Boolean']>;
   isFloat?: InputMaybe<Scalars['Boolean']>;
-  priority?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type GetTasksInput = {

@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
-import { CommonButton, mapper, useFilters } from '@agh-kiwis/ui-components';
+import {
+  CommonButton,
+  MappedFilter,
+  mapToGraphQLFields,
+  useFilters,
+} from '@agh-kiwis/ui-components';
 import {
   AlertModal,
   FilterModal,
@@ -17,16 +22,23 @@ const TodoList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { filters, setFilters } = useFilters();
 
+  const [filterOptions, setFilterOptions] = useState<MappedFilter>(
+    mapToGraphQLFields(
+      { type: undefined, status: undefined, category: [], priority: [] },
+      filters
+    )
+  );
+
   const { data, loading, error } = useGetTasksQuery({
     variables: {
       getTasksInput: {
         limit: 20,
         offset: 0,
         filterOptions: {
-          isDone: mapper(filters).status,
-          isFloat: mapper(filters).type,
-          category: mapper(filters).category,
-          priority: mapper(filters).priority,
+          isDone: filterOptions.status,
+          isFloat: filterOptions.type,
+          category: filterOptions.category,
+          priority: filterOptions.priority,
         },
       },
     },
@@ -54,6 +66,8 @@ const TodoList: React.FC = () => {
         setFilters={setFilters}
         isOpen={open}
         close={() => setOpen(false)}
+        filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
       />
     </>
   );
