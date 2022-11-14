@@ -29,7 +29,11 @@ export class User extends GeneralEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async setPassword() {
-    if (this.previousPassword !== this.password && this.password) {
+    if (
+      !this.previousPassword ||
+      (await passwordUpdated(this.previousPassword, this.password))
+    ) {
+      this.previousPassword = this.password;
       const salt = await bcrypt.genSalt();
       this.password = await bcrypt.hash(this.password, salt);
     }
@@ -50,7 +54,7 @@ export class User extends GeneralEntity {
   name?: string | null;
 
   @NullableField()
-  @Column({ type: 'date', nullable: true })
+  @Column({ nullable: true })
   birthDate?: Date;
 
   @OneToMany(() => Task, (task) => task.user)
@@ -69,3 +73,10 @@ export class User extends GeneralEntity {
   @Column({ default: true })
   isEnabled: boolean;
 }
+
+const passwordUpdated = async (
+  newPasswordPlain: string,
+  previousPasswordHash: string
+) => {
+  await bcrypt.compare(newPasswordPlain, previousPasswordHash);
+};

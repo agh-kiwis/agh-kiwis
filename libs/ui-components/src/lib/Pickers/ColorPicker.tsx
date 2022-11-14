@@ -35,7 +35,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const renderTiles = (categories: Category[]): JSX.Element => (
     <SimpleGrid spacing={4}>
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <Box
           key={category.id}
           w="180px"
@@ -76,7 +76,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="center">{renderTiles(data.getCategories)}</VStack>
+            <VStack justify="center">{renderTiles(data?.getCategories)}</VStack>
           </ModalBody>
           <ModalFooter />
         </ModalContent>
