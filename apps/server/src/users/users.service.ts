@@ -12,12 +12,6 @@ export class UsersService {
   async create(createUserInput: CreateUserInput) {
     const user: User = await User.create(createUserInput).save();
 
-    for (const color of InitialSeed.colors) {
-      await Color.create({
-        hexCode: color,
-      }).save();
-    }
-
     InitialSeed.colors.forEach(async (color, index) => {
       await Category.create({
         color: await Color.findOne({ where: { hexCode: color } }),
@@ -35,19 +29,14 @@ export class UsersService {
     });
   }
 
-  async update(updateUserInput: UpdateUserInput) {
-    const user: User = await User.findOne({
+  async update(user: User, updateUserInput: UpdateUserInput) {
+    await User.update(user.id, updateUserInput);
+
+    return await User.findOne({
       where: {
         id: updateUserInput.id,
       },
     });
-
-    user.name = updateUserInput.name;
-    user.birthDate = updateUserInput.birthDate;
-    user.gender = updateUserInput.gender;
-    user.introductionCompleted = updateUserInput.introductionCompleted;
-
-    return await user.save();
   }
 
   remove(id: number) {

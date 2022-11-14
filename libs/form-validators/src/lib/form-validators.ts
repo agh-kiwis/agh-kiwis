@@ -17,5 +17,7 @@ export const TaskSchema = Yup.object({
 
 export const UserPreferencesSchema = Yup.object().shape({
   name: Yup.string().required('Required!'),
-  birthDate: Yup.string().required('Required!'),
+  birthDate: Yup.date()
+    .max(new Date(), 'You have to choose the date from the past!')
+    .required('Required!'),
 });
