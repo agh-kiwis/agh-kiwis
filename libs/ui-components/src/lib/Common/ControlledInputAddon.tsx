@@ -1,8 +1,9 @@
 import { useField } from 'formik';
-import { InputLeftAddon } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
 
 type ControlledInputAddonProps = {
   name: string;
+  touched?: boolean;
 };
 
 export const ControlledInputAddon: React.FC<ControlledInputAddonProps> = ({
@@ -11,8 +12,12 @@ export const ControlledInputAddon: React.FC<ControlledInputAddonProps> = ({
   const [field] = useField(name);
 
   return (
-    <InputLeftAddon bg={field.value} color="white">
-      color
-    </InputLeftAddon>
+    <Input
+      bg={field.value.color}
+      textAlign="center"
+      color="white"
+      value={field.value.name}
+      readOnly
+    />
   );
 };

@@ -40,6 +40,7 @@ export type AuthResponse = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
@@ -216,6 +217,7 @@ export type Notification = {
 export type Query = {
   __typename?: 'Query';
   findCategoryByPrefix: Array<Category>;
+  getCategories: Array<Category>;
   getColors: Array<Color>;
   getTask: Task;
   getTasks: Array<Task>;
@@ -312,8 +314,12 @@ export type TaskInput = {
 };
 
 export type UpdateUserInput = {
+  birthDate?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  introductionCompleted?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -323,6 +329,7 @@ export type User = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
 };
 
@@ -446,6 +453,7 @@ export type CreateUserMutation = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
   };
 };
@@ -462,6 +470,7 @@ export type LoginMutation = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
     token?: string | null;
   };
@@ -483,6 +492,7 @@ export type RegisterMutation = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
     token?: string | null;
   };
@@ -561,6 +571,7 @@ export type RemoveUserMutation = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
   };
 };
@@ -718,6 +729,7 @@ export type UpdateUserMutation = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
   };
 };
@@ -729,6 +741,18 @@ export type FindCategoryByPrefixQueryVariables = Exact<{
 export type FindCategoryByPrefixQuery = {
   __typename?: 'Query';
   findCategoryByPrefix: Array<{
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  }>;
+};
+
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCategoriesQuery = {
+  __typename?: 'Query';
+  getCategories: Array<{
     __typename?: 'Category';
     id: number;
     name: string;
@@ -847,6 +871,7 @@ export type MeQuery = {
     email: string;
     gender?: string | null;
     id: number;
+    introductionCompleted: boolean;
     name?: string | null;
   };
 };
@@ -1085,6 +1110,7 @@ export const CreateUserDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
     }
   }
@@ -1139,6 +1165,7 @@ export const LoginDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
       token
     }
@@ -1235,6 +1262,7 @@ export const RegisterDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
       token
     }
@@ -1428,6 +1456,7 @@ export const RemoveUserDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
     }
   }
@@ -1740,6 +1769,7 @@ export const UpdateUserDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
     }
   }
@@ -1849,6 +1879,68 @@ export type FindCategoryByPrefixLazyQueryHookResult = ReturnType<
 export type FindCategoryByPrefixQueryResult = Apollo.QueryResult<
   FindCategoryByPrefixQuery,
   FindCategoryByPrefixQueryVariables
+>;
+export const GetCategoriesDocument = gql`
+  query getCategories {
+    getCategories {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetCategoriesQuery,
+    GetCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(
+    GetCategoriesDocument,
+    options
+  );
+}
+export function useGetCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCategoriesQuery,
+    GetCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(
+    GetCategoriesDocument,
+    options
+  );
+}
+export type GetCategoriesQueryHookResult = ReturnType<
+  typeof useGetCategoriesQuery
+>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<
+  typeof useGetCategoriesLazyQuery
+>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<
+  GetCategoriesQuery,
+  GetCategoriesQueryVariables
 >;
 export const GetColorsDocument = gql`
   query getColors {
@@ -2083,6 +2175,7 @@ export const MeDocument = gql`
       email
       gender
       id
+      introductionCompleted
       name
     }
   }

@@ -1,20 +1,19 @@
 import moment from 'moment';
 import { roundToMinutes } from '@agh-kiwis/moment-service';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
+import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 import {
   LongIntervalAmountType,
   LongIntervalSelectType,
   NumberInputType,
 } from '@agh-kiwis/ui-components';
 
-export const constTaskInitialValues: constTaskType = {
+export const constTaskInitialValues: ConstTaskType = {
   type: 'const',
   category: {
     id: 1,
-    name: '',
-    color: '#0077B6',
+    name: 'Choose your category',
+    color: '#a2a2a2',
   },
-  color: '',
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
@@ -41,17 +40,16 @@ export const constTaskInitialValues: constTaskType = {
   },
   repeatEveryFacade: '',
   notify: false,
-  autoresolve: false,
+  autoResolve: false,
 };
 
-export const floatTaskInitialValues: floatTaskType = {
-  type: 'const',
+export const floatTaskInitialValues: FloatTaskType = {
+  type: 'float',
   category: {
     id: 1,
-    name: '',
-    color: '#0077B6',
+    name: 'Choose your category',
+    color: '#a2a2a2',
   },
-  color: '',
   taskName: '',
   deadline: {
     date: moment().add(7, 'd').format('yyyy-MM-DD'),
@@ -86,7 +84,7 @@ export const floatTaskInitialValues: floatTaskType = {
   maxChunkTimeFacade: '',
   minTimeBetweenChunksFacade: '',
   notify: false,
-  autoresolve: false,
+  autoResolve: false,
 };
 
 export const durationInputFields: NumberInputType[] = [

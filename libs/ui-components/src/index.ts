@@ -27,6 +27,7 @@ export * from './lib/Pickers/ColorPicker';
 export * from './lib/Pickers/DateTimePicker';
 export * from './lib/Pickers/IntervalPicker';
 export * from './lib/Pickers/LongIntervalPicker';
+export * from './lib/Utils/CustomSpinner';
 export * from './lib/Utils/Logo';
 export * from './lib/Utils/SectionDivider';
 export * from './lib/Tasks/ConstTaskForm';

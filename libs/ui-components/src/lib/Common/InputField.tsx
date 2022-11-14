@@ -15,11 +15,13 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   displayedValue?: string;
   borderLeftRadius?: number;
   validate?: (value: string | number) => string;
+  touched?: boolean;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
   isTextArea,
   label,
+  touched,
   ...props
 }) => {
   let InputOrTextArea = Input as React.FC;
@@ -29,10 +31,10 @@ export const InputField: React.FC<InputFieldProps> = ({
 
   const [field, { error }] = useField(props);
   return (
-    <FormControl isInvalid={!!error}>
+    <FormControl isInvalid={!!(touched && error)}>
       {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
       <InputOrTextArea {...field} {...props} />
-      {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
+      {touched && error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
 };

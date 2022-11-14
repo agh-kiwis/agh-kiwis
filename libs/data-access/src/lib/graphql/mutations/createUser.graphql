@@ -4,6 +4,7 @@ mutation createUser($createUserInput: CreateUserInput!) {
     email
     gender
     id
+    introductionCompleted
     name
   }
 }

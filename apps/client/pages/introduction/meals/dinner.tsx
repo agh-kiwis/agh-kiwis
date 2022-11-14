@@ -1,34 +1,40 @@
-import React from 'react';
 import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
 import { ConstTaskType } from '@agh-kiwis/types';
 import { ConstTaskForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
-  constTaskInitialValues,
   durationInputFields,
   repeatEveryAmountFields,
   repeatEverySelectField,
-} from '../../formConfig/initialValues';
-import { handleConstTaskSubmit } from '../../services/taskService';
+} from '../../../formConfig/initialValues';
+import { initialDinnerPreferences } from '../../../formConfig/introductionInitialValues';
+import { handleConstTaskSubmit } from '../../../services/taskService';
 
-const ConstTask: React.FC = () => {
+const Dinner: React.FC = () => {
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const handleSubmit = async (values: ConstTaskType) => {
-    handleConstTaskSubmit(values, addConstTaskMutation);
+    handleConstTaskSubmit(
+      values,
+      addConstTaskMutation,
+      '/introduction/meals/supper'
+    );
   };
 
   return (
     <ConstTaskForm
-      initialValues={constTaskInitialValues}
+      initialValues={initialDinnerPreferences}
       durationInputFields={durationInputFields}
       chillTimeInputFields={chillTimeInputFields}
       repeatEverySelectField={repeatEverySelectField}
       repeatEveryAmountFields={repeatEveryAmountFields}
       onSubmit={handleSubmit}
       isInEditMode={false}
+      isInIntroductionMode={true}
+      customText="When do You eat dinner?"
+      nextStep="/introduction/meals/supper"
     />
   );
 };
 
-export default ConstTask;
+export default Dinner;
