@@ -38,7 +38,9 @@ const Login: React.FC = () => {
       console.log(response.data.login.token);
       // Set authorization cookie to response token (if we are working at different domains and it's not set automatically)
       // cookieCutter.set('authorization', response.data.login.token);
-      router.push('/');
+      response.data.login.introductionCompleted
+        ? router.push('/')
+        : router.push('/introduction/user-details');
     }
   };
 
@@ -48,13 +50,17 @@ const Login: React.FC = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={CredentialSchema}
       >
-        {({ isSubmitting }) => (
+        {({ touched, isSubmitting }) => (
           <Form>
             <Box>
-              <InputField name="email" placeholder="Email" label="Email" />
+              <InputField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                touched={!!touched.email}
+              />
             </Box>
             <Box mt={4}>
               <InputField
@@ -62,6 +68,7 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 label="Password"
                 type="password"
+                touched={!!touched.password}
               />
             </Box>
             <Flex justify={'right'} mt={1}>

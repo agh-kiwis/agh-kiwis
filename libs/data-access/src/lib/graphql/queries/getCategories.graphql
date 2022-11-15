@@ -1,6 +1,10 @@
 query getCategories {
   getCategories {
-    name
+    color {
+      hexCode
+      id
+    }
     id
+    name
   }
 }

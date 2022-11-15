@@ -18,13 +18,12 @@ export class UsersResolver {
   @Mutation(() => User)
   updateUser(
     @CurrentUser() user: User,
-
     @Args('updateUserInput') updateUserInput: UpdateUserInput
   ) {
     if (user.id !== updateUserInput.id) {
       throw new ForbiddenError('You can only update your own user');
     }
-    return this.usersService.update(updateUserInput);
+    return this.usersService.update(user, updateUserInput);
   }
 
   @Mutation(() => User)

@@ -9,11 +9,11 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
-  Spinner,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Color, useGetColorsQuery } from '@agh-kiwis/data-access';
+import { Category, useGetCategoriesQuery } from '@agh-kiwis/data-access';
+import { CustomSpinner } from '../Utils/CustomSpinner';
 
 type ColorPickerProps = {
   modalTitle: string;
@@ -27,33 +27,40 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   name,
   children,
   handleChange,
-  ...props
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-  const { data, loading } = useGetColorsQuery();
 
-  const renderTiles = (colors: Color[]): JSX.Element => (
-    <SimpleGrid columns={2} spacing={4}>
-      {colors.map((color) => (
+  const { data, loading } = useGetCategoriesQuery();
+
+  const renderTiles = (categories: Category[]): JSX.Element => (
+    <SimpleGrid spacing={4}>
+      {categories?.map((category) => (
         <Box
-          key={color.id}
-          w="60px"
+          key={category.id}
+          w="180px"
           h="60px"
-          bg={color.hexCode}
+          bg={category.color.hexCode}
+          color="white"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
           borderRadius={4}
           onClick={() => {
-            handleChange(name, color.id);
-            handleChange('category.color', color.hexCode);
+            handleChange(name, category.id);
+            handleChange('category.name', category.name);
+            handleChange('category.color', category.color.hexCode);
             onClose();
           }}
-        />
+        >
+          {category.name}
+        </Box>
       ))}
     </SimpleGrid>
   );
 
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   return (
     <>
@@ -69,7 +76,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="center">{renderTiles(data.getColors)}</VStack>
+            <VStack justify="center">{renderTiles(data?.getCategories)}</VStack>
           </ModalBody>
           <ModalFooter />
         </ModalContent>

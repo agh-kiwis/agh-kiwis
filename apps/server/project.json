@@ -19,8 +19,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/server/src/environments/environment.ts",
-              "with": "apps/server/src/environments/environment.prod.ts"
+              "replace": "/.env",
+              "with": "/.env.prod"
             }
           ]
         }
@@ -31,6 +31,11 @@
       "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "server:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "server:build:production"
+        }
       }
     },
     "lint": {
@@ -44,12 +49,12 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/server"],
       "options": {
+        // TODO This needs to be replaced with straightforward test env file path
         "jestConfig": "apps/server/jest.config.ts",
         "passWithNoTests": true,
         // single process executing all tests (slow)
         "runInBand": true
-      },
-      "envFile": "apps/server/.env"
+      }
     }
   },
   "tags": []

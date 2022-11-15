@@ -5,9 +5,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { store } from '@agh-kiwis/redux';
 import { theme } from '../styles/theme';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+function KiwisApp({ Component, pageProps }: AppProps) {
   const client = new ApolloClient({
-    uri: 'http://localhost:3333/graphql',
+    uri: `${process.env.NEXT_PUBLIC_BACKEND_DOMAIN}/${process.env.NEXT_PUBLIC_API_PREFIX}`,
     cache: new InMemoryCache(),
     credentials: 'include',
   });
@@ -24,4 +24,4 @@ function CustomApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default CustomApp;
+export default KiwisApp;

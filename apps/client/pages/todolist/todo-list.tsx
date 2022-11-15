@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Spinner } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import {
   CommonButton,
+  CustomSpinner,
   MappedFilter,
   mapToGraphQLFields,
   useFilters,
@@ -45,7 +45,7 @@ const TodoList: React.FC = () => {
   });
 
   if (loading) {
-    return <Spinner />;
+    return <CustomSpinner />;
   }
   if (error) {
     return (

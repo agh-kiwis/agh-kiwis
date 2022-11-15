@@ -33,6 +33,7 @@ export type AuthResponse = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
@@ -324,8 +325,12 @@ export type TaskInput = {
 };
 
 export type UpdateUserInput = {
+  birthDate?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  introductionCompleted?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -335,6 +340,7 @@ export type User = {
   email: Scalars['String'];
   gender?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
+  introductionCompleted: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
 };
 
@@ -363,6 +369,18 @@ export type CreateUserMutationVariables = Exact<{
   createUserInput: CreateUserInput;
 }>;
 
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+  };
+};
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
 
@@ -370,6 +388,19 @@ export type LoginMutationVariables = Exact<{
   loginDto: AuthEmailLoginInput;
 }>;
 
+export type LoginMutation = {
+  __typename?: 'Mutation';
+  login: {
+    __typename?: 'AuthResponse';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+    token?: string | null;
+  };
+};
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
 
@@ -382,6 +413,19 @@ export type RegisterMutationVariables = Exact<{
   registerDto: AuthEmailRegisterInput;
 }>;
 
+export type RegisterMutation = {
+  __typename?: 'Mutation';
+  register: {
+    __typename?: 'AuthResponse';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+    token?: string | null;
+  };
+};
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AuthResponse', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null, token?: string | null } };
 
@@ -403,6 +447,18 @@ export type RemoveUserMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
+export type RemoveUserMutation = {
+  __typename?: 'Mutation';
+  removeUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+  };
+};
 
 export type RemoveUserMutation = { __typename?: 'Mutation', removeUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
 
@@ -431,6 +487,18 @@ export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
 
+export type UpdateUserMutation = {
+  __typename?: 'Mutation';
+  updateUser: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+  };
+};
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
 
@@ -439,7 +507,19 @@ export type FindCategoryByPrefixQueryVariables = Exact<{
 }>;
 
 
-export type FindCategoryByPrefixQuery = { __typename?: 'Query', findCategoryByPrefix: Array<{ __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }> };
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCategoriesQuery = {
+  __typename?: 'Query';
+  getCategories: Array<{
+    __typename?: 'Category';
+    id: number;
+    name: string;
+    color: { __typename?: 'Color'; hexCode: string; id: number };
+  }>;
+};
+
+export type GetColorsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -465,7 +545,18 @@ export type GetTasksQueryVariables = Exact<{
 
 export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename?: 'Task', chillTime: any, deadline?: string | null, estimation?: any | null, id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', id: number, maxChunkDuration: any, minChunkDuration: any, minTimeBetweenChunks: any, start: any } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null, taskBreakdowns?: Array<{ __typename?: 'TaskBreakdown', duration: any, isDone: boolean, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, startFrom: any } | null }> | null }> };
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+export type MeQuery = {
+  __typename?: 'Query';
+  me: {
+    __typename?: 'User';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+  };
+};
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, name?: string | null } };
@@ -648,17 +739,21 @@ export type CreateCategoryMutationHookResult = ReturnType<typeof useCreateCatego
 export type CreateCategoryMutationResult = Apollo.MutationResult<CreateCategoryMutation>;
 export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<CreateCategoryMutation, CreateCategoryMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation createUser($createUserInput: CreateUserInput!) {
-  createUser(createUserInput: $createUserInput) {
-    birthDate
-    email
-    gender
-    id
-    name
+  mutation createUser($createUserInput: CreateUserInput!) {
+    createUser(createUserInput: $createUserInput) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+    }
   }
-}
-    `;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+`;
+export type CreateUserMutationFn = Apollo.MutationFunction<
+  CreateUserMutation,
+  CreateUserMutationVariables
+>;
 
 /**
  * __useCreateUserMutation__
@@ -685,18 +780,22 @@ export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutati
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const LoginDocument = gql`
-    mutation login($loginDto: AuthEmailLoginInput!) {
-  login(loginDto: $loginDto) {
-    birthDate
-    email
-    gender
-    id
-    name
-    token
+  mutation login($loginDto: AuthEmailLoginInput!) {
+    login(loginDto: $loginDto) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+      token
+    }
   }
-}
-    `;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+`;
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
 
 /**
  * __useLoginMutation__
@@ -753,18 +852,22 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
-    mutation register($registerDto: AuthEmailRegisterInput!) {
-  register(registerDto: $registerDto) {
-    birthDate
-    email
-    gender
-    id
-    name
-    token
+  mutation register($registerDto: AuthEmailRegisterInput!) {
+    register(registerDto: $registerDto) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+      token
+    }
   }
-}
-    `;
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+`;
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
 
 /**
  * __useRegisterMutation__
@@ -898,17 +1001,21 @@ export type RemoveTaskMutationHookResult = ReturnType<typeof useRemoveTaskMutati
 export type RemoveTaskMutationResult = Apollo.MutationResult<RemoveTaskMutation>;
 export type RemoveTaskMutationOptions = Apollo.BaseMutationOptions<RemoveTaskMutation, RemoveTaskMutationVariables>;
 export const RemoveUserDocument = gql`
-    mutation removeUser($id: Int!) {
-  removeUser(id: $id) {
-    birthDate
-    email
-    gender
-    id
-    name
+  mutation removeUser($id: Int!) {
+    removeUser(id: $id) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+    }
   }
-}
-    `;
-export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, RemoveUserMutationVariables>;
+`;
+export type RemoveUserMutationFn = Apollo.MutationFunction<
+  RemoveUserMutation,
+  RemoveUserMutationVariables
+>;
 
 /**
  * __useRemoveUserMutation__
@@ -1142,17 +1249,21 @@ export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutati
 export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
 export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation updateUser($updateUserInput: UpdateUserInput!) {
-  updateUser(updateUserInput: $updateUserInput) {
-    birthDate
-    email
-    gender
-    id
-    name
+  mutation updateUser($updateUserInput: UpdateUserInput!) {
+    updateUser(updateUserInput: $updateUserInput) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+    }
   }
-}
-    `;
-export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+`;
+export type UpdateUserMutationFn = Apollo.MutationFunction<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
 
 /**
  * __useUpdateUserMutation__
@@ -1207,25 +1318,52 @@ export const FindCategoryByPrefixDocument = gql`
  *   },
  * });
  */
-export function useFindCategoryByPrefixQuery(baseOptions: Apollo.QueryHookOptions<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>(FindCategoryByPrefixDocument, options);
-      }
-export function useFindCategoryByPrefixLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>(FindCategoryByPrefixDocument, options);
-        }
-export type FindCategoryByPrefixQueryHookResult = ReturnType<typeof useFindCategoryByPrefixQuery>;
-export type FindCategoryByPrefixLazyQueryHookResult = ReturnType<typeof useFindCategoryByPrefixLazyQuery>;
-export type FindCategoryByPrefixQueryResult = Apollo.QueryResult<FindCategoryByPrefixQuery, FindCategoryByPrefixQueryVariables>;
-export const GetCategoriesDocument = gql`
-    query getCategories {
-  getCategories {
-    name
-    id
-  }
+export function useFindCategoryByPrefixQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >(FindCategoryByPrefixDocument, options);
 }
-    `;
+export function useFindCategoryByPrefixLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FindCategoryByPrefixQuery,
+    FindCategoryByPrefixQueryVariables
+  >(FindCategoryByPrefixDocument, options);
+}
+export type FindCategoryByPrefixQueryHookResult = ReturnType<
+  typeof useFindCategoryByPrefixQuery
+>;
+export type FindCategoryByPrefixLazyQueryHookResult = ReturnType<
+  typeof useFindCategoryByPrefixLazyQuery
+>;
+export type FindCategoryByPrefixQueryResult = Apollo.QueryResult<
+  FindCategoryByPrefixQuery,
+  FindCategoryByPrefixQueryVariables
+>;
+export const GetCategoriesDocument = gql`
+  query getCategories {
+    getCategories {
+      color {
+        hexCode
+        id
+      }
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useGetCategoriesQuery__
@@ -1242,17 +1380,40 @@ export const GetCategoriesDocument = gql`
  *   },
  * });
  */
-export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-      }
-export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-        }
-export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
-export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
-export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export function useGetCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetCategoriesQuery,
+    GetCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(
+    GetCategoriesDocument,
+    options
+  );
+}
+export function useGetCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCategoriesQuery,
+    GetCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(
+    GetCategoriesDocument,
+    options
+  );
+}
+export type GetCategoriesQueryHookResult = ReturnType<
+  typeof useGetCategoriesQuery
+>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<
+  typeof useGetCategoriesLazyQuery
+>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<
+  GetCategoriesQuery,
+  GetCategoriesQueryVariables
+>;
 export const GetColorsDocument = gql`
     query getColors {
   getColors {
@@ -1431,16 +1592,17 @@ export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
 export type GetTasksLazyQueryHookResult = ReturnType<typeof useGetTasksLazyQuery>;
 export type GetTasksQueryResult = Apollo.QueryResult<GetTasksQuery, GetTasksQueryVariables>;
 export const MeDocument = gql`
-    query me {
-  me {
-    birthDate
-    email
-    gender
-    id
-    name
+  query me {
+    me {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useMeQuery__

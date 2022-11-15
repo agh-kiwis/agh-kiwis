@@ -32,6 +32,7 @@ import {
   startToTime,
 } from '@agh-kiwis/moment-service';
 import { CommonButton } from '@agh-kiwis/ui-components';
+import { DESCRIPTIVE_DATE_FORMAT } from '@agh-kiwis/workspace-constants';
 import { Header } from '../../Common/Header';
 import { TaskBreakdowns } from './TaskBreakdowns';
 
@@ -139,7 +140,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                     {task.isFloat && (
                       <Tr>
                         <Td>Deadline:</Td>
-                        <Td>{deadlineToDate(task.deadline!, 'DD MMM YYYY')}</Td>
+                        <Td>
+                          {deadlineToDate(
+                            task.deadline!,
+                            DESCRIPTIVE_DATE_FORMAT
+                          )}
+                        </Td>
                       </Tr>
                     )}
                     {!task.isFloat && (
@@ -150,7 +156,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                             {startToDate(
                               task.taskBreakdowns &&
                                 task.taskBreakdowns[0].start,
-                              'DD MMM YYYY'
+                              DESCRIPTIVE_DATE_FORMAT
                             )}
                           </Td>
                         </Tr>

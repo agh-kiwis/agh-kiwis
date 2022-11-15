@@ -9,9 +9,13 @@ export const setCookie = (
 ) => {
   context.res.cookie(configService.get('auth.cookie_name'), token, {
     maxAge: configService.get('auth.cookie_refresh_duration'),
-    domain: configService.get('auth.cookie_domain'),
+    // domain: configService.get('auth.cookie_domain'),
     // This header prevents extracting cookie from client's browser by third-party script
     httpOnly: configService.get('app.production'),
+    // THIS IS REALLY UNSAFE but isn't working without that
+    // sameSite: 'None',
+    // THIS IS REALLY WEIRD
+    domain: configService.get('auth.cookie_domain'),
     secure: configService.get('app.production'),
   });
 };

@@ -4,6 +4,7 @@ mutation removeUser($id: Int!) {
     email
     gender
     id
+    introductionCompleted
     name
   }
 }

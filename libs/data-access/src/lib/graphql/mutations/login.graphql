@@ -4,6 +4,7 @@ mutation login($loginDto: AuthEmailLoginInput!) {
     email
     gender
     id
+    introductionCompleted
     name
     token
   }
