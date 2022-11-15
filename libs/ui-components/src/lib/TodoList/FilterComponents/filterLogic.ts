@@ -56,25 +56,25 @@ export const updateFilter = (
 export interface MappedFilter {
   type: boolean | undefined;
   status: boolean | undefined;
-  category: number[] | undefined;
-  priority: string[] | undefined;
+  categories: number[] | undefined;
+  priorities: string[] | undefined;
 }
 
 export const mapToGraphQLFields = (
-  filterOptions: MappedFilter,
+  mappedFilter: MappedFilter,
   filters: FilterInterface[]
 ) => {
   filters.forEach((filter: FilterInterface) => {
     if (filter.name === FilterNames.Type)
-      filterOptions.type = typeHandler(filter.options);
+      mappedFilter.type = typeHandler(filter.options);
     else if (filter.name === FilterNames.Status)
-      filterOptions.status = statusHandler(filter.options);
+      mappedFilter.status = statusHandler(filter.options);
     else if (filter.name === FilterNames.Category)
-      filterOptions.category = categoryHandler(filter.options);
+      mappedFilter.categories = categoryHandler(filter.options);
     else if (filter.name === FilterNames.Priority)
-      filterOptions.priority = priorityHandler(filter.options);
+      mappedFilter.priorities = priorityHandler(filter.options);
   });
-  return filterOptions;
+  return mappedFilter;
 };
 
 const typeHandler = (optionsArray: FilterType) => {
@@ -90,13 +90,10 @@ const statusHandler = (optionsArray: FilterType) => {
 };
 
 export const categoryHandler = (optionsArray: FilterType) => {
-  if (categories_map && optionsArray.length === 0) {
-    return Array.from(categories_map.values());
+  if (optionsArray.length === 0) {
+    return undefined;
   }
   const ids: number[] = [];
-  // if (optionsArray.length === 0) {
-  //   return Array.from(Array(100).keys());
-  // }
   optionsArray.map((opt) => {
     if (categories_map.has(opt)) {
       ids.push(categories_map.get(opt)!);

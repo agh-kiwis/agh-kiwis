@@ -22,9 +22,9 @@ const TodoList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { filters, setFilters } = useFilters();
 
-  const [filterOptions, setFilterOptions] = useState<MappedFilter>(
+  const [mappedFilter, setMappedFilter] = useState<MappedFilter>(
     mapToGraphQLFields(
-      { type: undefined, status: undefined, category: [], priority: [] },
+      { type: undefined, status: undefined, categories: [], priorities: [] },
       filters
     )
   );
@@ -35,10 +35,10 @@ const TodoList: React.FC = () => {
         limit: 20,
         offset: 0,
         filterOptions: {
-          isDone: filterOptions.status,
-          isFloat: filterOptions.type,
-          category: filterOptions.category,
-          priority: filterOptions.priority,
+          isDone: mappedFilter.status,
+          isFloat: mappedFilter.type,
+          category: mappedFilter.categories,
+          priority: mappedFilter.priorities,
         },
       },
     },
@@ -66,8 +66,8 @@ const TodoList: React.FC = () => {
         setFilters={setFilters}
         isOpen={open}
         close={() => setOpen(false)}
-        filterOptions={filterOptions}
-        setFilterOptions={setFilterOptions}
+        mappedFilter={mappedFilter}
+        setMappedFilter={setMappedFilter}
       />
     </>
   );

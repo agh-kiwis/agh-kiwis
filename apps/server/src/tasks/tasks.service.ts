@@ -98,8 +98,12 @@ export class TasksService {
       where: {
         user: user,
         ...getTasksInput.filterOptions,
-        category: In(getTasksInput.filterOptions.category),
-        priority: In(getTasksInput.filterOptions.priority),
+        ...(getTasksInput.filterOptions.category && {
+          category: In(getTasksInput.filterOptions.category),
+        }),
+        ...(getTasksInput.filterOptions.priority && {
+          priority: In(getTasksInput.filterOptions.priority),
+        }),
       },
       skip: getTasksInput.offset * getTasksInput.limit,
       take: getTasksInput.limit,

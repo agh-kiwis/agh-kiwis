@@ -6,11 +6,7 @@ import {
 import { FilterNames, Priority } from './filterConstants';
 
 export const useFilters = () => {
-  const { data, loading, error } = useGetCategoriesQuery({
-    onCompleted: () => console.log(data),
-  });
-
-  console.log(data);
+  const { data, loading, error } = useGetCategoriesQuery({});
 
   const getCategories = (data: GetCategoriesQuery) => {
     const categories: string[] = [];

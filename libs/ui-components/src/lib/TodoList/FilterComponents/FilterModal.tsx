@@ -18,8 +18,8 @@ type FilterModalProps = {
   close: () => void;
   filters: FilterInterface[];
   setFilters: Dispatch<SetStateAction<FilterInterface[]>>;
-  filterOptions: MappedFilter;
-  setFilterOptions: Dispatch<SetStateAction<MappedFilter>>;
+  mappedFilter: MappedFilter;
+  setMappedFilter: Dispatch<SetStateAction<MappedFilter>>;
 };
 
 export const FilterModal: React.FC<FilterModalProps> = ({
@@ -27,8 +27,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   close,
   filters,
   setFilters,
-  filterOptions,
-  setFilterOptions,
+  mappedFilter,
+  setMappedFilter,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={close}>
@@ -46,7 +46,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           </Button>
           <Button
             onClick={() => {
-              setFilterOptions(mapToGraphQLFields(filterOptions, filters));
+              setMappedFilter(mapToGraphQLFields(mappedFilter, filters));
               close();
             }}
           >
