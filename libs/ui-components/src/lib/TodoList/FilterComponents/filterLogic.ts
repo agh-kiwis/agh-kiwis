@@ -95,7 +95,7 @@ export const categoryHandler = (optionsArray: FilterType) => {
   }
   const ids: number[] = [];
   optionsArray.map((opt) => {
-    if (categories_map.has(opt)) {
+    if (categories_map && categories_map.has(opt)) {
       ids.push(categories_map.get(opt)!);
     }
   });
