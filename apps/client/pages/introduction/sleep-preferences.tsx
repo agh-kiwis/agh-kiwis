@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
-import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
+import {
+  useAddConstTaskMutation,
+  useGetCategoriesQuery,
+} from '@agh-kiwis/data-access';
 import { SleepPreferencesType } from '@agh-kiwis/types';
 import {
   CommonButton,
+  CustomSpinner,
   InputField,
   Logo,
   Wrapper,
@@ -14,18 +18,24 @@ import { initialSleepPreferences } from '../../formConfig/introductionInitialVal
 
 const SleepPreferences: React.FC = () => {
   const router = useRouter();
+  const { data, loading } = useGetCategoriesQuery();
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const onSubmit = (sleepPreferences: SleepPreferencesType) => {
     addConstTaskMutation({
       variables: {
-        createConstTaskInput:
-          mapSleepPreferencesToAddConstTaskMutation(sleepPreferences),
+        createConstTaskInput: mapSleepPreferencesToAddConstTaskMutation(
+          sleepPreferences,
+          data?.getCategories?.find((category) => category.name === 'Sleep')
+        ),
       },
     });
     router.push('/introduction/meals/breakfast');
   };
 
+  if (loading) {
+    return <CustomSpinner />;
+  }
   return (
     <Wrapper>
       <Logo textVisible={false} />

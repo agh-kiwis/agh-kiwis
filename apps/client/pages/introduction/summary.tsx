@@ -21,7 +21,9 @@ import {
 const IntroductionSummary: React.FC = () => {
   const { data, loading } = useGetTasksQuery({
     variables: {
-      getTasksInput: {},
+      getTasksInput: {
+        filterOptions: {},
+      },
     },
   });
 

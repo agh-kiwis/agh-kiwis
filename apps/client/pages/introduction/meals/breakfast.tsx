@@ -1,6 +1,9 @@
-import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
+import {
+  useAddConstTaskMutation,
+  useGetCategoriesQuery,
+} from '@agh-kiwis/data-access';
 import { ConstTaskType } from '@agh-kiwis/types';
-import { ConstTaskForm } from '@agh-kiwis/ui-components';
+import { ConstTaskForm, CustomSpinner } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
   durationInputFields,
@@ -11,6 +14,7 @@ import { initialBreakfastPreferences } from '../../../formConfig/introductionIni
 import { handleConstTaskSubmit } from '../../../services/taskService';
 
 const Breakfast: React.FC = () => {
+  const { data, loading } = useGetCategoriesQuery();
   const [addConstTaskMutation] = useAddConstTaskMutation();
 
   const handleSubmit = async (values: ConstTaskType) => {
@@ -21,9 +25,14 @@ const Breakfast: React.FC = () => {
     );
   };
 
+  if (loading) {
+    return <CustomSpinner />;
+  }
   return (
     <ConstTaskForm
-      initialValues={initialBreakfastPreferences}
+      initialValues={initialBreakfastPreferences(
+        data?.getCategories?.find((category) => category.name === 'Meals')
+      )}
       durationInputFields={durationInputFields}
       chillTimeInputFields={chillTimeInputFields}
       repeatEverySelectField={repeatEverySelectField}

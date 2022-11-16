@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {
+  Category,
   CreateConstTaskInput,
   RepeatType,
   UpdateUserInput,
@@ -23,7 +24,8 @@ export const mapUserDetailsToUpdateUserMutation = (
 });
 
 export const mapSleepPreferencesToAddConstTaskMutation = (
-  sleepPreferences: SleepPreferencesType
+  sleepPreferences: SleepPreferencesType,
+  category: Category
 ): CreateConstTaskInput => {
   const sleepDuration = getDurationBetweenTwoDates(
     sleepPreferences.sleep,
@@ -31,7 +33,7 @@ export const mapSleepPreferencesToAddConstTaskMutation = (
   );
   return {
     category: {
-      id: 1,
+      id: category.id,
     },
     chillTime: getIntervalISOString({ minutes: 10 }),
     duration: getIntervalISOString({

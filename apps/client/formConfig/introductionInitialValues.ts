@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Category } from '@agh-kiwis/data-access';
 import {
   ConstTaskType,
   SleepPreferencesType,
@@ -16,12 +17,14 @@ export const initialSleepPreferences: SleepPreferencesType = {
   wakeUp: moment({ hour: 7 }).format('HH:mm'),
 };
 
-export const initialBreakfastPreferences: ConstTaskType = {
+export const initialBreakfastPreferences = (
+  category: Category
+): ConstTaskType => ({
   type: 'const',
   category: {
-    id: 2,
-    name: 'Meals',
-    color: '#E0479E',
+    id: category.id,
+    name: category.name,
+    color: category.color.hexCode,
   },
   taskName: 'Breakfast',
   startTime: {
@@ -50,14 +53,16 @@ export const initialBreakfastPreferences: ConstTaskType = {
   repeatEveryFacade: '',
   notify: false,
   autoResolve: false,
-};
+});
 
-export const initialDinnerPreferences: ConstTaskType = {
+export const initialDinnerPreferences = (
+  category: Category
+): ConstTaskType => ({
   type: 'const',
   category: {
-    id: 2,
-    name: 'Meals',
-    color: '#E0479E',
+    id: category.id,
+    name: category.name,
+    color: category.color.hexCode,
   },
   taskName: 'Dinner',
   startTime: {
@@ -86,14 +91,16 @@ export const initialDinnerPreferences: ConstTaskType = {
   repeatEveryFacade: '',
   notify: false,
   autoResolve: false,
-};
+});
 
-export const initialSupperPreferences: ConstTaskType = {
+export const initialSupperPreferences = (
+  category: Category
+): ConstTaskType => ({
   type: 'const',
   category: {
-    id: 2,
-    name: 'Meals',
-    color: '#E0479E',
+    id: category.id,
+    name: category.name,
+    color: category.color.hexCode,
   },
   taskName: 'Supper',
   startTime: {
@@ -122,4 +129,4 @@ export const initialSupperPreferences: ConstTaskType = {
   repeatEveryFacade: '',
   notify: false,
   autoResolve: false,
-};
+});
