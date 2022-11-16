@@ -53,13 +53,13 @@ export class Task extends GeneralEntity {
   @Column()
   isFloat: boolean;
 
-  // TODO This needs to be renamed
+  // TODO This needs to be renamed and or removed
   @Field({
     nullable: true,
     description:
       'Information about timings. TaskBreakdown is a connection for task with real time, and chunkInfo stores all needed for that planning data. Const tasks have stale one chunk, while floats can have many chunks. Chunk represents task in time. This field contains chunk preferences for the concrete task.',
   })
-  @OneToOne(() => ChunkInfo, { eager: true })
+  @OneToOne(() => ChunkInfo, { eager: true, cascade: true })
   @JoinColumn()
   chunkInfo: ChunkInfo;
 

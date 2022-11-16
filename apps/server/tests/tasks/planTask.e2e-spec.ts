@@ -57,10 +57,12 @@ describe('PlanTask (e2e)', () => {
         },
       },
     });
-    let taskBreakdown = TaskBreakdown.create({
+
+    const taskBreakdown = await TaskBreakdown.create({
       duration: params.duration || moment.duration(1, 'hour'),
       task: task,
-    });
+      start: params.start,
+    }).save();
 
     task.taskBreakdowns = [taskBreakdown];
 
@@ -237,6 +239,39 @@ describe('PlanTask (e2e)', () => {
       user: user,
     }).save();
 
+    // Now let's simulate already planned float task:
+
+    const prepareForLogicExam = Task.create({
+      name: 'Prepare for Logic',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      chunkInfo: {
+        start: new Date(2022, 11, 14),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(3, 'hour'),
+        deadline: new Date(2022, 11, 15, 0, 0),
+        chillTime: moment.duration(15, 'minutes'),
+      },
+    });
+
+    prepareForLogicExam.user = Promise.resolve(user);
+    await prepareForLogicExam.save();
+
+    // Create task breakdowns for the above task
+
+    await TaskBreakdown.create({
+      duration: moment.duration(1, 'hour'),
+      task: prepareForLogicExam,
+      start: new Date(2022, 11, 14, 20),
+    }).save();
+
+    await TaskBreakdown.create({
+      duration: moment.duration(1, 'hour'),
+      task: prepareForLogicExam,
+      start: new Date(2022, 11, 15, 20),
+    }).save();
+
     const prepareForASD = Task.create({
       name: 'Prepare for Algorithms and Data Structures exam',
       category: preparationCategory,
@@ -256,6 +291,6 @@ describe('PlanTask (e2e)', () => {
 
     // plan task
 
-    await planTask(prepareForASD, prepareForASD.chunkInfo);
+    await planTask(prepareForASD);
   });
 });

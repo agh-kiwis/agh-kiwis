@@ -1,26 +1,23 @@
-import { Between, createQueryBuilder } from 'typeorm';
+import { createQueryBuilder } from 'typeorm';
 import moment from 'moment';
 import { Logger } from '@nestjs/common';
-import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
 
-// There we will have CONSTS that define the app behaviour
+const WEEKS_TO_ADD = 2;
 
-const MAX_TASKS_PER_DAY = 10;
-const MORNING_START = 8;
-const MORNING_END = 24;
-
-export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
+export const planTask = async (task: Task) => {
   if (!task || !task.isFloat) {
     throw new Error('No task to plan or task is not a float task.');
   }
 
   // Get current user or raise error
-  const user = task.user;
+  const user = await task.user;
   if (!user) {
     throw new Error('No user found for task.');
   }
+
+  const chunkInfoToPrint = task.chunkInfo;
 
   // Check that start date is in the future
   if (task.chunkInfo.start && moment(task.chunkInfo.start).isBefore(moment())) {
@@ -28,8 +25,6 @@ export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
   }
 
   Logger.log(`Started task planner for : ${task.id}`);
-
-  console.log("Hello there");
 
   // We need to create a transaction for the sake of integrity of operations
   const queryRunner = createQueryBuilder().connection.createQueryRunner();
@@ -40,85 +35,57 @@ export const planTask = async (task: Task, chunkInfo: ChunkInfo) => {
 
   // Add 2 weeks to the task.chunkInfo.start
   // This should be customizable
-  const endDate = moment(task.chunkInfo.start).add(2, 'weeks').toDate();
+  const endDate = moment(task.chunkInfo.start)
+    .add(WEEKS_TO_ADD, 'weeks')
+    .toDate();
 
-  // const floatTasks = await queryRunner.manager.find(Task, {
-  //   where: {
-  //     user,
-  //     isFloat: true,
-  //     taskBreakdowns: {
-  //       start: Between(task.chunkInfo.start, endDate),
-  //     },
-  //   },
-  // });
+  // Get float tasks for which one of the breakdowns is in the given range
 
-  await queryRunner.manager.delete(TaskBreakdown, { task: task});
-  await TaskBreakdown.delete({ task: task });
-
-  //   So we just go from start date and if we can fit task over there, than fit, else just jump over that task + gap between tasks, and repeat again.
-
-  // Get tasks from start to deadline date
-  const tasksInBetween = await createQueryBuilder<TaskBreakdown>(
-    'TaskBreakdown'
-  )
-    .leftJoin('TaskBreakdown.task', 'task')
-    .where(
-      'TaskBreakdown.start >= :start and TaskBreakdown.start <= :deadline',
-      {
-        start: chunkInfo.start,
-        deadline: chunkInfo.deadline,
-      }
-    )
-    .andWhere('task.user = :user_id', { user_id: (await task.user).id })
-    .orderBy('TaskBreakdown.start', 'ASC')
+  const allTasks = await queryRunner.manager
+    .createQueryBuilder(Task, 'task')
+    .innerJoinAndSelect('task.taskBreakdowns', 'taskBreakdown')
+    .where('task.userId = :userId', { userId: user.id })
+    .andWhere('taskBreakdown.start BETWEEN :start AND :end', {
+      start: task.chunkInfo.start,
+      end: endDate,
+    })
     .getMany();
 
-  // Initialize with 0 duration
-  const timeOverall = moment.duration(0);
+  // Get only float tasks from the above list
+  const floatTasks = allTasks.filter((task) => task.isFloat);
+  const constTasks = allTasks.filter((task) => !task.isFloat);
 
-  const taskBreakDowns: TaskBreakdown[] = [];
-  // Now Check the first task, and if it is more
-  const time = moment(chunkInfo.start);
-  // Iterate for every 5 minutes from start to deadline
-  while (time.isBefore(chunkInfo.deadline)) {
-    // Check if we can fit the task here
+  console.log({ floatTasks });
 
-    // IF we can't fit the task, just jump over it and continue
-    if (fits(time, chunkInfo.maxChunkDuration, tasksInBetween)) {
-      taskBreakDowns.push(
-        TaskBreakdown.create({
-          task: task,
-          start: time.toDate(),
-          duration: chunkInfo.maxChunkDuration,
-        })
-      );
-      timeOverall.add(chunkInfo.maxChunkDuration);
-      time.add(chunkInfo.chillTime);
-    } else {
-      time.add(moment.duration({ minutes: 5 }));
-    }
-    if (timeOverall >= chunkInfo.estimation) {
-      // Fill the table with data and break
-      await TaskBreakdown.save(taskBreakDowns);
-      break;
-    }
-  }
+  // Delete taskBreakdowns for the given float tasks
+  await queryRunner.manager
+    .createQueryBuilder()
+    .delete()
+    .from(TaskBreakdown)
+    .where('taskId IN (:...ids)', { ids: floatTasks.map((t) => t.id) })
+    .execute();
+
+  const taskIdAndWeightMap = new Map();
+  floatTasks.forEach((task) => {
+    taskIdAndWeightMap.set(task.id, getTaskWeight(task));
+  });
+
+  // Sort tasks by weight
+  const sortedTasks = floatTasks.sort((a, b) => {
+    const weightA = taskIdAndWeightMap.get(a.id);
+    const weightB = taskIdAndWeightMap.get(b.id);
+    return weightA - weightB;
+  });
+
+  // Algorithm continuation...
+
+
+
+  // Commit transaction
+  await queryRunner.commitTransaction();
 };
 
-export const fits = (
-  time: moment.Moment,
-  duration: moment.Duration,
-  tasksInBetween: TaskBreakdown[]
-) => {
-  // Check if we can fit the task here
-  for (const breakDown of tasksInBetween) {
-    const breakDownEnd = moment(breakDown.start).add(breakDown.duration);
-    if (
-      time.isBetween(breakDown.start, breakDownEnd) ||
-      time.add(duration).isBetween(breakDown.start, breakDownEnd)
-    ) {
-      return false;
-    }
-  }
-  return true;
+const getTaskWeight = (task: Task) => {
+  // TODO Implement
+  return 2;
 };
