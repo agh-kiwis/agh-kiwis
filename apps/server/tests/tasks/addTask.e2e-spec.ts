@@ -5,6 +5,7 @@ import { AppModule } from '../../src/app/app.module';
 import connection from '../connection';
 import { makeRequest } from '../testUtils';
 
+
 describe('Tasks (e2e)', () => {
   let app: INestApplication | any;
 
@@ -48,15 +49,13 @@ describe('Tasks (e2e)', () => {
           priority: "high"
         }
       ) {
-        chillTime
         chunkInfo {
-          id
+          chillTime
           maxChunkDuration
+          deadline
+          estimation
           minChunkDuration
-          minTimeBetweenChunks
         }
-        deadline
-        estimation
         id
         isDone
         isFloat
@@ -69,11 +68,6 @@ describe('Tasks (e2e)', () => {
         taskBreakdowns {
           duration
           isDone
-          repeat {
-            repeatEvery
-            repeatType
-            startFrom
-          }
           start
         }
       }
@@ -94,10 +88,13 @@ describe('Tasks (e2e)', () => {
       });
 
       expect(addConstTask).toEqual({
-        chillTime: 'P3Y6M4DT12H30M5S',
-        chunkInfo: null,
-        deadline: null,
-        estimation: null,
+        chunkInfo: {
+          chillTime: 'P3Y6M4DT12H30M5S',
+          maxChunkDuration: null,
+          deadline: null,
+          estimation: null,
+          minChunkDuration: null
+        },
         id: 1,
         isDone: false,
         isFloat: false,

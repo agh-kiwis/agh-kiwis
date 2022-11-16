@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
+import { Field, InputType } from '@nestjs/graphql';
 import { Interval } from '../../utils/interval.scalar';
 
 @InputType()
@@ -8,7 +8,7 @@ export class ChunkInfoInput {
   @Field(() => Interval)
   minTimeBetweenChunks: Duration;
 
-  @Field(() => Interval)
+  @Field(() => Interval, { nullable: true })
   minChunkDuration: Duration;
 
   @Field(() => Interval)

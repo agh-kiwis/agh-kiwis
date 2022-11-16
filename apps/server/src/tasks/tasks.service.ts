@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server-errors';
-import { Duration } from 'moment';
+import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -16,6 +16,7 @@ import { Repeat } from './entities/repeat.entity';
 import { Task } from './entities/task.entity';
 import { TaskBreakdown } from './entities/taskBreakdown.entity';
 
+
 @Injectable()
 export class TasksService {
   async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
@@ -30,11 +31,18 @@ export class TasksService {
       createConstTaskInput.timeBeforeNotification
     );
 
+    console.log("BEFOREALAL");
+    console.log(createConstTaskInput);
+    const chunkInfo = await ChunkInfo.create({
+      ...createConstTaskInput,
+    }).save();
+    console.log("AFTER");
+
     let task = Task.create({
       category: category,
       isFloat: false,
+      chunkInfo: chunkInfo,
       name: createConstTaskInput.name,
-      chillTime: createConstTaskInput.chillTime,
       notifications: notification,
       priority: createConstTaskInput.priority,
       shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
@@ -42,11 +50,12 @@ export class TasksService {
 
     task.user = Promise.resolve(user);
 
+    task.chunkInfo.repeat = repeat;
+
     task = await task.save();
 
     await TaskBreakdown.create({
       task: task,
-      repeat: repeat,
       duration: createConstTaskInput.duration,
       start: createConstTaskInput.start,
     }).save();
@@ -65,6 +74,7 @@ export class TasksService {
     );
 
     const chunkInfo = await ChunkInfo.create({
+      ...createFloatTaskInput,
       ...createFloatTaskInput.chunkInfo,
       start: createFloatTaskInput.start,
     }).save();
@@ -73,11 +83,8 @@ export class TasksService {
       category: category,
       isFloat: true,
       name: createFloatTaskInput.name,
-      chillTime: createFloatTaskInput.chillTime,
       notifications: notification,
       priority: createFloatTaskInput.priority,
-      deadline: createFloatTaskInput.deadline,
-      estimation: createFloatTaskInput.estimation,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
     });
@@ -133,7 +140,7 @@ export class TasksService {
     task.category = category;
     task.isFloat = false;
     task.name = updateTaskInput.name;
-    task.chillTime = updateTaskInput.chillTime;
+    task.chunkInfo.chillTime = updateTaskInput.chillTime;
     task.notifications = notification;
     task.priority = updateTaskInput.priority;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
@@ -149,9 +156,10 @@ export class TasksService {
     let repeat: Repeat;
     if (updateTaskInput.repeat) {
       repeat = await Repeat.create(updateTaskInput.repeat).save();
+      task.chunkInfo.repeat = repeat;
+      await task.save();
     }
 
-    taskBreakdown.repeat = repeat;
     taskBreakdown.duration = updateTaskInput.duration;
     taskBreakdown.start = updateTaskInput.start;
 
@@ -177,16 +185,16 @@ export class TasksService {
     const chunkInfo = await ChunkInfo.create({
       ...updateTaskInput.chunkInfo,
       start: updateTaskInput.start,
+      chillTime: updateTaskInput.chillTime,
+      deadline: updateTaskInput.deadline,
+      estimation: updateTaskInput.estimation,
     }).save();
 
     task.category = category;
     task.isFloat = true;
     task.name = updateTaskInput.name;
-    task.chillTime = updateTaskInput.chillTime;
     task.notifications = notification;
     task.priority = updateTaskInput.priority;
-    task.deadline = updateTaskInput.deadline;
-    task.estimation = updateTaskInput.estimation;
     task.chunkInfo = chunkInfo;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
 

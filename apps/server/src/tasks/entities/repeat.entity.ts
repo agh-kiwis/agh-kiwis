@@ -9,15 +9,12 @@ export enum RepeatType {
   YEARS = 'Years',
 }
 
+// TODO This needs to be converted to a virtual entity with no db connection.
 @Entity()
 @ObjectType({ description: 'Applicable only to const tasks repeat property.' })
 export class Repeat extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Field()
-  @Column({ type: 'timestamp with time zone' })
-  startFrom: Date;
 
   @Field()
   @Column({ type: 'int' })

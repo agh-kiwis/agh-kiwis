@@ -1,6 +1,6 @@
 import { IsEnum } from 'class-validator';
-import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
+import { Field, InputType } from '@nestjs/graphql';
 import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Priority } from '../entities/priority.enum';

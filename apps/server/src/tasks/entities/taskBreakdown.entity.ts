@@ -36,9 +36,4 @@ export class TaskBreakdown extends GeneralEntity {
     onDelete: 'CASCADE',
   })
   task: Task;
-
-  @Field({ nullable: true })
-  @OneToOne(() => Repeat)
-  @JoinColumn()
-  repeat?: Repeat;
 }

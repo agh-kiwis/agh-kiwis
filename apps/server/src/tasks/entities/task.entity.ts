@@ -9,13 +9,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Duration } from 'moment';
 import { Category } from '../../categories/entities/category.entity';
-import { IntervalColumn } from '../../types/IntervalColumn';
 import { User } from '../../users/entities/user.entity';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { NullableField } from '../../utils/NullableField';
-import { Interval } from '../../utils/interval.scalar';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
 import { TaskBreakdown } from './taskBreakdown.entity';
@@ -42,7 +39,6 @@ export class Task extends GeneralEntity {
   @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 
-  // TODO Think if this needs to be enum
   @Field(() => String, {
     description:
       'Priority is created by admins and can not be changed by users.',
@@ -57,21 +53,23 @@ export class Task extends GeneralEntity {
   @Column()
   isFloat: boolean;
 
+  // TODO This needs to be renamed
   @Field({
     nullable: true,
     description:
-      'Chunk is a connection for task with real time. Const tasks have stale one chunk, while floats can have many chunks. Chunk represents task in time. This field contains chunk preferences for the concrete task.',
+      'Information about timings. TaskBreakdown is a connection for task with real time, and chunkInfo stores all needed for that planning data. Const tasks have stale one chunk, while floats can have many chunks. Chunk represents task in time. This field contains chunk preferences for the concrete task.',
   })
   @OneToOne(() => ChunkInfo, { eager: true })
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
-  @Field(() => Interval, {
+  // TODO Rename this to chunks
+  @NullableField(() => [TaskBreakdown], {
     description:
-      'A minimum time gap that user wants to have between this task and another tasks.',
+      'Represents task in time, should be named chunk instead. Preferences are in ChunkInfo field.',
   })
-  @IntervalColumn()
-  chillTime: Duration;
+  @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)
+  taskBreakdowns: TaskBreakdown[];
 
   @Field({
     description:
@@ -87,27 +85,6 @@ export class Task extends GeneralEntity {
   // TODO Convert this to view later on
   @Column({ default: false })
   isDone: boolean;
-
-  @NullableField(() => Interval, {
-    description:
-      'Estimation on how much time this task would take. This can change in time and according to that value planning algorithm (in case of float tasks) will replan the task.',
-  })
-  @IntervalColumn({ nullable: true })
-  estimation: Duration;
-
-  @NullableField(() => String, {
-    description: 'Point in time when the whole task needs to be done.',
-  })
-  @Column({ type: 'timestamp with time zone', nullable: true })
-  deadline?: Date;
-
-  // TODO Rename this to chunks
-  @NullableField(() => [TaskBreakdown], {
-    description:
-      'Represents task in time, should be named chunk instead. Preferences are in ChunkInfo field.',
-  })
-  @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)
-  taskBreakdowns: TaskBreakdown[];
 
   @NullableField(() => Notification, {
     description: 'Notification preferences.',
