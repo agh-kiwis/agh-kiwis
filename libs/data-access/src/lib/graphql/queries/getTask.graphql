@@ -8,16 +8,24 @@ query getTask($id: String!) {
       id
       name
     }
-    chillTime
     chunkInfo {
+      chillTime
+      deadline
+      estimation
       id
       maxChunkDuration
       minChunkDuration
-      minTimeBetweenChunks
+      repeat {
+        repeatEvery
+        repeatType
+      }
       start
     }
-    deadline
-    estimation
+    chunks {
+      duration
+      isDone
+      start
+    }
     id
     isDone
     isFloat
@@ -27,15 +35,5 @@ query getTask($id: String!) {
     }
     priority
     shouldAutoResolve
-    taskBreakdowns {
-      duration
-      isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
-      }
-      start
-    }
   }
 }
