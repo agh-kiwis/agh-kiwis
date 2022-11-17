@@ -3,11 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
+import { Chunk } from '../tasks/entities/chunk.entity';
 import { ChunkInfo } from '../tasks/entities/chunkInfo.entity';
 import { Notification } from '../tasks/entities/notification.entity';
 import { Repeat } from '../tasks/entities/repeat.entity';
 import { Task } from '../tasks/entities/task.entity';
-import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Category,
         Task,
         Repeat,
-        TaskBreakdown,
+        Chunk,
         Color,
         ChunkInfo,
         Notification,

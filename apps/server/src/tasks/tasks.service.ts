@@ -10,12 +10,11 @@ import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
+import { Chunk } from './entities/chunk.entity';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
 import { Repeat } from './entities/repeat.entity';
 import { Task } from './entities/task.entity';
-import { TaskBreakdown } from './entities/taskBreakdown.entity';
-
 
 @Injectable()
 export class TasksService {
@@ -31,12 +30,9 @@ export class TasksService {
       createConstTaskInput.timeBeforeNotification
     );
 
-    console.log("BEFOREALAL");
-    console.log(createConstTaskInput);
     const chunkInfo = await ChunkInfo.create({
       ...createConstTaskInput,
     }).save();
-    console.log("AFTER");
 
     let task = Task.create({
       category: category,
@@ -54,7 +50,7 @@ export class TasksService {
 
     task = await task.save();
 
-    await TaskBreakdown.create({
+    await Chunk.create({
       task: task,
       duration: createConstTaskInput.duration,
       start: createConstTaskInput.start,
@@ -100,7 +96,7 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunks.repeat'],
       where: {
         user: user,
         ...getTasksInput.filterOptions,
@@ -115,7 +111,7 @@ export class TasksService {
 
   async getTask(user: User, id: string) {
     return await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunks.repeat'],
       where: {
         user: user,
         id: id,
@@ -125,7 +121,7 @@ export class TasksService {
 
   async updateConstTask(user: User, updateTaskInput: TaskInput) {
     let task: Task = await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunks.repeat'],
       where: {
         id: updateTaskInput.id,
       },
@@ -147,7 +143,7 @@ export class TasksService {
 
     task = await task.save();
 
-    const taskBreakdown = await TaskBreakdown.findOne({
+    const chunk = await Chunk.findOne({
       where: {
         task: task,
       },
@@ -160,17 +156,17 @@ export class TasksService {
       await task.save();
     }
 
-    taskBreakdown.duration = updateTaskInput.duration;
-    taskBreakdown.start = updateTaskInput.start;
+    chunk.duration = updateTaskInput.duration;
+    chunk.start = updateTaskInput.start;
 
-    await taskBreakdown.save();
+    await chunk.save();
 
     return task;
   }
 
   async updateFloatTask(user: User, updateTaskInput: TaskInput) {
     let task: Task = await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunks.repeat'],
       where: {
         id: updateTaskInput.id,
       },
@@ -209,7 +205,7 @@ export class TasksService {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
     return await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunks.repeat'],
       where: {
         id: updateTaskInput.id,
       },

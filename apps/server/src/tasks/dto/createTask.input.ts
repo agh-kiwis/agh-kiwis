@@ -18,7 +18,7 @@ export class CreateTaskInput {
 
   @Field({
     description:
-      'The time when task should start. This can be different from taskBreakdown.start, as it is just informative data unrelated with real planed entity.',
+      'The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity.',
   })
   start: Date;
 

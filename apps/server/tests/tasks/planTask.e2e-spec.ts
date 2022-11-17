@@ -4,9 +4,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
+import { Chunk } from '../../src/tasks/entities/chunk.entity';
 import { Repeat, RepeatType } from '../../src/tasks/entities/repeat.entity';
 import { Task } from '../../src/tasks/entities/task.entity';
-import { TaskBreakdown } from '../../src/tasks/entities/taskBreakdown.entity';
 import { User } from '../../src/users/entities/user.entity';
 import { planTask } from '../../src/workers/taskPlanner';
 import connection from '../connection';
@@ -58,13 +58,13 @@ describe('PlanTask (e2e)', () => {
       },
     });
 
-    const taskBreakdown = await TaskBreakdown.create({
+    const chunk = await Chunk.create({
       duration: params.duration || moment.duration(1, 'hour'),
       task: task,
       start: params.start,
     }).save();
 
-    task.taskBreakdowns = [taskBreakdown];
+    task.chunks = [chunk];
 
     task.user = Promise.resolve(params.user);
     return await task.save();
@@ -260,13 +260,13 @@ describe('PlanTask (e2e)', () => {
 
     // Create task breakdowns for the above task
 
-    await TaskBreakdown.create({
+    await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: prepareForLogicExam,
       start: new Date(2022, 11, 14, 20),
     }).save();
 
-    await TaskBreakdown.create({
+    await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: prepareForLogicExam,
       start: new Date(2022, 11, 15, 20),

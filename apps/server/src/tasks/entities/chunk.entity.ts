@@ -16,7 +16,7 @@ import { Task } from './task.entity';
 
 @Entity()
 @ObjectType()
-export class TaskBreakdown extends GeneralEntity {
+export class Chunk extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -32,7 +32,7 @@ export class TaskBreakdown extends GeneralEntity {
   @Column({ default: false })
   isDone: boolean;
 
-  @ManyToOne(() => Task, (task) => task.taskBreakdowns, {
+  @ManyToOne(() => Task, (task) => task.chunks, {
     onDelete: 'CASCADE',
   })
   task: Task;

@@ -13,9 +13,9 @@ import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { NullableField } from '../../utils/NullableField';
+import { Chunk } from './chunk.entity';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
-import { TaskBreakdown } from './taskBreakdown.entity';
 
 @ObjectType()
 @Entity()
@@ -57,19 +57,18 @@ export class Task extends GeneralEntity {
   @Field({
     nullable: true,
     description:
-      'Information about timings. TaskBreakdown is a connection for task with real time, and chunkInfo stores all needed for that planning data. Const tasks have stale one chunk, while floats can have many chunks. Chunk represents task in time. This field contains chunk preferences for the concrete task.',
+      'Information about timings. Chunk is a connection for task with real time, and chunkInfo stores all needed for that planning data. Const tasks have stale one chunk, while floats can have many chunks. Chunk represents task in time. This field contains chunk preferences for the concrete task.',
   })
   @OneToOne(() => ChunkInfo, { eager: true, cascade: true })
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
-  // TODO Rename this to chunks
-  @NullableField(() => [TaskBreakdown], {
+  @NullableField(() => [Chunk], {
     description:
       'Represents task in time, should be named chunk instead. Preferences are in ChunkInfo field.',
   })
-  @OneToMany(() => TaskBreakdown, (taskBreakdown) => taskBreakdown.task)
-  taskBreakdowns: TaskBreakdown[];
+  @OneToMany(() => Chunk, (chunk) => chunk.task)
+  chunks: Chunk[];
 
   @Field({
     description:

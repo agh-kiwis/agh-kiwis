@@ -14,7 +14,7 @@ import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Repeat } from './repeat.entity';
 
-// TODO Those fields need to be virtual and better-organized.
+// TODO Those fields need to be virtual later on
 @Entity()
 @ObjectType()
 export class ChunkInfo extends GeneralEntity {
@@ -25,7 +25,7 @@ export class ChunkInfo extends GeneralEntity {
   // Shared properties
   @Field({
     description:
-      'The time when task should start. In case of float tasks this can be different from taskBreakdown.start, as it is just informative data unrelated with real planed entity.',
+      'The time when task should start. In case of float tasks this can be different from chunk.start, as it is just informative data unrelated with real planed entity.',
   })
   @Column({ type: 'timestamp with time zone' })
   start: Date;
@@ -43,7 +43,7 @@ export class ChunkInfo extends GeneralEntity {
 
   @NullableField(() => Repeat, {
     description:
-      'Only to const tasks. Describes how often the task should repeat. When representing task in time, the tasks WILL be duplicated for the sake of easier calculations.',
+      'Only to const tasks. Describes how often the task should repeat. When representing task in time, the chunks WILL be duplicated for the sake of easier calculations.',
   })
   @OneToOne(() => Repeat)
   @JoinColumn()

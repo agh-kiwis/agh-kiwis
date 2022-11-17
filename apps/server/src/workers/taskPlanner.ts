@@ -1,8 +1,8 @@
 import { createQueryBuilder } from 'typeorm';
 import moment from 'moment';
 import { Logger } from '@nestjs/common';
+import { Chunk } from '../tasks/entities/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
-import { TaskBreakdown } from '../tasks/entities/taskBreakdown.entity';
 
 const WEEKS_TO_ADD = 2;
 
@@ -43,9 +43,9 @@ export const planTask = async (task: Task) => {
 
   const allTasks = await queryRunner.manager
     .createQueryBuilder(Task, 'task')
-    .innerJoinAndSelect('task.taskBreakdowns', 'taskBreakdown')
+    .innerJoinAndSelect('task.chunks', 'chunk')
     .where('task.userId = :userId', { userId: user.id })
-    .andWhere('taskBreakdown.start BETWEEN :start AND :end', {
+    .andWhere('chunk.start BETWEEN :start AND :end', {
       start: task.chunkInfo.start,
       end: endDate,
     })
@@ -55,13 +55,15 @@ export const planTask = async (task: Task) => {
   const floatTasks = allTasks.filter((task) => task.isFloat);
   const constTasks = allTasks.filter((task) => !task.isFloat);
 
+  // This way we have an object with label as a key, like {floatTasks: [smth]}
   console.log({ floatTasks });
+  console.log({ constTasks });
 
-  // Delete taskBreakdowns for the given float tasks
+  // Delete chunks for the given float tasks
   await queryRunner.manager
     .createQueryBuilder()
     .delete()
-    .from(TaskBreakdown)
+    .from(Chunk)
     .where('taskId IN (:...ids)', { ids: floatTasks.map((t) => t.id) })
     .execute();
 
@@ -78,8 +80,6 @@ export const planTask = async (task: Task) => {
   });
 
   // Algorithm continuation...
-
-
 
   // Commit transaction
   await queryRunner.commitTransaction();

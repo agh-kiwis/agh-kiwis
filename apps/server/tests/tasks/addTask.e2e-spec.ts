@@ -5,7 +5,6 @@ import { AppModule } from '../../src/app/app.module';
 import connection from '../connection';
 import { makeRequest } from '../testUtils';
 
-
 describe('Tasks (e2e)', () => {
   let app: INestApplication | any;
 
@@ -65,7 +64,7 @@ describe('Tasks (e2e)', () => {
         }
         priority
         shouldAutoResolve
-        taskBreakdowns {
+        chunks {
           duration
           isDone
           start
@@ -93,7 +92,7 @@ describe('Tasks (e2e)', () => {
           maxChunkDuration: null,
           deadline: null,
           estimation: null,
-          minChunkDuration: null
+          minChunkDuration: null,
         },
         id: 1,
         isDone: false,
@@ -102,7 +101,7 @@ describe('Tasks (e2e)', () => {
         notifications: null,
         priority: 'high',
         shouldAutoResolve: false,
-        taskBreakdowns: null,
+        chunks: null,
       });
     });
   });

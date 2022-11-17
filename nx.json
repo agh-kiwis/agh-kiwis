@@ -22,17 +22,6 @@
       }
     }
   },
-  // Cloud task running
-  // "tasksRunnerOptions": {
-  //   "default": {
-  //     "runner": "@nrwl/nx-cloud",
-  //     "options": {
-  //       "cacheableOperations": ["build", "lint", "test", "e2e"]
-  //       // There we need to pass access_token later on
-  //       // "accessToken": ${NX_CLOUD_AUTH_TOKEN}
-  //     }
-  //   }
-  // },
   "targetDependencies": {
     "build": [
       {
