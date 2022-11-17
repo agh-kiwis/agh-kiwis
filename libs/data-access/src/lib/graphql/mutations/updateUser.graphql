@@ -4,6 +4,7 @@ mutation updateUser($updateUserInput: UpdateUserInput!) {
     email
     gender
     id
+    introductionCompleted
     name
   }
 }

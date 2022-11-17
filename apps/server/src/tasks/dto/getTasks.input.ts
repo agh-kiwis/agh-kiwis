@@ -8,6 +8,12 @@ export class FilterOptions {
 
   @Field({ nullable: true })
   isFloat?: boolean;
+
+  @Field(() => [Number], { nullable: true })
+  category?: number[];
+
+  @Field(() => [String], { nullable: true })
+  priority?: string[];
 }
 
 @InputType()

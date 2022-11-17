@@ -14,3 +14,10 @@ export const TaskSchema = Yup.object({
     .max(MAX_INPUT_LENGTH, 'Too Long!')
     .required('Required!'),
 });
+
+export const UserPreferencesSchema = Yup.object().shape({
+  name: Yup.string().required('Required!'),
+  birthDate: Yup.date()
+    .max(new Date(), 'You have to choose the date from the past!')
+    .required('Required!'),
+});

@@ -1,21 +1,27 @@
-type taskType = {
+export type IntervalType = {
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+};
+
+type TaskType = {
   type: string;
   category: {
     id: number;
     name: string;
     color: string;
   };
-  color: string;
   taskName: string;
   chillTime: {
     minutes: number;
   };
   chillTimeFacade: string;
   notify: boolean;
-  autoresolve: boolean;
+  autoResolve: boolean;
 };
 
-export type constTaskType = taskType & {
+export type ConstTaskType = TaskType & {
   startTime: {
     date: string;
     time: string;
@@ -38,7 +44,7 @@ export type constTaskType = taskType & {
   repeatEveryFacade: string;
 };
 
-export type floatTaskType = taskType & {
+export type FloatTaskType = TaskType & {
   deadline: {
     date: string;
     time: string;
@@ -67,4 +73,16 @@ export type floatTaskType = taskType & {
   minChunkTimeFacade: string;
   maxChunkTimeFacade: string;
   minTimeBetweenChunksFacade: string;
+};
+
+export type UserDetailsType = {
+  id?: number;
+  name: string;
+  birthDate: string;
+  gender: string;
+};
+
+export type SleepPreferencesType = {
+  sleep: string;
+  wakeUp: string;
 };

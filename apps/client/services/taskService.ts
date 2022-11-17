@@ -1,3 +1,4 @@
+import router from 'next/router';
 import moment from 'moment';
 import {
   CreateConstTaskInput,
@@ -6,12 +7,12 @@ import {
   Task,
   TaskInput,
 } from '@agh-kiwis/data-access';
-import { roundToMinutes } from '@agh-kiwis/moment-service';
-import { constTaskType, floatTaskType } from '@agh-kiwis/types';
+import { getIntervalISOString, mapToDateTime } from '@agh-kiwis/moment-service';
+import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 
 // create
 export const constTaskFormToAddTaskMutationMapper = (
-  variables: constTaskType
+  variables: ConstTaskType
 ): CreateConstTaskInput => ({
   category: {
     id: variables.category.id,
@@ -20,18 +21,22 @@ export const constTaskFormToAddTaskMutationMapper = (
   duration: getIntervalISOString(variables.duration),
   name: variables.taskName,
   priority: variables.priority,
-  repeat: {
-    repeatEvery: variables.repeat.repeatEvery.amount,
-    startFrom: mapToDateTime(variables.startTime.date),
-    repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
-  },
+  repeat: variables.repeat.shouldRepeat
+    ? {
+        repeatEvery: variables.repeat.repeatEvery.amount,
+        startFrom: mapToDateTime(variables.repeat.startFrom),
+        repeatType: mapFormRepeatToRepeatType(
+          variables.repeat.repeatEvery.type
+        ),
+      }
+    : undefined,
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
 
 export const floatTaskFormToAddTaskMutationMapper = (
-  variables: floatTaskType
+  variables: FloatTaskType
 ): CreateFloatTaskInput => ({
   category: {
     id: variables.category.id,
@@ -48,25 +53,24 @@ export const floatTaskFormToAddTaskMutationMapper = (
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   // TODO what is start regarding float task?
   start: new Date(),
   timeBeforeNotification: null,
 });
 
 // prepopulate
-export const taskToConstTaskType = (task: Task): constTaskType => ({
+export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   type: 'const',
   category: {
     id: task.category.id,
     name: task.category.name,
     color: task.category.color.hexCode,
   },
-  color: task.category.color.hexCode,
   taskName: task.name,
   startTime: {
-    date: moment(task.taskBreakdowns[0].start).format('YYYY-MM-DD'),
-    time: roundToMinutes(moment(task.taskBreakdowns[0].start), 10),
+    date: moment(task.taskBreakdowns[0].start).format('yyyy-MM-DD'),
+    time: moment(task.taskBreakdowns[0].start).format('HH:mm'),
   },
   startTimeFacade: '',
   duration: {
@@ -81,31 +85,34 @@ export const taskToConstTaskType = (task: Task): constTaskType => ({
   priority: task.priority,
   repeat: {
     shouldRepeat: !!task.taskBreakdowns[0].repeat,
-    startFrom: moment(task.taskBreakdowns[0].repeat.startFrom).format(
+    startFrom: moment(task.taskBreakdowns[0].repeat?.startFrom).format(
       'yyyy-MM-DD'
     ),
     repeatEvery: {
-      type: 'Day', // to be mapped
-      amount: 1, // to be mapped
+      type: mapRepeatTypeToFormRepeat(
+        task.taskBreakdowns[0].repeat?.repeatType
+      ),
+      amount: task.taskBreakdowns[0].repeat?.repeatEvery
+        ? task.taskBreakdowns[0].repeat?.repeatEvery
+        : 1,
     },
   },
   repeatEveryFacade: '',
   notify: !!task.notifications,
-  autoresolve: task.shouldAutoResolve,
+  autoResolve: task.shouldAutoResolve,
 });
 
-export const taskToFloatTaskType = (task: Task): floatTaskType => ({
+export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
   type: 'const',
   category: {
     id: task.category.id,
     name: task.category.name,
     color: task.category.color.hexCode,
   },
-  color: task.category.color.hexCode,
   taskName: task.name,
   deadline: {
     date: moment(task.deadline, 'x').format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(task.deadline, 'x'), 10),
+    time: moment(task.deadline, 'x').format('HH:mm'),
   },
   deadlineFacade: '',
   timeEstimation: {
@@ -136,14 +143,14 @@ export const taskToFloatTaskType = (task: Task): floatTaskType => ({
   maxChunkTimeFacade: '',
   minTimeBetweenChunksFacade: '',
   notify: !!task.notifications,
-  autoresolve: task.shouldAutoResolve,
+  autoResolve: task.shouldAutoResolve,
 });
 
 // update
 // TODO improve update task mutation to update task breakdowns
 export const constTaskToUpdateTaskMutationMapper = (
   id: number,
-  variables: constTaskType
+  variables: ConstTaskType
 ): TaskInput => ({
   id: id,
   category: {
@@ -156,16 +163,16 @@ export const constTaskToUpdateTaskMutationMapper = (
   repeat: {
     repeatEvery: variables.repeat.repeatEvery.amount,
     startFrom: mapToDateTime(variables.startTime.date),
-    repeatType: mapRepeatType(variables.repeat.repeatEvery.type),
+    repeatType: mapFormRepeatToRepeatType(variables.repeat.repeatEvery.type),
   },
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
 
 export const floatTaskToUpdateTaskMutationMapper = (
   id: number,
-  variables: floatTaskType
+  variables: FloatTaskType
 ): TaskInput => ({
   id: id,
   category: {
@@ -183,23 +190,12 @@ export const floatTaskToUpdateTaskMutationMapper = (
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
-  shouldAutoResolve: variables.autoresolve,
+  shouldAutoResolve: variables.autoResolve,
   start: new Date(),
   timeBeforeNotification: null,
 });
 
-type intervalType = {
-  weeks?: number;
-  days?: number;
-  hours?: number;
-  minutes?: number;
-};
-
-const getIntervalISOString = (interval: intervalType): string => {
-  return moment.duration(interval).toISOString();
-};
-
-const mapRepeatType = (repeatType: string): RepeatType => {
+const mapFormRepeatToRepeatType = (repeatType: string): RepeatType => {
   switch (repeatType) {
     case 'Day':
       return RepeatType.Days;
@@ -212,15 +208,56 @@ const mapRepeatType = (repeatType: string): RepeatType => {
   }
 };
 
-const mapToDateTime = (date: string, time?: string): Date => {
-  if (!time) {
-    return new Date(date);
+const mapRepeatTypeToFormRepeat = (repeatType: string): string => {
+  switch (repeatType) {
+    case 'Days':
+      return 'Day';
+    case 'Weeks':
+      return 'Week';
+    case 'Months':
+      return 'Month';
+    case 'Years':
+      return 'Year';
+    default:
+      return 'Day';
   }
+};
 
-  const splittedTime = time.split(':');
-  const dateTime = new Date(date);
-  dateTime.setHours(parseInt(splittedTime[0]));
-  dateTime.setMinutes(parseInt(splittedTime[1]));
+export const handleConstTaskSubmit = async (
+  values: ConstTaskType,
+  addConstTaskMutation,
+  route = '/'
+) => {
+  const taskResponse = await addConstTaskMutation({
+    variables: {
+      createConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
+    },
+  }).catch((error) => {
+    // TODO handle error
+    console.log(error);
+  });
 
-  return dateTime;
+  if (taskResponse) {
+    // TODO handle success
+    router.push(route);
+  }
+};
+
+export const handleFloatTaskSubmit = async (
+  values: FloatTaskType,
+  addFloatTaskMutation
+) => {
+  const taskResponse = await addFloatTaskMutation({
+    variables: {
+      createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+    },
+  }).catch((error) => {
+    // TODO handle error
+    console.log(error);
+  });
+
+  if (taskResponse) {
+    // TODO handle success
+    router.push('/');
+  }
 };
