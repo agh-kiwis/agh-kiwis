@@ -84,7 +84,6 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
@@ -101,7 +100,6 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
@@ -117,7 +115,6 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
@@ -134,7 +131,6 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
@@ -152,7 +148,6 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
