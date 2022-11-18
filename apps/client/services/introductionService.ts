@@ -44,10 +44,6 @@ export const mapSleepPreferencesToAddConstTaskMutation = (
     priority: 'medium',
     repeat: {
       repeatEvery: 1,
-      startFrom: mapToDateTime(
-        moment().format('yyyy-MM-DD'),
-        sleepPreferences.sleep
-      ),
       repeatType: RepeatType.Days,
     },
     start: mapToDateTime(moment().format('yyyy-MM-DD'), sleepPreferences.sleep),

@@ -24,7 +24,6 @@ export const constTaskFormToAddTaskMutationMapper = (
   repeat: variables.repeat.shouldRepeat
     ? {
         repeatEvery: variables.repeat.repeatEvery.amount,
-        startFrom: mapToDateTime(variables.repeat.startFrom),
         repeatType: mapFormRepeatToRepeatType(
           variables.repeat.repeatEvery.type
         ),
@@ -69,31 +68,26 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   },
   taskName: task.name,
   startTime: {
-    date: moment(task.taskBreakdowns[0].start).format('yyyy-MM-DD'),
-    time: moment(task.taskBreakdowns[0].start).format('HH:mm'),
+    date: moment(task.chunks[0].start).format('yyyy-MM-DD'),
+    time: moment(task.chunks[0].start).format('HH:mm'),
   },
   startTimeFacade: '',
   duration: {
-    hours: moment.duration(task.taskBreakdowns[0].duration).hours(),
-    minutes: moment.duration(task.taskBreakdowns[0].duration).minutes(),
+    hours: moment.duration(task.chunks[0].duration).hours(),
+    minutes: moment.duration(task.chunks[0].duration).minutes(),
   },
   durationFacade: '',
   chillTime: {
-    minutes: moment.duration(task.chillTime).minutes(),
+    minutes: moment.duration(task.chunkInfo.chillTime).minutes(),
   },
   chillTimeFacade: '',
   priority: task.priority,
   repeat: {
-    shouldRepeat: !!task.taskBreakdowns[0].repeat,
-    startFrom: moment(task.taskBreakdowns[0].repeat?.startFrom).format(
-      'yyyy-MM-DD'
-    ),
+    shouldRepeat: !!task.chunkInfo.repeat,
     repeatEvery: {
-      type: mapRepeatTypeToFormRepeat(
-        task.taskBreakdowns[0].repeat?.repeatType
-      ),
-      amount: task.taskBreakdowns[0].repeat?.repeatEvery
-        ? task.taskBreakdowns[0].repeat?.repeatEvery
+      type: mapRepeatTypeToFormRepeat(task.chunkInfo.repeat?.repeatType),
+      amount: task.chunkInfo.repeat?.repeatEvery
+        ? task.chunkInfo.repeat?.repeatEvery
         : 1,
     },
   },
@@ -111,17 +105,17 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
   },
   taskName: task.name,
   deadline: {
-    date: moment(task.deadline, 'x').format('yyyy-MM-DD'),
-    time: moment(task.deadline, 'x').format('HH:mm'),
+    date: moment(task.chunkInfo.deadline, 'x').format('yyyy-MM-DD'),
+    time: moment(task.chunkInfo.deadline, 'x').format('HH:mm'),
   },
   deadlineFacade: '',
   timeEstimation: {
-    hours: moment.duration(task.estimation).hours(),
-    minutes: moment.duration(task.estimation).minutes(),
+    hours: moment.duration(task.chunkInfo.estimation).hours(),
+    minutes: moment.duration(task.chunkInfo.estimation).minutes(),
   },
   timeEstimationFacade: '',
   chillTime: {
-    minutes: moment.duration(task.chillTime).minutes(),
+    minutes: moment.duration(task.chunkInfo.chillTime).minutes(),
   },
   chillTimeFacade: '',
   priority: task.priority,
@@ -135,8 +129,8 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
       minutes: moment.duration(task.chunkInfo.maxChunkDuration).minutes(),
     },
     minTimeBetweenChunks: {
-      hours: moment.duration(task.chunkInfo.minTimeBetweenChunks).hours(),
-      minutes: moment.duration(task.chunkInfo.minTimeBetweenChunks).minutes(),
+      hours: moment.duration(task.chunkInfo.chillTime).hours(),
+      minutes: moment.duration(task.chunkInfo.chillTime).minutes(),
     },
   },
   minChunkTimeFacade: '',
@@ -147,7 +141,7 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
 });
 
 // update
-// TODO improve update task mutation to update task breakdowns
+// TODO improve update task mutation to update chunks
 export const constTaskToUpdateTaskMutationMapper = (
   id: number,
   variables: ConstTaskType
@@ -162,7 +156,6 @@ export const constTaskToUpdateTaskMutationMapper = (
   priority: variables.priority,
   repeat: {
     repeatEvery: variables.repeat.repeatEvery.amount,
-    startFrom: mapToDateTime(variables.startTime.date),
     repeatType: mapFormRepeatToRepeatType(variables.repeat.repeatEvery.type),
   },
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
