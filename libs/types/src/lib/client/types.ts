@@ -35,7 +35,6 @@ export type ConstTaskType = TaskType & {
   priority: string;
   repeat: {
     shouldRepeat: boolean;
-    startFrom: string;
     repeatEvery: {
       type: string;
       amount: number;
