@@ -90,7 +90,7 @@ export class TasksService {
 
     task = await task.save();
 
-    await planTask(task);
+    // await planTask(task);
 
     return task;
   }
@@ -203,7 +203,7 @@ export class TasksService {
 
     task = await task.save();
 
-    await planTask(task);
+    // await planTask(task);
 
     return task;
   }
