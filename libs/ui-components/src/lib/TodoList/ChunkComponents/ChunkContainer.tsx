@@ -4,12 +4,12 @@ import {
   INSIGNIFICANT_COLOR,
 } from '@agh-kiwis/workspace-constants';
 
-type BreakdownContainerProps = {
+type ChunkContainerProps = {
   children: React.ReactNode;
   checked: boolean;
 };
 
-export const BreakdownContainer: React.FC<BreakdownContainerProps> = ({
+export const ChunkContainer: React.FC<ChunkContainerProps> = ({
   children,
   checked,
 }) => {

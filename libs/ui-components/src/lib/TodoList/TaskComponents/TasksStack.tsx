@@ -1,16 +1,16 @@
 import React from 'react';
-import { GetTasksQuery } from '@agh-kiwis/data-access';
+import { Task } from '@agh-kiwis/data-access';
 import { ScrollStack } from '../../Common/ScrollStack';
 import { SingleTask } from './SingleTask';
 
 type TasksStackProps = {
-  data: GetTasksQuery;
+  tasks: Task[];
 };
 
-export const TasksStack: React.FC<TasksStackProps> = ({ data }) => {
+export const TasksStack: React.FC<TasksStackProps> = ({ tasks }) => {
   return (
     <ScrollStack height="80vh">
-      {data?.getTasks.map((task, key) => (
+      {tasks.map((task, key) => (
         <SingleTask key={key} task={task} />
       ))}
     </ScrollStack>

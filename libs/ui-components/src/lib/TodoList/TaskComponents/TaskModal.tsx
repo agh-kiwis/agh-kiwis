@@ -34,7 +34,7 @@ import {
 import { CommonButton } from '@agh-kiwis/ui-components';
 import { DESCRIPTIVE_DATE_FORMAT } from '@agh-kiwis/workspace-constants';
 import { Header } from '../../Common/Header';
-import { TaskBreakdowns } from './TaskBreakdowns';
+import { TaskChunks } from './TaskChunks';
 
 type TaskModalProps = {
   isOpen: boolean;
@@ -142,7 +142,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Td>Deadline:</Td>
                         <Td>
                           {deadlineToDate(
-                            task.deadline!,
+                            task.chunkInfo?.deadline!,
                             DESCRIPTIVE_DATE_FORMAT
                           )}
                         </Td>
@@ -154,8 +154,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                           <Td>Date:</Td>
                           <Td>
                             {startToDate(
-                              task.taskBreakdowns &&
-                                task.taskBreakdowns[0].start,
+                              task.chunks && task.chunks[0].start,
                               DESCRIPTIVE_DATE_FORMAT
                             )}
                           </Td>
@@ -163,10 +162,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Tr>
                           <Td>Time:</Td>
                           <Td>
-                            {startToTime(
-                              task.taskBreakdowns &&
-                                task.taskBreakdowns[0].start
-                            )}
+                            {startToTime(task.chunks && task.chunks[0].start)}
                           </Td>
                         </Tr>
                       </>
@@ -179,7 +175,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <ModalBody>
               {task.isFloat && (
                 <Box>
-                  <TaskBreakdowns breakdowns={task.taskBreakdowns!} />
+                  <TaskChunks chunks={task.chunks!} />
                 </Box>
               )}
             </ModalBody>
