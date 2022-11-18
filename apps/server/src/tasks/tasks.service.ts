@@ -1,5 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import moment, { Duration } from 'moment';
+import { In } from 'typeorm';
+import { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -89,17 +90,23 @@ export class TasksService {
 
     task = await task.save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
-      relations: ['chunks', 'chunks.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         user: user,
         ...getTasksInput.filterOptions,
+        ...(getTasksInput.filterOptions.category && {
+          category: In(getTasksInput.filterOptions.category),
+        }),
+        ...(getTasksInput.filterOptions.priority && {
+          priority: In(getTasksInput.filterOptions.priority),
+        }),
       },
       skip: getTasksInput.offset * getTasksInput.limit,
       take: getTasksInput.limit,
@@ -111,7 +118,7 @@ export class TasksService {
 
   async getTask(user: User, id: string) {
     return await Task.findOne({
-      relations: ['chunks', 'chunks.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         user: user,
         id: id,
@@ -121,7 +128,7 @@ export class TasksService {
 
   async updateConstTask(user: User, updateTaskInput: TaskInput) {
     let task: Task = await Task.findOne({
-      relations: ['chunks', 'chunks.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         id: updateTaskInput.id,
       },
@@ -166,7 +173,7 @@ export class TasksService {
 
   async updateFloatTask(user: User, updateTaskInput: TaskInput) {
     let task: Task = await Task.findOne({
-      relations: ['chunks', 'chunks.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         id: updateTaskInput.id,
       },
@@ -196,7 +203,7 @@ export class TasksService {
 
     task = await task.save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }
@@ -205,7 +212,7 @@ export class TasksService {
     await Task.update(updateTaskInput.id, updateTaskInput);
 
     return await Task.findOne({
-      relations: ['chunks', 'chunks.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         id: updateTaskInput.id,
       },
