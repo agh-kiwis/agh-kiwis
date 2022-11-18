@@ -5,9 +5,6 @@ import { RepeatType } from '../entities/repeat.entity';
 @InputType()
 export class RepeatInput {
   @Field()
-  startFrom: Date;
-
-  @Field()
   repeatEvery: number;
 
   @Field(() => RepeatType, { defaultValue: RepeatType.DAYS })

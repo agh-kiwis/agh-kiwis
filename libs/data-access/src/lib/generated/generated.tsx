@@ -264,7 +264,6 @@ export type Repeat = {
 export type RepeatInput = {
   repeatEvery: Scalars['Float'];
   repeatType?: InputMaybe<RepeatType>;
-  startFrom: Scalars['DateTime'];
 };
 
 /** Supported repeat types */
