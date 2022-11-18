@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { Chunk } from '@agh-kiwis/data-access';
 import { IntervalType } from '@agh-kiwis/types';
 
 export const roundToMinutes = (date: moment.Moment, minutes: number) => {
@@ -8,9 +8,9 @@ export const roundToMinutes = (date: moment.Moment, minutes: number) => {
   return moment(date).add(remainder, 'minutes').format('HH:mm');
 };
 
-export const timeInterval = (breakdown: TaskBreakdown) => {
-  const start = startToTime(breakdown?.start);
-  const end = startToTime(moment(breakdown?.start).add(breakdown?.duration));
+export const timeInterval = (chunk: Chunk) => {
+  const start = startToTime(chunk?.start);
+  const end = startToTime(moment(chunk?.start).add(chunk?.duration));
   return start + ' - ' + end;
 };
 
