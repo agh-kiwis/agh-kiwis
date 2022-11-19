@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IntervalColumn } from '../../types/IntervalColumn';
@@ -13,8 +7,10 @@ import { NullableColumn } from '../../utils/NullableColumn';
 import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Repeat } from './repeat.entity';
+import { Task } from './task.entity';
 
-// TODO Those fields need to be virtual later on
+
+// TODO This needs to be converted to a virtual entity with no db connection.
 @Entity()
 @ObjectType()
 export class ChunkInfo extends GeneralEntity {
@@ -31,7 +27,6 @@ export class ChunkInfo extends GeneralEntity {
   start: Date;
 
   @Field(() => Interval, {
-    // 15 minutes is a default value
     defaultValue: moment.duration(15, 'minutes').toISOString(),
     description:
       'A minimum time gap that user wants to have between this task and another tasks.',
@@ -41,13 +36,21 @@ export class ChunkInfo extends GeneralEntity {
 
   // Const tasks properties
 
+  // This later on __can__ be changed to follow expert model from there: https://www.vertabelo.com/blog/again-and-again-managing-recurring-events-in-a-data-model/
   @NullableField(() => Repeat, {
     description:
-      'Only to const tasks. Describes how often the task should repeat. When representing task in time, the chunks WILL be duplicated for the sake of easier calculations.',
+      'Only const tasks. Describes how often the task should repeat. When representing task in time, the chunks WILL be duplicated for the sake of easier calculations.',
   })
-  @OneToOne(() => Repeat)
+  @OneToOne(() => Repeat, { eager: true })
   @JoinColumn()
   repeat?: Repeat;
+
+  @NullableField(() => Interval, {
+    description:
+      'Only const tasks. Duration of the task. Is the same with chunk.duration. Is stored here also for easier access.',
+  })
+  @IntervalColumn({ nullable: true })
+  duration: Duration;
 
   // Float tasks properties
 
@@ -74,7 +77,7 @@ export class ChunkInfo extends GeneralEntity {
 
   @NullableField(() => String, {
     description:
-      'Only float tasks. Point in time when the whole task needs to be done.',
+      'Only float tasks. This field is mandatory for float tasks. Point in time when the whole task needs to be done.',
   })
   @NullableColumn({ type: 'timestamp with time zone' })
   deadline?: Date;
