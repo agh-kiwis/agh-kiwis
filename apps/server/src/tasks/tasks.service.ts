@@ -1,5 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
 import moment, { Duration } from 'moment';
+import { In } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -148,6 +149,12 @@ export class TasksService {
       where: {
         user: user,
         ...getTasksInput.filterOptions,
+        ...(getTasksInput.filterOptions.category && {
+          category: In(getTasksInput.filterOptions.category),
+        }),
+        ...(getTasksInput.filterOptions.priority && {
+          priority: In(getTasksInput.filterOptions.priority),
+        }),
       },
       skip: getTasksInput.offset * getTasksInput.limit,
       take: getTasksInput.limit,

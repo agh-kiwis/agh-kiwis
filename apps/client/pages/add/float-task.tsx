@@ -1,7 +1,6 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useAddFloatTaskMutation } from '@agh-kiwis/data-access';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import { FloatTaskForm } from '@agh-kiwis/ui-components';
 import {
   chillTimeInputFields,
@@ -11,27 +10,13 @@ import {
   minChunkTimeInputFields,
   minTimeBetweenChunksInputFields,
 } from '../../formConfig/initialValues';
-import { floatTaskFormToAddTaskMutationMapper } from '../../services/taskService';
+import { handleFloatTaskSubmit } from '../../services/taskService';
 
 const FloatTask: React.FC = () => {
-  const router = useRouter();
   const [addFloatTaskMutation] = useAddFloatTaskMutation();
 
-  const handleSubmit = async (values: floatTaskType) => {
-    const taskResponse = await addFloatTaskMutation({
-      variables: {
-        createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
-      },
-    }).catch((error) => {
-      // TODO handle error
-      console.log(error);
-    });
-
-    if (taskResponse) {
-      // TODO handle success
-      console.log(taskResponse.data);
-      router.push('/');
-    }
+  const handleSubmit = async (values: FloatTaskType) => {
+    handleFloatTaskSubmit(values, addFloatTaskMutation);
   };
 
   return (

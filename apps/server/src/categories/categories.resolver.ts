@@ -30,6 +30,11 @@ export class CategoriesResolver {
     return this.categoriesService.getColors(user);
   }
 
+  @Query(() => [Category])
+  getCategories(@CurrentUser() user: User) {
+    return this.categoriesService.getCategories(user);
+  }
+
   @Mutation(() => Category)
   removeCategory(
     @CurrentUser() user: User,

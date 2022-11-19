@@ -1,21 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import {
-  Box,
-  Flex,
-  FormLabel,
-  InputGroup,
-  Select,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, FormLabel, Select, VStack } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import {
   CommonButton,
   ControlledInputAddon,
-  CustomNumberInput,
   DependentChillTimeField,
   DependentDeadlineField,
   DependentMaxChunkTimeField,
@@ -39,13 +30,13 @@ import { DateTimePicker } from '../Pickers/DateTimePicker';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 
 type FloatTaskFormProps = {
-  initialValues: floatTaskType;
+  initialValues: FloatTaskType;
   estimationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
   minChunkTimeInputFields: NumberInputType[];
   maxChunkTimeInputFields: NumberInputType[];
   minTimeBetweenChunksInputFields: NumberInputType[];
-  onSubmit: (values: floatTaskType) => void;
+  onSubmit: (values: FloatTaskType) => void;
   isInEditMode: boolean;
 };
 
@@ -73,29 +64,19 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={TaskSchema}
       >
-        {({ isSubmitting, setFieldValue, values }) => (
+        {({ touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
-                <Stack>
-                  <InputGroup>
-                    <ColorPicker
-                      modalTitle="Category color"
-                      handleChange={setFieldValue}
-                      name="category.id"
-                    >
-                      <ControlledInputAddon name="category.color" />
-                    </ColorPicker>
-                    <InputField
-                      name="category.name"
-                      placeholder="Category"
-                      borderLeftRadius={0}
-                    />
-                  </InputGroup>
-                </Stack>
+                <ColorPicker
+                  modalTitle="Category"
+                  handleChange={setFieldValue}
+                  name="category.id"
+                >
+                  <ControlledInputAddon name="category" />
+                </ColorPicker>
               </Box>
 
               <Box>
@@ -103,6 +84,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                   name="taskName"
                   placeholder="Task name"
                   label="Task name"
+                  touched={!!touched.taskName}
                 />
               </Box>
               <DateTimePicker
@@ -198,7 +180,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
               </Box>
               <Box>
                 <ToggleSwitch
-                  name="autoresolve"
+                  name="autoResolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}
                 />

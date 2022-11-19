@@ -4,6 +4,7 @@ query me {
     email
     gender
     id
+    introductionCompleted
     name
   }
 }

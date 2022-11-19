@@ -1,17 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import {
-  Box,
-  Flex,
-  FormLabel,
-  InputGroup,
-  Select,
-  Stack,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, FormLabel, Select, Text, VStack } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import {
   ColorPicker,
   CommonButton,
@@ -24,6 +16,7 @@ import {
   Header,
   InputField,
   IntervalPicker,
+  Logo,
   LongIntervalAmountType,
   LongIntervalPicker,
   LongIntervalSelectType,
@@ -40,13 +33,16 @@ import {
 } from '@agh-kiwis/workspace-constants';
 
 type ConstTaskFormProps = {
-  initialValues: constTaskType;
+  initialValues: ConstTaskType;
   durationInputFields: NumberInputType[];
   chillTimeInputFields: NumberInputType[];
   repeatEverySelectField: LongIntervalSelectType;
   repeatEveryAmountFields: LongIntervalAmountType[];
-  onSubmit: (values: constTaskType) => void;
+  onSubmit: (values: ConstTaskType) => void;
   isInEditMode: boolean;
+  isInIntroductionMode?: boolean;
+  customText?: string;
+  nextStep?: string;
 };
 
 export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
@@ -57,44 +53,51 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   repeatEveryAmountFields,
   onSubmit,
   isInEditMode,
+  isInIntroductionMode,
+  customText,
+  nextStep,
 }) => {
   const router = useRouter();
 
   return (
     <Wrapper>
-      <Box mb={4}>
-        <Header
-          text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
-          size="xl"
-        />
-      </Box>
-      <TaskSwitchConst isDisabled={isInEditMode} />
+      {isInIntroductionMode ? (
+        <>
+          <Logo textVisible={false} />
+          <Flex w="100%" justifyContent="center" mb="4">
+            <Text fontSize="4xl" textAlign="center">
+              {customText}
+            </Text>
+          </Flex>
+        </>
+      ) : (
+        <>
+          <Box mb={4}>
+            <Header
+              text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
+              size="xl"
+            />
+          </Box>
+          <TaskSwitchConst isDisabled={isInEditMode} />
+        </>
+      )}
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={TaskSchema}
       >
-        {({ isSubmitting, setFieldValue, values }) => (
+        {({ touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
               <Box>
-                <Stack>
-                  <InputGroup>
-                    <ColorPicker
-                      modalTitle="Category color"
-                      handleChange={setFieldValue}
-                      name="category.id"
-                    >
-                      <ControlledInputAddon name="category.color" />
-                    </ColorPicker>
-                    <InputField
-                      name="category.name"
-                      placeholder="Category"
-                      borderLeftRadius={0}
-                    />
-                  </InputGroup>
-                </Stack>
+                <ColorPicker
+                  modalTitle="Category"
+                  handleChange={setFieldValue}
+                  name="category.id"
+                >
+                  <ControlledInputAddon name="category" />
+                </ColorPicker>
               </Box>
 
               <Box>
@@ -102,6 +105,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                   name="taskName"
                   placeholder="Task name"
                   label="Task name"
+                  touched={!!touched.taskName}
                 />
               </Box>
               <DateTimePicker
@@ -188,7 +192,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
               </Box>
               <Box>
                 <ToggleSwitch
-                  name="autoresolve"
+                  name="autoResolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}
                 />
@@ -203,11 +207,19 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                 />
               </Box>
               <Box>
-                <CommonButton
-                  variant="outline"
-                  buttonText="Cancel"
-                  onClick={() => router.push('/')}
-                />
+                {isInIntroductionMode ? (
+                  <CommonButton
+                    variant="outline"
+                    buttonText="Skip"
+                    onClick={() => router.push(`${nextStep}`)}
+                  />
+                ) : (
+                  <CommonButton
+                    variant="outline"
+                    buttonText="Cancel"
+                    onClick={() => router.push('/')}
+                  />
+                )}
               </Box>
             </VStack>
           </Form>

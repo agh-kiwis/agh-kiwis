@@ -45,18 +45,23 @@ const Register: React.FC = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={onSubmit}
-        validateOnChange={false}
         validationSchema={CredentialSchema}
       >
-        {({ isSubmitting }) => (
+        {({ touched, isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="Email" label="Email" />
+            <InputField
+              name="email"
+              placeholder="Email"
+              label="Email"
+              touched={!!touched.email}
+            />
             <Box mt={4}>
               <InputField
                 name="password"
                 placeholder="Password"
                 label="Password"
                 type="password"
+                touched={!!touched.password}
               />
             </Box>
 

@@ -37,13 +37,13 @@ export const seedDatabase = async () => {
   // Introduction setup
   const sleepingCategory = await Category.create({
     color: await Color.findOne({ where: { hexCode: InitialSeed.colors[0] } }),
-    name: 'Sleeping',
+    name: 'Sleep',
     user: user,
   }).save();
 
   const eatingCategory = await Category.create({
     color: await Color.findOne({ where: { hexCode: InitialSeed.colors[1] } }),
-    name: 'Eating',
+    name: 'Meals',
     user: user,
   }).save();
 
