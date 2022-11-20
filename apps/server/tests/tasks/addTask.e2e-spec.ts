@@ -43,19 +43,32 @@ describe('Tasks (e2e)', () => {
           chillTime: "P3Y6M4DT12H30M5S"
           duration: "00::00"
           name: "Walk a dog"
-          start: "2017-08-19 12:17:55 -0400"
-          repeat: { repeatEvery: 1, repeatType: DAYS, startFrom: "2017-06-01" }
+          start: "2022-11-19 12:00:00"
+          repeat: {
+            repeatEvery: 1
+            repeatType: DAYS
+            repeatUntil: "2022-11-21 12:00:00"
+          }
           priority: "high"
         }
       ) {
         chunkInfo {
+          # Shared fields
+          start
           chillTime
-          maxChunkDuration
-          deadline
-          estimation
+          # Const fields
+          repeat {
+            repeatEvery
+            repeatType
+            repeatUntil
+          }
+          duration
+          # Float fields
           minChunkDuration
+          maxChunkDuration
+          estimation
+          deadline
         }
-        id
         isDone
         isFloat
         name
@@ -89,19 +102,41 @@ describe('Tasks (e2e)', () => {
       expect(addConstTask).toEqual({
         chunkInfo: {
           chillTime: 'P3Y6M4DT12H30M5S',
+          duration: 'P0D',
           maxChunkDuration: null,
           deadline: null,
           estimation: null,
+          repeat: {
+            repeatEvery: 1,
+            repeatType: 'Days',
+            repeatUntil: '2022-11-21T11:00:00.000Z',
+          },
           minChunkDuration: null,
+          start: '2022-11-19T11:00:00.000Z',
         },
-        id: 1,
         isDone: false,
         isFloat: false,
         name: 'Walk a dog',
         notifications: null,
         priority: 'high',
         shouldAutoResolve: false,
-        chunks: null,
+        chunks: [
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-19T11:00:00.000Z',
+          },
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-20T11:00:00.000Z',
+          },
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-21T11:00:00.000Z',
+          },
+        ],
       });
     });
   });

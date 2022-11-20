@@ -4,9 +4,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
+import { CreateConstTaskInput } from '../../src/tasks/dto/createConstTask.input';
 import { Chunk } from '../../src/tasks/entities/chunk.entity';
 import { Repeat, RepeatType } from '../../src/tasks/entities/repeat.entity';
 import { Task } from '../../src/tasks/entities/task.entity';
+import { TasksService } from '../../src/tasks/tasks.service';
 import { User } from '../../src/users/entities/user.entity';
 import { planTask } from '../../src/workers/taskPlanner';
 import connection from '../connection';
@@ -25,7 +27,7 @@ describe('PlanTask (e2e)', () => {
   });
 
   beforeEach(async () => {
-    await connection.clear();
+    // await connection.clear();
   });
 
   afterAll(async () => {
@@ -43,31 +45,41 @@ describe('PlanTask (e2e)', () => {
     duration?: Duration;
     repeat?: Repeat;
   }) => {
-    const task = Task.create({
+    // const task = await Task.create({
+    //   name: params.taskName,
+    //   category: params.category,
+    //   priority: params.priority || 'medium',
+    //   isFloat: false,
+    //   user: params.user,
+    //   chunkInfo: {
+    //     start: params.start,
+    //     chillTime: moment.duration(15, 'minutes'),
+    //     repeat: params.repeat || {
+    //       repeatType: RepeatType.WEEKS,
+    //       repeatEvery: 1,
+    //     },
+    //   },
+    // }).save();
+
+    // Get taskService
+    const taskService: TasksService = app.get(TasksService);
+
+    const createConstTaskInput: CreateConstTaskInput = {
       name: params.taskName,
       category: params.category,
-      priority: params.priority || 'medium',
-      isFloat: false,
-      chunkInfo: {
-        start: params.start,
-        chillTime: moment.duration(15, 'minutes'),
-        repeat: params.repeat || {
-          repeatType: RepeatType.WEEKS,
-          repeatEvery: 1,
-        },
-      },
-    });
-
-    const chunk = await Chunk.create({
-      duration: params.duration || moment.duration(1, 'hour'),
-      task: task,
       start: params.start,
-    }).save();
+      priority: params.priority || 'medium',
+      duration: params.duration || moment.duration(1, 'hour'),
+      repeat: params.repeat || {
+        repeatType: RepeatType.WEEKS,
+        repeatEvery: 1,
+      },
+      shouldAutoResolve: false,
+      timeBeforeNotification: moment.duration(15, 'minutes'),
+      chillTime: moment.duration(15, 'minutes'),
+    };
 
-    task.chunks = [chunk];
-
-    task.user = Promise.resolve(params.user);
-    return await task.save();
+    await taskService.createConst(params.user, createConstTaskInput);
   };
 
   it('only float tasks', async () => {
@@ -122,9 +134,9 @@ describe('PlanTask (e2e)', () => {
       taskName: 'Sleep',
       category: sleepCategory,
       start: new Date(2022, 11, 14, 0),
+      duration: moment.duration(8, 'hours'),
       user: user,
       priority: 'high',
-      duration: moment.duration(8, 'hours'),
       repeat: everyDayRepeat,
     });
 
@@ -227,7 +239,7 @@ describe('PlanTask (e2e)', () => {
       user,
     });
 
-    // Add float task
+    // Add float tasks
 
     const yellowColor = await Color.create({
       hexCode: '#ffff00',
@@ -241,53 +253,80 @@ describe('PlanTask (e2e)', () => {
 
     // Now let's simulate already planned float task:
 
-    const prepareForLogicExam = Task.create({
+    const prepareForLogicExam = await Task.create({
       name: 'Prepare for Logic',
       category: preparationCategory,
       priority: 'medium',
       isFloat: true,
+      user: user,
       chunkInfo: {
         start: new Date(2022, 11, 14),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: new Date(2022, 11, 15, 0, 0),
+        deadline: new Date(2022, 11, 20, 0, 0),
+        estimation: moment.duration(4, 'hours'),
         chillTime: moment.duration(15, 'minutes'),
       },
-    });
+    }).save();
 
-    prepareForLogicExam.user = Promise.resolve(user);
-    await prepareForLogicExam.save();
+    // Those Chunks need to be thrown away by the algorithm and replanned
+    await Chunk.create({
+      duration: moment.duration(1, 'hour'),
+      task: prepareForLogicExam,
+      start: new Date(2022, 11, 16, 50),
+    }).save();
+
+    await Chunk.create({
+      duration: moment.duration(1, 'hour'),
+      task: prepareForLogicExam,
+      start: new Date(2022, 11, 19, 50),
+    }).save();
+
+    const PrepareForPhysicsExam = await Task.create({
+      name: 'Prepare for Physics',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: new Date(2022, 11, 14),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(3, 'hour'),
+        deadline: new Date(2022, 11, 20, 0, 0),
+        estimation: moment.duration(5, 'hours'),
+        chillTime: moment.duration(15, 'minutes'),
+      },
+    }).save();
 
     // Create task breakdowns for the above task
 
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
-      task: prepareForLogicExam,
+      task: PrepareForPhysicsExam,
       start: new Date(2022, 11, 14, 20),
     }).save();
 
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
-      task: prepareForLogicExam,
+      task: PrepareForPhysicsExam,
       start: new Date(2022, 11, 15, 20),
     }).save();
 
-    const prepareForASD = Task.create({
+    const prepareForASD = await Task.create({
       name: 'Prepare for Algorithms and Data Structures exam',
       category: preparationCategory,
       priority: 'high',
       isFloat: true,
+      user: user,
       chunkInfo: {
         start: new Date(2022, 11, 13, 14, 40),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: new Date(2022, 11, 20, 0, 0),
+        estimation: moment.duration(6, 'hours'),
+        deadline: new Date(2022, 11, 21, 0, 0),
         chillTime: moment.duration(15, 'minutes'),
       },
-    });
-
-    prepareForASD.user = Promise.resolve(user);
-    await prepareForASD.save();
+    }).save();
 
     // plan task
 

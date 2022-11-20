@@ -51,7 +51,7 @@ export class TasksResolver {
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 
@@ -69,7 +69,7 @@ export class TasksResolver {
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 
@@ -86,7 +86,7 @@ export class TasksResolver {
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
     const result = await this.tasksService.update(taskInput);
@@ -103,7 +103,7 @@ export class TasksResolver {
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 

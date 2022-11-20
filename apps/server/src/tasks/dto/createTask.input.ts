@@ -16,6 +16,15 @@ export class CreateTaskInput {
   })
   name: string;
 
+  @Field(() => CategoryInput, {
+    description: 'Either existing category id or new category name and color.',
+  })
+  category: CategoryInput;
+
+  @Field({ defaultValue: 'medium' })
+  @IsEnum(Priority)
+  priority: string;
+
   @Field({
     description:
       'The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity.',
@@ -35,20 +44,8 @@ export class CreateTaskInput {
   })
   shouldAutoResolve: boolean;
 
-  @Field(() => CategoryInput, {
-    description: 'Either existing category id or new category name and color.',
-  })
-  category: CategoryInput;
-
-  @NullableField(() => RepeatInput, { description: 'Repeat options.' })
-  repeat?: RepeatInput;
-
   @NullableField(() => Interval, {
     description: 'The time before user wants to receive task notification.',
   })
   timeBeforeNotification: Duration;
-
-  @Field({ defaultValue: 'medium' })
-  @IsEnum(Priority)
-  priority: string;
 }

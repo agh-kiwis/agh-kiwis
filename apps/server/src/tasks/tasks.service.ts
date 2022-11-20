@@ -1,11 +1,10 @@
 import { UserInputError } from 'apollo-server-errors';
+import moment, { Duration } from 'moment';
 import { In } from 'typeorm';
-import { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
-import { planTask } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
@@ -33,31 +32,39 @@ export class TasksService {
 
     const chunkInfo = await ChunkInfo.create({
       ...createConstTaskInput,
+      repeat: repeat,
     }).save();
 
-    let task = Task.create({
+    const task = await Task.create({
       category: category,
       isFloat: false,
       chunkInfo: chunkInfo,
+      user: user,
       name: createConstTaskInput.name,
       notifications: notification,
       priority: createConstTaskInput.priority,
       shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
-    });
-
-    task.user = Promise.resolve(user);
-
-    task.chunkInfo.repeat = repeat;
-
-    task = await task.save();
-
-    await Chunk.create({
-      task: task,
-      duration: createConstTaskInput.duration,
-      start: createConstTaskInput.start,
     }).save();
 
-    return task;
+    if (repeat) {
+      await this.upsertChunksForRepeatTask(task);
+    } else {
+      await Chunk.create({
+        task: task,
+        duration: createConstTaskInput.duration,
+        start: createConstTaskInput.start,
+      }).save();
+    }
+
+    // Fetch task one more time with chunks as chunks
+    const taskToReturn = await Task.findOne({
+      relations: ['chunks'],
+      where: {
+        id: task.id,
+      },
+    });
+
+    return taskToReturn;
   }
 
   async createFloatTask(
@@ -76,23 +83,64 @@ export class TasksService {
       start: createFloatTaskInput.start,
     }).save();
 
-    let task = Task.create({
+    const task = await Task.create({
       category: category,
       isFloat: true,
+      user: user,
       name: createFloatTaskInput.name,
       notifications: notification,
       priority: createFloatTaskInput.priority,
       chunkInfo: chunkInfo,
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
-    });
-
-    task.user = Promise.resolve(user);
-
-    task = await task.save();
+    }).save();
 
     // await planTask(task);
 
     return task;
+  }
+
+  async upsertChunksForRepeatTask(task: Task) {
+    const chunkInfo = task.chunkInfo;
+
+    if (!chunkInfo) {
+      throw new UserInputError('Task is not a repeat task');
+    }
+
+    const repeat = task.chunkInfo.repeat;
+
+    if (!repeat) {
+      throw "Task doesn't have a repeat pattern";
+    }
+
+    // First we need to remove all the existing chunks if they exist
+    await Chunk.delete({
+      task: task,
+    });
+
+    const repeatUntil = repeat.repeatUntil
+      ? moment(repeat.repeatUntil)
+      : moment(task.chunkInfo.start).add(2, 'month');
+
+    const chunkList = [];
+    let currentChunkStart = moment(task.chunkInfo.start);
+
+    // Compare
+    while (currentChunkStart.isSameOrBefore(repeatUntil)) {
+      chunkList.push({
+        task: task,
+        duration: task.chunkInfo.duration,
+        start: currentChunkStart,
+      });
+      // Add repeatEvery repeatType to the currentChunkStart using moment
+      currentChunkStart = moment(currentChunkStart).add(
+        repeat.repeatEvery,
+        repeat.repeatType
+          .toString()
+          .toLowerCase() as moment.unitOfTime.DurationConstructor
+      );
+    }
+
+    await Chunk.save(chunkList);
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {

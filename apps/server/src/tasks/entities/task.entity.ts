@@ -34,26 +34,25 @@ export class Task extends GeneralEntity {
 
   @Field(() => Category, {
     description:
-      'The category to which the task belongs. Category needs to be created by the user either before or during the task creation (in corresponding mutation).',
+      'The category to which the task belongs. Category needs to be created by user either before or during the task creation (in corresponding mutation).',
   })
   @ManyToOne(() => Category, (category) => category.tasks, { eager: true })
   category: Category;
 
   @Field(() => String, {
     description:
-      'Priority is created by admins and can not be changed by users.',
+      'Priority is created by us once and can not be changed by users.',
   })
   @Column()
   priority: string;
 
   @Field({
     description:
-      'Whether the task is a const or float. Float tasks are tasks that user wants algorithm to replan according to const tasks and other float tasks. In other words const tasks have fixed start and end times.',
+      'Whether the task is a const or float. Float tasks are tasks that user want algorithm to replan according to const tasks and other float tasks. In other words const tasks have fixed start and end times.',
   })
   @Column()
   isFloat: boolean;
 
-  // TODO This needs to be renamed and or removed
   @Field({
     nullable: true,
     description:
@@ -64,8 +63,7 @@ export class Task extends GeneralEntity {
   chunkInfo: ChunkInfo;
 
   @NullableField(() => [Chunk], {
-    description:
-      'Represents task in time, should be named chunk instead. Preferences are in ChunkInfo field.',
+    description: 'Represents task in time. Preferences are in ChunkInfo field.',
   })
   @OneToMany(() => Chunk, (chunk) => chunk.task)
   chunks: Chunk[];
@@ -91,6 +89,9 @@ export class Task extends GeneralEntity {
   @ManyToOne(() => Notification, (notification) => notification.tasks)
   notifications: Notification;
 
-  @ManyToOne(() => User, (user: User) => user.tasks, { nullable: false })
-  user: Promise<User>;
+  @ManyToOne(() => User, (user: User) => user.tasks, {
+    nullable: false,
+    eager: true,
+  })
+  user: User;
 }
