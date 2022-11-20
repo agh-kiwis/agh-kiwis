@@ -69,14 +69,16 @@ describe('PlanTask (e2e)', () => {
       category: params.category,
       start: params.start,
       priority: params.priority || 'medium',
-      duration: params.duration || moment.duration(1, 'hour'),
+      // duration defaults to 1.5 hours
+      duration: params.duration || moment.duration(1.5, 'hours'),
       repeat: params.repeat || {
         repeatType: RepeatType.WEEKS,
         repeatEvery: 1,
       },
       shouldAutoResolve: false,
       timeBeforeNotification: moment.duration(15, 'minutes'),
-      chillTime: moment.duration(15, 'minutes'),
+      // TODO Change that to normal value
+      chillTime: moment.duration(0, 'minutes'),
     };
 
     await taskService.createConst(params.user, createConstTaskInput);
@@ -133,7 +135,8 @@ describe('PlanTask (e2e)', () => {
     await createConstTask({
       taskName: 'Sleep',
       category: sleepCategory,
-      start: new Date(2022, 11, 14, 0),
+      // New date in utc
+      start: new Date(2022, 11, 13, 0),
       duration: moment.duration(8, 'hours'),
       user: user,
       priority: 'high',
@@ -142,7 +145,7 @@ describe('PlanTask (e2e)', () => {
 
     // LECTURES AND STUFF
     await createConstTask({
-      taskName: 'Functional Programming',
+      taskName: 'Imperative Programming',
       category: lectures_category,
       start: new Date(2022, 11, 13, 11, 15),
       user,
@@ -172,7 +175,7 @@ describe('PlanTask (e2e)', () => {
     await createConstTask({
       taskName: 'Mathematical Logic',
       category: labs_category,
-      start: new Date(2022, 11, 14, 16, 45),
+      start: new Date(2022, 11, 14, 16, 15),
       user,
     });
 
@@ -319,7 +322,7 @@ describe('PlanTask (e2e)', () => {
       isFloat: true,
       user: user,
       chunkInfo: {
-        start: new Date(2022, 11, 13, 14, 40),
+        start: new Date(2022, 11, 13, 8, 0),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
         estimation: moment.duration(6, 'hours'),

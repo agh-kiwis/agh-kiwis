@@ -1,13 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import moment, { Duration } from 'moment';
 import { Field, ObjectType } from '@nestjs/graphql';
+import moment, { Duration } from 'moment';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
+import { Interval } from '../../utils/interval.scalar';
 import { NullableColumn } from '../../utils/NullableColumn';
 import { NullableField } from '../../utils/NullableField';
-import { Interval } from '../../utils/interval.scalar';
 import { Repeat } from './repeat.entity';
-import { Task } from './task.entity';
 
 
 // TODO This needs to be converted to a virtual entity with no db connection.
