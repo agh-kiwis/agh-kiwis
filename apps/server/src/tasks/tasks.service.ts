@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import moment, { Duration } from 'moment';
 import { In } from 'typeorm';
+import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -79,8 +79,6 @@ export class TasksService {
 
     const chunkInfo = await ChunkInfo.create({
       ...createFloatTaskInput,
-      ...createFloatTaskInput.chunkInfo,
-      start: createFloatTaskInput.start,
     }).save();
 
     const task = await Task.create({
@@ -234,11 +232,7 @@ export class TasksService {
     );
 
     const chunkInfo = await ChunkInfo.create({
-      ...updateTaskInput.chunkInfo,
-      start: updateTaskInput.start,
-      chillTime: updateTaskInput.chillTime,
-      deadline: updateTaskInput.deadline,
-      estimation: updateTaskInput.estimation,
+      ...updateTaskInput,
     }).save();
 
     task.category = category;
