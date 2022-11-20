@@ -1,5 +1,5 @@
 import { createQueryBuilder } from 'typeorm';
-import moment, { Duration, duration } from 'moment';
+import moment, { Duration } from 'moment';
 import { Logger } from '@nestjs/common';
 import { Chunk } from '../tasks/entities/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
@@ -9,6 +9,7 @@ const WEEKS_TO_ADD = 4;
 type Window = {
   start: moment.Moment;
   duration: moment.Duration;
+  usedDuration?: moment.Duration;
 };
 
 export const planTask = async (task: Task) => {
@@ -53,9 +54,6 @@ export const planTask = async (task: Task) => {
 
   // Get float tasks for which one of the breakdowns is in the given range
 
-  // console.log(task.chunkInfo.start);
-  // console.log({ endDate });
-
   let allTasks = await queryRunner.manager
     .createQueryBuilder(Task, 'task')
     .innerJoinAndSelect('task.chunks', 'chunk')
@@ -71,9 +69,7 @@ export const planTask = async (task: Task) => {
     .orderBy('chunkInfo.start', 'ASC')
     .getMany();
 
-  // console.log({ allTasks });
-
-  // TODO This is not working, but should work and I've no idea why?
+  // TODO This is not working, but should work and I've no idea why
   // For now it's not bothering us too much
   const notPlannedFloats = await queryRunner.manager
     .createQueryBuilder(Task, 'task')
@@ -91,8 +87,6 @@ export const planTask = async (task: Task) => {
     // Get chunkInfo
     .getMany();
 
-  // console.log({ notPlannedFloats });
-
   // Merge without duplicates
 
   // TODO Remove this when the above query returns correct results
@@ -102,14 +96,9 @@ export const planTask = async (task: Task) => {
     (task, index, self) => index === self.findIndex((t) => t.id === task.id)
   );
 
-  // Append current task to float tasks
-
   // Get only float tasks from the above list
   const floatTasks = allTasks.filter((task) => task.isFloat);
   const constTasks = allTasks.filter((task) => !task.isFloat);
-
-  // console.log({ floatTasks });
-  // console.log({ constTasks });
 
   // Delete chunks for the given float tasks
   if (floatTasks.length > 0) {
@@ -128,8 +117,7 @@ export const planTask = async (task: Task) => {
     taskIdAndWeightMap.set(task.id, getTaskWeight(task));
   });
 
-  // console.log({ taskIdAndWeightMap });
-
+  // TODO Think of a better way to stable sort those
   // Sort tasks by weight
   const sortedTasks = floatTasks.sort((a, b) => {
     const { priority: priorityA } = taskIdAndWeightMap.get(a.id);
@@ -137,19 +125,18 @@ export const planTask = async (task: Task) => {
     return priorityB - priorityA;
   });
 
-  // console.log({ sortedTasks });
-
+  // sort tasks by deadline
   sortedTasks.sort((a, b) => {
     const { deadlineA } = taskIdAndWeightMap.get(a.id);
     const { deadlineB } = taskIdAndWeightMap.get(b.id);
     return deadlineB - deadlineA;
   });
 
-  // console.log({ sortedTasks });
+  console.log({ sortedTasks });
 
   // Find all windows in moment duration between start time and end time of the const tasks.
   let endTime = moment(task.chunkInfo.start);
-  let windows: Window[] | false = [];
+  let windows: Window[] = [];
 
   const constTaskChunks = constTasks.reduce((acc, task) => {
     // Add chunkInfo chillTime to each chunk
@@ -165,8 +152,6 @@ export const planTask = async (task: Task) => {
   constTaskChunks.sort((a, b) => {
     return moment(a.start).diff(moment(b.start));
   });
-
-  // console.log({ constTaskChunks });
 
   constTaskChunks.forEach((chunk) => {
     // Add duration to the first task
@@ -185,21 +170,28 @@ export const planTask = async (task: Task) => {
       .add(currentDuration.clone().add(chunk.chillTime));
   });
 
-  // printWindows(windows);
-
-  // Take first by importance tuple task and try to fit it in all the windows counting the coefficient. We are trying our best to fit maximum of this task in the window. If it's possible we can even fit 2 or more instances of that task into the window.
+  printWindows(windows);
 
   // Fit tasks in windows and calculate coefficients
+  const chunksToInsert = [];
 
   sortedTasks.forEach((task) => {
-    windows = fitTask(task, windows as Window[], endDate);
+    windows = fitTask(task, windows, endDate, chunksToInsert);
     if (!windows) {
-      // HANDLE THE ERROR SOMEHOW
+      // This indicates that we have more tasks to plan than windows
       throw new Error('No windows left!!! Please do something later');
     }
   });
 
   // Commit transaction
+  // Insert chunks
+  await queryRunner.manager
+    .createQueryBuilder()
+    .insert()
+    .into(Chunk)
+    .values(chunksToInsert)
+    .execute();
+
   await queryRunner.commitTransaction();
 };
 
@@ -214,12 +206,114 @@ const getTaskWeight = (task: Task) => {
   return { deadline, priority };
 };
 
+const tryFittingTask = (task: Task, window: Window) => {
+  // This assumes that we can fit SOMETHING!!
+
+  const windowDuration: Duration = window.duration.clone();
+
+  if (window.duration.asMinutes() == 0) {
+    throw new Error('Window duration is 0');
+  }
+  // This field is really tricky
+  const taskDuration = moment.duration(task.chunkInfo.estimation);
+
+  while (windowDuration.asMinutes() > 0 && taskDuration.asMinutes() > 0) {
+    // This returns the max chunk we are able to fit right now
+    const chunkSize = getMaxChunkToFit(
+      task,
+      windowDuration as moment.Duration,
+      taskDuration
+    );
+
+    console.log(chunkSize?.asMinutes());
+
+    if (chunkSize && chunkSize.asMinutes() > 0) {
+      // We were able to create a non-zero chunk
+      taskDuration.subtract(chunkSize);
+      chunkSize.add(task.chunkInfo.chillTime);
+      windowDuration.subtract(chunkSize);
+    } else {
+      break;
+    }
+  }
+
+  const durationUsed = window.duration.clone().subtract(windowDuration);
+
+  return getCoefficient(window.duration, durationUsed);
+};
+
+const getMaxChunkToFit = (
+  task: Task,
+  windowDuration: Duration,
+  // The duration that left for that window duration
+  realTaskDuration: Duration
+) => {
+  // Throw off all possibilities where we can't no more fit a task:
+
+  if (windowDuration.asMinutes() <= 0 || realTaskDuration.asMinutes() <= 0) {
+    return;
+  }
+
+  const minChunkDurationWithChillTime = task.chunkInfo.minChunkDuration
+    .clone()
+    .add(task.chunkInfo.chillTime);
+
+  if (windowDuration < minChunkDurationWithChillTime) {
+    return;
+  }
+
+  const maxDurationWithChill = task.chunkInfo.maxChunkDuration
+    .clone()
+    .add(task.chunkInfo.chillTime);
+
+  if (
+    maxDurationWithChill >= windowDuration &&
+    realTaskDuration >= maxDurationWithChill
+  ) {
+    return windowDuration.clone().subtract(task.chunkInfo.chillTime);
+  }
+
+  // We are dealing with a case where window is bigger then a task with chillTime, so we need to
+
+  // if (maxDurationWithChill < realTaskDuration.clone().add(task.chunkInfo.chillTime)) {
+  //   throw new Error('This should not happen');
+  // }
+
+  return task.chunkInfo.maxChunkDuration.clone();
+
+  // // TODO This won't work
+  // if (realTaskDuration <= task.chunkInfo.maxChunkDuration) {
+  //   minChunkDurationWithChillTime = realTaskDuration
+  //     .clone()
+  //     .add(task.chunkInfo.chillTime);
+  // }
+
+  // if (minChunkDurationWithChillTime > windowDuration) {
+  //   return windowDuration.subtract(task.chunkInfo.chillTime);
+  // }
+
+  // if (minChunkDurationWithChillTime <= windowDuration) {
+  //   return task.chunkInfo.maxChunkDuration;
+  // }
+};
+
+// Utils
+
+const getCoefficient = (
+  windowDuration: Duration,
+  fittedPartDuration: Duration
+) => {
+  return fittedPartDuration.asMinutes() / windowDuration.asMinutes();
+};
+
+// This function is responsible for inserting chunks for the given task (in transaction)
+// And updating windows (deleting all used and shortening half-used windows)
 const fitTask = (
   task: Task,
   windows: Window[],
-  endDate: Date
-): Window[] | false => {
-  // console.log('FITTING TASK!');
+  endDate: Date,
+  chunksToInsert: Chunk[]
+): Window[] => {
   // TODO Handle the edge case below
   // We have an edge case where task starts before the current task and one of its already planned chunks is AFTER the current task start
   // In this case we only want to replan the chunks AFTER the current task start
@@ -237,7 +331,7 @@ const fitTask = (
   // Iterate over windows and calculate coefficient for each window
 
   for (const [index, window] of windows.entries()) {
-    // All edge cases
+    // All edge cases handling is happening there
 
     if (moment(endDate).isBefore(window.start)) {
       break;
@@ -251,29 +345,88 @@ const fitTask = (
     }
 
     // Find the max duration of the task (excluding chill time) that can fit into the window
-
     const windowCoefficient = tryFittingTask(task, window);
+
     windowIndexAndCoefficientMap.set(index, windowCoefficient);
   }
 
   console.log({ windowIndexAndCoefficientMap });
 
-  return windows;
+  // Sort windows by coefficient
+  const sortedWindows = [...windowIndexAndCoefficientMap.entries()].sort(
+    (a, b) => b[1] - a[1]
+  );
 
-  // This needs to return new windows with occupied windows taken out
-  // return isFitted ? windows : false;
+  console.log({ sortedWindows });
 
-  // // Assuming that the whole task needs to be planned in the given windows
-  // const durationToBePlanned = moment.duration(task.chunkInfo.duration);
-};
+  // Try to fit task regarding that coefficient and see if it fits.
 
-const getCoefficient = (
-  windowDuration: Duration,
-  fittedPartDuration: Duration
-) => {
-  console.log(windowDuration.asMinutes());
-  console.log(fittedPartDuration.asMinutes());
-  return fittedPartDuration.asMinutes() / windowDuration.asMinutes();
+  const taskEstimation = moment.duration(task.chunkInfo.estimation);
+  let windowTaken = 0;
+  const window = windows[windowTaken];
+  let taskDuration = getDurationUsedForTheWindow(
+    task,
+    window,
+    taskEstimation,
+    chunksToInsert
+  );
+  // We need to intelligently fit the task into the window
+
+  while (taskDuration.asMinutes() > 0) {
+    windowTaken++;
+    const window = windows[windowTaken];
+
+    taskDuration = getDurationUsedForTheWindow(
+      task,
+      window,
+      taskDuration,
+      chunksToInsert
+    );
+  }
+  // Iterate over windows and check if used duration is equal to duration then remove the window, else split into two windows
+  const windowsIndexesToRemove = [];
+  const windowsToAppend: Window[] = [];
+
+  for (const [index, window] of windows.entries()) {
+    if (!window.usedDuration) {
+      break;
+    }
+    if (window.usedDuration.asMinutes() > 0) {
+      windowsIndexesToRemove.push(index);
+    }
+
+    // window.usedDuration is calculated with according to chillTime
+    if (window.usedDuration >= window.duration) {
+      continue;
+    }
+
+    // We haven't used the whole duration so we need to append a new window
+    const newWindowStart = moment(window.start).add(window.usedDuration);
+
+    const newWindowDuration = window.duration
+      .clone()
+      .subtract(window.usedDuration);
+
+    windowsToAppend.push({
+      start: newWindowStart,
+      duration: newWindowDuration,
+    });
+  }
+
+  // Remove from windows windows to remove
+  const windowsToReturn = windows.filter(
+    (window, index) => !windowsIndexesToRemove.includes(index)
+  );
+
+  // Append new windows to windows to return
+  windowsToReturn.push(...windowsToAppend);
+
+  // Sort windows by start date
+  windowsToReturn.sort((a, b) => a.start.valueOf() - b.start.valueOf());
+
+  // Insert chunks into the database
+
+  return windowsToReturn;
 };
 
 const printWindows = (windows: Window[]) => {
@@ -288,69 +441,48 @@ const printWindows = (windows: Window[]) => {
   });
 };
 
-const tryFittingTask = (task: Task, window: Window) => {
-  // This assumes that we can fit SOMETHING!!
+const getDurationUsedForTheWindow = (
+  task: Task,
+  window: Window,
+  taskDuration: Duration,
+  chunksToInsert: Chunk[] = []
+) => {
+  const windowDuration: Duration = window.duration.clone();
 
-  const windowDuration: Duration | false = window.duration;
+  const windowStart = window.start.clone();
 
   if (window.duration.asMinutes() == 0) {
     throw new Error('Window duration is 0');
   }
 
-  const taskDuration = moment.duration(task.chunkInfo.duration);
+  while (windowDuration.asMinutes() > 0 && taskDuration.asMinutes() > 0) {
+    // This returns the max chunk we are able to fit right now
+    const chunkSize = getMaxChunkToFit(task, windowDuration, taskDuration);
 
-  while (windowDuration && taskDuration.asMinutes() > 0) {
-    //  THIS CAN BE A SOURCE OF Infinite loop
-    const durationUsed = getMaxChunkToFit(
-      task,
-      windowDuration as moment.Duration,
-      taskDuration
-    );
+    console.log(chunkSize?.asMinutes());
 
-    console.log({ durationUsed });
-
-    if (durationUsed) {
-      durationUsed.add(task.chunkInfo.chillTime);
-      console.log({ windowDuration });
-      windowDuration.subtract(durationUsed);
-      console.log({ windowDuration });
-      taskDuration.subtract(durationUsed);
+    if (chunkSize && chunkSize.asMinutes() > 0) {
+      // We were able to create a non-zero chunk
+      taskDuration.subtract(chunkSize);
+      chunkSize.add(task.chunkInfo.chillTime);
+      windowDuration.subtract(chunkSize);
+      if (window.usedDuration) {
+        window.usedDuration.add(chunkSize);
+      } else {
+        window.usedDuration = chunkSize;
+      }
+      const chunkToInsert = Chunk.create({
+        task: task,
+        start: windowStart.toDate(),
+        duration: chunkSize.clone().subtract(task.chunkInfo.chillTime),
+      });
+      chunksToInsert.push(chunkToInsert);
+      windowStart.add(chunkSize);
+      windowStart.add(task.chunkInfo.chillTime);
     } else {
       break;
     }
   }
 
-  const durationUsed = window.duration.clone().subtract(windowDuration);
-
-  return getCoefficient(window.duration, durationUsed);
-};
-
-const getMaxChunkToFit = (
-  task: Task,
-  windowDuration: Duration,
-  realTaskDuration: Duration
-) => {
-  let maxChunkDurationWithChillTime = task.chunkInfo.maxChunkDuration
-    .clone()
-    .add(task.chunkInfo.chillTime);
-
-  // const realTaskDuration = task.chunkInfo.duration;
-
-  if (windowDuration < maxChunkDurationWithChillTime) {
-    return false;
-  }
-
-  if (realTaskDuration <= task.chunkInfo.maxChunkDuration) {
-    maxChunkDurationWithChillTime = realTaskDuration
-      .clone()
-      .add(task.chunkInfo.chillTime);
-  }
-
-  if (maxChunkDurationWithChillTime > windowDuration) {
-    return windowDuration.subtract(task.chunkInfo.chillTime);
-  }
-
-  if (maxChunkDurationWithChillTime <= windowDuration) {
-    return task.chunkInfo.maxChunkDuration;
-  }
+  return taskDuration;
 };
