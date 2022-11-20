@@ -27,6 +27,7 @@ export const constTaskFormToAddTaskMutationMapper = (
         repeatType: mapFormRepeatToRepeatType(
           variables.repeat.repeatEvery.type
         ),
+        repeatUntil: variables.repeat.repeatUntil,
       }
     : undefined,
   start: mapToDateTime(variables.startTime.date, variables.startTime.time),
@@ -41,21 +42,18 @@ export const floatTaskFormToAddTaskMutationMapper = (
     id: variables.category.id,
   },
   chillTime: getIntervalISOString(variables.chillTime),
-  chunkInfo: {
-    minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
-    maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
-    minTimeBetweenChunks: getIntervalISOString(
-      variables.chunking.minTimeBetweenChunks
-    ),
-  },
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
-  estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,
   priority: variables.priority,
   shouldAutoResolve: variables.autoResolve,
-  // TODO what is start regarding float task?
   start: new Date(),
   timeBeforeNotification: null,
+  minTimeBetweenChunks: getIntervalISOString(
+    variables.chunking.minTimeBetweenChunks
+  ),
+  minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
+  maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
+  estimation: getIntervalISOString(variables.timeEstimation),
 });
 
 // prepopulate
@@ -90,6 +88,7 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
         ? task.chunkInfo.repeat?.repeatEvery
         : 1,
     },
+    repeatUntil: moment(task.chunkInfo.repeat.repeatUntil).format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: !!task.notifications,
@@ -172,13 +171,11 @@ export const floatTaskToUpdateTaskMutationMapper = (
     id: variables.category.id,
   },
   chillTime: getIntervalISOString(variables.chillTime),
-  chunkInfo: {
-    minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
-    maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
-    minTimeBetweenChunks: getIntervalISOString(
-      variables.chunking.minTimeBetweenChunks
-    ),
-  },
+  minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
+  maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
+  minTimeBetweenChunks: getIntervalISOString(
+    variables.chunking.minTimeBetweenChunks
+  ),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   name: variables.taskName,

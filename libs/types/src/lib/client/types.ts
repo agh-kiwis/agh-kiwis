@@ -39,6 +39,7 @@ export type ConstTaskType = TaskType & {
       type: string;
       amount: number;
     };
+    repeatUntil: string;
   };
   repeatEveryFacade: string;
 };

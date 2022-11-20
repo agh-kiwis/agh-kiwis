@@ -155,13 +155,6 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                     handleChange={setFieldValue}
                   />
                   <Box my={4}>
-                    <InputField
-                      type="date"
-                      label="Start from"
-                      name="repeat.startFrom"
-                    />
-                  </Box>
-                  <Box my={4}>
                     <LongIntervalPicker
                       modalTitle="Repeat every"
                       selectField={repeatEverySelectField}
@@ -171,6 +164,13 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                     >
                       <DependentRepeatEveryField name="repeatEveryFacade" />
                     </LongIntervalPicker>
+                    <Box my={4}>
+                      <InputField
+                        type="date"
+                        label="Repeat until"
+                        name="repeat.repeatUntil"
+                      />
+                    </Box>
                   </Box>
                 </Box>
               ) : (

@@ -36,6 +36,7 @@ export const constTaskInitialValues: ConstTaskType = {
       type: 'Day',
       amount: 1,
     },
+    repeatUntil: moment().add(1, 'y').format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: false,
