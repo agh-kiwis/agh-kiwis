@@ -5,7 +5,6 @@ import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Priority } from '../entities/priority.enum';
 import { CategoryInput } from './category.input';
-import { RepeatInput } from './repeat.input';
 
 // TODO Add Validation
 @InputType()

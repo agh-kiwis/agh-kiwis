@@ -5,7 +5,6 @@ import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Priority } from '../entities/priority.enum';
 import { CategoryInput } from './category.input';
-import { ChunkInfoInput } from './chunkInfo.input';
 import { RepeatInput } from './repeat.input';
 
 // TODO Change this to ONLY PROPS THAT CAN BE UPDATED
@@ -39,8 +38,14 @@ export class TaskInput {
   @IsEnum(Priority)
   priority: string;
 
-  @NullableField(() => ChunkInfoInput)
-  chunkInfo: ChunkInfoInput;
+  @NullableField(() => Interval)
+  minTimeBetweenChunks: Duration;
+
+  @NullableField(() => Interval, { nullable: true })
+  minChunkDuration: Duration;
+
+  @NullableField(() => Interval)
+  maxChunkDuration: Duration;
 
   @NullableField(() => Interval)
   estimation: Duration;
