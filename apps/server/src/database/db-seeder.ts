@@ -73,6 +73,8 @@ export const seedDatabase = async () => {
 
   // Add some tasks
   const ten_minutes = moment.duration({ minutes: 10 });
+  const one_hour = moment.duration({ hours: 1 });
+  const eight_hours = moment.duration({ hours: 8 });
   const taskService = new TasksService();
 
   // Const tasks
@@ -165,13 +167,10 @@ export const seedDatabase = async () => {
     chillTime: ten_minutes,
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(3, 'days').toDate(),
-
-    estimation: moment.duration({ hours: 2, minutes: 40 }),
-    chunkInfo: {
-      maxChunkDuration: moment.duration({ minutes: 40 }),
-      minChunkDuration: moment.duration({ minutes: 20 }),
-      minTimeBetweenChunks: moment.duration({ minutes: 10 }),
-    },
     deadline: moment().startOf('day').add(8, 'days').add(12, 'hours').toDate(),
+    estimation: eight_hours,
+    minTimeBetweenChunks: one_hour,
+    minChunkDuration: ten_minutes,
+    maxChunkDuration: one_hour,
   });
 };
