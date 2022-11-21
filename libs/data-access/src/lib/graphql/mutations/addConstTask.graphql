@@ -11,6 +11,7 @@ mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
     chunkInfo {
       chillTime
       deadline
+      duration
       estimation
       id
       maxChunkDuration
@@ -18,6 +19,7 @@ mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
       repeat {
         repeatEvery
         repeatType
+        repeatUntil
       }
       start
     }
