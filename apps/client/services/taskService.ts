@@ -17,10 +17,11 @@ export const constTaskFormToAddTaskMutationMapper = (
   category: {
     id: variables.category.id,
   },
-  chillTime: getIntervalISOString(variables.chillTime),
-  duration: getIntervalISOString(variables.duration),
   name: variables.taskName,
   priority: variables.priority,
+  start: mapToDateTime(variables.startTime.date, variables.startTime.time),
+  duration: getIntervalISOString(variables.duration),
+  chillTime: getIntervalISOString(variables.chillTime),
   repeat: variables.repeat.shouldRepeat
     ? {
         repeatEvery: variables.repeat.repeatEvery.amount,
@@ -30,7 +31,6 @@ export const constTaskFormToAddTaskMutationMapper = (
         repeatUntil: variables.repeat.repeatUntil,
       }
     : undefined,
-  start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
@@ -41,19 +41,19 @@ export const floatTaskFormToAddTaskMutationMapper = (
   category: {
     id: variables.category.id,
   },
-  chillTime: getIntervalISOString(variables.chillTime),
-  deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   name: variables.taskName,
   priority: variables.priority,
-  shouldAutoResolve: variables.autoResolve,
   start: new Date(),
-  timeBeforeNotification: null,
+  deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
+  estimation: getIntervalISOString(variables.timeEstimation),
+  chillTime: getIntervalISOString(variables.chillTime),
   minTimeBetweenChunks: getIntervalISOString(
     variables.chunking.minTimeBetweenChunks
   ),
   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
-  estimation: getIntervalISOString(variables.timeEstimation),
+  shouldAutoResolve: variables.autoResolve,
+  timeBeforeNotification: null,
 });
 
 // prepopulate
@@ -149,10 +149,10 @@ export const constTaskToUpdateTaskMutationMapper = (
   category: {
     id: variables.category.id,
   },
-  chillTime: getIntervalISOString(variables.chillTime),
-  duration: getIntervalISOString(variables.duration),
   name: variables.taskName,
   priority: variables.priority,
+  chillTime: getIntervalISOString(variables.chillTime),
+  duration: getIntervalISOString(variables.duration),
   repeat: {
     repeatEvery: variables.repeat.repeatEvery.amount,
     repeatType: mapFormRepeatToRepeatType(variables.repeat.repeatEvery.type),
@@ -170,6 +170,8 @@ export const floatTaskToUpdateTaskMutationMapper = (
   category: {
     id: variables.category.id,
   },
+  name: variables.taskName,
+  priority: variables.priority,
   chillTime: getIntervalISOString(variables.chillTime),
   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
@@ -178,10 +180,7 @@ export const floatTaskToUpdateTaskMutationMapper = (
   ),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
-  name: variables.taskName,
-  priority: variables.priority,
   shouldAutoResolve: variables.autoResolve,
-  start: new Date(),
   timeBeforeNotification: null,
 });
 
