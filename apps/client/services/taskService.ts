@@ -180,6 +180,7 @@ export const floatTaskToUpdateTaskMutationMapper = (
   ),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
+  start: new Date(),
   shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
