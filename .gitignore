@@ -45,6 +45,3 @@ Thumbs.db
 
 # Auto-generated schemas
 *.gql
-
-# queries/mutation generation script
-generate.sh
