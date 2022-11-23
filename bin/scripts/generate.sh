@@ -23,4 +23,5 @@ cd ../
 rm index.js
 
 cd ../generated
+nx run data-access:generate
 npx prettier --write .
