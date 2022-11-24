@@ -68,3 +68,8 @@ export const mapToDateTime = (date: string, time?: string): Date => {
 
   return dateTime;
 };
+
+export const addMinutes = (date = new Date(), numOfMinutes: number): Date => {
+  date.setMinutes(date.getMinutes() + numOfMinutes);
+  return date;
+}

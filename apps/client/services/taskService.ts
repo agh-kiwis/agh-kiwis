@@ -6,7 +6,11 @@ import {
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
-import { getIntervalISOString, mapToDateTime } from '@agh-kiwis/moment-service';
+import {
+  addMinutes,
+  getIntervalISOString,
+  mapToDateTime,
+} from '@agh-kiwis/moment-service';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 
 // create
@@ -42,7 +46,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
   },
   name: variables.taskName,
   priority: variables.priority,
-  start: new Date(),
+  start: addMinutes(new Date(), 10),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   chillTime: getIntervalISOString(variables.chillTime),
