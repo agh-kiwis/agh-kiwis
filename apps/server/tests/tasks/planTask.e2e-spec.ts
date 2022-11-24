@@ -79,6 +79,8 @@ describe('PlanTask (e2e)', () => {
       timeBeforeNotification: moment.duration(15, 'minutes'),
       // TODO Change that to normal value
       chillTime: moment.duration(0, 'minutes'),
+      // TODO is it needed here?
+      isDone: false,
     };
 
     await taskService.createConst(params.user, createConstTaskInput);
