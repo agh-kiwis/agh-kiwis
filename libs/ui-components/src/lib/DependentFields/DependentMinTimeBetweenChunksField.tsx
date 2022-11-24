@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentMinTimeBetweenChunksFieldProps = {
@@ -10,7 +10,7 @@ type DependentMinTimeBetweenChunksFieldProps = {
 export const DependentMinTimeBetweenChunksField: React.FC<
   DependentMinTimeBetweenChunksFieldProps
 > = ({ name }) => {
-  const { values, setFieldValue } = useFormikContext<floatTaskType>();
+  const { values, setFieldValue } = useFormikContext<FloatTaskType>();
 
   useEffect(() => {
     if (values.chunking.minTimeBetweenChunks.hours === 0) {

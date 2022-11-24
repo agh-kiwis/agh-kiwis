@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentDurationFieldProps = {
@@ -10,7 +10,7 @@ type DependentDurationFieldProps = {
 export const DependentDurationField: React.FC<DependentDurationFieldProps> = ({
   name,
 }) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
+  const { values, setFieldValue } = useFormikContext<ConstTaskType>();
 
   useEffect(() => {
     if (values.duration.hours === 0) {

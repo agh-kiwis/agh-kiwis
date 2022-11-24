@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { floatTaskType } from '@agh-kiwis/types';
+import { FloatTaskType } from '@agh-kiwis/types';
 import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentMinChunkTimeFieldProps = {
@@ -10,7 +10,7 @@ type DependentMinChunkTimeFieldProps = {
 export const DependentMinChunkTimeField: React.FC<
   DependentMinChunkTimeFieldProps
 > = ({ name }) => {
-  const { values, setFieldValue } = useFormikContext<floatTaskType>();
+  const { values, setFieldValue } = useFormikContext<FloatTaskType>();
 
   useEffect(() => {
     setFieldValue(name, `${values.chunking.minChunkTime.minutes}min`);

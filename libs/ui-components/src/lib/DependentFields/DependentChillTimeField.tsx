@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentChillTimeFieldProps = {
@@ -10,7 +10,7 @@ type DependentChillTimeFieldProps = {
 export const DependentChillTimeField: React.FC<
   DependentChillTimeFieldProps
 > = ({ name }) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
+  const { values, setFieldValue } = useFormikContext<ConstTaskType>();
 
   useEffect(() => {
     setFieldValue(name, `${values.chillTime.minutes}min`);

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { constTaskType } from '@agh-kiwis/types';
+import { ConstTaskType } from '@agh-kiwis/types';
 import { InputField } from '@agh-kiwis/ui-components';
 
 type DependentRepeatEveryFieldProps = {
@@ -10,7 +10,7 @@ type DependentRepeatEveryFieldProps = {
 export const DependentRepeatEveryField: React.FC<
   DependentRepeatEveryFieldProps
 > = ({ name }) => {
-  const { values, setFieldValue } = useFormikContext<constTaskType>();
+  const { values, setFieldValue } = useFormikContext<ConstTaskType>();
 
   useEffect(() => {
     {
