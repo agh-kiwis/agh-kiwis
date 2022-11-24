@@ -1,10 +1,11 @@
 import { UserInputError } from 'apollo-server-errors';
-import moment, { Duration } from 'moment';
 import { In } from 'typeorm';
+import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
+import { planTask } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
 import { CreateConstTaskInput } from './dto/createConstTask.input';
 import { CreateFloatTaskInput } from './dto/createFloatTask.input';
@@ -94,7 +95,7 @@ export class TasksService {
       shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
     }).save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }
@@ -251,7 +252,7 @@ export class TasksService {
 
     task = await task.save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }

@@ -1,8 +1,8 @@
 import { Duration } from 'moment';
 import { Field, InputType } from '@nestjs/graphql';
+import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { CreateTaskInput } from './createTask.input';
-import { NullableField } from '../../utils/NullableField';
 import { RepeatInput } from './repeat.input';
 
 @InputType()

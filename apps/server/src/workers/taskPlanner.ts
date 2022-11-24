@@ -132,8 +132,6 @@ export const planTask = async (task: Task) => {
     return deadlineB - deadlineA;
   });
 
-  console.log({ sortedTasks });
-
   // Find all windows in moment duration between start time and end time of the const tasks.
   let endTime = moment(task.chunkInfo.start);
   let windows: Window[] = [];
@@ -225,8 +223,6 @@ const tryFittingTask = (task: Task, window: Window) => {
       taskDuration
     );
 
-    console.log(chunkSize?.asMinutes());
-
     if (chunkSize && chunkSize.asMinutes() > 0) {
       // We were able to create a non-zero chunk
       taskDuration.subtract(chunkSize);
@@ -275,26 +271,7 @@ const getMaxChunkToFit = (
 
   // We are dealing with a case where window is bigger then a task with chillTime, so we need to
 
-  // if (maxDurationWithChill < realTaskDuration.clone().add(task.chunkInfo.chillTime)) {
-  //   throw new Error('This should not happen');
-  // }
-
   return task.chunkInfo.maxChunkDuration.clone();
-
-  // // TODO This won't work
-  // if (realTaskDuration <= task.chunkInfo.maxChunkDuration) {
-  //   minChunkDurationWithChillTime = realTaskDuration
-  //     .clone()
-  //     .add(task.chunkInfo.chillTime);
-  // }
-
-  // if (minChunkDurationWithChillTime > windowDuration) {
-  //   return windowDuration.subtract(task.chunkInfo.chillTime);
-  // }
-
-  // if (minChunkDurationWithChillTime <= windowDuration) {
-  //   return task.chunkInfo.maxChunkDuration;
-  // }
 };
 
 // Utils
@@ -334,14 +311,14 @@ const fitTask = (
     // All edge cases handling is happening there
 
     if (moment(endDate).isBefore(window.start)) {
-      break;
+      continue;
     }
     if (
       window.duration.asMinutes() <
       task.chunkInfo.minChunkDuration.asMinutes() +
         task.chunkInfo.chillTime.asMinutes()
     ) {
-      break;
+      continue;
     }
 
     // Find the max duration of the task (excluding chill time) that can fit into the window
@@ -349,15 +326,6 @@ const fitTask = (
 
     windowIndexAndCoefficientMap.set(index, windowCoefficient);
   }
-
-  console.log({ windowIndexAndCoefficientMap });
-
-  // Sort windows by coefficient
-  const sortedWindows = [...windowIndexAndCoefficientMap.entries()].sort(
-    (a, b) => b[1] - a[1]
-  );
-
-  console.log({ sortedWindows });
 
   // Try to fit task regarding that coefficient and see if it fits.
 
@@ -458,8 +426,6 @@ const getDurationUsedForTheWindow = (
   while (windowDuration.asMinutes() > 0 && taskDuration.asMinutes() > 0) {
     // This returns the max chunk we are able to fit right now
     const chunkSize = getMaxChunkToFit(task, windowDuration, taskDuration);
-
-    console.log(chunkSize?.asMinutes());
 
     if (chunkSize && chunkSize.asMinutes() > 0) {
       // We were able to create a non-zero chunk
