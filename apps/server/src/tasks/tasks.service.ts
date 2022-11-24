@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
+import { planTask } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
@@ -89,7 +90,7 @@ export class TasksService {
       shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
     }).save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }
@@ -265,7 +266,7 @@ export class TasksService {
 
     task = await task.save();
 
-    // await planTask(task);
+    await planTask(task);
 
     return task;
   }

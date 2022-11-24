@@ -21,7 +21,7 @@ export class Repeat extends GeneralEntity {
   @Field()
   @Column({ type: 'int', default: 1, nullable: true })
   repeatEvery: number;
-  
+
   @Field()
   @Column({ type: 'enum', enum: RepeatType, default: RepeatType.DAYS })
   repeatType: RepeatType;
