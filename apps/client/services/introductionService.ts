@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {
   Category,
-  CreateConstTaskInput,
+  ConstTaskInput,
   RepeatType,
   UpdateUserInput,
 } from '@agh-kiwis/data-access';
@@ -26,7 +26,7 @@ export const mapUserDetailsToUpdateUserMutation = (
 export const mapSleepPreferencesToAddConstTaskMutation = (
   sleepPreferences: SleepPreferencesType,
   category: Category
-): CreateConstTaskInput => {
+): ConstTaskInput => {
   const sleepDuration = getDurationBetweenTwoDates(
     sleepPreferences.sleep,
     sleepPreferences.wakeUp

@@ -1,11 +1,10 @@
 import router from 'next/router';
 import moment from 'moment';
 import {
-  CreateConstTaskInput,
-  CreateFloatTaskInput,
+  ConstTaskInput,
+  FloatTaskInput,
   RepeatType,
   Task,
-  TaskInput,
 } from '@agh-kiwis/data-access';
 import { getIntervalISOString, mapToDateTime } from '@agh-kiwis/moment-service';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
@@ -13,7 +12,7 @@ import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 // create
 export const constTaskFormToAddTaskMutationMapper = (
   variables: ConstTaskType
-): CreateConstTaskInput => ({
+): ConstTaskInput => ({
   category: {
     id: variables.category.id,
   },
@@ -37,7 +36,7 @@ export const constTaskFormToAddTaskMutationMapper = (
 
 export const floatTaskFormToAddTaskMutationMapper = (
   variables: FloatTaskType
-): CreateFloatTaskInput => ({
+): FloatTaskInput => ({
   category: {
     id: variables.category.id,
   },
@@ -142,10 +141,8 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
 // update
 // TODO improve update task mutation to update chunks
 export const constTaskToUpdateTaskMutationMapper = (
-  id: number,
   variables: ConstTaskType
-): TaskInput => ({
-  id: id,
+): ConstTaskInput => ({
   category: {
     id: variables.category.id,
   },
@@ -163,10 +160,8 @@ export const constTaskToUpdateTaskMutationMapper = (
 });
 
 export const floatTaskToUpdateTaskMutationMapper = (
-  id: number,
   variables: FloatTaskType
-): TaskInput => ({
-  id: id,
+): FloatTaskInput => ({
   category: {
     id: variables.category.id,
   },
@@ -220,7 +215,7 @@ export const handleConstTaskSubmit = async (
 ) => {
   const taskResponse = await addConstTaskMutation({
     variables: {
-      createConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
+      ConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
     },
   }).catch((error) => {
     // TODO handle error
@@ -239,7 +234,7 @@ export const handleFloatTaskSubmit = async (
 ) => {
   const taskResponse = await addFloatTaskMutation({
     variables: {
-      createFloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+      FloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
     },
   }).catch((error) => {
     // TODO handle error

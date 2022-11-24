@@ -1,5 +1,5 @@
-mutation updateFloatTask($taskInput: TaskInput!) {
-  updateFloatTask(taskInput: $taskInput) {
+mutation updateFloatTask($id: Int!, $taskInput: FloatTaskInput!) {
+  updateFloatTask(id: $id, taskInput: $taskInput) {
     category {
       color {
         hexCode

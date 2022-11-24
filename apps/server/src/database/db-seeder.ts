@@ -90,6 +90,7 @@ export const seedDatabase = async () => {
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(7, 'hours').toDate(),
     duration: moment.duration({ minutes: 20 }),
+    isDone: false,
   });
 
   // Temporary removal to show only one page
@@ -106,6 +107,7 @@ export const seedDatabase = async () => {
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(14, 'hours').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   taskService.createConst(user, {
@@ -121,6 +123,7 @@ export const seedDatabase = async () => {
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(18, 'hours').add(1, 'days').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   // Sleeping category
@@ -137,6 +140,7 @@ export const seedDatabase = async () => {
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(22, 'hours').toDate(),
     duration: moment.duration({ hours: 8 }),
+    isDone: false,
   });
 
   // Sport category task
@@ -154,6 +158,7 @@ export const seedDatabase = async () => {
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(6, 'hours').add(1, 'days').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   // Float tasks:
@@ -170,5 +175,6 @@ export const seedDatabase = async () => {
     minChunkDuration: moment.duration({ minutes: 20 }),
     maxChunkDuration: moment.duration({ minutes: 40 }),
     minTimeBetweenChunks: moment.duration({ minutes: 10 }),
+    isDone: false,
   });
 };

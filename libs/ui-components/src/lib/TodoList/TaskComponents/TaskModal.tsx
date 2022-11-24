@@ -23,11 +23,13 @@ import {
 } from '@chakra-ui/react';
 import {
   Task,
+  TaskInput,
   useRemoveTaskMutation,
   useUpdateTaskMutation,
 } from '@agh-kiwis/data-access';
 import {
   deadlineToDate,
+  getIntervalISOString,
   startToDate,
   startToTime,
 } from '@agh-kiwis/moment-service';
@@ -58,11 +60,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
   const [updateTaskMutation, { loading }] = useUpdateTaskMutation({
     variables: {
-      taskInput: {
-        id: task.id,
-        isDone: !task.isDone,
-        priority: task.priority,
-      },
+      id: task.id,
+      taskInput: taskToUpdateTaskMutationMapper(task),
     },
   });
 
@@ -142,7 +141,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Td>Deadline:</Td>
                         <Td>
                           {deadlineToDate(
-                            task.chunkInfo?.deadline!,
+                            task.chunkInfo?.deadline,
                             DESCRIPTIVE_DATE_FORMAT
                           )}
                         </Td>
@@ -212,3 +211,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     </Modal>
   );
 };
+
+export const taskToUpdateTaskMutationMapper = (task: Task): TaskInput => ({
+  category: {
+    id: task.category.id,
+  },
+  name: task.name,
+  priority: task.priority,
+  chillTime: getIntervalISOString(task.chunkInfo?.chillTime),
+  start: task.chunkInfo?.start,
+  shouldAutoResolve: task.shouldAutoResolve,
+  isDone: !task.isDone,
+});

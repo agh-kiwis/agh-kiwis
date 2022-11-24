@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
-import { CreateConstTaskInput } from '../../src/tasks/dto/createConstTask.input';
+import { ConstTaskInput } from '../../src/tasks/dto/constTask.input';
 import { Chunk } from '../../src/tasks/entities/chunk.entity';
 import { Repeat, RepeatType } from '../../src/tasks/entities/repeat.entity';
 import { Task } from '../../src/tasks/entities/task.entity';
@@ -64,7 +64,7 @@ describe('PlanTask (e2e)', () => {
     // Get taskService
     const taskService: TasksService = app.get(TasksService);
 
-    const createConstTaskInput: CreateConstTaskInput = {
+    const createConstTaskInput: ConstTaskInput = {
       name: params.taskName,
       category: params.category,
       start: params.start,

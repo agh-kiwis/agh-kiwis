@@ -91,17 +91,14 @@ export type Color = {
   id: Scalars['Float'];
 };
 
-export type CreateCategoryInput = {
-  colorId: Scalars['Float'];
-  name: Scalars['String'];
-};
-
-export type CreateConstTaskInput = {
+export type ConstTaskInput = {
   /** Either existing category id or new category name and color. */
   category: CategoryInput;
   /** A minimum time gap that user wants to have between this task and another tasks. */
   chillTime: Scalars['Interval'];
   duration: Scalars['Interval'];
+  /** Whether the task is done or not. */
+  isDone?: InputMaybe<Scalars['Boolean']>;
   /** The name of the task, which is assigned by the user and can be changed in the future. */
   name: Scalars['String'];
   priority?: InputMaybe<Scalars['String']>;
@@ -115,24 +112,9 @@ export type CreateConstTaskInput = {
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
-export type CreateFloatTaskInput = {
-  /** Either existing category id or new category name and color. */
-  category: CategoryInput;
-  /** A minimum time gap that user wants to have between this task and another tasks. */
-  chillTime: Scalars['Interval'];
-  deadline: Scalars['DateTime'];
-  estimation: Scalars['Interval'];
-  maxChunkDuration: Scalars['Interval'];
-  minChunkDuration?: InputMaybe<Scalars['Interval']>;
-  minTimeBetweenChunks: Scalars['Interval'];
-  /** The name of the task, which is assigned by the user and can be changed in the future. */
+export type CreateCategoryInput = {
+  colorId: Scalars['Float'];
   name: Scalars['String'];
-  priority?: InputMaybe<Scalars['String']>;
-  /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
-  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
-  start: Scalars['DateTime'];
-  /** The time before user wants to receive task notification. */
-  timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
 export type CreateUserInput = {
@@ -145,6 +127,29 @@ export type FilterOptions = {
   isDone?: InputMaybe<Scalars['Boolean']>;
   isFloat?: InputMaybe<Scalars['Boolean']>;
   priority?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type FloatTaskInput = {
+  /** Either existing category id or new category name and color. */
+  category: CategoryInput;
+  /** A minimum time gap that user wants to have between this task and another tasks. */
+  chillTime: Scalars['Interval'];
+  deadline: Scalars['DateTime'];
+  estimation: Scalars['Interval'];
+  /** Whether the task is done or not. */
+  isDone?: InputMaybe<Scalars['Boolean']>;
+  maxChunkDuration: Scalars['Interval'];
+  minChunkDuration?: InputMaybe<Scalars['Interval']>;
+  minTimeBetweenChunks: Scalars['Interval'];
+  /** The name of the task, which is assigned by the user and can be changed in the future. */
+  name: Scalars['String'];
+  priority?: InputMaybe<Scalars['String']>;
+  /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
+  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  /** The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
+  start: Scalars['DateTime'];
+  /** The time before user wants to receive task notification. */
+  timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
 export type GetTasksInput = {
@@ -172,11 +177,11 @@ export type Mutation = {
 };
 
 export type MutationAddConstTaskArgs = {
-  createConstTaskInput: CreateConstTaskInput;
+  ConstTaskInput: ConstTaskInput;
 };
 
 export type MutationAddFloatTaskArgs = {
-  createFloatTaskInput: CreateFloatTaskInput;
+  FloatTaskInput: FloatTaskInput;
 };
 
 export type MutationCreateCategoryArgs = {
@@ -208,14 +213,17 @@ export type MutationRemoveUserArgs = {
 };
 
 export type MutationUpdateConstTaskArgs = {
-  taskInput: TaskInput;
+  id: Scalars['Int'];
+  taskInput: ConstTaskInput;
 };
 
 export type MutationUpdateFloatTaskArgs = {
-  taskInput: TaskInput;
+  id: Scalars['Int'];
+  taskInput: FloatTaskInput;
 };
 
 export type MutationUpdateTaskArgs = {
+  id: Scalars['Int'];
   taskInput: TaskInput;
 };
 
@@ -280,7 +288,7 @@ export type Task = {
   chunkInfo?: Maybe<ChunkInfo>;
   /** Represents task in time. Preferences are in ChunkInfo field. */
   chunks?: Maybe<Array<Chunk>>;
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   /** Whether or not the whole task is done. Should be done only if all task chunks are done. */
   isDone: Scalars['Boolean'];
   /** Whether the task is a const or float. Float tasks are tasks that user want algorithm to replan according to const tasks and other float tasks. In other words const tasks have fixed start and end times. */
@@ -296,22 +304,20 @@ export type Task = {
 };
 
 export type TaskInput = {
-  category?: InputMaybe<CategoryInput>;
-  chillTime?: InputMaybe<Scalars['Interval']>;
-  deadline?: InputMaybe<Scalars['DateTime']>;
-  duration?: InputMaybe<Scalars['Interval']>;
-  estimation?: InputMaybe<Scalars['Interval']>;
-  id: Scalars['Float'];
+  /** Either existing category id or new category name and color. */
+  category: CategoryInput;
+  /** A minimum time gap that user wants to have between this task and another tasks. */
+  chillTime: Scalars['Interval'];
+  /** Whether the task is done or not. */
   isDone?: InputMaybe<Scalars['Boolean']>;
-  isFloat?: InputMaybe<Scalars['Boolean']>;
-  maxChunkDuration?: InputMaybe<Scalars['Interval']>;
-  minChunkDuration?: InputMaybe<Scalars['Interval']>;
-  minTimeBetweenChunks?: InputMaybe<Scalars['Interval']>;
-  name?: InputMaybe<Scalars['String']>;
+  /** The name of the task, which is assigned by the user and can be changed in the future. */
+  name: Scalars['String'];
   priority?: InputMaybe<Scalars['String']>;
-  repeat?: InputMaybe<RepeatInput>;
+  /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
   shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
-  start?: InputMaybe<Scalars['DateTime']>;
+  /** The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
+  start: Scalars['DateTime'];
+  /** The time before user wants to receive task notification. */
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
 };
 
@@ -336,7 +342,7 @@ export type User = {
 };
 
 export type AddConstTaskMutationVariables = Exact<{
-  createConstTaskInput: CreateConstTaskInput;
+  ConstTaskInput: ConstTaskInput;
 }>;
 
 export type AddConstTaskMutation = {
@@ -359,6 +365,7 @@ export type AddConstTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -368,6 +375,7 @@ export type AddConstTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -381,7 +389,7 @@ export type AddConstTaskMutation = {
 };
 
 export type AddFloatTaskMutationVariables = Exact<{
-  createFloatTaskInput: CreateFloatTaskInput;
+  FloatTaskInput: FloatTaskInput;
 }>;
 
 export type AddFloatTaskMutation = {
@@ -404,6 +412,7 @@ export type AddFloatTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -413,6 +422,7 @@ export type AddFloatTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -534,6 +544,7 @@ export type RemoveTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -543,6 +554,7 @@ export type RemoveTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -573,7 +585,8 @@ export type RemoveUserMutation = {
 };
 
 export type UpdateConstTaskMutationVariables = Exact<{
-  taskInput: TaskInput;
+  id: Scalars['Int'];
+  taskInput: ConstTaskInput;
 }>;
 
 export type UpdateConstTaskMutation = {
@@ -596,6 +609,7 @@ export type UpdateConstTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -605,6 +619,7 @@ export type UpdateConstTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -618,7 +633,8 @@ export type UpdateConstTaskMutation = {
 };
 
 export type UpdateFloatTaskMutationVariables = Exact<{
-  taskInput: TaskInput;
+  id: Scalars['Int'];
+  taskInput: FloatTaskInput;
 }>;
 
 export type UpdateFloatTaskMutation = {
@@ -641,6 +657,7 @@ export type UpdateFloatTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -650,6 +667,7 @@ export type UpdateFloatTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -663,6 +681,7 @@ export type UpdateFloatTaskMutation = {
 };
 
 export type UpdateTaskMutationVariables = Exact<{
+  id: Scalars['Int'];
   taskInput: TaskInput;
 }>;
 
@@ -686,6 +705,7 @@ export type UpdateTaskMutation = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -695,6 +715,7 @@ export type UpdateTaskMutation = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -781,6 +802,7 @@ export type GetTaskQuery = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -790,6 +812,7 @@ export type GetTaskQuery = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -826,6 +849,7 @@ export type GetTasksQuery = {
       __typename?: 'ChunkInfo';
       chillTime: any;
       deadline?: string | null;
+      duration?: any | null;
       estimation?: any | null;
       id: number;
       maxChunkDuration?: any | null;
@@ -835,6 +859,7 @@ export type GetTasksQuery = {
         __typename?: 'Repeat';
         repeatEvery: number;
         repeatType: string;
+        repeatUntil?: any | null;
       } | null;
     } | null;
     chunks?: Array<{
@@ -863,8 +888,8 @@ export type MeQuery = {
 };
 
 export const AddConstTaskDocument = gql`
-  mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
-    addConstTask(createConstTaskInput: $createConstTaskInput) {
+  mutation addConstTask($ConstTaskInput: ConstTaskInput!) {
+    addConstTask(ConstTaskInput: $ConstTaskInput) {
       category {
         color {
           hexCode
@@ -876,6 +901,7 @@ export const AddConstTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -883,6 +909,7 @@ export const AddConstTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -921,7 +948,7 @@ export type AddConstTaskMutationFn = Apollo.MutationFunction<
  * @example
  * const [addConstTaskMutation, { data, loading, error }] = useAddConstTaskMutation({
  *   variables: {
- *      createConstTaskInput: // value for 'createConstTaskInput'
+ *      ConstTaskInput: // value for 'ConstTaskInput'
  *   },
  * });
  */
@@ -947,8 +974,8 @@ export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<
   AddConstTaskMutationVariables
 >;
 export const AddFloatTaskDocument = gql`
-  mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
-    addFloatTask(createFloatTaskInput: $createFloatTaskInput) {
+  mutation addFloatTask($FloatTaskInput: FloatTaskInput!) {
+    addFloatTask(FloatTaskInput: $FloatTaskInput) {
       category {
         color {
           hexCode
@@ -960,6 +987,7 @@ export const AddFloatTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -967,6 +995,7 @@ export const AddFloatTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -1005,7 +1034,7 @@ export type AddFloatTaskMutationFn = Apollo.MutationFunction<
  * @example
  * const [addFloatTaskMutation, { data, loading, error }] = useAddFloatTaskMutation({
  *   variables: {
- *      createFloatTaskInput: // value for 'createFloatTaskInput'
+ *      FloatTaskInput: // value for 'FloatTaskInput'
  *   },
  * });
  */
@@ -1359,6 +1388,7 @@ export const RemoveTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -1366,6 +1396,7 @@ export const RemoveTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -1485,8 +1516,8 @@ export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserMutationVariables
 >;
 export const UpdateConstTaskDocument = gql`
-  mutation updateConstTask($taskInput: TaskInput!) {
-    updateConstTask(taskInput: $taskInput) {
+  mutation updateConstTask($id: Int!, $taskInput: ConstTaskInput!) {
+    updateConstTask(id: $id, taskInput: $taskInput) {
       category {
         color {
           hexCode
@@ -1498,6 +1529,7 @@ export const UpdateConstTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -1505,6 +1537,7 @@ export const UpdateConstTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -1543,6 +1576,7 @@ export type UpdateConstTaskMutationFn = Apollo.MutationFunction<
  * @example
  * const [updateConstTaskMutation, { data, loading, error }] = useUpdateConstTaskMutation({
  *   variables: {
+ *      id: // value for 'id'
  *      taskInput: // value for 'taskInput'
  *   },
  * });
@@ -1569,8 +1603,8 @@ export type UpdateConstTaskMutationOptions = Apollo.BaseMutationOptions<
   UpdateConstTaskMutationVariables
 >;
 export const UpdateFloatTaskDocument = gql`
-  mutation updateFloatTask($taskInput: TaskInput!) {
-    updateFloatTask(taskInput: $taskInput) {
+  mutation updateFloatTask($id: Int!, $taskInput: FloatTaskInput!) {
+    updateFloatTask(id: $id, taskInput: $taskInput) {
       category {
         color {
           hexCode
@@ -1582,6 +1616,7 @@ export const UpdateFloatTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -1589,6 +1624,7 @@ export const UpdateFloatTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -1627,6 +1663,7 @@ export type UpdateFloatTaskMutationFn = Apollo.MutationFunction<
  * @example
  * const [updateFloatTaskMutation, { data, loading, error }] = useUpdateFloatTaskMutation({
  *   variables: {
+ *      id: // value for 'id'
  *      taskInput: // value for 'taskInput'
  *   },
  * });
@@ -1653,8 +1690,8 @@ export type UpdateFloatTaskMutationOptions = Apollo.BaseMutationOptions<
   UpdateFloatTaskMutationVariables
 >;
 export const UpdateTaskDocument = gql`
-  mutation updateTask($taskInput: TaskInput!) {
-    updateTask(taskInput: $taskInput) {
+  mutation updateTask($id: Int!, $taskInput: TaskInput!) {
+    updateTask(id: $id, taskInput: $taskInput) {
       category {
         color {
           hexCode
@@ -1666,6 +1703,7 @@ export const UpdateTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -1673,6 +1711,7 @@ export const UpdateTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -1711,6 +1750,7 @@ export type UpdateTaskMutationFn = Apollo.MutationFunction<
  * @example
  * const [updateTaskMutation, { data, loading, error }] = useUpdateTaskMutation({
  *   variables: {
+ *      id: // value for 'id'
  *      taskInput: // value for 'taskInput'
  *   },
  * });
@@ -1983,6 +2023,7 @@ export const GetTaskDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -1990,6 +2031,7 @@ export const GetTaskDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }
@@ -2065,6 +2107,7 @@ export const GetTasksDocument = gql`
       chunkInfo {
         chillTime
         deadline
+        duration
         estimation
         id
         maxChunkDuration
@@ -2072,6 +2115,7 @@ export const GetTasksDocument = gql`
         repeat {
           repeatEvery
           repeatType
+          repeatUntil
         }
         start
       }

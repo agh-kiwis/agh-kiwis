@@ -1,5 +1,5 @@
-mutation addConstTask($createConstTaskInput: CreateConstTaskInput!) {
-  addConstTask(createConstTaskInput: $createConstTaskInput) {
+mutation addConstTask($ConstTaskInput: ConstTaskInput!) {
+  addConstTask(ConstTaskInput: $ConstTaskInput) {
     category {
       color {
         hexCode

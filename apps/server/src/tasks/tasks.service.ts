@@ -6,8 +6,8 @@ import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
 import { CategoryInput } from './dto/category.input';
-import { CreateConstTaskInput } from './dto/createConstTask.input';
-import { CreateFloatTaskInput } from './dto/createFloatTask.input';
+import { ConstTaskInput } from './dto/constTask.input';
+import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { Chunk } from './entities/chunk.entity';
@@ -18,20 +18,20 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
-  async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
-    const category = await getCategory(user, createConstTaskInput.category);
+  async createConst(user: User, ConstTaskInput: ConstTaskInput) {
+    const category = await getCategory(user, ConstTaskInput.category);
 
     let repeat: Repeat;
-    if (createConstTaskInput.repeat) {
-      repeat = await Repeat.create(createConstTaskInput.repeat).save();
+    if (ConstTaskInput.repeat) {
+      repeat = await Repeat.create(ConstTaskInput.repeat).save();
     }
 
     const notification = await getNotification(
-      createConstTaskInput.timeBeforeNotification
+      ConstTaskInput.timeBeforeNotification
     );
 
     const chunkInfo = await ChunkInfo.create({
-      ...createConstTaskInput,
+      ...ConstTaskInput,
       repeat: repeat,
     }).save();
 
@@ -40,10 +40,10 @@ export class TasksService {
       isFloat: false,
       chunkInfo: chunkInfo,
       user: user,
-      name: createConstTaskInput.name,
+      name: ConstTaskInput.name,
       notifications: notification,
-      priority: createConstTaskInput.priority,
-      shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
+      priority: ConstTaskInput.priority,
+      shouldAutoResolve: ConstTaskInput.shouldAutoResolve,
     }).save();
 
     if (repeat) {
@@ -51,8 +51,8 @@ export class TasksService {
     } else {
       await Chunk.create({
         task: task,
-        duration: createConstTaskInput.duration,
-        start: createConstTaskInput.start,
+        duration: ConstTaskInput.duration,
+        start: ConstTaskInput.start,
       }).save();
     }
 
@@ -67,29 +67,26 @@ export class TasksService {
     return taskToReturn;
   }
 
-  async createFloatTask(
-    user: User,
-    createFloatTaskInput: CreateFloatTaskInput
-  ) {
-    const category = await getCategory(user, createFloatTaskInput.category);
+  async createFloatTask(user: User, FloatTaskInput: FloatTaskInput) {
+    const category = await getCategory(user, FloatTaskInput.category);
 
     const notification = await getNotification(
-      createFloatTaskInput.timeBeforeNotification
+      FloatTaskInput.timeBeforeNotification
     );
 
     const chunkInfo = await ChunkInfo.create({
-      ...createFloatTaskInput,
+      ...FloatTaskInput,
     }).save();
 
     const task = await Task.create({
       category: category,
       isFloat: true,
       user: user,
-      name: createFloatTaskInput.name,
+      name: FloatTaskInput.name,
       notifications: notification,
-      priority: createFloatTaskInput.priority,
+      priority: FloatTaskInput.priority,
       chunkInfo: chunkInfo,
-      shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
+      shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
     }).save();
 
     // await planTask(task);
@@ -172,11 +169,30 @@ export class TasksService {
     });
   }
 
-  async updateConstTask(user: User, updateTaskInput: TaskInput) {
+  async update(id: number, updateTaskInput: TaskInput) {
+    const task: Task = await Task.findOne({
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      where: {
+        id: id,
+      },
+    });
+
+    task.isDone = updateTaskInput.isDone;
+
+    await task.save();
+
+    return task;
+  }
+
+  async updateConstTask(
+    user: User,
+    id: number,
+    updateTaskInput: ConstTaskInput
+  ) {
     let task: Task = await Task.findOne({
       relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
-        id: updateTaskInput.id,
+        id: id,
       },
     });
 
@@ -217,11 +233,15 @@ export class TasksService {
     return task;
   }
 
-  async updateFloatTask(user: User, updateTaskInput: TaskInput) {
+  async updateFloatTask(
+    user: User,
+    id: number,
+    updateTaskInput: FloatTaskInput
+  ) {
     let task: Task = await Task.findOne({
       relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
-        id: updateTaskInput.id,
+        id: id,
       },
     });
 
@@ -248,17 +268,6 @@ export class TasksService {
     // await planTask(task);
 
     return task;
-  }
-
-  async update(updateTaskInput: TaskInput) {
-    await Task.update(updateTaskInput.id, updateTaskInput);
-
-    return await Task.findOne({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
-      where: {
-        id: updateTaskInput.id,
-      },
-    });
   }
 
   async remove(user: User, id: number) {

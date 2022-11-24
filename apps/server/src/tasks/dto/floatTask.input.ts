@@ -1,19 +1,15 @@
 import { Duration } from 'moment';
 import { Field, InputType } from '@nestjs/graphql';
 import { Interval } from '../../utils/interval.scalar';
-import { CreateTaskInput } from './createTask.input';
+import { TaskInput } from './task.input';
 
-// TODO Add some custom validators
 @InputType()
-export class CreateFloatTaskInput extends CreateTaskInput {
+export class FloatTaskInput extends TaskInput {
   @Field(() => Interval)
   estimation: Duration;
 
   @Field(() => Date)
   deadline: Date;
-
-  @Field()
-  start: Date;
 
   @Field(() => Interval)
   minTimeBetweenChunks: Duration;

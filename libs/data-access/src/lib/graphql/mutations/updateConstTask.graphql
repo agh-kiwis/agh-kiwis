@@ -1,5 +1,5 @@
-mutation updateConstTask($taskInput: TaskInput!) {
-  updateConstTask(taskInput: $taskInput) {
+mutation updateConstTask($id: Int!, $taskInput: ConstTaskInput!) {
+  updateConstTask(id: $id, taskInput: $taskInput) {
     category {
       color {
         hexCode
