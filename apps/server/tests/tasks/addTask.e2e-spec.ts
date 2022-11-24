@@ -38,7 +38,7 @@ describe('Tasks (e2e)', () => {
   const addConstTaskMutation = gql`
     mutation {
       addConstTask(
-        createConstTaskInput: {
+        ConstTaskInput: {
           category: { newCategory: { colorId: 1, name: "Some name" } }
           chillTime: "P3Y6M4DT12H30M5S"
           duration: "00::00"

@@ -43,16 +43,22 @@ get-graphql-schema http://localhost:3333/graphql > schema.graphql
 ## To generate queries / mutations and so on, run:
 
 ```
+./bin/scripts/generate.sh
+```
+
+### Or alternatively run:
+
+```
 npm install gql-generator -g
 
 gqlg --schemaFilePath libs/data-access/src/lib/graphql/schema.graphql --destDirPath libs/data-access/src/lib/graphql --depthLimit 5
 ```
 
-## Then:
+### Then:
 
 You need to rename .gql files to .graphql files.
 
-## And finally generate generated.tsx, run:
+### And finally generate generated.tsx, run:
 
 ```
 nx run data-access:generate
@@ -68,10 +74,10 @@ nx g @nrwl/workspace:lib <library-name>
 
 # More info in [docs](docs/Docs.md)
 
-
 # Tests
 
 To run single test:
+
 ```
 nx test --testFile apps/server/tests/tasks/addTask.e2e-spec.ts
 ```

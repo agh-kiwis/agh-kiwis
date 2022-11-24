@@ -44,10 +44,8 @@ const ConstTask: React.FC = () => {
   const handleConstSubmit = async (values: ConstTaskType) => {
     const taskResponse = await updateConstTaskMutation({
       variables: {
-        taskInput: constTaskToUpdateTaskMutationMapper(
-          parseInt(Array.isArray(id) ? id[0] : id),
-          values
-        ),
+        id: parseInt(Array.isArray(id) ? id[0] : id),
+        taskInput: constTaskToUpdateTaskMutationMapper(values),
       },
     }).catch((error) => {
       console.log(error);
@@ -61,7 +59,8 @@ const ConstTask: React.FC = () => {
   const handleFloatSubmit = async (values: FloatTaskType) => {
     const taskResponse = await updateFloatTaskMutation({
       variables: {
-        taskInput: floatTaskToUpdateTaskMutationMapper(parseInt(id[0]), values),
+        id: parseInt(Array.isArray(id) ? id[0] : id),
+        taskInput: floatTaskToUpdateTaskMutationMapper(values),
       },
     }).catch((error) => {
       console.log(error);

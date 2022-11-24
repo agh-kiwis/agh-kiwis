@@ -84,13 +84,13 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(7, 'hours').toDate(),
     duration: moment.duration({ minutes: 20 }),
+    isDone: false,
   });
 
   // Temporary removal to show only one page
@@ -101,13 +101,13 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(14, 'hours').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   taskService.createConst(user, {
@@ -117,13 +117,13 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(18, 'hours').add(1, 'days').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   // Sleeping category
@@ -134,13 +134,13 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(1, 'days').add(22, 'hours').toDate(),
     duration: moment.duration({ hours: 8 }),
+    isDone: false,
   });
 
   // Sport category task
@@ -152,13 +152,13 @@ export const seedDatabase = async () => {
     shouldAutoResolve: true,
     chillTime: ten_minutes,
     repeat: {
-      startFrom: moment().startOf('day').add(1, 'day').toDate(),
       repeatEvery: 1,
       repeatType: RepeatType.DAYS,
     },
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(6, 'hours').add(1, 'days').toDate(),
     duration: moment.duration({ minutes: 40 }),
+    isDone: false,
   });
 
   // Float tasks:
@@ -170,13 +170,11 @@ export const seedDatabase = async () => {
     chillTime: ten_minutes,
     timeBeforeNotification: ten_minutes,
     start: moment().startOf('day').add(3, 'days').toDate(),
-
-    estimation: moment.duration({ hours: 2, minutes: 40 }),
-    chunkInfo: {
-      maxChunkDuration: moment.duration({ minutes: 40 }),
-      minChunkDuration: moment.duration({ minutes: 20 }),
-      minTimeBetweenChunks: moment.duration({ minutes: 10 }),
-    },
     deadline: moment().startOf('day').add(8, 'days').add(12, 'hours').toDate(),
+    estimation: moment.duration({ hours: 2, minutes: 40 }),
+    minChunkDuration: moment.duration({ minutes: 20 }),
+    maxChunkDuration: moment.duration({ minutes: 40 }),
+    minTimeBetweenChunks: moment.duration({ minutes: 10 }),
+    isDone: false,
   });
 };

@@ -1,5 +1,5 @@
-mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
-  addFloatTask(createFloatTaskInput: $createFloatTaskInput) {
+mutation addFloatTask($FloatTaskInput: FloatTaskInput!) {
+  addFloatTask(FloatTaskInput: $FloatTaskInput) {
     category {
       color {
         hexCode
@@ -8,16 +8,26 @@ mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
       id
       name
     }
-    chillTime
     chunkInfo {
+      chillTime
+      deadline
+      duration
+      estimation
       id
       maxChunkDuration
       minChunkDuration
-      minTimeBetweenChunks
+      repeat {
+        repeatEvery
+        repeatType
+        repeatUntil
+      }
       start
     }
-    deadline
-    estimation
+    chunks {
+      duration
+      isDone
+      start
+    }
     id
     isDone
     isFloat
@@ -27,15 +37,5 @@ mutation addFloatTask($createFloatTaskInput: CreateFloatTaskInput!) {
     }
     priority
     shouldAutoResolve
-    taskBreakdowns {
-      duration
-      isDone
-      repeat {
-        repeatEvery
-        repeatType
-        startFrom
-      }
-      start
-    }
   }
 }

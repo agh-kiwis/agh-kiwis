@@ -56,7 +56,7 @@ const TodoList: React.FC = () => {
   return (
     <>
       <TodoListHeader setOpen={setOpen} />
-      <TasksStack data={data} />
+      <TasksStack tasks={data.getTasks} />
       <CommonButton
         buttonText="Add Task"
         onClick={() => router.push(ADD_CONST_TASK_URL)}

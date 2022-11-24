@@ -23,8 +23,8 @@ export const TaskTile: React.FC<TaskTileProps> = ({ task }) => {
         <TaskInfo
           isFloat={task.isFloat}
           isDone={task.isDone}
-          deadline={task.deadline}
-          taskBreakdowns={task.taskBreakdowns}
+          deadline={task.chunkInfo?.deadline}
+          chunks={task.chunks}
         />
       </TaskContainer>
 

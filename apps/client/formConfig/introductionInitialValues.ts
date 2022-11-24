@@ -44,11 +44,11 @@ export const initialBreakfastPreferences = (
   priority: 'low',
   repeat: {
     shouldRepeat: true,
-    startFrom: moment().format('yyyy-MM-DD'),
     repeatEvery: {
       type: 'Day',
       amount: 1,
     },
+    repeatUntil: moment().add(1, 'y').format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: false,
@@ -82,11 +82,11 @@ export const initialDinnerPreferences = (
   priority: 'low',
   repeat: {
     shouldRepeat: true,
-    startFrom: moment().format('yyyy-MM-DD'),
     repeatEvery: {
       type: 'Day',
       amount: 1,
     },
+    repeatUntil: moment().add(1, 'y').format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: false,
@@ -120,11 +120,11 @@ export const initialSupperPreferences = (
   priority: 'low',
   repeat: {
     shouldRepeat: true,
-    startFrom: moment().format('yyyy-MM-DD'),
     repeatEvery: {
       type: 'Day',
       amount: 1,
     },
+    repeatUntil: moment().add(1, 'y').format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: false,
