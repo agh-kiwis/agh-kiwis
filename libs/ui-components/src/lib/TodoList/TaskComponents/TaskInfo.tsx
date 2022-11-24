@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { IoCalendarClearOutline, IoTimerOutline } from 'react-icons/io5';
 import { Flex, Stack, Text } from '@chakra-ui/react';
-import { Maybe, TaskBreakdown } from '@agh-kiwis/data-access';
+import { Chunk, Maybe } from '@agh-kiwis/data-access';
 import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
 import { TaskIcon } from './TaskIcon';
 
 type TaskInfoProps = {
   isDone: boolean;
   isFloat: boolean;
-  deadline: Maybe<string> | undefined;
-  taskBreakdowns: Maybe<TaskBreakdown[]> | undefined;
+  deadline: string;
+  chunks: Chunk[];
 };
 
 export const TaskInfo: React.FC<TaskInfoProps> = ({
   isDone,
   isFloat,
   deadline,
-  taskBreakdowns,
+  chunks,
 }) => {
-  const [doneBreakdownsNumber, setDoneBreakdownsNumber] = useState(0);
-  const [allBreakdownsNumber, setAllBreakdownsNumber] = useState(
-    taskBreakdowns?.length
-  );
+  const [doneChunksNumber, setDoneChunksNumber] = useState(0);
+  const [allChunksNumber, setAllChunksNumber] = useState(chunks?.length);
 
   useEffect(() => {
-    const doneBreakdowns: number = taskBreakdowns?.filter((chunk) => {
+    const doneChunks: number = chunks?.filter((chunk) => {
       return chunk.isDone === true;
     }).length;
 
-    doneBreakdownsNumber
-      ? setDoneBreakdownsNumber(doneBreakdowns)
-      : setDoneBreakdownsNumber(0);
-  }, [taskBreakdowns]);
+    doneChunksNumber ? setDoneChunksNumber(doneChunks) : setDoneChunksNumber(0);
+  }, [chunks]);
 
   if (isFloat) {
     return (
@@ -44,8 +40,8 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
           <Text fontSize="md">
             Chunks done:{' '}
             {!isDone
-              ? `${doneBreakdownsNumber}/${allBreakdownsNumber}`
-              : `${allBreakdownsNumber}/${allBreakdownsNumber}`}
+              ? `${doneChunksNumber}/${allChunksNumber}`
+              : `${allChunksNumber}/${allChunksNumber}`}
           </Text>
         </Flex>
       </Stack>
@@ -54,7 +50,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
     return (
       <Flex justifyContent="center">
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(taskBreakdowns && taskBreakdowns[0])}</Text>
+        <Text>{timeInterval(chunks && chunks[0])}</Text>
       </Flex>
     );
   }

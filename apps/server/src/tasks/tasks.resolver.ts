@@ -1,8 +1,8 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
 import { User } from '../users/entities/user.entity';
-import { CreateConstTaskInput } from './dto/createConstTask.input';
-import { CreateFloatTaskInput } from './dto/createFloatTask.input';
+import { ConstTaskInput } from './dto/constTask.input';
+import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { Task } from './entities/task.entity';
@@ -15,17 +15,17 @@ export class TasksResolver {
   @Mutation(() => Task)
   addConstTask(
     @CurrentUser() user: User,
-    @Args('createConstTaskInput') CreateConstTaskInput: CreateConstTaskInput
+    @Args('ConstTaskInput') ConstTaskInput: ConstTaskInput
   ) {
-    return this.tasksService.createConst(user, CreateConstTaskInput);
+    return this.tasksService.createConst(user, ConstTaskInput);
   }
 
   @Mutation(() => Task)
   addFloatTask(
     @CurrentUser() user: User,
-    @Args('createFloatTaskInput') createFloatTaskInput: CreateFloatTaskInput
+    @Args('FloatTaskInput') FloatTaskInput: FloatTaskInput
   ) {
-    return this.tasksService.createFloatTask(user, createFloatTaskInput);
+    return this.tasksService.createFloatTask(user, FloatTaskInput);
   }
 
   @Query(() => [Task])
@@ -42,54 +42,57 @@ export class TasksResolver {
   }
 
   @Mutation(() => Task)
-  async updateConstTask(
+  async updateTask(
     @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number,
     @Args('taskInput') taskInput: TaskInput
   ) {
-    const task = await Task.findOne(taskInput.id);
+    const task = await Task.findOne(id);
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    if (task.user.id !== user?.id) {
+      throw new Error('Task does not belong to user');
+    }
+    const result = await this.tasksService.update(id, taskInput);
+    return result;
+  }
+
+  @Mutation(() => Task)
+  async updateConstTask(
+    @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number,
+    @Args('taskInput') taskInput: ConstTaskInput
+  ) {
+    const task = await Task.findOne(id);
 
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 
-    const result = await this.tasksService.updateConstTask(user, taskInput);
+    const result = await this.tasksService.updateConstTask(user, id, taskInput);
     return result;
   }
 
   @Mutation(() => Task)
   async updateFloatTask(
     @CurrentUser() user: User,
-    @Args('taskInput') taskInput: TaskInput
+    @Args('id', { type: () => Int }) id: number,
+    @Args('taskInput') taskInput: FloatTaskInput
   ) {
-    const task = await Task.findOne(taskInput.id);
+    const task = await Task.findOne(id);
 
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 
-    const result = await this.tasksService.updateFloatTask(user, taskInput);
-    return result;
-  }
-
-  @Mutation(() => Task)
-  async updateTask(
-    @CurrentUser() user: User,
-    @Args('taskInput') taskInput: TaskInput
-  ) {
-    const task = await Task.findOne(taskInput.id);
-    if (!task) {
-      throw new Error('Task not found');
-    }
-    if ((await task.user).id !== user?.id) {
-      throw new Error('Task does not belong to user');
-    }
-    const result = await this.tasksService.update(taskInput);
+    const result = await this.tasksService.updateFloatTask(user, id, taskInput);
     return result;
   }
 
@@ -103,7 +106,7 @@ export class TasksResolver {
     if (!task) {
       throw new Error('Task not found');
     }
-    if ((await task.user).id !== user?.id) {
+    if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
 

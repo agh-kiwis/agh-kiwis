@@ -32,11 +32,11 @@ export const constTaskInitialValues: ConstTaskType = {
   priority: 'low',
   repeat: {
     shouldRepeat: false,
-    startFrom: moment().format('yyyy-MM-DD'),
     repeatEvery: {
       type: 'Day',
       amount: 1,
     },
+    repeatUntil: moment().add(1, 'y').format('yyyy-MM-DD'),
   },
   repeatEveryFacade: '',
   notify: false,

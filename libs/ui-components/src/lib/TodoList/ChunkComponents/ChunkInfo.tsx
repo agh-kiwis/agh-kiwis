@@ -1,19 +1,15 @@
 import React from 'react';
 import { Box, HStack, Stack, Text } from '@chakra-ui/react';
-import { TaskBreakdown } from '@agh-kiwis/data-access';
+import { Chunk } from '@agh-kiwis/data-access';
 import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
 
-type BreakdownInfoProps = {
+type ChunkInfoProps = {
   checked: boolean;
   id: number;
-  breakdown: TaskBreakdown;
+  chunk: Chunk;
 };
 
-export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
-  id,
-  breakdown,
-  checked,
-}) => {
+export const ChunkInfo: React.FC<ChunkInfoProps> = ({ id, chunk, checked }) => {
   if (checked) {
     return (
       <HStack justifyContent="center" spacing="8" h="4rem">
@@ -26,10 +22,10 @@ export const BreakdownInfo: React.FC<BreakdownInfoProps> = ({
       <HStack justifyContent="center" spacing="8" h="4rem">
         <Text>Chunk {id + 1}</Text>
         <Box>
-          <Text> {startToDate(breakdown.start)} </Text>
+          <Text> {startToDate(chunk.start)} </Text>
         </Box>
         <Box>
-          <Text>{timeInterval(breakdown)}</Text>
+          <Text>{timeInterval(chunk)}</Text>
         </Box>
       </HStack>
     );

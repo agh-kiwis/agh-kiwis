@@ -31,6 +31,7 @@ export class Category extends GeneralEntity {
   @OneToMany(() => Task, (task) => task.category)
   tasks: Task[];
 
+  // TODO This needs to be changed to string
   @Field(() => Color)
   @ManyToOne(() => Color, { eager: true })
   color: Color;

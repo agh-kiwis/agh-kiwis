@@ -1,56 +1,54 @@
 import { IsEnum } from 'class-validator';
-import { Field, InputType } from '@nestjs/graphql';
 import { Duration } from 'moment';
+import { Field, InputType } from '@nestjs/graphql';
 import { NullableField } from '../../utils/NullableField';
 import { Interval } from '../../utils/interval.scalar';
 import { Priority } from '../entities/priority.enum';
 import { CategoryInput } from './category.input';
-import { ChunkInfoInput } from './chunkInfo.input';
-import { RepeatInput } from './repeat.input';
 
-// TODO Change this to ONLY PROPS THAT CAN BE UPDATED
-// And add description to fields
 @InputType()
 export class TaskInput {
-  @Field()
-  id: number;
-
-  // All tasks fields
-  @NullableField()
+  @Field({
+    description:
+      'The name of the task, which is assigned by the user and can be changed in the future.',
+  })
   name: string;
-  @NullableField()
-  start: Date;
-  @NullableField(() => Interval)
-  chillTime: Duration;
 
-  @NullableField()
-  isFloat: boolean;
-
-  @NullableField()
-  shouldAutoResolve: boolean;
-  @NullableField(() => CategoryInput)
+  @Field(() => CategoryInput, {
+    description: 'Either existing category id or new category name and color.',
+  })
   category: CategoryInput;
-  @NullableField(() => RepeatInput)
-  repeat?: RepeatInput;
-  @NullableField(() => Interval)
-  timeBeforeNotification: Duration;
 
-  @NullableField(() => String)
+  @Field({ defaultValue: 'medium' })
   @IsEnum(Priority)
   priority: string;
 
-  @NullableField(() => ChunkInfoInput)
-  chunkInfo: ChunkInfoInput;
+  @Field({
+    description:
+      'The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity.',
+  })
+  start: Date;
 
-  @NullableField(() => Interval)
-  estimation: Duration;
+  @Field(() => Interval, {
+    description:
+      'A minimum time gap that user wants to have between this task and another tasks.',
+  })
+  chillTime: Duration;
 
-  @NullableField(() => Date)
-  deadline: Date;
+  @Field({
+    defaultValue: false,
+    description:
+      'Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed.',
+  })
+  shouldAutoResolve: boolean;
 
-  @NullableField(() => Interval)
-  duration: Duration;
+  @NullableField(() => Interval, {
+    description: 'The time before user wants to receive task notification.',
+  })
+  timeBeforeNotification: Duration;
 
-  @NullableField()
+  @NullableField(() => Boolean, {
+    description: 'Whether the task is done or not.',
+  })
   isDone: boolean;
 }

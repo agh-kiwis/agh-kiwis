@@ -38,26 +38,37 @@ describe('Tasks (e2e)', () => {
   const addConstTaskMutation = gql`
     mutation {
       addConstTask(
-        createConstTaskInput: {
+        ConstTaskInput: {
           category: { newCategory: { colorId: 1, name: "Some name" } }
           chillTime: "P3Y6M4DT12H30M5S"
           duration: "00::00"
           name: "Walk a dog"
-          start: "2017-08-19 12:17:55 -0400"
-          repeat: { repeatEvery: 1, repeatType: DAYS, startFrom: "2017-06-01" }
+          start: "2022-11-19 12:00:00"
+          repeat: {
+            repeatEvery: 1
+            repeatType: DAYS
+            repeatUntil: "2022-11-21 12:00:00"
+          }
           priority: "high"
         }
       ) {
-        chillTime
         chunkInfo {
-          id
-          maxChunkDuration
+          # Shared fields
+          start
+          chillTime
+          # Const fields
+          repeat {
+            repeatEvery
+            repeatType
+            repeatUntil
+          }
+          duration
+          # Float fields
           minChunkDuration
-          minTimeBetweenChunks
+          maxChunkDuration
+          estimation
+          deadline
         }
-        deadline
-        estimation
-        id
         isDone
         isFloat
         name
@@ -66,14 +77,9 @@ describe('Tasks (e2e)', () => {
         }
         priority
         shouldAutoResolve
-        taskBreakdowns {
+        chunks {
           duration
           isDone
-          repeat {
-            repeatEvery
-            repeatType
-            startFrom
-          }
           start
         }
       }
@@ -94,18 +100,43 @@ describe('Tasks (e2e)', () => {
       });
 
       expect(addConstTask).toEqual({
-        chillTime: 'P3Y6M4DT12H30M5S',
-        chunkInfo: null,
-        deadline: null,
-        estimation: null,
-        id: 1,
+        chunkInfo: {
+          chillTime: 'P3Y6M4DT12H30M5S',
+          duration: 'P0D',
+          maxChunkDuration: null,
+          deadline: null,
+          estimation: null,
+          repeat: {
+            repeatEvery: 1,
+            repeatType: 'Days',
+            repeatUntil: '2022-11-21T11:00:00.000Z',
+          },
+          minChunkDuration: null,
+          start: '2022-11-19T11:00:00.000Z',
+        },
         isDone: false,
         isFloat: false,
         name: 'Walk a dog',
         notifications: null,
         priority: 'high',
         shouldAutoResolve: false,
-        taskBreakdowns: null,
+        chunks: [
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-19T11:00:00.000Z',
+          },
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-20T11:00:00.000Z',
+          },
+          {
+            duration: 'P0D',
+            isDone: false,
+            start: '2022-11-21T11:00:00.000Z',
+          },
+        ],
       });
     });
   });

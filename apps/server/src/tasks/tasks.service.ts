@@ -1,100 +1,147 @@
 import { UserInputError } from 'apollo-server-errors';
 import { In } from 'typeorm';
-import { Duration } from 'moment';
+import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
 import { planTask } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
-import { CreateConstTaskInput } from './dto/createConstTask.input';
-import { CreateFloatTaskInput } from './dto/createFloatTask.input';
+import { ConstTaskInput } from './dto/constTask.input';
+import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
+import { Chunk } from './entities/chunk.entity';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
 import { Repeat } from './entities/repeat.entity';
 import { Task } from './entities/task.entity';
-import { TaskBreakdown } from './entities/taskBreakdown.entity';
 
 @Injectable()
 export class TasksService {
-  async createConst(user: User, createConstTaskInput: CreateConstTaskInput) {
-    const category = await getCategory(user, createConstTaskInput.category);
+  async createConst(user: User, ConstTaskInput: ConstTaskInput) {
+    const category = await getCategory(user, ConstTaskInput.category);
 
     let repeat: Repeat;
-    if (createConstTaskInput.repeat) {
-      repeat = await Repeat.create(createConstTaskInput.repeat).save();
+    if (ConstTaskInput.repeat) {
+      repeat = await Repeat.create(ConstTaskInput.repeat).save();
     }
 
     const notification = await getNotification(
-      createConstTaskInput.timeBeforeNotification
+      ConstTaskInput.timeBeforeNotification
     );
 
-    let task = Task.create({
+    const chunkInfo = await ChunkInfo.create({
+      ...ConstTaskInput,
+      repeat: repeat,
+    }).save();
+
+    const task = await Task.create({
       category: category,
       isFloat: false,
-      name: createConstTaskInput.name,
-      chillTime: createConstTaskInput.chillTime,
+      chunkInfo: chunkInfo,
+      user: user,
+      name: ConstTaskInput.name,
       notifications: notification,
-      priority: createConstTaskInput.priority,
-      shouldAutoResolve: createConstTaskInput.shouldAutoResolve,
+      priority: ConstTaskInput.priority,
+      shouldAutoResolve: ConstTaskInput.shouldAutoResolve,
+    }).save();
+
+    if (repeat) {
+      await this.upsertChunksForRepeatTask(task);
+    } else {
+      await Chunk.create({
+        task: task,
+        duration: ConstTaskInput.duration,
+        start: ConstTaskInput.start,
+      }).save();
+    }
+
+    // Fetch task one more time with chunks as chunks
+    const taskToReturn = await Task.findOne({
+      relations: ['chunks'],
+      where: {
+        id: task.id,
+      },
     });
 
-    task.user = Promise.resolve(user);
+    return taskToReturn;
+  }
 
-    task = await task.save();
+  async createFloatTask(user: User, FloatTaskInput: FloatTaskInput) {
+    const category = await getCategory(user, FloatTaskInput.category);
 
-    await TaskBreakdown.create({
-      task: task,
-      repeat: repeat,
-      duration: createConstTaskInput.duration,
-      start: createConstTaskInput.start,
+    const notification = await getNotification(
+      FloatTaskInput.timeBeforeNotification
+    );
+
+    const chunkInfo = await ChunkInfo.create({
+      ...FloatTaskInput,
     }).save();
+
+    const task = await Task.create({
+      category: category,
+      isFloat: true,
+      user: user,
+      name: FloatTaskInput.name,
+      notifications: notification,
+      priority: FloatTaskInput.priority,
+      chunkInfo: chunkInfo,
+      shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
+    }).save();
+
+    await planTask(task);
 
     return task;
   }
 
-  async createFloatTask(
-    user: User,
-    createFloatTaskInput: CreateFloatTaskInput
-  ) {
-    const category = await getCategory(user, createFloatTaskInput.category);
+  async upsertChunksForRepeatTask(task: Task) {
+    const chunkInfo = task.chunkInfo;
 
-    const notification = await getNotification(
-      createFloatTaskInput.timeBeforeNotification
-    );
+    if (!chunkInfo) {
+      throw new UserInputError('Task is not a repeat task');
+    }
 
-    const chunkInfo = await ChunkInfo.create({
-      ...createFloatTaskInput.chunkInfo,
-      start: createFloatTaskInput.start,
-    }).save();
+    const repeat = task.chunkInfo.repeat;
 
-    let task = Task.create({
-      category: category,
-      isFloat: true,
-      name: createFloatTaskInput.name,
-      chillTime: createFloatTaskInput.chillTime,
-      notifications: notification,
-      priority: createFloatTaskInput.priority,
-      deadline: createFloatTaskInput.deadline,
-      estimation: createFloatTaskInput.estimation,
-      chunkInfo: chunkInfo,
-      shouldAutoResolve: createFloatTaskInput.shouldAutoResolve,
+    if (!repeat) {
+      throw "Task doesn't have a repeat pattern";
+    }
+
+    // First we need to remove all the existing chunks if they exist
+    await Chunk.delete({
+      task: task,
     });
 
-    task.user = Promise.resolve(user);
+    const repeatUntil = repeat.repeatUntil
+      ? moment(repeat.repeatUntil)
+      : moment(task.chunkInfo.start).add(2, 'month');
 
-    task = await task.save();
+    const chunkList = [];
+    let currentChunkStart = moment(task.chunkInfo.start);
 
-    planTask(task, chunkInfo);
+    // Compare
+    while (currentChunkStart.isSameOrBefore(repeatUntil)) {
+      chunkList.push({
+        task: task,
+        duration: task.chunkInfo.duration,
+        start: currentChunkStart,
+      });
+      // Add repeatEvery repeatType to the currentChunkStart using moment
+      currentChunkStart = moment(currentChunkStart).add(
+        repeat.repeatEvery,
+        repeat.repeatType
+          .toString()
+          .toLowerCase() as moment.unitOfTime.DurationConstructor
+      );
+    }
 
-    return task;
+    await Chunk.save(chunkList);
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         user: user,
         ...getTasksInput.filterOptions,
@@ -115,7 +162,7 @@ export class TasksService {
 
   async getTask(user: User, id: string) {
     return await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
         user: user,
         id: id,
@@ -123,11 +170,30 @@ export class TasksService {
     });
   }
 
-  async updateConstTask(user: User, updateTaskInput: TaskInput) {
-    let task: Task = await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+  async update(id: number, updateTaskInput: TaskInput) {
+    const task: Task = await Task.findOne({
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
-        id: updateTaskInput.id,
+        id: id,
+      },
+    });
+
+    task.isDone = updateTaskInput.isDone;
+
+    await task.save();
+
+    return task;
+  }
+
+  async updateConstTask(
+    user: User,
+    id: number,
+    updateTaskInput: ConstTaskInput
+  ) {
+    let task: Task = await Task.findOne({
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      where: {
+        id: id,
       },
     });
 
@@ -140,14 +206,14 @@ export class TasksService {
     task.category = category;
     task.isFloat = false;
     task.name = updateTaskInput.name;
-    task.chillTime = updateTaskInput.chillTime;
+    task.chunkInfo.chillTime = updateTaskInput.chillTime;
     task.notifications = notification;
     task.priority = updateTaskInput.priority;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
 
     task = await task.save();
 
-    const taskBreakdown = await TaskBreakdown.findOne({
+    const chunk = await Chunk.findOne({
       where: {
         task: task,
       },
@@ -156,22 +222,27 @@ export class TasksService {
     let repeat: Repeat;
     if (updateTaskInput.repeat) {
       repeat = await Repeat.create(updateTaskInput.repeat).save();
+      task.chunkInfo.repeat = repeat;
+      await task.save();
     }
 
-    taskBreakdown.repeat = repeat;
-    taskBreakdown.duration = updateTaskInput.duration;
-    taskBreakdown.start = updateTaskInput.start;
+    chunk.duration = updateTaskInput.duration;
+    chunk.start = updateTaskInput.start;
 
-    await taskBreakdown.save();
+    await chunk.save();
 
     return task;
   }
 
-  async updateFloatTask(user: User, updateTaskInput: TaskInput) {
+  async updateFloatTask(
+    user: User,
+    id: number,
+    updateTaskInput: FloatTaskInput
+  ) {
     let task: Task = await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
+      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
-        id: updateTaskInput.id,
+        id: id,
       },
     });
 
@@ -182,37 +253,22 @@ export class TasksService {
     );
 
     const chunkInfo = await ChunkInfo.create({
-      ...updateTaskInput.chunkInfo,
-      start: updateTaskInput.start,
+      ...updateTaskInput,
     }).save();
 
     task.category = category;
     task.isFloat = true;
     task.name = updateTaskInput.name;
-    task.chillTime = updateTaskInput.chillTime;
     task.notifications = notification;
     task.priority = updateTaskInput.priority;
-    task.deadline = updateTaskInput.deadline;
-    task.estimation = updateTaskInput.estimation;
     task.chunkInfo = chunkInfo;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
 
     task = await task.save();
 
-    await planTask(task, chunkInfo);
+    await planTask(task);
 
     return task;
-  }
-
-  async update(updateTaskInput: TaskInput) {
-    await Task.update(updateTaskInput.id, updateTaskInput);
-
-    return await Task.findOne({
-      relations: ['taskBreakdowns', 'taskBreakdowns.repeat'],
-      where: {
-        id: updateTaskInput.id,
-      },
-    });
   }
 
   async remove(user: User, id: number) {

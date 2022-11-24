@@ -24,7 +24,7 @@ const SleepPreferences: React.FC = () => {
   const onSubmit = (sleepPreferences: SleepPreferencesType) => {
     addConstTaskMutation({
       variables: {
-        createConstTaskInput: mapSleepPreferencesToAddConstTaskMutation(
+        ConstTaskInput: mapSleepPreferencesToAddConstTaskMutation(
           sleepPreferences,
           data?.getCategories?.find((category) => category.name === 'Sleep')
         ),

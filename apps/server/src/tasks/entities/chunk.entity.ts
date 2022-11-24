@@ -1,22 +1,14 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Duration } from 'moment';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
-import { Repeat } from './repeat.entity';
 import { Task } from './task.entity';
 
 @Entity()
 @ObjectType()
-export class TaskBreakdown extends GeneralEntity {
+export class Chunk extends GeneralEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -32,13 +24,8 @@ export class TaskBreakdown extends GeneralEntity {
   @Column({ default: false })
   isDone: boolean;
 
-  @ManyToOne(() => Task, (task) => task.taskBreakdowns, {
+  @ManyToOne(() => Task, (task) => task.chunks, {
     onDelete: 'CASCADE',
   })
   task: Task;
-
-  @Field({ nullable: true })
-  @OneToOne(() => Repeat)
-  @JoinColumn()
-  repeat?: Repeat;
 }
