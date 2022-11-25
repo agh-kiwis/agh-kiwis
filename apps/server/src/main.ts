@@ -1,22 +1,21 @@
 import * as fs from 'fs';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { setupApp } from './utils/setup';
 import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
-  let httpsOptions: any = null;
+  const options: NestApplicationOptions = {};
+
   if (process.env.NODE_ENV == 'production') {
-    httpsOptions = {
+    options.httpsOptions = {
       key: fs.readFileSync('./secrets/privkey.pem'),
       cert: fs.readFileSync('./secrets/fullchain.pem'),
     };
   }
 
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
-  });
+  const app = await NestFactory.create(AppModule, options);
   await setupApp();
 
   app.useGlobalPipes(new ValidationPipe(validationOptions));
