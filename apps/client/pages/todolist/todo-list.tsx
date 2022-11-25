@@ -48,6 +48,9 @@ const TodoList: React.FC = () => {
     return <CustomSpinner />;
   }
   if (error) {
+    if (error.message.includes('Authentication failed')) {
+      router.push('/login');
+    }
     return (
       <AlertModal status={'error'} title={'Error!'} message={error.message} />
     );

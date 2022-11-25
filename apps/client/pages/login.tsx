@@ -35,9 +35,8 @@ const Login: React.FC = () => {
       }, ERROR_MODAL_TIMEOUT);
     });
     if (response) {
-      console.log(response.data.login.token);
-      // Set authorization cookie to response token (if we are working at different domains and it's not set automatically)
-      // cookieCutter.set('authorization', response.data.login.token);
+      // Set authorization cookie to response token (if we are working at different domains and it's not set automatically) THIS IS REALLY UNWANTED
+      
       response.data.login.introductionCompleted
         ? router.push('/')
         : router.push('/introduction/user-details');
