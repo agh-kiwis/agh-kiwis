@@ -45,3 +45,6 @@ Thumbs.db
 
 # Auto-generated schemas
 *.gql
+
+# Next.js
+.next
