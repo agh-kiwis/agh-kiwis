@@ -50,10 +50,12 @@ const TodoList: React.FC = () => {
   if (error) {
     if (error.message.includes('Authentication failed')) {
       router.push('/login');
+      return <></>;
+    } else {
+      return (
+        <AlertModal status={'error'} title={'Error!'} message={error.message} />
+      );
     }
-    return (
-      <AlertModal status={'error'} title={'Error!'} message={error.message} />
-    );
   }
 
   return (
