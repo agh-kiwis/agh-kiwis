@@ -35,7 +35,7 @@ const Register: React.FC = () => {
       }, ERROR_MODAL_TIMEOUT);
     });
     if (response) {
-      router.push('/login');
+      router.push('/introduction/user-details');
     }
   };
 
