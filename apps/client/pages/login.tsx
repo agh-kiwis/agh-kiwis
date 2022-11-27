@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
@@ -17,10 +17,22 @@ import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
 
 const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
+  const [popUpMessage, setPopUpMessage] = useState('');
   const [loginMutation] = useLoginMutation();
   const router = useRouter();
+  const isInitialMount = useRef(true);
 
-  const onSubmit = async (values, { setErrors }) => {
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      setTimeout(() => {
+        setPopUpMessage('');
+      }, ERROR_MODAL_TIMEOUT);
+    }
+  }, [popUpMessage]);
+
+  const onSubmit = async (values: { email: string; password: string }) => {
     const response = await loginMutation({
       variables: {
         loginDto: {
@@ -29,14 +41,16 @@ const Login: React.FC = () => {
         },
       },
     }).catch((caughtError) => {
-      setLoginError('Wrong email or password!');
-      setTimeout(() => {
-        setLoginError('');
-      }, ERROR_MODAL_TIMEOUT);
+      if (caughtError.message.includes('Invalid login credentials')) {
+        // TODO This needs to be in utils with some stage handling in useEffects
+        setLoginError(caughtError.message);
+        setTimeout(() => {
+          setLoginError('');
+        }, ERROR_MODAL_TIMEOUT);
+      }
+      setPopUpMessage(caughtError.message);
     });
     if (response) {
-      // Set authorization cookie to response token (if we are working at different domains and it's not set automatically) THIS IS REALLY UNWANTED
-      
       response.data.login.introductionCompleted
         ? router.push('/')
         : router.push('/introduction/user-details');
@@ -45,7 +59,24 @@ const Login: React.FC = () => {
 
   return (
     <Wrapper>
+      {popUpMessage && (
+        <Box
+          position="absolute"
+          mt="1"
+          left="50%"
+          transform="translateX(-50%)"
+          height="fit-content"
+          width={['66vw', '400px']}
+        >
+          <AlertModal
+            status={'error'}
+            title={'Error!'}
+            message={popUpMessage}
+          />
+        </Box>
+      )}
       <Logo />
+
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={onSubmit}
