@@ -332,6 +332,9 @@ const fitTask = (
   const taskEstimation = moment.duration(task.chunkInfo.estimation);
   let windowTaken = 0;
   const window = windows[windowTaken];
+  if (!window) {
+    return;
+  }
   let taskDuration = getDurationUsedForTheWindow(
     task,
     window,
