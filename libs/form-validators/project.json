@@ -1,4 +1,5 @@
 {
+  "name": "form-validators",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/form-validators/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/form-validators"],
+      "outputs": ["{workspaceRoot}/coverage/libs/form-validators"],
       "options": {
         "jestConfig": "libs/form-validators/jest.config.ts",
         "passWithNoTests": true

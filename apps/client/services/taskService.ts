@@ -227,14 +227,14 @@ export const handleConstTaskSubmit = async (
   });
 
   if (taskResponse) {
-    // TODO handle success
     router.push(route);
   }
 };
 
 export const handleFloatTaskSubmit = async (
   values: FloatTaskType,
-  addFloatTaskMutation
+  addFloatTaskMutation,
+  route = '/'
 ) => {
   const taskResponse = await addFloatTaskMutation({
     variables: {
@@ -246,7 +246,6 @@ export const handleFloatTaskSubmit = async (
   });
 
   if (taskResponse) {
-    // TODO handle success
-    router.push('/');
+    router.push(route);
   }
 };
