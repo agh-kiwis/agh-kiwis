@@ -1,14 +1,10 @@
-import { JWTPayload, jwtVerify } from 'jose';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-
-const secret: string = process.env.AUTH_JWT_SECRET;
-const cookieName: string = process.env.AUTH_COOKIE_NAME;
 
 const middleware = async (request: NextRequest) => {
   const { cookies } = request;
 
-  const token: string = cookies.get(cookieName);
+  const token: string = cookies.get(process.env.AUTH_COOKIE_NAME);
   const url = request.nextUrl.clone();
 
   if (url.pathname.startsWith('/_next')) {
@@ -24,20 +20,8 @@ const middleware = async (request: NextRequest) => {
       return NextResponse.redirect(url);
     }
 
-    try {
-      await verify(token, secret);
-      return NextResponse.next();
-    } catch (error) {
-      url.pathname = '/login';
-      return NextResponse.redirect(url);
-    }
+    return NextResponse.next();
   }
-};
-
-const verify = async (token: string, secret: string): Promise<JWTPayload> => {
-  const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
-
-  return payload;
 };
 
 export const config = {
