@@ -34,21 +34,27 @@ export class TasksService {
       .filter((task) => task.shouldAutoResolve)
       .map((task) => {
         if (task.isFloat) {
-          if (moment(task.chunkInfo.deadline).isBefore(moment())) {
+          if (this.isPastDeadline(task)) {
             // mark task as done (and it's corresponding chunks)
           } else {
             // mark specific chunks as done
           }
         } else if (task.chunkInfo.repeat) {
           // mark specific chunks as done
-        } else if (
-          moment(task.chunkInfo.start)
-            .add(task.chunkInfo.duration)
-            .isBefore(moment())
-        ) {
+        } else if (this.constTaskEnded(task)) {
           // mark task as done (and it's corresponding chunks)
         }
       });
+  }
+
+  private isPastDeadline(task: Task): boolean {
+    return moment(task.chunkInfo.deadline).isBefore(moment());
+  }
+
+  private constTaskEnded(task: Task): boolean {
+    return moment(task.chunkInfo.start)
+      .add(task.chunkInfo.duration)
+      .isBefore(moment());
   }
 
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
