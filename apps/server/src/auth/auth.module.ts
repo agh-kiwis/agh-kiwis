@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   // The list of imported modules that export the providers which are required in this module
@@ -25,7 +26,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   // The providers that will be instantiated by the Nest injector and that may be shared at least across this module
-  providers: [AuthService, AuthResolver, JwtStrategy],
+  providers: [AuthService, AuthResolver, JwtStrategy, GoogleStrategy],
   // the subset of providers that are provided by this module and should be available in other modules which import this module.
   exports: [AuthService],
 })
