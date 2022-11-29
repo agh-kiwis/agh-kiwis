@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -17,7 +18,6 @@ import { UsersModule } from '../users/users.module';
 import { IntervalScalar } from '../utils/interval.scalar';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 
 @Module({
   imports: [
@@ -40,6 +40,7 @@ import { AppService } from './app.service';
     UsersModule,
     TasksModule,
     CategoriesModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
@@ -51,6 +52,6 @@ import { AppService } from './app.service';
     IntervalScalar,
   ],
 })
-export class AppModule { }
+export class AppModule {}
 
 // Export this module
