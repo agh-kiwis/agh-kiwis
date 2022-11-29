@@ -2,6 +2,7 @@ import { UserInputError } from 'apollo-server-errors';
 import { In } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
@@ -19,6 +20,37 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
+  @Cron('* */1 * * * *')
+  triggerMarkingAsDone() {
+    this.markTasksAsDone();
+  }
+
+  async markTasksAsDone() {
+    const tasks: Task[] = await Task.find({
+      relations: ['chunks', 'chunkInfo'],
+    });
+
+    tasks
+      .filter((task) => task.shouldAutoResolve)
+      .map((task) => {
+        if (task.isFloat) {
+          if (moment(task.chunkInfo.deadline).isBefore(moment())) {
+            // mark task as done (and it's corresponding chunks)
+          } else {
+            // mark specific chunks as done
+          }
+        } else if (task.chunkInfo.repeat) {
+          // mark specific chunks as done
+        } else if (
+          moment(task.chunkInfo.start)
+            .add(task.chunkInfo.duration)
+            .isBefore(moment())
+        ) {
+          // mark task as done (and it's corresponding chunks)
+        }
+      });
+  }
+
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
     const category = await getCategory(user, ConstTaskInput.category);
 
