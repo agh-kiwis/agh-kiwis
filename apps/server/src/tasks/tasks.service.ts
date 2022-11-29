@@ -41,7 +41,7 @@ export class TasksService {
           }
         } else if (task.chunkInfo.repeat) {
           // mark specific chunks as done
-        } else if (this.constTaskEnded(task)) {
+        } else if (this.isConstTaskEnded(task)) {
           // mark task as done (and it's corresponding chunks)
         }
       });
@@ -51,7 +51,7 @@ export class TasksService {
     return moment(task.chunkInfo.deadline).isBefore(moment());
   }
 
-  private constTaskEnded(task: Task): boolean {
+  private isConstTaskEnded(task: Task): boolean {
     return moment(task.chunkInfo.start)
       .add(task.chunkInfo.duration)
       .isBefore(moment());
