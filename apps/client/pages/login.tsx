@@ -47,8 +47,9 @@ const Login: React.FC = () => {
         setTimeout(() => {
           setLoginError('');
         }, ERROR_MODAL_TIMEOUT);
+      } else {
+        setPopUpMessage(caughtError.message);
       }
-      setPopUpMessage(caughtError.message);
     });
     if (response) {
       response.data.login.introductionCompleted
