@@ -36,13 +36,45 @@ export class TasksService {
         if (task.isFloat) {
           if (this.isPastDeadline(task)) {
             // mark task as done (and it's corresponding chunks)
+            Task.update(task.id, {
+              ...task,
+              isDone: true,
+            });
+            task.chunks.map((chunk) => {
+              Chunk.update(chunk.id, {
+                ...chunk,
+                isDone: true,
+              });
+            });
           } else {
             // mark specific chunks as done
+            task.chunks.map((chunk) => {
+              Chunk.update(chunk.id, {
+                ...chunk,
+                isDone: this.isChunkEnded(chunk),
+              });
+            });
           }
         } else if (task.chunkInfo.repeat) {
           // mark specific chunks as done
+          task.chunks.map((chunk) => {
+            Chunk.update(chunk.id, {
+              ...chunk,
+              isDone: this.isChunkEnded(chunk),
+            });
+          });
         } else if (this.isConstTaskEnded(task)) {
           // mark task as done (and it's corresponding chunks)
+          Task.update(task.id, {
+            ...task,
+            isDone: true,
+          });
+          task.chunks.map((chunk) => {
+            Chunk.update(chunk.id, {
+              ...chunk,
+              isDone: this.isChunkEnded(chunk),
+            });
+          });
         }
       });
   }
@@ -55,6 +87,10 @@ export class TasksService {
     return moment(task.chunkInfo.start)
       .add(task.chunkInfo.duration)
       .isBefore(moment());
+  }
+
+  private isChunkEnded(chunk: Chunk): boolean {
+    return moment(chunk.start).add(chunk.duration).isBefore(moment());
   }
 
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
