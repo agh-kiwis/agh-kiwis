@@ -43,11 +43,11 @@ describe('Tasks (e2e)', () => {
           chillTime: "P3Y6M4DT12H30M5S"
           duration: "00::00"
           name: "Walk a dog"
-          start: "2022-11-19 12:00:00"
+          start: "2022-11-19T11:00:00.000Z"
           repeat: {
             repeatEvery: 1
             repeatType: DAYS
-            repeatUntil: "2022-11-21 12:00:00"
+            repeatUntil: "2022-11-21T11:00:00.000Z"
           }
           priority: "high"
         }

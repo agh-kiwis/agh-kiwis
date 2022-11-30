@@ -28,7 +28,7 @@ const Register: React.FC = () => {
           password: values.password,
         },
       },
-    }).catch((caughtError) => {
+    }).catch((error) => {
       setLoginError('User with given email is already registered!');
       setTimeout(() => {
         setLoginError('');

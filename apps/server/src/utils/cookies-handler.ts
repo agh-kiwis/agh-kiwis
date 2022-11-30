@@ -7,7 +7,6 @@ export const setCookie = (
   context: CustomContext,
   configService: ConfigService
 ) => {
-  console.log(configService.get('auth.cookie_domain'));
   context.res.cookie(configService.get('auth.cookie_name'), token, {
     maxAge: configService.get('auth.cookie_refresh_duration'),
     // domain: configService.get('auth.cookie_domain'),
