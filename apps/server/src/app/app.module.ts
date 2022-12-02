@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -11,6 +10,7 @@ import { CategoriesModule } from '../categories/categories.module';
 import appConfig from '../config/app.config';
 import authConfig from '../config/auth.config';
 import databaseConfig from '../config/database.config';
+import { CronModule } from '../cron/cron.module';
 import { TypeOrmConfigService } from '../database/typeorm-config.service';
 import { ApolloConfigService } from '../graphql/apollo-config.service';
 import { TasksModule } from '../tasks/tasks.module';
@@ -40,7 +40,7 @@ import { AppService } from './app.service';
     UsersModule,
     TasksModule,
     CategoriesModule,
-    ScheduleModule.forRoot(),
+    CronModule,
   ],
   controllers: [AppController],
   providers: [

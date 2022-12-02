@@ -2,7 +2,6 @@ import { UserInputError } from 'apollo-server-errors';
 import { In } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
@@ -20,79 +19,6 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
-  @Cron('* */1 * * * *')
-  triggerMarkingAsDone() {
-    this.markTasksAsDone();
-  }
-
-  async markTasksAsDone() {
-    const tasks: Task[] = await Task.find({
-      relations: ['chunks', 'chunkInfo'],
-    });
-
-    tasks
-      .filter((task) => task.shouldAutoResolve)
-      .map((task) => {
-        if (task.isFloat) {
-          if (this.isPastDeadline(task)) {
-            // mark task as done (and it's corresponding chunks)
-            Task.update(task.id, {
-              ...task,
-              isDone: true,
-            });
-            task.chunks.map((chunk) => {
-              Chunk.update(chunk.id, {
-                ...chunk,
-                isDone: true,
-              });
-            });
-          } else {
-            // mark specific chunks as done
-            task.chunks.map((chunk) => {
-              Chunk.update(chunk.id, {
-                ...chunk,
-                isDone: this.isChunkEnded(chunk),
-              });
-            });
-          }
-        } else if (task.chunkInfo.repeat) {
-          // mark specific chunks as done
-          task.chunks.map((chunk) => {
-            Chunk.update(chunk.id, {
-              ...chunk,
-              isDone: this.isChunkEnded(chunk),
-            });
-          });
-        } else if (this.isConstTaskEnded(task)) {
-          // mark task as done (and it's corresponding chunks)
-          Task.update(task.id, {
-            ...task,
-            isDone: true,
-          });
-          task.chunks.map((chunk) => {
-            Chunk.update(chunk.id, {
-              ...chunk,
-              isDone: this.isChunkEnded(chunk),
-            });
-          });
-        }
-      });
-  }
-
-  private isPastDeadline(task: Task): boolean {
-    return moment(task.chunkInfo.deadline).isBefore(moment());
-  }
-
-  private isConstTaskEnded(task: Task): boolean {
-    return moment(task.chunkInfo.start)
-      .add(task.chunkInfo.duration)
-      .isBefore(moment());
-  }
-
-  private isChunkEnded(chunk: Chunk): boolean {
-    return moment(chunk.start).add(chunk.duration).isBefore(moment());
-  }
-
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
     const category = await getCategory(user, ConstTaskInput.category);
 
