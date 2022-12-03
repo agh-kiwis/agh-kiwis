@@ -80,13 +80,13 @@ const TodoList: React.FC = () => {
           <CommonButton
             disabled
             variant="outline"
-            buttonText="Calendar view"
+            // buttonText="Calendar view"
             icon={HiOutlineCalendar}
             onClick={() => console.log('calendar')}
           />
           <CommonButton
             variant="outline"
-            buttonText="Settings"
+            // buttonText="Settings"
             icon={IoSettingsOutline}
             onClick={() => router.push(SETTINGS_URL)}
           />

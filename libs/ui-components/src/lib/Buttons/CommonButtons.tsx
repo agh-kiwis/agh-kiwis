@@ -1,10 +1,10 @@
 import React from 'react';
 import { IconType } from 'react-icons/lib';
-import { Button, HStack, Icon, Image, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Button, Icon, Image, Wrap, WrapItem } from '@chakra-ui/react';
 import { GOOGLE_ICON_PATH } from '@agh-kiwis/workspace-constants';
 
 type ButtonProps = {
-  buttonText: string;
+  buttonText?: string;
   icon?: IconType;
   variant?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -22,8 +22,10 @@ export const CommonButton: React.FC<ButtonProps> = ({
   return (
     <Button {...props} w="100%">
       <Wrap spacing="8px">
-        <WrapItem>{icon && <Icon as={icon} />}</WrapItem>
-        <WrapItem>{buttonText}</WrapItem>
+        <Box>
+          <WrapItem>{icon && <Icon as={icon} />}</WrapItem>
+          <WrapItem>{buttonText}</WrapItem>
+        </Box>
       </Wrap>
     </Button>
   );
