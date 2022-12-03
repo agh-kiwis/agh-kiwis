@@ -11,6 +11,7 @@ type ButtonProps = {
   isLoading?: boolean;
   colorScheme?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 export const CommonButton: React.FC<ButtonProps> = ({

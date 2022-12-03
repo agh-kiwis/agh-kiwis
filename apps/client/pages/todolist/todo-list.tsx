@@ -78,6 +78,7 @@ const TodoList: React.FC = () => {
         </HStack>
         <HStack>
           <CommonButton
+            disabled
             variant="outline"
             buttonText="Calendar view"
             icon={HiOutlineCalendar}
