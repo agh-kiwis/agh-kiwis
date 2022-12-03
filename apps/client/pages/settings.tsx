@@ -26,7 +26,7 @@ const Settings: React.FC = (props) => {
       <Flex w="100%" justifyContent="center">
         <Text fontSize="4xl">{`Hello, ${data.me.name}`}</Text>
       </Flex>
-      <VStack mt="4" spacing="4">
+      <VStack mt="4">
         <CommonButton
           variant="solid"
           type="submit"
@@ -34,6 +34,14 @@ const Settings: React.FC = (props) => {
           onClick={() => {
             logoutMutation();
             router.push(LOGIN_URL);
+          }}
+        />
+        <CommonButton
+          variant="outline"
+          type="submit"
+          buttonText="Cancel"
+          onClick={() => {
+            router.push('/');
           }}
         />
       </VStack>
