@@ -30,7 +30,7 @@ export class User extends GeneralEntity {
   @BeforeUpdate()
   async setPassword() {
     if (
-      (this.password && !this.previousPassword) ||
+      !this.previousPassword ||
       (await passwordUpdated(this.previousPassword, this.password))
     ) {
       this.previousPassword = this.password;
