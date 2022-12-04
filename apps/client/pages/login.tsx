@@ -1,14 +1,17 @@
+import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
-import { useLoginMutation } from '@agh-kiwis/data-access';
+import {
+  useGoogleLoginMutation,
+  useLoginMutation,
+} from '@agh-kiwis/data-access';
 import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
   AlertModal,
   CommonButton,
-  GoogleButton,
   InputField,
   Logo,
   Wrapper,
@@ -18,6 +21,7 @@ import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
 const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
   const [loginMutation] = useLoginMutation();
+  const [googleLoginMutation] = useGoogleLoginMutation();
   const router = useRouter();
 
   const onSubmit = async (values, { setErrors }) => {
@@ -35,12 +39,39 @@ const Login: React.FC = () => {
       }, ERROR_MODAL_TIMEOUT);
     });
     if (response) {
-      // Set authorization cookie to response token (if we are working at different domains and it's not set automatically) THIS IS REALLY UNWANTED
-      
       response.data.login.introductionCompleted
         ? router.push('/')
         : router.push('/introduction/user-details');
     }
+  };
+
+  const onSuccessGoogleLogin = async (credentialResponse: {
+    credential: string;
+  }) => {
+    const response = await googleLoginMutation({
+      variables: {
+        googleLoginDto: {
+          credential: credentialResponse.credential,
+        },
+      },
+    }).catch((caughtError) => {
+      setLoginError('Wrong email or password!');
+      setTimeout(() => {
+        setLoginError('');
+      }, ERROR_MODAL_TIMEOUT);
+    });
+    if (response) {
+      response.data.googleLogin.introductionCompleted
+        ? router.push('/')
+        : router.push('/introduction/user-details');
+    }
+  };
+  const onFailureGoogleLogin = async () => {
+    setLoginError('Unsuccessful login via google!');
+
+    return setTimeout(() => {
+      setLoginError('');
+    }, ERROR_MODAL_TIMEOUT);
   };
 
   return (
@@ -95,7 +126,14 @@ const Login: React.FC = () => {
                 isLoading={isSubmitting}
                 buttonText="Sign in"
               />
-              <GoogleButton buttonText="Continue with Google" />
+
+              <GoogleLogin
+                // TODO Set googleLoginButton width the same as common button width
+                size="large"
+                shape="pill"
+                onSuccess={onSuccessGoogleLogin}
+                onError={onFailureGoogleLogin}
+              />
             </VStack>
             <Flex justify={'space-around'} align={'center'} my={6}>
               <Divider mx={4} />

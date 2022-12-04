@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -13,13 +14,15 @@ function KiwisApp({ Component, pageProps }: AppProps) {
   });
   return (
     <>
-      <ApolloProvider client={client}>
-        <Provider store={store}>
-          <ChakraProvider resetCSS theme={theme}>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </Provider>
-      </ApolloProvider>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+        <ApolloProvider client={client}>
+          <Provider store={store}>
+            <ChakraProvider resetCSS theme={theme}>
+              <Component {...pageProps} />
+            </ChakraProvider>
+          </Provider>
+        </ApolloProvider>
+      </GoogleOAuthProvider>
     </>
   );
 }
