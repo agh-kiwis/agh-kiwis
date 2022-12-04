@@ -1,12 +1,6 @@
-import { GoogleLogin } from '@react-oauth/google';
-import { useState } from 'react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { Form, Formik } from 'formik';
-import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import {
   useGoogleLoginMutation,
-  useLoginMutation,
+  useLoginMutation
 } from '@agh-kiwis/data-access';
 import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
@@ -14,17 +8,35 @@ import {
   CommonButton,
   InputField,
   Logo,
-  Wrapper,
+  Wrapper
 } from '@agh-kiwis/ui-components';
 import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
+import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
+import { GoogleLogin } from '@react-oauth/google';
+import { Form, Formik } from 'formik';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
 const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
+  const [popUpMessage, setPopUpMessage] = useState('');
   const [loginMutation] = useLoginMutation();
   const [googleLoginMutation] = useGoogleLoginMutation();
   const router = useRouter();
+  const isInitialMount = useRef(true);
 
-  const onSubmit = async (values, { setErrors }) => {
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      setTimeout(() => {
+        setPopUpMessage('');
+      }, ERROR_MODAL_TIMEOUT);
+    }
+  }, [popUpMessage]);
+
+  const onSubmit = async (values: { email: string; password: string }) => {
     const response = await loginMutation({
       variables: {
         loginDto: {
@@ -33,10 +45,15 @@ const Login: React.FC = () => {
         },
       },
     }).catch((caughtError) => {
-      setLoginError('Wrong email or password!');
-      setTimeout(() => {
-        setLoginError('');
-      }, ERROR_MODAL_TIMEOUT);
+      if (caughtError.message.includes('Invalid login credentials')) {
+        // TODO This needs to be in utils with some stage handling in useEffects
+        setLoginError(caughtError.message);
+        setTimeout(() => {
+          setLoginError('');
+        }, ERROR_MODAL_TIMEOUT);
+      } else {
+        setPopUpMessage(caughtError.message);
+      }
     });
     if (response) {
       response.data.login.introductionCompleted
@@ -76,7 +93,24 @@ const Login: React.FC = () => {
 
   return (
     <Wrapper>
+      {popUpMessage && (
+        <Box
+          position="absolute"
+          mt="1"
+          left="50%"
+          transform="translateX(-50%)"
+          height="fit-content"
+          width={['66vw', '400px']}
+        >
+          <AlertModal
+            status={'error'}
+            title={'Error!'}
+            message={popUpMessage}
+          />
+        </Box>
+      )}
       <Logo />
+
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={onSubmit}

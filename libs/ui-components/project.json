@@ -1,4 +1,5 @@
 {
+  "name": "ui-components",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/ui-components/src",
   "projectType": "library",
@@ -13,7 +14,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui-components"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui-components"],
       "options": {
         "jestConfig": "libs/ui-components/jest.config.ts",
         "passWithNoTests": true

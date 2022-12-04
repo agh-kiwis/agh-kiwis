@@ -1,4 +1,5 @@
 {
+  "name": "moment-service",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/moment-service/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/moment-service"],
+      "outputs": ["{workspaceRoot}/coverage/libs/moment-service"],
       "options": {
         "jestConfig": "libs/moment-service/jest.config.ts",
         "passWithNoTests": true
