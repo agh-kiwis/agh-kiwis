@@ -26,9 +26,11 @@ import {
 const Settings: React.FC = (props) => {
   const router = useRouter();
   const { data, loading } = useMeQuery();
-  const [logoutMutation] = useLogoutMutation({
-    variables: {},
-  });
+  const [logoutMutation] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    await logoutMutation();
+  };
 
   if (loading) {
     return <CustomSpinner />;
@@ -73,7 +75,7 @@ const Settings: React.FC = (props) => {
             colorScheme="red"
             buttonText="Sign out"
             onClick={() => {
-              logoutMutation();
+              handleLogout();
               router.push(LOGIN_URL);
             }}
           />
