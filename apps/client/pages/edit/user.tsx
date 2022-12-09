@@ -19,8 +19,10 @@ import {
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-import { initialUserDetails } from '../../formConfig/introductionInitialValues';
-import { mapUserDetailsToUpdateUserMutation } from '../../services/userService';
+import {
+  mapUserDetailsToUpdateUserMutation,
+  userToUserDetailsType,
+} from '../../services/userService';
 
 const UserDetails: React.FC = () => {
   const router = useRouter();
@@ -36,7 +38,7 @@ const UserDetails: React.FC = () => {
         ),
       },
     });
-    router.push('/introduction/sleep-preferences');
+    router.push('/settings');
   };
 
   if (loading) {
@@ -46,7 +48,7 @@ const UserDetails: React.FC = () => {
     <Wrapper>
       <Logo textVisible={false} />
       <Formik
-        initialValues={initialUserDetails}
+        initialValues={userToUserDetailsType(data.me)}
         onSubmit={onSubmit}
         validationSchema={UserPreferencesSchema}
       >
@@ -74,7 +76,7 @@ const UserDetails: React.FC = () => {
             <Flex w="100%" justifyContent="space-around" my="6">
               <RadioGroup
                 name="gender"
-                defaultValue="male"
+                defaultValue={data.me.gender}
                 onChange={(gender) => setFieldValue('gender', gender)}
               >
                 <Stack spacing={5} direction="row">
@@ -93,7 +95,7 @@ const UserDetails: React.FC = () => {
                 variant="solid"
                 type="submit"
                 isLoading={isSubmitting}
-                buttonText="Next"
+                buttonText="Save"
               />
             </VStack>
           </Form>

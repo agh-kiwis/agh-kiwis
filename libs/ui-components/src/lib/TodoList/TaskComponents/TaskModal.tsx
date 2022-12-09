@@ -30,7 +30,7 @@ import {
 import {
   deadlineToDate,
   getIntervalISOString,
-  startToDate,
+  momentToDate,
   startToTime,
 } from '@agh-kiwis/moment-service';
 import { CommonButton } from '@agh-kiwis/ui-components';
@@ -152,7 +152,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Tr>
                           <Td>Date:</Td>
                           <Td>
-                            {startToDate(
+                            {momentToDate(
                               task.chunks && task.chunks[0].start,
                               DESCRIPTIVE_DATE_FORMAT
                             )}
