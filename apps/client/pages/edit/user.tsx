@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import {
@@ -29,17 +30,20 @@ const UserDetails: React.FC = () => {
   const { data, loading } = useMeQuery();
   const [updateUserMutation] = useUpdateUserMutation();
 
-  const onSubmit = (values: UserDetailsType) => {
-    updateUserMutation({
-      variables: {
-        updateUserInput: mapUserDetailsToUpdateUserMutation(
-          data?.me?.id,
-          values
-        ),
-      },
-    });
-    router.push('/settings');
-  };
+  const onSubmit = useCallback(
+    (values: UserDetailsType) => {
+      updateUserMutation({
+        variables: {
+          updateUserInput: mapUserDetailsToUpdateUserMutation(
+            data?.me?.id,
+            values
+          ),
+        },
+      });
+      router.push('/settings');
+    },
+    [data?.me?.id, router, updateUserMutation]
+  );
 
   if (loading) {
     return <CustomSpinner />;
