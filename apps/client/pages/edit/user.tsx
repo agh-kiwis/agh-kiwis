@@ -55,7 +55,7 @@ const UserDetails: React.FC = () => {
         {({ touched, isSubmitting, setFieldValue }) => (
           <Form>
             <Flex w="100%" justifyContent="center">
-              <Text fontSize="4xl">Introduce Yourself!</Text>
+              <Text fontSize="4xl">Edit details</Text>
             </Flex>
             <Box my="4">
               <InputField
