@@ -11,7 +11,7 @@ interface WrapperProps {
 export const Wrapper: React.FC<WrapperProps> = ({ children, height }) => {
   return (
     <Container
-      py={8}
+      py={4}
       maxW={['350px', '400px', '500px', '600px']}
       height={height}
     >
