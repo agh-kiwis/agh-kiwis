@@ -25,5 +25,5 @@ export const DependentStartTimeField: React.FC<
     }
   }, [name, setFieldValue, values.startTime.date, values.startTime.time]);
 
-  return <InputField name={name} label="Start time" />;
+  return <InputField name={name} readOnly={true} label="Start time" />;
 };

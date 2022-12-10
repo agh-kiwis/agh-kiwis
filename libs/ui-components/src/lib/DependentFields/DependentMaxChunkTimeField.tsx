@@ -30,5 +30,5 @@ export const DependentMaxChunkTimeField: React.FC<
     values.chunking.maxChunkTime.minutes,
   ]);
 
-  return <InputField name={name} label="Max chunk itme" />;
+  return <InputField name={name} readOnly={true} label="Max chunk itme" />;
 };

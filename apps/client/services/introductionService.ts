@@ -1,27 +1,11 @@
 import moment from 'moment';
-import {
-  Category,
-  ConstTaskInput,
-  RepeatType,
-  UpdateUserInput,
-} from '@agh-kiwis/data-access';
+import { Category, ConstTaskInput, RepeatType } from '@agh-kiwis/data-access';
 import {
   getDurationBetweenTwoDates,
   getIntervalISOString,
   mapToDateTime,
 } from '@agh-kiwis/moment-service';
-import { SleepPreferencesType, UserDetailsType } from '@agh-kiwis/types';
-
-export const mapUserDetailsToUpdateUserMutation = (
-  id: number,
-  formData: UserDetailsType
-): UpdateUserInput => ({
-  id: id,
-  name: formData.name,
-  birthDate: new Date(formData.birthDate),
-  gender: formData.gender,
-  introductionCompleted: true,
-});
+import { SleepPreferencesType } from '@agh-kiwis/types';
 
 export const mapSleepPreferencesToAddConstTaskMutation = (
   sleepPreferences: SleepPreferencesType,

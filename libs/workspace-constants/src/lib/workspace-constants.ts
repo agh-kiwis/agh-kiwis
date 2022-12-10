@@ -1,5 +1,7 @@
 export const ADD_CONST_TASK_URL = '/add/const-task';
 export const ADD_FLOAT_TASK_URL = '/add/float-task';
+export const SETTINGS_URL = '/settings';
+export const LOGIN_URL = '/login';
 
 export const GOOGLE_ICON_PATH = './google.png';
 

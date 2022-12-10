@@ -26,5 +26,5 @@ export const DependentRepeatEveryField: React.FC<
     values.repeat.repeatEvery.type,
   ]);
 
-  return <InputField name={name} label="Repeat every" />;
+  return <InputField name={name} readOnly={true} label="Repeat every" />;
 };

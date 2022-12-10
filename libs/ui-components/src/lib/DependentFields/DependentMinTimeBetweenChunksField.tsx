@@ -30,5 +30,7 @@ export const DependentMinTimeBetweenChunksField: React.FC<
     values.chunking.minTimeBetweenChunks.minutes,
   ]);
 
-  return <InputField name={name} label="Min time between chunks" />;
+  return (
+    <InputField name={name} readOnly={true} label="Min time between chunks" />
+  );
 };

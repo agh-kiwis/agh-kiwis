@@ -18,8 +18,8 @@ export const deadlineToDate = (deadline: string, dateFormat = 'DD MMM') => {
   return moment(deadline, 'x').format(dateFormat);
 };
 
-export const startToDate = (start: moment.Moment, dateFormat = 'DD MMM') => {
-  return moment(start).format(dateFormat);
+export const momentToDate = (m: moment.Moment, dateFormat = 'DD MMM') => {
+  return moment(m).format(dateFormat);
 };
 
 export const startToTime = (start: moment.Moment) => {
@@ -72,4 +72,4 @@ export const mapToDateTime = (date: string, time?: string): Date => {
 export const addMinutes = (date = new Date(), numOfMinutes: number): Date => {
   date.setMinutes(date.getMinutes() + numOfMinutes);
   return date;
-}
+};

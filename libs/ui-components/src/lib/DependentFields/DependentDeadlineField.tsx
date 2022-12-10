@@ -25,5 +25,5 @@ export const DependentDeadlineField: React.FC<DependentDeadlineFieldProps> = ({
     }
   }, [name, setFieldValue, values.deadline.date, values.deadline.time]);
 
-  return <InputField name={name} label="Deadline" />;
+  return <InputField name={name} readOnly={true} label="Deadline" />;
 };
