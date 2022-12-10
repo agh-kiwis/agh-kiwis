@@ -53,7 +53,7 @@ const Login: React.FC = () => {
     });
     if (response) {
       response.data.login.introductionCompleted
-        ? router.push('/')
+        ? router.push('/todo-list')
         : router.push('/introduction/user-details');
     }
   };

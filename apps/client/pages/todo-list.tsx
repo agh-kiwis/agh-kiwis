@@ -8,6 +8,7 @@ import {
   CommonButton,
   CustomSpinner,
   MappedFilter,
+  Wrapper,
   mapToGraphQLFields,
   useFilters,
 } from '@agh-kiwis/ui-components';
@@ -65,7 +66,7 @@ const TodoList: React.FC = () => {
   }
 
   return (
-    <>
+    <Wrapper height="100vh">
       <TodoListHeader setOpen={setOpen} />
       <TasksStack tasks={data.getTasks} />
 
@@ -100,7 +101,7 @@ const TodoList: React.FC = () => {
         mappedFilter={mappedFilter}
         setMappedFilter={setMappedFilter}
       />
-    </>
+    </Wrapper>
   );
 };
 
