@@ -11,7 +11,11 @@ import {
   getIntervalISOString,
   mapToDateTime,
 } from '@agh-kiwis/moment-service';
-import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
+import {
+  CalendarTileType,
+  ConstTaskType,
+  FloatTaskType,
+} from '@agh-kiwis/types';
 
 // create
 export const constTaskFormToAddTaskMutationMapper = (
@@ -183,6 +187,18 @@ export const floatTaskToUpdateTaskMutationMapper = (
   shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });
+
+export const mapToCalendarTiles = (tasks: Task[]): CalendarTileType[] => {
+  return tasks.map((task) => ({
+    id: task?.id.toString(),
+    title: task?.name,
+    start: moment(task?.chunkInfo?.start).toISOString(),
+    end: moment(task?.chunkInfo?.start)
+      .add(task?.chunkInfo?.duration)
+      .toISOString(),
+    color: task.category.color.hexCode,
+  }));
+};
 
 const mapFormRepeatToRepeatType = (repeatType: string): RepeatType => {
   switch (repeatType) {

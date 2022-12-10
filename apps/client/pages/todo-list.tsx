@@ -20,6 +20,7 @@ import {
 } from '@agh-kiwis/ui-components';
 import {
   ADD_CONST_TASK_URL,
+  CALENDAR_URL,
   SETTINGS_URL,
 } from '@agh-kiwis/workspace-constants';
 
@@ -79,15 +80,12 @@ const TodoList: React.FC = () => {
         </HStack>
         <HStack>
           <CommonButton
-            disabled
             variant="outline"
-            // buttonText="Calendar view"
             icon={HiOutlineCalendar}
-            onClick={() => console.log('calendar')}
+            onClick={() => router.push(CALENDAR_URL)}
           />
           <CommonButton
             variant="outline"
-            // buttonText="Settings"
             icon={IoSettingsOutline}
             onClick={() => router.push(SETTINGS_URL)}
           />

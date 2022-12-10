@@ -1,6 +1,9 @@
-html {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+.fc-toolbar-chunk .fc-button {
+  background-color: #2f855a;
+  border-color: #2f855a;
+}
+
+.fc-toolbar-chunk .fc-today-button {
+  background-color: #2f855a;
+  border-color: #2f855a;
 }

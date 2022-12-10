@@ -1,6 +1,8 @@
 export const ADD_CONST_TASK_URL = '/add/const-task';
 export const ADD_FLOAT_TASK_URL = '/add/float-task';
 export const SETTINGS_URL = '/settings';
+export const TODO_LIST_URL = '/todo-list';
+export const CALENDAR_URL = '/calendar';
 export const LOGIN_URL = '/login';
 
 export const GOOGLE_ICON_PATH = './google.png';

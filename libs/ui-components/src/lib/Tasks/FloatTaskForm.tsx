@@ -198,7 +198,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                 <CommonButton
                   variant="outline"
                   buttonText="Cancel"
-                  onClick={() => router.push('/')}
+                  onClick={() => router.back()}
                 />
               </Box>
             </VStack>

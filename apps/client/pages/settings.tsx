@@ -84,7 +84,7 @@ const Settings: React.FC = (props) => {
             type="submit"
             buttonText="Cancel"
             onClick={() => {
-              router.push('/');
+              router.back();
             }}
           />
         </HStack>
