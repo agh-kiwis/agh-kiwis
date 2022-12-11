@@ -32,6 +32,7 @@ const Settings: React.FC = (props) => {
     await logoutMutation();
   };
 
+  // We need to handle errors or unauthenticated
   if (loading) {
     return <CustomSpinner />;
   }

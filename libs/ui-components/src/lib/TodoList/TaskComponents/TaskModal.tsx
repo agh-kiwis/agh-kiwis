@@ -139,7 +139,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                       <Td>Priority:</Td>
                       <Td>{task.priority}</Td>
                     </Tr>
-                    {task.isFloat && (
+                    {task.isFloat && task?.chunkInfo?.deadline && (
                       <Tr>
                         <Td>Deadline:</Td>
                         <Td>
@@ -150,7 +150,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         </Td>
                       </Tr>
                     )}
-                    {!task.isFloat && (
+                    {!task.isFloat && task?.chunks && task.chunks.length > 0 && (
                       <>
                         <Tr>
                           <Td>Date:</Td>

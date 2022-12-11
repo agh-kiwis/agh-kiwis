@@ -1,12 +1,13 @@
-import { store } from '@agh-kiwis/redux';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { ChakraProvider } from '@chakra-ui/react';
 import '@fullcalendar/common/main.css';
 import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/timegrid/main.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AppProps } from 'next/app';
+import '@fullcalendar/timegrid/main.css';
 import { Provider } from 'react-redux';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { ChakraProvider } from '@chakra-ui/react';
+import { store } from '@agh-kiwis/redux';
 import { theme } from '../styles/theme';
 import './styles.css';
 
