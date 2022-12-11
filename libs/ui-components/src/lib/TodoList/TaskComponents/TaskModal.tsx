@@ -33,7 +33,7 @@ import {
   momentToDate,
   startToTime,
 } from '@agh-kiwis/moment-service';
-import { CommonButton } from '@agh-kiwis/ui-components';
+import { CommonButton, CustomSpinner } from '@agh-kiwis/ui-components';
 import { DESCRIPTIVE_DATE_FORMAT } from '@agh-kiwis/workspace-constants';
 import { Header } from '../../Common/Header';
 import { TaskChunks } from './TaskChunks';
@@ -85,6 +85,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     }
   };
 
+  if (!task) {
+    return <CustomSpinner />;
+  }
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
@@ -124,43 +127,43 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                   <Thead>
                     <Tr>
                       <Th>Category:</Th>
-                      <Th>{task?.category?.name}</Th>
+                      <Th>{task.category.name}</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     <Tr>
                       <Td>Name:</Td>
-                      <Td>{task?.name}</Td>
+                      <Td>{task.name}</Td>
                     </Tr>
                     <Tr>
                       <Td>Priority:</Td>
-                      <Td>{task?.priority}</Td>
+                      <Td>{task.priority}</Td>
                     </Tr>
-                    {task?.isFloat && (
+                    {task.isFloat && (
                       <Tr>
                         <Td>Deadline:</Td>
                         <Td>
                           {deadlineToDate(
-                            task?.chunkInfo?.deadline,
+                            task.chunkInfo.deadline,
                             DESCRIPTIVE_DATE_FORMAT
                           )}
                         </Td>
                       </Tr>
                     )}
-                    {!task?.isFloat && (
+                    {!task.isFloat && (
                       <>
                         <Tr>
                           <Td>Date:</Td>
                           <Td>
                             {momentToDate(
-                              task?.chunks[0]?.start,
+                              task.chunks[0].start,
                               DESCRIPTIVE_DATE_FORMAT
                             )}
                           </Td>
                         </Tr>
                         <Tr>
                           <Td>Time:</Td>
-                          <Td>{startToTime(task?.chunks[0]?.start)}</Td>
+                          <Td>{startToTime(task.chunks[0].start)}</Td>
                         </Tr>
                       </>
                     )}
@@ -170,9 +173,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              {task?.isFloat && (
+              {task.isFloat && (
                 <Box>
-                  <TaskChunks chunks={task?.chunks!} />
+                  <TaskChunks chunks={task.chunks!} />
                 </Box>
               )}
             </ModalBody>
@@ -184,7 +187,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                     isLoading={loading}
                     onClick={handleMarkingAsDone}
                     buttonText={
-                      task?.isDone ? 'Mark task as undone' : 'Mark task as done'
+                      task.isDone ? 'Mark task as undone' : 'Mark task as done'
                     }
                   />
                 </HStack>
@@ -198,7 +201,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                   <CommonButton
                     variant="outline"
                     buttonText="Edit task"
-                    onClick={() => router.push(`/edit/${task?.id}`)}
+                    onClick={() => router.push(`/edit/${task.id}`)}
                   />
                 </HStack>
               </VStack>
@@ -212,12 +215,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
 export const taskToUpdateTaskMutationMapper = (task: Task): TaskInput => ({
   category: {
-    id: task?.category?.id,
+    id: task?.category.id,
   },
   name: task?.name,
   priority: task?.priority,
-  chillTime: getIntervalISOString(task?.chunkInfo?.chillTime),
-  start: task?.chunkInfo?.start,
+  chillTime: getIntervalISOString(task?.chunkInfo.chillTime),
+  start: task?.chunkInfo.start,
   shouldAutoResolve: task?.shouldAutoResolve,
   isDone: !task?.isDone,
 });
