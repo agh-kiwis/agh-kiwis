@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import {
@@ -19,25 +20,30 @@ import {
   Logo,
   Wrapper,
 } from '@agh-kiwis/ui-components';
-import { initialUserDetails } from '../../formConfig/introductionInitialValues';
-import { mapUserDetailsToUpdateUserMutation } from '../../services/userService';
+import {
+  mapUserDetailsToUpdateUserMutation,
+  userToUserDetailsType,
+} from '../../services/userService';
 
 const UserDetails: React.FC = () => {
   const router = useRouter();
   const { data, loading } = useMeQuery();
   const [updateUserMutation] = useUpdateUserMutation();
 
-  const onSubmit = (values: UserDetailsType) => {
-    updateUserMutation({
-      variables: {
-        updateUserInput: mapUserDetailsToUpdateUserMutation(
-          data?.me?.id,
-          values
-        ),
-      },
-    });
-    router.push('/introduction/sleep-preferences');
-  };
+  const onSubmit = useCallback(
+    (values: UserDetailsType) => {
+      updateUserMutation({
+        variables: {
+          updateUserInput: mapUserDetailsToUpdateUserMutation(
+            data?.me?.id,
+            values
+          ),
+        },
+      });
+      router.push('/settings');
+    },
+    [data?.me?.id, router, updateUserMutation]
+  );
 
   if (loading) {
     return <CustomSpinner />;
@@ -46,14 +52,14 @@ const UserDetails: React.FC = () => {
     <Wrapper>
       <Logo textVisible={false} />
       <Formik
-        initialValues={initialUserDetails}
+        initialValues={userToUserDetailsType(data.me)}
         onSubmit={onSubmit}
         validationSchema={UserPreferencesSchema}
       >
         {({ touched, isSubmitting, setFieldValue }) => (
           <Form>
             <Flex w="100%" justifyContent="center">
-              <Text fontSize="4xl">Introduce Yourself!</Text>
+              <Text fontSize="4xl">Edit details</Text>
             </Flex>
             <Box my="4">
               <InputField
@@ -74,7 +80,7 @@ const UserDetails: React.FC = () => {
             <Flex w="100%" justifyContent="space-around" my="6">
               <RadioGroup
                 name="gender"
-                defaultValue="male"
+                defaultValue={data.me.gender}
                 onChange={(gender) => setFieldValue('gender', gender)}
               >
                 <Stack spacing={5} direction="row">
@@ -93,7 +99,7 @@ const UserDetails: React.FC = () => {
                 variant="solid"
                 type="submit"
                 isLoading={isSubmitting}
-                buttonText="Next"
+                buttonText="Save"
               />
             </VStack>
           </Form>

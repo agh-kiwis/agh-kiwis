@@ -25,5 +25,5 @@ export const DependentDurationField: React.FC<DependentDurationFieldProps> = ({
     }
   }, [name, setFieldValue, values.duration.hours, values.duration.minutes]);
 
-  return <InputField name={name} label="Duration" />;
+  return <InputField name={name} readOnly={true} label="Duration" />;
 };

@@ -73,7 +73,7 @@ export const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
               <Button variant="outline" {...dec}>
                 -
               </Button>
-              <Input {...input} textAlign="center" />
+              <Input {...input} readOnly={true} textAlign="center" />
               <Button variant="outline" {...inc}>
                 +
               </Button>
@@ -90,7 +90,7 @@ export const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
               <Button variant="outline" {...dec}>
                 -
               </Button>
-              <Input {...input} w="80px" textAlign="center" />
+              <Input {...input} readOnly={true} w="80px" textAlign="center" />
               <Button variant="outline" {...inc}>
                 +
               </Button>

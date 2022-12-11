@@ -1,10 +1,14 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { Provider } from 'react-redux';
-import { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
 import { store } from '@agh-kiwis/redux';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ChakraProvider } from '@chakra-ui/react';
+import '@fullcalendar/common/main.css';
+import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/timegrid/main.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
 import { theme } from '../styles/theme';
+import './styles.css';
 
 function KiwisApp({ Component, pageProps }: AppProps) {
   const client = new ApolloClient({

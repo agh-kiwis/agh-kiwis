@@ -30,10 +30,10 @@ import {
 import {
   deadlineToDate,
   getIntervalISOString,
-  startToDate,
+  momentToDate,
   startToTime,
 } from '@agh-kiwis/moment-service';
-import { CommonButton } from '@agh-kiwis/ui-components';
+import { CommonButton, CustomSpinner } from '@agh-kiwis/ui-components';
 import { DESCRIPTIVE_DATE_FORMAT } from '@agh-kiwis/workspace-constants';
 import { Header } from '../../Common/Header';
 import { TaskChunks } from './TaskChunks';
@@ -54,13 +54,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
   const [removeTaskMutation] = useRemoveTaskMutation({
     variables: {
-      id: task.id,
+      id: task?.id,
     },
   });
 
   const [updateTaskMutation, { loading }] = useUpdateTaskMutation({
     variables: {
-      id: task.id,
+      id: task?.id,
       taskInput: taskToUpdateTaskMutationMapper(task),
     },
   });
@@ -85,6 +85,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     }
   };
 
+  if (!task) {
+    return <CustomSpinner />;
+  }
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
@@ -141,7 +144,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Td>Deadline:</Td>
                         <Td>
                           {deadlineToDate(
-                            task.chunkInfo?.deadline,
+                            task.chunkInfo.deadline,
                             DESCRIPTIVE_DATE_FORMAT
                           )}
                         </Td>
@@ -152,17 +155,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                         <Tr>
                           <Td>Date:</Td>
                           <Td>
-                            {startToDate(
-                              task.chunks && task.chunks[0].start,
+                            {momentToDate(
+                              task.chunks[0].start,
                               DESCRIPTIVE_DATE_FORMAT
                             )}
                           </Td>
                         </Tr>
                         <Tr>
                           <Td>Time:</Td>
-                          <Td>
-                            {startToTime(task.chunks && task.chunks[0].start)}
-                          </Td>
+                          <Td>{startToTime(task.chunks[0].start)}</Td>
                         </Tr>
                       </>
                     )}
@@ -214,12 +215,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
 export const taskToUpdateTaskMutationMapper = (task: Task): TaskInput => ({
   category: {
-    id: task.category.id,
+    id: task?.category.id,
   },
-  name: task.name,
-  priority: task.priority,
-  chillTime: getIntervalISOString(task.chunkInfo?.chillTime),
-  start: task.chunkInfo?.start,
-  shouldAutoResolve: task.shouldAutoResolve,
-  isDone: !task.isDone,
+  name: task?.name,
+  priority: task?.priority,
+  chillTime: getIntervalISOString(task?.chunkInfo.chillTime),
+  start: task?.chunkInfo.start,
+  shouldAutoResolve: task?.shouldAutoResolve,
+  isDone: !task?.isDone,
 });

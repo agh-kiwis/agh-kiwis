@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, HStack, Stack, Text } from '@chakra-ui/react';
 import { Chunk } from '@agh-kiwis/data-access';
-import { startToDate, timeInterval } from '@agh-kiwis/moment-service';
+import { momentToDate, timeInterval } from '@agh-kiwis/moment-service';
 
 type ChunkInfoProps = {
   checked: boolean;
@@ -22,7 +22,7 @@ export const ChunkInfo: React.FC<ChunkInfoProps> = ({ id, chunk, checked }) => {
       <HStack justifyContent="center" spacing="8" h="4rem">
         <Text>Chunk {id + 1}</Text>
         <Box>
-          <Text> {startToDate(chunk.start)} </Text>
+          <Text> {momentToDate(chunk.start)} </Text>
         </Box>
         <Box>
           <Text>{timeInterval(chunk)}</Text>

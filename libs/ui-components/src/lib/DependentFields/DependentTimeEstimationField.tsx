@@ -30,5 +30,5 @@ export const DependentTimeEstimationField: React.FC<
     values.timeEstimation.minutes,
   ]);
 
-  return <InputField name={name} label="Estimation" />;
+  return <InputField name={name} readOnly={true} label="Estimation" />;
 };
