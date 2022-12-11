@@ -34,6 +34,10 @@ export type AuthEmailRegisterInput = {
   password: Scalars['String'];
 };
 
+export type AuthGoogleLoginInput = {
+  credential: Scalars['String'];
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   birthDate?: Maybe<Scalars['DateTime']>;
@@ -164,6 +168,7 @@ export type Mutation = {
   addFloatTask: Task;
   createCategory: Category;
   createUser: User;
+  googleLogin: AuthResponse;
   login: AuthResponse;
   logout: Scalars['Boolean'];
   register: AuthResponse;
@@ -190,6 +195,10 @@ export type MutationCreateCategoryArgs = {
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
+};
+
+export type MutationGoogleLoginArgs = {
+  googleLoginDto: AuthGoogleLoginInput;
 };
 
 export type MutationLoginArgs = {
@@ -463,6 +472,24 @@ export type CreateUserMutation = {
     id: number;
     introductionCompleted: boolean;
     name?: string | null;
+  };
+};
+
+export type GoogleLoginMutationVariables = Exact<{
+  googleLoginDto: AuthGoogleLoginInput;
+}>;
+
+export type GoogleLoginMutation = {
+  __typename?: 'Mutation';
+  googleLogin: {
+    __typename?: 'AuthResponse';
+    birthDate?: any | null;
+    email: string;
+    gender?: string | null;
+    id: number;
+    introductionCompleted: boolean;
+    name?: string | null;
+    token?: string | null;
   };
 };
 
@@ -1168,6 +1195,62 @@ export type CreateUserMutationResult =
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
+>;
+export const GoogleLoginDocument = gql`
+  mutation googleLogin($googleLoginDto: AuthGoogleLoginInput!) {
+    googleLogin(googleLoginDto: $googleLoginDto) {
+      birthDate
+      email
+      gender
+      id
+      introductionCompleted
+      name
+      token
+    }
+  }
+`;
+export type GoogleLoginMutationFn = Apollo.MutationFunction<
+  GoogleLoginMutation,
+  GoogleLoginMutationVariables
+>;
+
+/**
+ * __useGoogleLoginMutation__
+ *
+ * To run a mutation, you first call `useGoogleLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGoogleLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [googleLoginMutation, { data, loading, error }] = useGoogleLoginMutation({
+ *   variables: {
+ *      googleLoginDto: // value for 'googleLoginDto'
+ *   },
+ * });
+ */
+export function useGoogleLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    GoogleLoginMutation,
+    GoogleLoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<GoogleLoginMutation, GoogleLoginMutationVariables>(
+    GoogleLoginDocument,
+    options
+  );
+}
+export type GoogleLoginMutationHookResult = ReturnType<
+  typeof useGoogleLoginMutation
+>;
+export type GoogleLoginMutationResult =
+  Apollo.MutationResult<GoogleLoginMutation>;
+export type GoogleLoginMutationOptions = Apollo.BaseMutationOptions<
+  GoogleLoginMutation,
+  GoogleLoginMutationVariables
 >;
 export const LoginDocument = gql`
   mutation login($loginDto: AuthEmailLoginInput!) {

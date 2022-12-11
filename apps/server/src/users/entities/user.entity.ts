@@ -38,7 +38,8 @@ export class User extends GeneralEntity {
       this.password = await bcrypt.hash(this.password, salt);
     }
   }
-  @Column()
+  // This field is null in case of social login
+  @Column({ nullable: true })
   password: string;
 
   @Column({ nullable: true })
@@ -78,5 +79,8 @@ const passwordUpdated = async (
   newPasswordPlain: string,
   previousPasswordHash: string
 ) => {
+  if (!newPasswordPlain || !previousPasswordHash) {
+    return false;
+  }
   await bcrypt.compare(newPasswordPlain, previousPasswordHash);
 };
