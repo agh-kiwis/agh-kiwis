@@ -1462,7 +1462,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/preset-react@^7.14.5", "@babel/preset-react@^7.17.12":
+"@babel/preset-react@^7.14.5", "@babel/preset-react@^7.17.12", "@babel/preset-react@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.18.6.tgz#979f76d6277048dc19094c217b507f3ad517dd2d"
   integrity sha512-zXr6atUmyYdiWRVLOZahakYmOBHtWc2WGCkP8PYTgZi0iJXDY2CN180TdrIW4OGOAdLc7TifzDIvtx6izaRIzg==
@@ -2538,6 +2538,46 @@
   integrity sha512-Hyb+lB8T18cvLNX0S3llz7PcSOAJMLwiVKBuuzwM/nI5uoBw+gQjnf9il0fR1C3DKOI5Kc79pkJ4/xB0Uw9aFQ==
   dependencies:
     prop-types "^15.8.1"
+
+"@fullcalendar/common@^5.11.3", "@fullcalendar/common@~5.11.3":
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/common/-/common-5.11.3.tgz#6d555a06925b8a6d1556570c9f039960539908d5"
+  integrity sha512-welVwyfQOXQQGfDwBMSfYEPbiO1cPfUD+C7jd3ZoweJR+dSO11ddFugxIQ7dGfABAGZ63oq/+LW9FsmAJezVNg==
+  dependencies:
+    tslib "^2.1.0"
+
+"@fullcalendar/daygrid@^5.11.3", "@fullcalendar/daygrid@~5.11.3":
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-5.11.3.tgz#6bc1f956c95f84438428aa6e7a106c863a791a70"
+  integrity sha512-PCK0y80DRNCzWuC5lGpIWqCgKDvql1ah7rXql5lu+Gn2EeFj15ZQ8diMFjtNIQucEmFaNOXnR05Pgcry1n6Shg==
+  dependencies:
+    "@fullcalendar/common" "~5.11.3"
+    tslib "^2.1.0"
+
+"@fullcalendar/interaction@^5.11.3":
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-5.11.3.tgz#c6712c1305ecb8e975953c7ff462222b49204187"
+  integrity sha512-L955wkDjza62K96ndstvYs2Fd4V0kayTDpqW8W7huFG3Ox8MutpLqKAa2SCaTvcNIlWS4oexGQRiQAaJG7u47A==
+  dependencies:
+    "@fullcalendar/common" "~5.11.3"
+    tslib "^2.1.0"
+
+"@fullcalendar/react@^5.11.3":
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-5.11.3.tgz#34c076785ec8ea12cfbc29b7028cb5d923c2aecd"
+  integrity sha512-pxk6da5V1Mn41M664phQ1cr+0QbhXqkDHUhAVp8OOBrtMW84nhs82IYWTZNA3cbFCn4aUgoG2oGnyxekSF3pYA==
+  dependencies:
+    "@fullcalendar/common" "~5.11.3"
+    tslib "^2.1.0"
+
+"@fullcalendar/timegrid@^5.11.3":
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/timegrid/-/timegrid-5.11.3.tgz#77c45b6596da54bfa9b7f7d2ab3f2ad42aa1d2b4"
+  integrity sha512-SjIj2ZQ7nTyL1RxZkCPvNbuUQ0xHT+gfYJdUL3FT4bPjPJCxWtQ2CL8hxaeNmVozYYuy0yrGTW5Oup2+9IplbA==
+  dependencies:
+    "@fullcalendar/common" "~5.11.3"
+    "@fullcalendar/daygrid" "~5.11.3"
+    tslib "^2.1.0"
 
 "@graphql-codegen/cli@^2.6.2":
   version "2.13.5"
@@ -10423,6 +10463,13 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+next-transpile-modules@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-10.0.0.tgz#7152880048835acb64d05fc7aa34910cbe7994da"
+  integrity sha512-FyeJ++Lm2Fq31gbThiRCrJlYpIY9QaI7A3TjuhQLzOix8ChQrvn5ny4MhfIthS5cy6+uK1AhDRvxVdW17y3Xdw==
+  dependencies:
+    enhanced-resolve "^5.10.0"
 
 next@13.0.0:
   version "13.0.0"
