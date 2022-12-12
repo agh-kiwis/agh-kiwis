@@ -1,12 +1,6 @@
-import { GoogleLogin } from '@react-oauth/google';
-import { useEffect, useRef, useState } from 'react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { Form, Formik } from 'formik';
-import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import {
   useGoogleLoginMutation,
-  useLoginMutation,
+  useLoginMutation
 } from '@agh-kiwis/data-access';
 import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
@@ -14,9 +8,15 @@ import {
   CommonButton,
   InputField,
   Logo,
-  Wrapper,
+  Wrapper
 } from '@agh-kiwis/ui-components';
 import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
+import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
+import { GoogleLogin } from '@react-oauth/google';
+import { Form, Formik } from 'formik';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
 const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
@@ -161,13 +161,13 @@ const Login: React.FC = () => {
                 buttonText="Sign in"
               />
 
-              <Box w="100%">
-                <GoogleLogin
-                  logo_alignment="center"
-                  onSuccess={onSuccessGoogleLogin}
-                  onError={onFailureGoogleLogin}
-                />
-              </Box>
+              <GoogleLogin
+                // TODO Set googleLoginButton width the same as common button width
+                size="large"
+                shape="pill"
+                onSuccess={onSuccessGoogleLogin}
+                onError={onFailureGoogleLogin}
+              />
             </VStack>
             <Flex justify={'space-around'} align={'center'} my={6}>
               <Divider mx={4} />
