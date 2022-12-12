@@ -80,6 +80,7 @@ export type CalendarTileType = {
   title: string;
   start: string;
   end: string;
+  color: string;
 };
 
 export type UserDetailsType = {
