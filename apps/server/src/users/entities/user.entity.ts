@@ -30,8 +30,9 @@ export class User extends GeneralEntity {
   @BeforeUpdate()
   async setPassword() {
     if (
-      !this.previousPassword ||
-      (await passwordUpdated(this.previousPassword, this.password))
+      this.password &&
+      (!this.previousPassword ||
+        (await passwordUpdated(this.previousPassword, this.password)))
     ) {
       this.previousPassword = this.password;
       const salt = await bcrypt.genSalt();
@@ -79,6 +80,8 @@ const passwordUpdated = async (
   newPasswordPlain: string,
   previousPasswordHash: string
 ) => {
+  console.log('newPasswordPlain', newPasswordPlain);
+  console.log('previousPasswordHash', previousPasswordHash);
   if (!newPasswordPlain || !previousPasswordHash) {
     return false;
   }
