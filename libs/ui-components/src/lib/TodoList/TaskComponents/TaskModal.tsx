@@ -85,132 +85,131 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     }
   };
 
+  if (!task) {
+    return <CustomSpinner />;
+  }
   return (
-    task && (
-      <Modal isOpen={isOpen} onClose={close} isCentered>
-        <ModalOverlay />
-        <ModalContent mx="4">
-          {isDeleteMode ? (
-            <>
-              <ModalHeader>
-                <Box mt="8">
-                  <Header text={'do You want to delete this task?'} size="md" />
-                </Box>
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody></ModalBody>
-              <ModalFooter>
-                <VStack align="stretch" w="100%">
-                  <HStack>
-                    <CommonButton
-                      variant="outline"
-                      buttonText="No, cancel"
-                      onClick={() => setDeleteMode(false)}
-                    />
-                    <CommonButton
-                      variant="solid"
-                      type="submit"
-                      buttonText="Yes, delete"
-                      onClick={handleDelete}
-                    />
-                  </HStack>
-                </VStack>
-              </ModalFooter>
-            </>
-          ) : (
-            <>
-              <ModalHeader>
-                <TableContainer fontSize="md">
-                  <Table variant="simple">
-                    <Thead>
+    <Modal isOpen={isOpen} onClose={close} isCentered>
+      <ModalOverlay />
+      <ModalContent mx="4">
+        {isDeleteMode ? (
+          <>
+            <ModalHeader>
+              <Box mt="8">
+                <Header text={'do You want to delete this task?'} size="md" />
+              </Box>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody></ModalBody>
+            <ModalFooter>
+              <VStack align="stretch" w="100%">
+                <HStack>
+                  <CommonButton
+                    variant="outline"
+                    buttonText="No, cancel"
+                    onClick={() => setDeleteMode(false)}
+                  />
+                  <CommonButton
+                    variant="solid"
+                    type="submit"
+                    buttonText="Yes, delete"
+                    onClick={handleDelete}
+                  />
+                </HStack>
+              </VStack>
+            </ModalFooter>
+          </>
+        ) : (
+          <>
+            <ModalHeader>
+              <TableContainer fontSize="md">
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Category:</Th>
+                      <Th>{task.category.name}</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>Name:</Td>
+                      <Td>{task.name}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Priority:</Td>
+                      <Td>{task.priority}</Td>
+                    </Tr>
+                    {task.isFloat && task?.chunkInfo?.deadline && (
                       <Tr>
-                        <Th>Category:</Th>
-                        <Th>{task.category.name}</Th>
+                        <Td>Deadline:</Td>
+                        <Td>
+                          {deadlineToDate(
+                            task.chunkInfo.deadline,
+                            DESCRIPTIVE_DATE_FORMAT
+                          )}
+                        </Td>
                       </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td>Name:</Td>
-                        <Td>{task.name}</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>Priority:</Td>
-                        <Td>{task.priority}</Td>
-                      </Tr>
-                      {task.isFloat && task?.chunkInfo?.deadline && (
+                    )}
+                    {!task.isFloat && task?.chunks && task.chunks.length > 0 && (
+                      <>
                         <Tr>
-                          <Td>Deadline:</Td>
+                          <Td>Date:</Td>
                           <Td>
-                            {deadlineToDate(
-                              task.chunkInfo.deadline,
+                            {momentToDate(
+                              task.chunks[0].start,
                               DESCRIPTIVE_DATE_FORMAT
                             )}
                           </Td>
                         </Tr>
-                      )}
-                      {!task.isFloat && task?.chunks && task.chunks.length > 0 && (
-                        <>
-                          <Tr>
-                            <Td>Date:</Td>
-                            <Td>
-                              {momentToDate(
-                                task.chunks[0].start,
-                                DESCRIPTIVE_DATE_FORMAT
-                              )}
-                            </Td>
-                          </Tr>
-                          <Tr>
-                            <Td>Time:</Td>
-                            <Td>{startToTime(task.chunks[0].start)}</Td>
-                          </Tr>
-                        </>
-                      )}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                {task.isFloat && (
-                  <Box>
-                    <TaskChunks chunks={task.chunks!} />
-                  </Box>
-                )}
-              </ModalBody>
+                        <Tr>
+                          <Td>Time:</Td>
+                          <Td>{startToTime(task.chunks[0].start)}</Td>
+                        </Tr>
+                      </>
+                    )}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {task.isFloat && (
+                <Box>
+                  <TaskChunks chunks={task.chunks!} />
+                </Box>
+              )}
+            </ModalBody>
 
-              <ModalFooter>
-                <VStack align="stretch" w="100%">
-                  <HStack>
-                    <CommonButton
-                      isLoading={loading}
-                      onClick={handleMarkingAsDone}
-                      buttonText={
-                        task.isDone
-                          ? 'Mark task as undone'
-                          : 'Mark task as done'
-                      }
-                    />
-                  </HStack>
-                  <HStack>
-                    <CommonButton
-                      variant="outline"
-                      colorScheme="red"
-                      buttonText="Delete task"
-                      onClick={() => setDeleteMode(true)}
-                    />
-                    <CommonButton
-                      variant="outline"
-                      buttonText="Edit task"
-                      onClick={() => router.push(`/edit/${task.id}`)}
-                    />
-                  </HStack>
-                </VStack>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    )
+            <ModalFooter>
+              <VStack align="stretch" w="100%">
+                <HStack>
+                  <CommonButton
+                    isLoading={loading}
+                    onClick={handleMarkingAsDone}
+                    buttonText={
+                      task.isDone ? 'Mark task as undone' : 'Mark task as done'
+                    }
+                  />
+                </HStack>
+                <HStack>
+                  <CommonButton
+                    variant="outline"
+                    colorScheme="red"
+                    buttonText="Delete task"
+                    onClick={() => setDeleteMode(true)}
+                  />
+                  <CommonButton
+                    variant="outline"
+                    buttonText="Edit task"
+                    onClick={() => router.push(`/edit/${task.id}`)}
+                  />
+                </HStack>
+              </VStack>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 };
 
