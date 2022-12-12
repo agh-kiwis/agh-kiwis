@@ -1,3 +1,5 @@
+import { Equal } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
@@ -10,7 +12,7 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   async create(createUserInput: CreateUserInput) {
-    const user: User = await User.create(createUserInput).save();
+    const user: User = await User.create({ ...createUserInput }).save();
 
     InitialSeed.colors.forEach(async (color, index) => {
       await Category.create({
@@ -23,10 +25,8 @@ export class UsersService {
     return user;
   }
 
-  findOne(fields: EntityCondition<User>) {
-    return User.findOne({
-      where: fields,
-    });
+  findOne(fields: FindOptionsWhere<User>) {
+    return User.findOneBy(fields);
   }
 
   async update(user: User, updateUserInput: UpdateUserInput) {

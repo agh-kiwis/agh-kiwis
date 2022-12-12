@@ -54,7 +54,7 @@ export class AuthGoogleService {
       throw new Error('Invalid token');
     }
 
-    let user = await User.findOne({ email: profile.email });
+    let user = await User.findOne({ where: { email: profile.email } });
 
     if (!user) {
       user = await User.create({

@@ -1,19 +1,27 @@
 // /test/connection.ts
-import { createConnection, getConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
+import { INestApplication } from '@nestjs/common';
 
+// Make this a class with an app inside
 const connection = {
-  async create() {
-    await createConnection();
+  async create(app: INestApplication) {
+    const dataSource = app.get(DataSource);
+    await dataSource.initialize();
+    return dataSource;
+    // create connection with default configuration
   },
 
-  async close() {
-    await getConnection().close();
+  async close(app: INestApplication) {
+    const dataSource = app.get(DataSource);
+    await dataSource.destroy();
   },
 
-  async clear() {
-    const entities = getConnection().entityMetadatas;
+  async clear(app: INestApplication) {
+    const dataSource = app.get(DataSource);
+
+    const entities = dataSource.entityMetadatas;
     for (const entity of entities) {
-      const repository = getConnection().getRepository(entity.name);
+      const repository = dataSource.getRepository(entity.name);
       await repository.query(
         `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
       );

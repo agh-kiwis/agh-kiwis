@@ -14,16 +14,16 @@ describe('Tasks (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    await connection.clear();
+    await connection.clear(app);
     await app.init();
   });
 
   beforeEach(async () => {
-    await connection.clear();
+    await connection.clear(app);
   });
 
   afterAll(async () => {
-    await connection.close();
+    await connection.close(app);
     await app.close();
   });
 

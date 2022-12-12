@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IoCalendarClearOutline, IoTimerOutline } from 'react-icons/io5';
 import { Flex, Stack, Text } from '@chakra-ui/react';
-import { Chunk, Maybe } from '@agh-kiwis/data-access';
+import { Chunk, ChunkInfo, Maybe } from '@agh-kiwis/data-access';
 import { deadlineToDate, timeInterval } from '@agh-kiwis/moment-service';
 import { TaskIcon } from './TaskIcon';
 
@@ -10,10 +10,12 @@ type TaskInfoProps = {
   isFloat: boolean;
   deadline: string;
   chunks: Chunk[];
+  chunkInfo: ChunkInfo;
 };
 
 export const TaskInfo: React.FC<TaskInfoProps> = ({
   isDone,
+  chunkInfo,
   isFloat,
   deadline,
   chunks,
@@ -47,10 +49,16 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
       </Stack>
     );
   } else {
+    // TODO THIS needs to be fixed
+    const fakeChunk = {
+      start: chunkInfo.start,
+      duration: chunkInfo.duration,
+      isDone,
+    } as Chunk;
     return (
       <Flex justifyContent="center">
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(chunks && chunks[0])}</Text>
+        <Text>{timeInterval(fakeChunk)}</Text>
       </Flex>
     );
   }

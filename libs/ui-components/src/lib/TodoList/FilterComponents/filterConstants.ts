@@ -8,6 +8,10 @@ export enum Status {
   In_Progress = 'In progress',
 }
 
+export enum Repeat {
+  ShouldRepeat = 'Should repeat',
+}
+
 export enum Priority {
   Low = 'low',
   Medium = 'medium',
@@ -19,9 +23,10 @@ export enum FilterNames {
   Status = 'Status',
   Category = 'Category',
   Priority = 'Priority',
+  Repeat = 'Repeat',
 }
 
-export type FilterType = Type[] | Status[] | Priority[] | string[];
+export type FilterType = Type[] | Status[] | Priority[] | Repeat[] | string[];
 
 export interface FilterInterface {
   name: FilterNames;
@@ -32,4 +37,5 @@ export const filterOptions: Map<FilterNames, FilterType> = new Map([
   [FilterNames.Type, [Type.Const, Type.Float]],
   [FilterNames.Status, [Status.Done, Status.In_Progress]],
   [FilterNames.Priority, [Priority.Low, Priority.Medium, Priority.High]],
+  [FilterNames.Repeat, [Repeat.ShouldRepeat]],
 ]);

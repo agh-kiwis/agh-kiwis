@@ -105,11 +105,11 @@ export type ConstTaskInput = {
   isDone?: InputMaybe<Scalars['Boolean']>;
   /** The name of the task, which is assigned by the user and can be changed in the future. */
   name: Scalars['String'];
-  priority?: InputMaybe<Scalars['String']>;
+  priority?: Scalars['String'];
   /** Repeat options. */
   repeat?: InputMaybe<RepeatInput>;
   /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
-  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  shouldAutoResolve?: Scalars['Boolean'];
   /** The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
   start: Scalars['DateTime'];
   /** The time before user wants to receive task notification. */
@@ -131,6 +131,7 @@ export type FilterOptions = {
   isDone?: InputMaybe<Scalars['Boolean']>;
   isFloat?: InputMaybe<Scalars['Boolean']>;
   priority?: InputMaybe<Array<Scalars['String']>>;
+  repeat?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type FloatTaskInput = {
@@ -147,9 +148,9 @@ export type FloatTaskInput = {
   minTimeBetweenChunks: Scalars['Interval'];
   /** The name of the task, which is assigned by the user and can be changed in the future. */
   name: Scalars['String'];
-  priority?: InputMaybe<Scalars['String']>;
+  priority?: Scalars['String'];
   /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
-  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  shouldAutoResolve?: Scalars['Boolean'];
   /** The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
   start: Scalars['DateTime'];
   /** The time before user wants to receive task notification. */
@@ -158,8 +159,8 @@ export type FloatTaskInput = {
 
 export type GetTasksInput = {
   filterOptions?: InputMaybe<FilterOptions>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -277,7 +278,7 @@ export type Repeat = {
 
 export type RepeatInput = {
   repeatEvery?: InputMaybe<Scalars['Float']>;
-  repeatType?: InputMaybe<RepeatType>;
+  repeatType?: RepeatType;
   repeatUntil?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -321,9 +322,9 @@ export type TaskInput = {
   isDone?: InputMaybe<Scalars['Boolean']>;
   /** The name of the task, which is assigned by the user and can be changed in the future. */
   name: Scalars['String'];
-  priority?: InputMaybe<Scalars['String']>;
+  priority?: Scalars['String'];
   /** Whether or not to mark task chunk(s) as done after the time (deadline for that particular chunk) has passed. */
-  shouldAutoResolve?: InputMaybe<Scalars['Boolean']>;
+  shouldAutoResolve?: Scalars['Boolean'];
   /** The time when task should start. This can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
   start: Scalars['DateTime'];
   /** The time before user wants to receive task notification. */

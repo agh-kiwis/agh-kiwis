@@ -34,34 +34,7 @@ SET intervalstyle = 'iso_8601';
 [get-graphql-schema](https://github.com/prisma-labs/get-graphql-schema)
 
 ```
-npm install -g get-graphql-schema
 
-get-graphql-schema http://localhost:3333/graphql > schema.graphql
-
-```
-
-## To generate queries / mutations and so on, run:
-
-```
-./bin/scripts/generate.sh
-```
-
-### Or alternatively run:
-
-```
-npm install gql-generator -g
-
-gqlg --schemaFilePath libs/data-access/src/lib/graphql/schema.graphql --destDirPath libs/data-access/src/lib/graphql --depthLimit 5
-```
-
-### Then:
-
-You need to rename .gql files to .graphql files.
-
-### And finally generate generated.tsx, run:
-
-```
-nx run data-access:generate
 ```
 
 # Libraries

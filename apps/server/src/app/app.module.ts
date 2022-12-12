@@ -15,9 +15,9 @@ import { ApolloConfigService } from '../graphql/apollo-config.service';
 import { TasksModule } from '../tasks/tasks.module';
 import { UsersModule } from '../users/users.module';
 import { IntervalScalar } from '../utils/interval.scalar';
+import { WorkersModule } from '../workers/workers.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 
 @Module({
   imports: [
@@ -40,6 +40,7 @@ import { AppService } from './app.service';
     UsersModule,
     TasksModule,
     CategoriesModule,
+    WorkersModule,
   ],
   controllers: [AppController],
   providers: [
@@ -51,6 +52,6 @@ import { AppService } from './app.service';
     IntervalScalar,
   ],
 })
-export class AppModule { }
+export class AppModule {}
 
 // Export this module

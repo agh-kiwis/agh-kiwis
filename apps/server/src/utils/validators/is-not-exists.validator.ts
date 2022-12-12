@@ -3,7 +3,8 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments';
-import { getRepository } from 'typeorm';
+import { DataSource } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 
 type ValidationEntity =
   | {
@@ -11,12 +12,15 @@ type ValidationEntity =
     }
   | undefined;
 
+@Injectable()
 @ValidatorConstraint({ name: 'IsNotExist', async: true })
 export class IsNotExist implements ValidatorConstraintInterface {
+  constructor(private dataSource: DataSource) {}
+
   async validate(value: string, validationArguments: ValidationArguments) {
     const repository = validationArguments.constraints[0] as string;
     const currentValue = validationArguments.object as ValidationEntity;
-    const entity = (await getRepository(repository).findOne({
+    const entity = (await this.dataSource.getRepository(repository).findOne({
       [validationArguments.property]: value,
     })) as ValidationEntity;
 

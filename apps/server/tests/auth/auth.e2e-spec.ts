@@ -21,11 +21,11 @@ describe('Auth (e2e)', () => {
   });
 
   beforeEach(async () => {
-    await connection.clear();
+    await connection.clear(app);
   });
 
   afterAll(async () => {
-    await connection.close();
+    await connection.close(app);
     await app.close();
   });
 

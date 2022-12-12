@@ -3,7 +3,7 @@ import {
   GetCategoriesQuery,
   useGetCategoriesQuery,
 } from '@agh-kiwis/data-access';
-import { FilterNames, Priority } from './filterConstants';
+import { FilterNames, Priority, Repeat } from './filterConstants';
 
 export const useFilters = () => {
   const { data, loading, error } = useGetCategoriesQuery({});
@@ -23,6 +23,10 @@ export const useFilters = () => {
     {
       name: FilterNames.Priority,
       options: [Priority.Low, Priority.Medium, Priority.High],
+    },
+    {
+      name: FilterNames.Repeat,
+      options: [],
     },
   ]);
 

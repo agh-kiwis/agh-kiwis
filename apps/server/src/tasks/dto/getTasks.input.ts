@@ -14,6 +14,9 @@ export class FilterOptions {
 
   @Field(() => [String], { nullable: true })
   priority?: string[];
+
+  @Field({ nullable: true })
+  repeat?: boolean;
 }
 
 @InputType()
