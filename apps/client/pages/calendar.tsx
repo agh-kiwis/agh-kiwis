@@ -104,13 +104,11 @@ const Calendar = () => {
           </Button>
         </HStack>
       </VStack>
-      {modalOpened && (
-        <TaskModal
-          isOpen={modalOpened}
-          task={clickedTask}
-          close={() => setModalOpened(false)}
-        />
-      )}
+      <TaskModal
+        isOpen={modalOpened}
+        task={clickedTask}
+        close={() => setModalOpened(false)}
+      />
     </Container>
   );
 };

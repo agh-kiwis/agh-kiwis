@@ -126,12 +126,22 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   }, []);
 
   if (!task) {
-    return <CustomSpinner />;
+    return (
+      <Modal isOpen={isOpen} onClose={close} isCentered>
+        <ModalOverlay />
+        <ModalContent mx="4">
+          <ModalHeader>Task details</ModalHeader>
+          <ModalCloseButton />
+          <CustomSpinner />;
+        </ModalContent>
+      </Modal>
+    );
   }
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
       <ModalContent mx="4">
+        <ModalHeader>Task details</ModalHeader>
         {isDeleteMode ? (
           <>
             <ModalHeader>
