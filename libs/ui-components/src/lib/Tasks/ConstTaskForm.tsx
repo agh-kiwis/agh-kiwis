@@ -1,36 +1,34 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import { Box, Flex, FormLabel, Select, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, VStack, useDisclosure } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
 import { ConstTaskType } from '@agh-kiwis/types';
 import {
-  ColorPicker,
   CommonButton,
-  ControlledInputAddon,
-  DateTimePicker,
-  DependentChillTimeField,
-  DependentDurationField,
   DependentRepeatEveryField,
-  DependentStartTimeField,
-  Header,
   InputField,
-  IntervalPicker,
-  Logo,
   LongIntervalAmountType,
   LongIntervalPicker,
   LongIntervalSelectType,
   NumberInputType,
-  TaskSwitchConst,
   ToggleSwitch,
   Wrapper,
 } from '@agh-kiwis/ui-components';
 import {
-  ADD_NEW_TASK,
   ADD_TASK,
-  UPDATE_EXISTING_TASK,
+  AUTORESOLVE_INFO,
   UPDATE_TASK,
 } from '@agh-kiwis/workspace-constants';
+import { InfoToggleSwitch } from '../Common/InfoToggleSwitch';
+import { CategoryInput } from '../Form/CategoryInput';
+import { ChillTimeInput } from '../Form/ChillTimeInput';
+import { DurationInput } from '../Form/DurationInput';
+import { IntroductionHeader } from '../Form/IntroductionHeader';
+import { ModeHeader } from '../Form/ModeHeader';
+import { PrioritySelection } from '../Form/PrioritySelection';
+import { StartTimeInput } from '../Form/StartTimeInput';
+import { TaskNameInput } from '../Form/TaskNameInput';
 
 type ConstTaskFormProps = {
   initialValues: ConstTaskType;
@@ -58,28 +56,23 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   nextStep,
 }) => {
   const router = useRouter();
+  const {
+    isOpen: isCTInfoOpen,
+    onToggle: onCTInfoToggle,
+    onClose: onCTInfoClose,
+  } = useDisclosure();
+  const {
+    isOpen: isARInfoOpen,
+    onToggle: onARInfoToggle,
+    onClose: onARInfoClose,
+  } = useDisclosure();
 
   return (
     <Wrapper>
       {isInIntroductionMode ? (
-        <>
-          <Logo textVisible={false} />
-          <Flex w="100%" justifyContent="center" mb="4">
-            <Text fontSize="4xl" textAlign="center">
-              {customText}
-            </Text>
-          </Flex>
-        </>
+        <IntroductionHeader message={customText} />
       ) : (
-        <>
-          <Box mb={4}>
-            <Header
-              text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
-              size="xl"
-            />
-          </Box>
-          <TaskSwitchConst isDisabled={isInEditMode} />
-        </>
+        <ModeHeader isFloat={false} isInEditMode={isInEditMode} />
       )}
 
       <Formik
@@ -90,63 +83,27 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
         {({ touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
-              <Box>
-                <ColorPicker
-                  modalTitle="Category"
-                  handleChange={setFieldValue}
-                  name="category.id"
-                >
-                  <ControlledInputAddon name="category" />
-                </ColorPicker>
-              </Box>
+              <CategoryInput setFieldValue={setFieldValue} />
+              <TaskNameInput touched={touched} />
+              <StartTimeInput setFieldValue={setFieldValue} />
 
-              <Box>
-                <InputField
-                  name="taskName"
-                  placeholder="Task name"
-                  label="Task name"
-                  touched={!!touched.taskName}
-                />
-              </Box>
-              <DateTimePicker
-                modalTitle="Start time"
-                handleChange={setFieldValue}
-                label="Start"
-                name="startTime"
-              >
-                <DependentStartTimeField name="startTimeFacade" />
-              </DateTimePicker>
               <Flex justify="space-between">
-                <Box w="50%" mr={2}>
-                  <IntervalPicker
-                    modalTitle="Duration"
-                    inputFields={durationInputFields}
-                    handleChange={setFieldValue}
-                  >
-                    <DependentDurationField name="durationFacade" />
-                  </IntervalPicker>
-                </Box>
-                <Box w="50%" ml={2}>
-                  <IntervalPicker
-                    modalTitle="Chill time"
-                    inputFields={chillTimeInputFields}
-                    handleChange={setFieldValue}
-                  >
-                    <DependentChillTimeField name="chillTimeFacade" />
-                  </IntervalPicker>
-                </Box>
+                <DurationInput
+                  touched={touched}
+                  durationInputFields={durationInputFields}
+                  setFieldValue={setFieldValue}
+                />
+                <ChillTimeInput
+                  touched={touched}
+                  chillTimeInputFields={chillTimeInputFields}
+                  setFieldValue={setFieldValue}
+                  isCTInfoOpen={isCTInfoOpen}
+                  onCTInfoToggle={onCTInfoToggle}
+                  onCTInfoClose={onCTInfoClose}
+                />
               </Flex>
-              <Box>
-                <FormLabel htmlFor="priority">Priority</FormLabel>
-                <Select
-                  name="priority"
-                  onChange={(e) => setFieldValue('priority', e.target.value)}
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </Select>
-              </Box>
+              <PrioritySelection setFieldValue={setFieldValue} />
+
               {values.repeat.shouldRepeat ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
                   <ToggleSwitch
@@ -191,7 +148,11 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                 />
               </Box>
               <Box>
-                <ToggleSwitch
+                <InfoToggleSwitch
+                  isOpen={isARInfoOpen}
+                  onToggle={onARInfoToggle}
+                  onClose={onARInfoClose}
+                  message={AUTORESOLVE_INFO}
                   name="autoResolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}

@@ -1,32 +1,31 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import { Box, Flex, FormLabel, Select, VStack } from '@chakra-ui/react';
+import { Box, Flex, VStack, useDisclosure } from '@chakra-ui/react';
 import { TaskSchema } from '@agh-kiwis/form-validators';
 import { FloatTaskType } from '@agh-kiwis/types';
 import {
   CommonButton,
-  ControlledInputAddon,
-  DependentChillTimeField,
-  DependentDeadlineField,
   DependentMaxChunkTimeField,
   DependentMinChunkTimeField,
-  DependentMinTimeBetweenChunksField,
-  DependentTimeEstimationField,
-  Header,
-  InputField,
-  TaskSwitchFloat,
   ToggleSwitch,
   Wrapper,
 } from '@agh-kiwis/ui-components';
 import {
-  ADD_NEW_TASK,
   ADD_TASK,
-  UPDATE_EXISTING_TASK,
+  AUTORESOLVE_INFO,
+  CHUNKING_INFO,
   UPDATE_TASK,
 } from '@agh-kiwis/workspace-constants';
-import { ColorPicker } from '../Pickers/ColorPicker';
-import { DateTimePicker } from '../Pickers/DateTimePicker';
+import { InfoToggleSwitch } from '../Common/InfoToggleSwitch';
+import { CategoryInput } from '../Form/CategoryInput';
+import { ChillTimeInput } from '../Form/ChillTimeInput';
+import { DeadlineInput } from '../Form/DeadlineInput';
+import { EstimationInput } from '../Form/EstimationInput';
+import { ModeHeader } from '../Form/ModeHeader';
+import { PrioritySelection } from '../Form/PrioritySelection';
+import { StartTimeInput } from '../Form/StartTimeInput';
+import { TaskNameInput } from '../Form/TaskNameInput';
 import { IntervalPicker, NumberInputType } from '../Pickers/IntervalPicker';
 
 type FloatTaskFormProps = {
@@ -46,21 +45,35 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
   chillTimeInputFields,
   minChunkTimeInputFields,
   maxChunkTimeInputFields,
-  minTimeBetweenChunksInputFields,
   onSubmit,
   isInEditMode,
 }) => {
   const router = useRouter();
+  const {
+    isOpen: isCTInfoOpen,
+    onToggle: onCTInfoToggle,
+    onClose: onCTInfoClose,
+  } = useDisclosure();
+  const {
+    isOpen: isARInfoOpen,
+    onToggle: onARInfoToggle,
+    onClose: onARInfoClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEInfoOpen,
+    onToggle: onEInfoToggle,
+    onClose: onEInfoClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isChunkInfoOpen,
+    onToggle: onChunkInfoToggle,
+    onClose: onChunkInfoClose,
+  } = useDisclosure();
 
   return (
     <Wrapper>
-      <Box mb={4}>
-        <Header
-          text={isInEditMode ? UPDATE_EXISTING_TASK : ADD_NEW_TASK}
-          size="xl"
-        />
-      </Box>
-      <TaskSwitchFloat isDisabled={isInEditMode} />
+      <ModeHeader isFloat={true} isInEditMode={isInEditMode} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -69,63 +82,31 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
         {({ touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <VStack spacing={4} align="stretch">
-              <Box>
-                <ColorPicker
-                  modalTitle="Category"
-                  handleChange={setFieldValue}
-                  name="category.id"
-                >
-                  <ControlledInputAddon name="category" />
-                </ColorPicker>
-              </Box>
+              <CategoryInput setFieldValue={setFieldValue} />
+              <TaskNameInput touched={touched} />
+              {/* We need to add StartTime field to FloatForm */}
+              {/* <StartTimeInput setFieldValue={setFieldValue} /> */}
+              <DeadlineInput setFieldValue={setFieldValue} />
 
-              <Box>
-                <InputField
-                  name="taskName"
-                  placeholder="Task name"
-                  label="Task name"
-                  touched={!!touched.taskName}
-                />
-              </Box>
-              <DateTimePicker
-                modalTitle="Deadline"
-                handleChange={setFieldValue}
-                label="Deadline"
-                name="deadline"
-              >
-                <DependentDeadlineField name="deadlineFacade" />
-              </DateTimePicker>
               <Flex justify="space-between">
-                <Box w="50%" mr={2}>
-                  <IntervalPicker
-                    modalTitle="Time estimation"
-                    inputFields={estimationInputFields}
-                    handleChange={setFieldValue}
-                  >
-                    <DependentTimeEstimationField name="timeEstimationFacade" />
-                  </IntervalPicker>
-                </Box>
-                <Box w="50%" ml={2}>
-                  <IntervalPicker
-                    modalTitle="Chill time"
-                    inputFields={chillTimeInputFields}
-                    handleChange={setFieldValue}
-                  >
-                    <DependentChillTimeField name="chillTimeFacade" />
-                  </IntervalPicker>
-                </Box>
+                <EstimationInput
+                  touched={touched}
+                  estimationInputFields={estimationInputFields}
+                  setFieldValue={setFieldValue}
+                  isEInfoOpen={isEInfoOpen}
+                  onEInfoToggle={onEInfoToggle}
+                  onEInfoClose={onEInfoClose}
+                />
+                <ChillTimeInput
+                  touched={touched}
+                  chillTimeInputFields={chillTimeInputFields}
+                  setFieldValue={setFieldValue}
+                  isCTInfoOpen={isCTInfoOpen}
+                  onCTInfoToggle={onCTInfoToggle}
+                  onCTInfoClose={onCTInfoClose}
+                />
               </Flex>
-              <Box>
-                <FormLabel htmlFor="priority">Priority</FormLabel>
-                <Select
-                  name="priority"
-                  onChange={(e) => setFieldValue('priority', e.target.value)}
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </Select>
-              </Box>
+              <PrioritySelection setFieldValue={setFieldValue} />
               {values.chunking.shouldChunk ? (
                 <Box boxShadow="inner" borderRadius={8} p={4}>
                   <ToggleSwitch
@@ -151,19 +132,14 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                       <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
                     </IntervalPicker>
                   </Box>
-                  <Box>
-                    <IntervalPicker
-                      modalTitle="Min time between Chunks"
-                      inputFields={minTimeBetweenChunksInputFields}
-                      handleChange={setFieldValue}
-                    >
-                      <DependentMinTimeBetweenChunksField name="minTimeBetweenChunksFacade" />
-                    </IntervalPicker>
-                  </Box>
                 </Box>
               ) : (
                 <Box>
-                  <ToggleSwitch
+                  <InfoToggleSwitch
+                    isOpen={isChunkInfoOpen}
+                    onToggle={onChunkInfoToggle}
+                    onClose={onChunkInfoClose}
+                    message={CHUNKING_INFO}
                     name="chunking.shouldChunk"
                     label="Chunking"
                     handleChange={setFieldValue}
@@ -179,7 +155,11 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                 />
               </Box>
               <Box>
-                <ToggleSwitch
+                <InfoToggleSwitch
+                  isOpen={isARInfoOpen}
+                  onToggle={onARInfoToggle}
+                  onClose={onARInfoClose}
+                  message={AUTORESOLVE_INFO}
                   name="autoResolve"
                   label="Autoresolve"
                   handleChange={setFieldValue}
