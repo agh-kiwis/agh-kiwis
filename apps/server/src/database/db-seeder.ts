@@ -228,82 +228,82 @@ export const seedDatabase = async (app: INestApplication) => {
 
   // Float tasks simulation
 
-  const prepareForLogicExam = await Task.create({
-    name: 'Prepare for Logic',
-    category: preparationCategory,
-    priority: 'medium',
-    isFloat: true,
-    user: user,
-    chunkInfo: {
-      start: newDate(new Date(2022, 12, 13)),
-      minChunkDuration: moment.duration(1, 'hour'),
-      maxChunkDuration: moment.duration(3, 'hour'),
-      deadline: newDate(new Date(2022, 12, 25, 0, 0)),
-      estimation: moment.duration(4, 'hours'),
-      chillTime: moment.duration(15, 'minutes'),
-    },
-  }).save();
+  // const prepareForLogicExam = await Task.create({
+  //   name: 'Prepare for Logic',
+  //   category: preparationCategory,
+  //   priority: 'medium',
+  //   isFloat: true,
+  //   user: user,
+  //   chunkInfo: {
+  //     start: newDate(new Date(2022, 12, 13)),
+  //     minChunkDuration: moment.duration(1, 'hour'),
+  //     maxChunkDuration: moment.duration(3, 'hour'),
+  //     deadline: newDate(new Date(2022, 12, 25, 0, 0)),
+  //     estimation: moment.duration(4, 'hours'),
+  //     chillTime: moment.duration(15, 'minutes'),
+  //   },
+  // }).save();
 
-  // Those Chunks need to be thrown away by the algorithm and replanned
-  await Chunk.create({
-    duration: moment.duration(1, 'hour'),
-    task: prepareForLogicExam,
-    start: newDate(new Date(2022, 12, 16, 50)),
-  }).save();
+  // // Those Chunks need to be thrown away by the algorithm and replanned
+  // await Chunk.create({
+  //   duration: moment.duration(1, 'hour'),
+  //   task: prepareForLogicExam,
+  //   start: newDate(new Date(2022, 12, 16, 50)),
+  // }).save();
 
-  await Chunk.create({
-    duration: moment.duration(1, 'hour'),
-    task: prepareForLogicExam,
-    start: newDate(new Date(2022, 12, 19, 50)),
-  }).save();
+  // await Chunk.create({
+  //   duration: moment.duration(1, 'hour'),
+  //   task: prepareForLogicExam,
+  //   start: newDate(new Date(2022, 12, 19, 50)),
+  // }).save();
 
-  const PrepareForPhysicsExam = await Task.create({
-    name: 'Prepare for Physics',
-    category: preparationCategory,
-    priority: 'medium',
-    isFloat: true,
-    user: user,
-    chunkInfo: {
-      start: newDate(new Date(2022, 12, 13)),
-      minChunkDuration: moment.duration(1, 'hour'),
-      maxChunkDuration: moment.duration(3, 'hour'),
-      deadline: newDate(new Date(2022, 11, 20, 0, 0)),
-      estimation: moment.duration(5, 'hours'),
-      chillTime: moment.duration(15, 'minutes'),
-    },
-  }).save();
+  // const PrepareForPhysicsExam = await Task.create({
+  //   name: 'Prepare for Physics',
+  //   category: preparationCategory,
+  //   priority: 'medium',
+  //   isFloat: true,
+  //   user: user,
+  //   chunkInfo: {
+  //     start: newDate(new Date(2022, 12, 13)),
+  //     minChunkDuration: moment.duration(1, 'hour'),
+  //     maxChunkDuration: moment.duration(3, 'hour'),
+  //     deadline: newDate(new Date(2022, 11, 20, 0, 0)),
+  //     estimation: moment.duration(5, 'hours'),
+  //     chillTime: moment.duration(15, 'minutes'),
+  //   },
+  // }).save();
 
-  // Create task breakdowns for the above task
+  // // Create task breakdowns for the above task
 
-  await Chunk.create({
-    duration: moment.duration(1, 'hour'),
-    task: PrepareForPhysicsExam,
-    start: newDate(new Date(2022, 12, 14, 20)),
-  }).save();
+  // await Chunk.create({
+  //   duration: moment.duration(1, 'hour'),
+  //   task: PrepareForPhysicsExam,
+  //   start: newDate(new Date(2022, 12, 14, 20)),
+  // }).save();
 
-  await Chunk.create({
-    duration: moment.duration(1, 'hour'),
-    task: PrepareForPhysicsExam,
-    start: newDate(new Date(2022, 12, 15, 20)),
-  }).save();
+  // await Chunk.create({
+  //   duration: moment.duration(1, 'hour'),
+  //   task: PrepareForPhysicsExam,
+  //   start: newDate(new Date(2022, 12, 15, 20)),
+  // }).save();
 
-  const prepareForASD = await Task.create({
-    name: 'Prepare for Algorithms and Data Structures exam',
-    category: preparationCategory,
-    priority: 'high',
-    isFloat: true,
-    user: user,
-    chunkInfo: {
-      start: newDate(new Date(2022, 12, 13, 8, 0)),
-      minChunkDuration: moment.duration(1, 'hour'),
-      maxChunkDuration: moment.duration(3, 'hour'),
-      estimation: moment.duration(6, 'hours'),
-      deadline: newDate(new Date(2022, 12, 21, 0, 0)),
-      chillTime: moment.duration(15, 'minutes'),
-    },
-  }).save();
+  // const prepareForASD = await Task.create({
+  //   name: 'Prepare for Algorithms and Data Structures exam',
+  //   category: preparationCategory,
+  //   priority: 'high',
+  //   isFloat: true,
+  //   user: user,
+  //   chunkInfo: {
+  //     start: newDate(new Date(2022, 12, 13, 8, 0)),
+  //     minChunkDuration: moment.duration(1, 'hour'),
+  //     maxChunkDuration: moment.duration(3, 'hour'),
+  //     estimation: moment.duration(6, 'hours'),
+  //     deadline: newDate(new Date(2022, 12, 21, 0, 0)),
+  //     chillTime: moment.duration(15, 'minutes'),
+  //   },
+  // }).save();
 
   // plan task
 
-  await taskPlanner.planTask(prepareForASD);
+  // await taskPlanner.planTask(prepareForASD);
 };

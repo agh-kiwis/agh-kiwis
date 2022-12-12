@@ -147,122 +147,42 @@ export class TasksService {
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
-    const isTypeDefined =
-      typeof getTasksInput?.filterOptions?.isFloat === 'boolean';
-
-    if (isTypeDefined) {
-      return await Task.find({
-        relations: {
-          // Include chunks in case of float tasks
-          chunks: getTasksInput?.filterOptions?.isFloat,
+    return await Task.find({
+      relations: {
+        // Include chunks in case of float tasks
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
+      where: {
+        // Get those values from filterOptions that are in task entity
+        ...Object.keys(getTasksInput?.filterOptions || {}).filter(
+          (key) => key in Task
+        ),
+        ...(getTasksInput?.filterOptions?.category && {
+          category: In(getTasksInput.filterOptions.category),
+        }),
+        ...(getTasksInput?.filterOptions?.priority && {
+          priority: In(getTasksInput.filterOptions.priority),
+        }),
+        ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
           chunkInfo: {
-            repeat: true,
+            repeat: getTasksInput?.filterOptions?.repeat
+              ? Not(IsNull())
+              : IsNull(),
           },
+        }),
+        user: { id: user.id },
+      },
+      skip: getTasksInput.offset * getTasksInput.limit,
+      order: {
+        chunkInfo: {
+          start: 'ASC' as const,
         },
-        where: {
-          // Get those values from filterOptions that are in task entity
-          ...Object.keys(getTasksInput?.filterOptions || {}).filter(
-            (key) => key in Task
-          ),
-          ...(getTasksInput?.filterOptions?.category && {
-            category: In(getTasksInput.filterOptions.category),
-          }),
-          ...(getTasksInput?.filterOptions?.priority && {
-            priority: In(getTasksInput.filterOptions.priority),
-          }),
-          ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
-            chunkInfo: {
-              repeat: getTasksInput?.filterOptions?.repeat
-                ? Not(IsNull())
-                : IsNull(),
-            },
-          }),
-          user: { id: user.id },
-        },
-        skip: getTasksInput.offset * getTasksInput.limit,
-        order: {
-          chunkInfo: {
-            start: 'ASC' as const,
-          },
-        },
-        take: getTasksInput.limit,
-      });
-    } else {
-      const floatTasks = await Task.find({
-        relations: {
-          // Include chunks in case of float tasks
-          chunks: true,
-          chunkInfo: {
-            repeat: true,
-          },
-        },
-        where: {
-          // Get those values from filterOptions that are in task entity
-          ...Object.keys(getTasksInput?.filterOptions || {}).filter(
-            (key) => key in Task
-          ),
-          ...(getTasksInput?.filterOptions?.category && {
-            category: In(getTasksInput.filterOptions.category),
-          }),
-          ...(getTasksInput?.filterOptions?.priority && {
-            priority: In(getTasksInput.filterOptions.priority),
-          }),
-          ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
-            chunkInfo: {
-              repeat: getTasksInput?.filterOptions?.repeat
-                ? Not(IsNull())
-                : IsNull(),
-            },
-          }),
-          isFloat: true,
-          user: { id: user.id },
-        },
-        skip: getTasksInput.offset * getTasksInput.limit,
-        order: {
-          chunkInfo: {
-            start: 'ASC' as const,
-          },
-        },
-        take: getTasksInput.limit,
-      });
-
-      const constTasks = await Task.find({
-        relations: {
-          chunkInfo: {
-            repeat: true,
-          },
-        },
-        where: {
-          // Get those values from filterOptions that are in task entity
-          ...Object.keys(getTasksInput?.filterOptions || {}).filter(
-            (key) => key in Task
-          ),
-          ...(getTasksInput?.filterOptions?.category && {
-            category: In(getTasksInput.filterOptions.category),
-          }),
-          ...(getTasksInput?.filterOptions?.priority && {
-            priority: In(getTasksInput.filterOptions.priority),
-          }),
-          ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
-            chunkInfo: {
-              repeat: getTasksInput?.filterOptions?.repeat
-                ? Not(IsNull())
-                : IsNull(),
-            },
-          }),
-          isFloat: false,
-          user: { id: user.id },
-        },
-        skip: getTasksInput.offset * getTasksInput.limit,
-        order: {
-          chunkInfo: {
-            start: 'ASC' as const,
-          },
-        },
-        take: getTasksInput.limit,
-      });
-      return [...floatTasks, ...constTasks];
-    }
+      },
+      take: getTasksInput.limit,
+    });
   }
 
   async getTask(user: User, id: string) {
