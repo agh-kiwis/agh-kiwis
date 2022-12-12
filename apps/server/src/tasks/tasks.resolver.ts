@@ -47,7 +47,9 @@ export class TasksResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('taskInput') taskInput: TaskInput
   ) {
-    const task = await Task.findOne(id);
+    const task = await Task.findOne({
+      where: { id },
+    });
     if (!task) {
       throw new Error('Task not found');
     }
@@ -64,7 +66,9 @@ export class TasksResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('taskInput') taskInput: ConstTaskInput
   ) {
-    const task = await Task.findOne(id);
+    const task = await Task.findOne({
+      where: { id },
+    });
 
     if (!task) {
       throw new Error('Task not found');
@@ -83,7 +87,9 @@ export class TasksResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('taskInput') taskInput: FloatTaskInput
   ) {
-    const task = await Task.findOne(id);
+    const task = await Task.findOne({
+      where: { id },
+    });
 
     if (!task) {
       throw new Error('Task not found');
@@ -101,7 +107,9 @@ export class TasksResolver {
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number
   ) {
-    const task = await Task.findOne(id);
+    const task = await Task.findOne({
+      where: { id },
+    });
 
     if (!task) {
       throw new Error('Task not found');

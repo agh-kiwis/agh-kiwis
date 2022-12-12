@@ -1,3 +1,4 @@
+import { useContainer } from 'class-validator';
 import * as fs from 'fs';
 import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -16,7 +17,11 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule, options);
-  await setupApp();
+
+  // This is needed for class-validator to work with nestjs
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  await setupApp(app);
+  // Move that to the appDataSource
 
   app.useGlobalPipes(new ValidationPipe(validationOptions));
 

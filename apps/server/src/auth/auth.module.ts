@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
+import { ValidatorsModule } from '../utils/validators/validators.module';
 import { AuthGoogleService } from './auth-google.servive';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
@@ -24,6 +25,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         },
       }),
     }),
+    ValidatorsModule,
   ],
   // The providers that will be instantiated by the Nest injector and that may be shared at least across this module
   providers: [AuthService, AuthResolver, JwtStrategy, AuthGoogleService],

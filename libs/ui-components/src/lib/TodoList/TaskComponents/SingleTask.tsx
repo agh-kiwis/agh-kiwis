@@ -27,6 +27,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
       >
         <TaskHeader name={task.name} priority={task.priority} />
         <TaskInfo
+          chunkInfo={task.chunkInfo}
           isDone={task.isDone}
           isFloat={task.isFloat}
           deadline={task.chunkInfo?.deadline}

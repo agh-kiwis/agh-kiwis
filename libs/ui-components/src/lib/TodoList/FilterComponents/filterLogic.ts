@@ -5,6 +5,7 @@ import {
   FilterNames,
   FilterType,
   Priority,
+  Repeat,
   Status,
   Type,
 } from './filterConstants';
@@ -58,6 +59,7 @@ export interface MappedFilter {
   status: boolean | undefined;
   categories: number[] | undefined;
   priorities: string[] | undefined;
+  repeat: boolean | undefined;
 }
 
 export const mapToGraphQLFields = (
@@ -73,6 +75,8 @@ export const mapToGraphQLFields = (
       mappedFilter.categories = categoryHandler(filter.options);
     else if (filter.name === FilterNames.Priority)
       mappedFilter.priorities = priorityHandler(filter.options);
+    else if (filter.name === FilterNames.Repeat)
+      mappedFilter.repeat = repeatHandler(filter.options);
   });
   return mappedFilter;
 };
@@ -107,4 +111,10 @@ const priorityHandler = (optionsArray: FilterType) => {
     return Object.values(Priority);
   }
   return optionsArray;
+};
+
+const repeatHandler = (optionsArray: FilterType) => {
+  if (optionsArray[0] === Repeat.ShouldRepeat) return true;
+  if (optionsArray[0] === undefined) return undefined;
+  else return false;
 };

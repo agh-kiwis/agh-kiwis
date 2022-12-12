@@ -1,6 +1,6 @@
-import { createQueryBuilder } from 'typeorm';
+import { DataSource } from 'typeorm';
 import moment, { Duration } from 'moment';
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Chunk } from '../tasks/entities/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
 
@@ -12,186 +12,194 @@ type Window = {
   usedDuration?: moment.Duration;
 };
 
-export const planTask = async (task: Task) => {
-  if (!task || !task.isFloat) {
-    throw new Error('No task to plan or task is not a float task.');
-  }
+@Injectable()
+export class TaskPlanner {
+  constructor(private dataSource: DataSource) {}
 
-  Logger.log(`Started task planner for : ${task.id}`);
+  async planTask(task: Task) {
+    if (!task || !task.isFloat) {
+      throw new Error('No task to plan or task is not a float task.');
+    }
 
-  // Get current user or raise error
-  const user = task.user;
-  if (!user) {
-    // This case should not be possible as user is required in the task
-    throw new Error('No user found for task.');
-  }
+    Logger.log(`Started task planner for : ${task.id}`);
 
-  // Check that start date is in the future
-  if (task.chunkInfo.start && moment(task.chunkInfo.start).isBefore(moment())) {
-    throw new Error(
-      'Start date is in the past, but needs to be in the future.'
+    // Get current user or raise error
+    const user = task.user;
+    if (!user) {
+      // This case should not be possible as user is required in the task
+      throw new Error('No user found for task.');
+    }
+
+    // Check that start date is in the future
+    if (
+      task.chunkInfo.start &&
+      moment(task.chunkInfo.start).isBefore(moment())
+    ) {
+      throw new Error(
+        'Start date is in the past, but needs to be in the future.'
+      );
+    }
+
+    // We need to create a transaction for the sake of integrity of operations
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    // Get all float tasks breakdowns for the user in the given range
+
+    let endDate: Date;
+
+    // TODO Think of this endDate more later on
+    if (task.chunkInfo.deadline) {
+      endDate = task.chunkInfo.deadline;
+    } else {
+      endDate = moment(task.chunkInfo.start)
+        .clone()
+        .add(WEEKS_TO_ADD, 'weeks')
+        .toDate();
+    }
+
+    // Get float tasks for which one of the breakdowns is in the given range
+
+    let allTasks = await queryRunner.manager
+      .createQueryBuilder(Task, 'task')
+      .innerJoinAndSelect('task.chunks', 'chunk')
+      .where('task.userId = :userId', { userId: user.id })
+      // TODO There we would need to consider duration also
+      .andWhere('chunk.start BETWEEN :start AND :end', {
+        start: task.chunkInfo.start,
+        end: endDate,
+      })
+      // Get chunkInfo
+      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+      // order by start
+      .orderBy('chunkInfo.start', 'ASC')
+      .getMany();
+
+    // TODO This is not working, but should work and I've no idea why
+    // For now it's not bothering us too much
+    const notPlannedFloats = await queryRunner.manager
+      .createQueryBuilder(Task, 'task')
+      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+      .where('task.userId = :userId', { userId: user.id })
+      .andWhere('task.isFloat = :isFloat', { isFloat: true })
+      // TODO There we would need to consider duration also
+      .andWhere('chunkInfo.start BETWEEN :start AND :end', {
+        start: task.chunkInfo.start,
+        end: endDate,
+      })
+      // Without chunks
+      .innerJoin('task.chunks', 'chunk')
+      .andWhere('chunk.id IS NULL')
+      // Get chunkInfo
+      .getMany();
+
+    // Merge without duplicates
+
+    // TODO Remove this when the above query returns correct results
+    allTasks.push(task);
+
+    allTasks = [...allTasks, ...notPlannedFloats].filter(
+      (task, index, self) => index === self.findIndex((t) => t.id === task.id)
     );
-  }
 
-  // We need to create a transaction for the sake of integrity of operations
-  const queryRunner = createQueryBuilder().connection.createQueryRunner();
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
+    // Get only float tasks from the above list
+    const floatTasks = allTasks.filter((task) => task.isFloat);
+    const constTasks = allTasks.filter((task) => !task.isFloat);
 
-  // Get all float tasks breakdowns for the user in the given range
+    // Delete chunks for the given float tasks
+    if (floatTasks.length > 0) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .delete()
+        .from(Chunk)
+        .where('taskId IN (:...ids)', { ids: floatTasks.map((t) => t.id) })
+        // Where start is after task.start
+        .andWhere('start >= :start', { start: task.chunkInfo.start })
+        .execute();
+    }
 
-  let endDate: Date;
+    const taskIdAndWeightMap = new Map();
+    floatTasks.forEach((task) => {
+      taskIdAndWeightMap.set(task.id, getTaskWeight(task));
+    });
 
-  // TODO Think of this endDate more later on
-  if (task.chunkInfo.deadline) {
-    endDate = task.chunkInfo.deadline;
-  } else {
-    endDate = moment(task.chunkInfo.start)
-      .clone()
-      .add(WEEKS_TO_ADD, 'weeks')
-      .toDate();
-  }
+    // TODO Think of a better way to stable sort those
+    // Sort tasks by weight
+    const sortedTasks = floatTasks.sort((a, b) => {
+      const { priority: priorityA } = taskIdAndWeightMap.get(a.id);
+      const { priority: priorityB } = taskIdAndWeightMap.get(b.id);
+      return priorityB - priorityA;
+    });
 
-  // Get float tasks for which one of the breakdowns is in the given range
+    // sort tasks by deadline
+    sortedTasks.sort((a, b) => {
+      const { deadlineA } = taskIdAndWeightMap.get(a.id);
+      const { deadlineB } = taskIdAndWeightMap.get(b.id);
+      return deadlineB - deadlineA;
+    });
 
-  let allTasks = await queryRunner.manager
-    .createQueryBuilder(Task, 'task')
-    .innerJoinAndSelect('task.chunks', 'chunk')
-    .where('task.userId = :userId', { userId: user.id })
-    // TODO There we would need to consider duration also
-    .andWhere('chunk.start BETWEEN :start AND :end', {
-      start: task.chunkInfo.start,
-      end: endDate,
-    })
-    // Get chunkInfo
-    .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
-    // order by start
-    .orderBy('chunkInfo.start', 'ASC')
-    .getMany();
+    // Find all windows in moment duration between start time and end time of the const tasks.
+    let endTime = moment(task.chunkInfo.start);
+    let windows: Window[] = [];
 
-  // TODO This is not working, but should work and I've no idea why
-  // For now it's not bothering us too much
-  const notPlannedFloats = await queryRunner.manager
-    .createQueryBuilder(Task, 'task')
-    .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
-    .where('task.userId = :userId', { userId: user.id })
-    .andWhere('task.isFloat = :isFloat', { isFloat: true })
-    // TODO There we would need to consider duration also
-    .andWhere('chunkInfo.start BETWEEN :start AND :end', {
-      start: task.chunkInfo.start,
-      end: endDate,
-    })
-    // Without chunks
-    .innerJoin('task.chunks', 'chunk')
-    .andWhere('chunk.id IS NULL')
-    // Get chunkInfo
-    .getMany();
+    const constTaskChunks = constTasks.reduce((acc, task) => {
+      // Add chunkInfo chillTime to each chunk
+      const chunks = task.chunks.map((chunk) => ({
+        ...chunk,
+        chillTime: task.chunkInfo.chillTime,
+      }));
 
-  // Merge without duplicates
+      return [...acc, ...chunks];
+    }, []);
 
-  // TODO Remove this when the above query returns correct results
-  allTasks.push(task);
+    // Order chunks by start
+    constTaskChunks.sort((a, b) => {
+      return moment(a.start).diff(moment(b.start));
+    });
 
-  allTasks = [...allTasks, ...notPlannedFloats].filter(
-    (task, index, self) => index === self.findIndex((t) => t.id === task.id)
-  );
+    constTaskChunks.forEach((chunk) => {
+      // Add duration to the first task
+      // If time is not negative add to the windows
+      const currentDuration = moment.duration(chunk.duration);
+      const currentStart = moment(chunk.start);
 
-  // Get only float tasks from the above list
-  const floatTasks = allTasks.filter((task) => task.isFloat);
-  const constTasks = allTasks.filter((task) => !task.isFloat);
+      if (endTime.isBefore(currentStart)) {
+        (windows as Window[]).push({
+          start: endTime,
+          duration: moment.duration(currentStart.diff(endTime)),
+        });
+      }
+      endTime = currentStart
+        .clone()
+        .add(currentDuration.clone().add(chunk.chillTime));
+    });
 
-  // Delete chunks for the given float tasks
-  if (floatTasks.length > 0) {
+    printWindows(windows);
+
+    // Fit tasks in windows and calculate coefficients
+    const chunksToInsert = [];
+
+    sortedTasks.forEach((task) => {
+      windows = fitTask(task, windows, endDate, chunksToInsert);
+      if (!windows) {
+        // This indicates that we have more tasks to plan than windows
+        throw new Error('No windows left!!! Please do something later');
+      }
+    });
+
+    // Commit transaction
+    // Insert chunks
     await queryRunner.manager
       .createQueryBuilder()
-      .delete()
-      .from(Chunk)
-      .where('taskId IN (:...ids)', { ids: floatTasks.map((t) => t.id) })
-      // Where start is after task.start
-      .andWhere('start >= :start', { start: task.chunkInfo.start })
+      .insert()
+      .into(Chunk)
+      .values(chunksToInsert)
       .execute();
+
+    await queryRunner.commitTransaction();
   }
-
-  const taskIdAndWeightMap = new Map();
-  floatTasks.forEach((task) => {
-    taskIdAndWeightMap.set(task.id, getTaskWeight(task));
-  });
-
-  // TODO Think of a better way to stable sort those
-  // Sort tasks by weight
-  const sortedTasks = floatTasks.sort((a, b) => {
-    const { priority: priorityA } = taskIdAndWeightMap.get(a.id);
-    const { priority: priorityB } = taskIdAndWeightMap.get(b.id);
-    return priorityB - priorityA;
-  });
-
-  // sort tasks by deadline
-  sortedTasks.sort((a, b) => {
-    const { deadlineA } = taskIdAndWeightMap.get(a.id);
-    const { deadlineB } = taskIdAndWeightMap.get(b.id);
-    return deadlineB - deadlineA;
-  });
-
-  // Find all windows in moment duration between start time and end time of the const tasks.
-  let endTime = moment(task.chunkInfo.start);
-  let windows: Window[] = [];
-
-  const constTaskChunks = constTasks.reduce((acc, task) => {
-    // Add chunkInfo chillTime to each chunk
-    const chunks = task.chunks.map((chunk) => ({
-      ...chunk,
-      chillTime: task.chunkInfo.chillTime,
-    }));
-
-    return [...acc, ...chunks];
-  }, []);
-
-  // Order chunks by start
-  constTaskChunks.sort((a, b) => {
-    return moment(a.start).diff(moment(b.start));
-  });
-
-  constTaskChunks.forEach((chunk) => {
-    // Add duration to the first task
-    // If time is not negative add to the windows
-    const currentDuration = moment.duration(chunk.duration);
-    const currentStart = moment(chunk.start);
-
-    if (endTime.isBefore(currentStart)) {
-      (windows as Window[]).push({
-        start: endTime,
-        duration: moment.duration(currentStart.diff(endTime)),
-      });
-    }
-    endTime = currentStart
-      .clone()
-      .add(currentDuration.clone().add(chunk.chillTime));
-  });
-
-  printWindows(windows);
-
-  // Fit tasks in windows and calculate coefficients
-  const chunksToInsert = [];
-
-  sortedTasks.forEach((task) => {
-    windows = fitTask(task, windows, endDate, chunksToInsert);
-    if (!windows) {
-      // This indicates that we have more tasks to plan than windows
-      throw new Error('No windows left!!! Please do something later');
-    }
-  });
-
-  // Commit transaction
-  // Insert chunks
-  await queryRunner.manager
-    .createQueryBuilder()
-    .insert()
-    .into(Chunk)
-    .values(chunksToInsert)
-    .execute();
-
-  await queryRunner.commitTransaction();
-};
+}
 
 const getTaskWeight = (task: Task) => {
   const deadline = moment(task.chunkInfo.deadline).diff(

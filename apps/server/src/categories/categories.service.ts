@@ -1,4 +1,4 @@
-import { Like } from 'typeorm';
+import { Equal, Like } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import { CustomValidationErrors } from '../utils/CustomValidationError';
@@ -44,7 +44,7 @@ export class CategoriesService {
   async getColors(user: User) {
     const userCategories: Category[] = await Category.find({
       where: {
-        user: user,
+        user: { id: user.id },
       },
     });
 
@@ -54,7 +54,7 @@ export class CategoriesService {
   async getCategories(user: User) {
     const userCategories: Category[] = await Category.find({
       where: {
-        user: user,
+        user: { id: user.id },
       },
     });
 
@@ -64,7 +64,7 @@ export class CategoriesService {
   async remove(user: User, id: number) {
     const category = await Category.findOne({
       where: {
-        user: user,
+        user: { id: user.id },
         id: id,
       },
     });

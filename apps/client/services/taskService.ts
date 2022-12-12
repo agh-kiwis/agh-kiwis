@@ -189,15 +189,37 @@ export const floatTaskToUpdateTaskMutationMapper = (
 });
 
 export const mapToCalendarTiles = (tasks: Task[]): CalendarTileType[] => {
-  return tasks.map((task) => ({
-    id: task?.id.toString(),
-    title: task?.name,
-    start: moment(task?.chunkInfo?.start).toISOString(),
-    end: moment(task?.chunkInfo?.start)
-      .add(task?.chunkInfo?.duration)
-      .toISOString(),
-    color: task.category.color.hexCode,
-  }));
+  const mappedTasks: CalendarTileType[] = [];
+
+  tasks
+    .filter((task) => task.isFloat)
+    .map((task) => {
+      task.chunks.map((chunk) =>
+        mappedTasks.push({
+          id: task?.id.toString(),
+          title: task?.name,
+          start: moment(chunk?.start).toISOString(),
+          end: moment(chunk?.start).add(chunk?.duration).toISOString(),
+          color: task.category.color.hexCode,
+        })
+      );
+    });
+
+  tasks
+    .filter((task) => !task.isFloat)
+    .map((task) => {
+      mappedTasks.push({
+        id: task?.id.toString(),
+        title: task?.name,
+        start: moment(task?.chunkInfo?.start).toISOString(),
+        end: moment(task?.chunkInfo?.start)
+          .add(task?.chunkInfo?.duration)
+          .toISOString(),
+        color: task.category.color.hexCode,
+      });
+    });
+
+  return mappedTasks;
 };
 
 const mapFormRepeatToRepeatType = (repeatType: string): RepeatType => {
