@@ -80,8 +80,6 @@ const passwordUpdated = async (
   newPasswordPlain: string,
   previousPasswordHash: string
 ) => {
-  console.log('newPasswordPlain', newPasswordPlain);
-  console.log('previousPasswordHash', previousPasswordHash);
   if (!newPasswordPlain || !previousPasswordHash) {
     return false;
   }
