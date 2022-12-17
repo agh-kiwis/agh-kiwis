@@ -1,11 +1,11 @@
 import { UserInputError } from 'apollo-server-errors';
-import { In } from 'typeorm';
+import { Equal, In, IsNull, Not } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
-import { planTask } from '../workers/taskPlanner';
+import { TaskPlanner } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
@@ -19,12 +19,16 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
+  constructor(private readonly taskPlanner: TaskPlanner) {}
+
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
     const category = await getCategory(user, ConstTaskInput.category);
 
     let repeat: Repeat;
     if (ConstTaskInput.repeat) {
-      repeat = await Repeat.create(ConstTaskInput.repeat).save();
+      repeat = await Repeat.create({
+        ...ConstTaskInput.repeat,
+      }).save();
     }
 
     const notification = await getNotification(
@@ -35,6 +39,8 @@ export class TasksService {
       ...ConstTaskInput,
       repeat: repeat,
     }).save();
+
+    // console.log(chunkInfo);
 
     const task = await Task.create({
       category: category,
@@ -90,7 +96,7 @@ export class TasksService {
       shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
     }).save();
 
-    await planTask(task);
+    await this.taskPlanner.planTask(task);
 
     return task;
   }
@@ -109,9 +115,10 @@ export class TasksService {
     }
 
     // First we need to remove all the existing chunks if they exist
-    await Chunk.delete({
-      task: task,
-    });
+    await Chunk.createQueryBuilder('chunk')
+      .delete()
+      .where('"chunk"."taskId" = :taskId', { taskId: task.id })
+      .execute();
 
     const repeatUntil = repeat.repeatUntil
       ? moment(repeat.repeatUntil)
@@ -141,22 +148,40 @@ export class TasksService {
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
     return await Task.find({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      relations: {
+        // Include chunks in case of float tasks
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
       where: {
-        user: user,
-        ...getTasksInput.filterOptions,
-        ...(getTasksInput.filterOptions.category && {
+        // Get those values from filterOptions that are in task entity
+        ...Object.keys(getTasksInput?.filterOptions || {}).filter(
+          (key) => key in Task
+        ),
+        ...(getTasksInput?.filterOptions?.category && {
           category: In(getTasksInput.filterOptions.category),
         }),
-        ...(getTasksInput.filterOptions.priority && {
+        ...(getTasksInput?.filterOptions?.priority && {
           priority: In(getTasksInput.filterOptions.priority),
         }),
+        ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
+          chunkInfo: {
+            repeat: getTasksInput?.filterOptions?.repeat
+              ? Not(IsNull())
+              : IsNull(),
+          },
+        }),
+        user: { id: user.id },
       },
       skip: getTasksInput.offset * getTasksInput.limit,
-      take: getTasksInput.limit,
       order: {
-        updatedAt: 'DESC',
+        chunkInfo: {
+          start: 'ASC' as const,
+        },
       },
+      take: getTasksInput.limit,
     });
   }
 
@@ -164,8 +189,10 @@ export class TasksService {
     return await Task.findOne({
       relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
       where: {
-        user: user,
-        id: id,
+        user: { id: user.id },
+
+        // Convert id to integer
+        id: parseInt(id),
       },
     });
   }
@@ -215,13 +242,15 @@ export class TasksService {
 
     const chunk = await Chunk.findOne({
       where: {
-        task: task,
+        task: Equal(task),
       },
     });
 
     let repeat: Repeat;
     if (updateTaskInput.repeat) {
-      repeat = await Repeat.create(updateTaskInput.repeat).save();
+      repeat = await Repeat.create({
+        ...updateTaskInput.repeat,
+      }).save();
       task.chunkInfo.repeat = repeat;
       await task.save();
     }
@@ -266,7 +295,7 @@ export class TasksService {
 
     task = await task.save();
 
-    await planTask(task);
+    await this.taskPlanner.planTask(task);
 
     return task;
   }
@@ -275,7 +304,7 @@ export class TasksService {
     const task: Task = await Task.findOne({
       where: {
         id: id,
-        user: user,
+        user: { id: user.id },
       },
     });
 
@@ -289,7 +318,11 @@ export class TasksService {
 export const getCategory = async (user: User, categoryInput: CategoryInput) => {
   let category: Category;
   if (categoryInput.id) {
-    category = await Category.findOne(categoryInput.id);
+    category = await Category.findOne({
+      where: {
+        id: categoryInput.id,
+      },
+    });
     if (!category) {
       throw new UserInputError('Category not found');
     }
@@ -313,7 +346,7 @@ export const getCategory = async (user: User, categoryInput: CategoryInput) => {
 export const getNotification = async (timeBeforeNotification: Duration) => {
   let notification = await Notification.findOne({
     where: {
-      timeBefore: timeBeforeNotification,
+      timeBefore: Equal(timeBeforeNotification),
     },
   });
 

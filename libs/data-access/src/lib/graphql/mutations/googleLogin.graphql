@@ -1,0 +1,11 @@
+mutation googleLogin($googleLoginDto: AuthGoogleLoginInput!) {
+  googleLogin(googleLoginDto: $googleLoginDto) {
+    birthDate
+    email
+    gender
+    id
+    introductionCompleted
+    name
+    token
+  }
+}

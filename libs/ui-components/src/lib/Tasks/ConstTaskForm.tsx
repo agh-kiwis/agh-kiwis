@@ -178,7 +178,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                   <CommonButton
                     variant="outline"
                     buttonText="Cancel"
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push('/todo-list')}
                   />
                 )}
               </Box>

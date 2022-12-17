@@ -24,16 +24,4 @@ const middleware = async (request: NextRequest) => {
   }
 };
 
-export const config = {
-  matcher: [
-    '/introduction/:path*',
-    '/add/:path*',
-    '/edit/:path*',
-    '/todolist',
-    '/register',
-    '/login',
-    '/',
-  ],
-};
-
 export default middleware;

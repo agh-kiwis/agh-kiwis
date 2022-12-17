@@ -1,6 +1,9 @@
 {
   "singleQuote": true,
   "importOrder": [
+    "@fullcalendar/react",
+    "@fullcalendar/interaction",
+    "@fullcalendar/timegrid",
     "^react",
     "^@nestjs",
     "^next",

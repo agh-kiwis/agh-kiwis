@@ -59,6 +59,14 @@ export const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         name={FilterNames.Priority}
         filters={filters}
       />
+      <SingleFilter
+        onClick={(option) =>
+          updateFilter(filters, setFilters, FilterNames.Repeat, option)
+        }
+        options={filterOptions.get(FilterNames.Repeat)!}
+        name={FilterNames.Repeat}
+        filters={filters}
+      />
     </Accordion>
   );
 };

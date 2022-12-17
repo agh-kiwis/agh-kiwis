@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import moment from 'moment';
 import {
   Box,
   HStack,
@@ -33,7 +34,7 @@ import {
   momentToDate,
   startToTime,
 } from '@agh-kiwis/moment-service';
-import { CommonButton } from '@agh-kiwis/ui-components';
+import { CommonButton, CustomSpinner } from '@agh-kiwis/ui-components';
 import { DESCRIPTIVE_DATE_FORMAT } from '@agh-kiwis/workspace-constants';
 import { Header } from '../../Common/Header';
 import { TaskChunks } from './TaskChunks';
@@ -54,13 +55,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
   const [removeTaskMutation] = useRemoveTaskMutation({
     variables: {
-      id: task.id,
+      id: task?.id,
     },
   });
 
   const [updateTaskMutation, { loading }] = useUpdateTaskMutation({
     variables: {
-      id: task.id,
+      id: task?.id,
       taskInput: taskToUpdateTaskMutationMapper(task),
     },
   });
@@ -85,10 +86,62 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     }
   };
 
+  const getDurationHumanized = (task: Task) => {
+    if (!task.chunkInfo) {
+      throw new Error('Task chunk info is not defined');
+    }
+
+    if (!task.chunkInfo.repeat) {
+      throw new Error('Task chunk info repeat is not defined');
+    }
+
+    const withAArticle = moment
+      .duration(
+        task.chunkInfo.repeat.repeatEvery,
+        // Convert this to lowercase
+        task.chunkInfo.repeat.repeatType.toLowerCase() as moment.unitOfTime.DurationConstructor
+      )
+      .humanize({ d: 7, w: 4 });
+
+    return withAArticle.replace('a ', '');
+  };
+
+  const convertDateOfTask = useCallback((task: Task) => {
+    if (!task.chunkInfo) {
+      throw new Error('Task chunk info is not defined');
+    }
+
+    if (!task.isFloat && task.chunkInfo?.repeat) {
+      if (task.chunkInfo.repeat.repeatType === 'Days') {
+        return `Every ${getDurationHumanized(task)}`;
+      } else {
+        // Determine day of week when task.chunkInfo.start is
+        const dayOfWeek = momentToDate(task.chunkInfo.start, 'dddd');
+
+        return `On ${dayOfWeek} every ${getDurationHumanized(task)}`;
+      }
+    }
+
+    return momentToDate(task.chunkInfo.start, DESCRIPTIVE_DATE_FORMAT);
+  }, []);
+
+  if (!task) {
+    return (
+      <Modal isOpen={isOpen} onClose={close} isCentered>
+        <ModalOverlay />
+        <ModalContent mx="4">
+          <ModalHeader>Task details</ModalHeader>
+          <ModalCloseButton />
+          <CustomSpinner />;
+        </ModalContent>
+      </Modal>
+    );
+  }
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered>
       <ModalOverlay />
       <ModalContent mx="4">
+        <ModalHeader>Task details</ModalHeader>
         {isDeleteMode ? (
           <>
             <ModalHeader>
@@ -136,33 +189,30 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                       <Td>Priority:</Td>
                       <Td>{task.priority}</Td>
                     </Tr>
-                    {task.isFloat && (
+                    {task.isFloat && task?.chunkInfo?.deadline && (
                       <Tr>
                         <Td>Deadline:</Td>
                         <Td>
                           {deadlineToDate(
-                            task.chunkInfo?.deadline,
+                            task.chunkInfo.deadline,
                             DESCRIPTIVE_DATE_FORMAT
                           )}
                         </Td>
                       </Tr>
                     )}
-                    {!task.isFloat && (
+                    {!task.isFloat && task?.chunkInfo && (
                       <>
                         <Tr>
-                          <Td>Date:</Td>
-                          <Td>
-                            {momentToDate(
-                              task.chunks && task.chunks[0].start,
-                              DESCRIPTIVE_DATE_FORMAT
-                            )}
-                          </Td>
+                          {task?.chunkInfo?.repeat ? (
+                            <Td>Repeat:</Td>
+                          ) : (
+                            <Td>Date:</Td>
+                          )}
+                          <Td>{convertDateOfTask(task)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Time:</Td>
-                          <Td>
-                            {startToTime(task.chunks && task.chunks[0].start)}
-                          </Td>
+                          <Td>{startToTime(task.chunkInfo.start)}</Td>
                         </Tr>
                       </>
                     )}
@@ -214,12 +264,12 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
 export const taskToUpdateTaskMutationMapper = (task: Task): TaskInput => ({
   category: {
-    id: task.category.id,
+    id: task?.category.id,
   },
-  name: task.name,
-  priority: task.priority,
-  chillTime: getIntervalISOString(task.chunkInfo?.chillTime),
-  start: task.chunkInfo?.start,
-  shouldAutoResolve: task.shouldAutoResolve,
-  isDone: !task.isDone,
+  name: task?.name,
+  priority: task?.priority,
+  chillTime: getIntervalISOString(task?.chunkInfo.chillTime),
+  start: task?.chunkInfo.start,
+  shouldAutoResolve: task?.shouldAutoResolve,
+  isDone: !task?.isDone,
 });

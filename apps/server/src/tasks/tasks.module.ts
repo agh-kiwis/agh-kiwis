@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { Color } from '../categories/entities/color.entity';
+import { TaskPlanner } from '../workers/taskPlanner';
 import { Chunk } from './entities/chunk.entity';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
@@ -23,6 +24,6 @@ import { TasksService } from './tasks.service';
     ]),
   ],
 
-  providers: [TasksResolver, TasksService],
+  providers: [TasksResolver, TasksService, TaskPlanner],
 })
 export class TasksModule {}

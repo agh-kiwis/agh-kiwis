@@ -30,15 +30,17 @@ export class User extends GeneralEntity {
   @BeforeUpdate()
   async setPassword() {
     if (
-      !this.previousPassword ||
-      (await passwordUpdated(this.previousPassword, this.password))
+      this.password &&
+      (!this.previousPassword ||
+        (await passwordUpdated(this.previousPassword, this.password)))
     ) {
       this.previousPassword = this.password;
       const salt = await bcrypt.genSalt();
       this.password = await bcrypt.hash(this.password, salt);
     }
   }
-  @Column()
+  // This field is null in case of social login
+  @Column({ nullable: true })
   password: string;
 
   @Column({ nullable: true })
@@ -78,5 +80,8 @@ const passwordUpdated = async (
   newPasswordPlain: string,
   previousPasswordHash: string
 ) => {
+  if (!newPasswordPlain || !previousPasswordHash) {
+    return false;
+  }
   await bcrypt.compare(newPasswordPlain, previousPasswordHash);
 };

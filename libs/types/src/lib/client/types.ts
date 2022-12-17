@@ -75,6 +75,14 @@ export type FloatTaskType = TaskType & {
   minTimeBetweenChunksFacade: string;
 };
 
+export type CalendarTileType = {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  color: string;
+};
+
 export type UserDetailsType = {
   id?: number;
   name: string;

@@ -1,11 +1,13 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from '../users/users.module';
+import { ValidatorsModule } from '../utils/validators/validators.module';
+import { AuthGoogleService } from './auth-google.servive';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { UsersModule } from '../users/users.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   // The list of imported modules that export the providers which are required in this module
@@ -23,9 +25,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
       }),
     }),
+    ValidatorsModule,
   ],
   // The providers that will be instantiated by the Nest injector and that may be shared at least across this module
-  providers: [AuthService, AuthResolver, JwtStrategy],
+  providers: [AuthService, AuthResolver, JwtStrategy, AuthGoogleService],
   // the subset of providers that are provided by this module and should be available in other modules which import this module.
   exports: [AuthService],
 })
