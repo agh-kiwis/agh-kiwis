@@ -8,7 +8,6 @@ import {
   floatTaskInitialValues,
   maxChunkTimeInputFields,
   minChunkTimeInputFields,
-  minTimeBetweenChunksInputFields,
 } from '../../formConfig/initialValues';
 import { handleFloatTaskSubmit } from '../../services/taskService';
 
@@ -26,7 +25,6 @@ const FloatTask: React.FC = () => {
       chillTimeInputFields={chillTimeInputFields}
       minChunkTimeInputFields={minChunkTimeInputFields}
       maxChunkTimeInputFields={maxChunkTimeInputFields}
-      minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
       onSubmit={handleSubmit}
       isInEditMode={false}
     />

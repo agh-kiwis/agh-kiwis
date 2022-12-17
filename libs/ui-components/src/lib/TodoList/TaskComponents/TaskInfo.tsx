@@ -49,16 +49,10 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
       </Stack>
     );
   } else {
-    // TODO THIS needs to be fixed
-    const fakeChunk = {
-      start: chunkInfo.start,
-      duration: chunkInfo.duration,
-      isDone,
-    } as Chunk;
     return (
       <Flex justifyContent="center">
         <TaskIcon icon={IoTimerOutline} />
-        <Text>{timeInterval(fakeChunk)}</Text>
+        <Text>{timeInterval(chunkInfo.start, chunkInfo.duration)}</Text>
       </Flex>
     );
   }

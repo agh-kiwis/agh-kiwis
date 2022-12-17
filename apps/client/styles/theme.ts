@@ -5,7 +5,7 @@ export const theme = extendTheme({
     primary: '#2F855A',
     secondary: '#2D3748',
     danger: '#E53E3E',
-    insignificant: '#718096',
+    insignificant: '#A2A2A2',
   },
   fonts: {
     body: 'Quicksand, sans-serif',
