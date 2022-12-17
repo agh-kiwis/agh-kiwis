@@ -51,6 +51,11 @@ export const floatTaskInitialValues: FloatTaskType = {
     color: '#a2a2a2',
   },
   taskName: '',
+  startTime: {
+    date: moment().format('yyyy-MM-DD'),
+    time: roundToMinutes(moment(), 10),
+  },
+  startTimeFacade: '',
   deadline: {
     date: moment().add(7, 'd').format('yyyy-MM-DD'),
     time: roundToMinutes(moment(), 10),

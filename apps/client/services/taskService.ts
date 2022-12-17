@@ -6,11 +6,7 @@ import {
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
-import {
-  addMinutes,
-  getIntervalISOString,
-  mapToDateTime,
-} from '@agh-kiwis/moment-service';
+import { getIntervalISOString, mapToDateTime } from '@agh-kiwis/moment-service';
 import {
   CalendarTileType,
   ConstTaskType,
@@ -50,7 +46,7 @@ export const floatTaskFormToAddTaskMutationMapper = (
   },
   name: variables.taskName,
   priority: variables.priority,
-  start: addMinutes(new Date(), 10),
+  start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   chillTime: getIntervalISOString(variables.chillTime),
@@ -107,6 +103,11 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
     color: task.category.color.hexCode,
   },
   taskName: task.name,
+  startTime: {
+    date: moment(task.chunkInfo.start).format('yyyy-MM-DD'),
+    time: moment(task.chunkInfo.start).format('HH:mm'),
+  },
+  startTimeFacade: '',
   deadline: {
     date: moment(task.chunkInfo.deadline, 'x').format('yyyy-MM-DD'),
     time: moment(task.chunkInfo.deadline, 'x').format('HH:mm'),
@@ -172,7 +173,7 @@ export const floatTaskToUpdateTaskMutationMapper = (
   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
-  start: new Date(),
+  start: mapToDateTime(variables.startTime.date, variables.startTime.time),
   shouldAutoResolve: variables.autoResolve,
   timeBeforeNotification: null,
 });

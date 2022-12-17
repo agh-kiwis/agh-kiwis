@@ -13,6 +13,11 @@ type TaskType = {
     color: string;
   };
   taskName: string;
+  startTime: {
+    date: string;
+    time: string;
+  };
+  startTimeFacade: string;
   chillTime: {
     minutes: number;
   };
@@ -22,11 +27,6 @@ type TaskType = {
 };
 
 export type ConstTaskType = TaskType & {
-  startTime: {
-    date: string;
-    time: string;
-  };
-  startTimeFacade: string;
   duration: {
     hours: number;
     minutes: number;

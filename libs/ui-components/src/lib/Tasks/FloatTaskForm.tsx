@@ -83,8 +83,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
             <VStack spacing={4} align="stretch">
               <CategoryInput setFieldValue={setFieldValue} />
               <TaskNameInput touched={touched} />
-              {/* We need to add StartTime field to FloatForm */}
-              {/* <StartTimeInput setFieldValue={setFieldValue} /> */}
+              <StartTimeInput setFieldValue={setFieldValue} />
               <DeadlineInput setFieldValue={setFieldValue} />
 
               <Flex justify="space-between">
