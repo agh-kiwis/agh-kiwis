@@ -56,11 +56,7 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
   nextStep,
 }) => {
   const router = useRouter();
-  const {
-    isOpen: isCTInfoOpen,
-    onToggle: onCTInfoToggle,
-    onClose: onCTInfoClose,
-  } = useDisclosure();
+
   const {
     isOpen: isARInfoOpen,
     onToggle: onARInfoToggle,
@@ -97,9 +93,6 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
                   touched={touched}
                   chillTimeInputFields={chillTimeInputFields}
                   setFieldValue={setFieldValue}
-                  isCTInfoOpen={isCTInfoOpen}
-                  onCTInfoToggle={onCTInfoToggle}
-                  onCTInfoClose={onCTInfoClose}
                 />
               </Flex>
               <PrioritySelection setFieldValue={setFieldValue} />
@@ -149,13 +142,13 @@ export const ConstTaskForm: React.FC<ConstTaskFormProps> = ({
               </Box>
               <Box>
                 <InfoToggleSwitch
+                  label="Autoresolve"
+                  name="autoResolve"
+                  handleChange={setFieldValue}
+                  message={AUTORESOLVE_INFO}
                   isOpen={isARInfoOpen}
                   onToggle={onARInfoToggle}
                   onClose={onARInfoClose}
-                  message={AUTORESOLVE_INFO}
-                  name="autoResolve"
-                  label="Autoresolve"
-                  handleChange={setFieldValue}
                 />
               </Box>
 

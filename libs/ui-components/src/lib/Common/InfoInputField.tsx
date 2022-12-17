@@ -16,7 +16,6 @@ type InfoInputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
   label?: string;
   isTextArea?: boolean;
-  placement: PlacementWithLogical | undefined;
   displayedValue?: string;
   message: string;
   borderLeftRadius?: number;
@@ -34,7 +33,6 @@ export const InfoInputField: React.FC<InfoInputFieldProps> = ({
   label,
   touched,
   message,
-  placement,
   isOpen,
   onModalOpen,
   onToggle,
@@ -50,9 +48,13 @@ export const InfoInputField: React.FC<InfoInputFieldProps> = ({
   return (
     <FormControl isInvalid={!!(touched && error)}>
       <HStack>
-        {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
+        {label && (
+          <FormLabel htmlFor={field.name} mr="0">
+            {label}
+          </FormLabel>
+        )}
         <Information
-          placement={placement}
+          placement="top-start"
           isOpen={isOpen}
           message={message}
           onToggle={onToggle}

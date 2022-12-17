@@ -49,19 +49,9 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
 }) => {
   const router = useRouter();
   const {
-    isOpen: isCTInfoOpen,
-    onToggle: onCTInfoToggle,
-    onClose: onCTInfoClose,
-  } = useDisclosure();
-  const {
     isOpen: isARInfoOpen,
     onToggle: onARInfoToggle,
     onClose: onARInfoClose,
-  } = useDisclosure();
-  const {
-    isOpen: isEInfoOpen,
-    onToggle: onEInfoToggle,
-    onClose: onEInfoClose,
   } = useDisclosure();
 
   const {
@@ -91,17 +81,11 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                   touched={touched}
                   estimationInputFields={estimationInputFields}
                   setFieldValue={setFieldValue}
-                  isEInfoOpen={isEInfoOpen}
-                  onEInfoToggle={onEInfoToggle}
-                  onEInfoClose={onEInfoClose}
                 />
                 <ChillTimeInput
                   touched={touched}
                   chillTimeInputFields={chillTimeInputFields}
                   setFieldValue={setFieldValue}
-                  isCTInfoOpen={isCTInfoOpen}
-                  onCTInfoToggle={onCTInfoToggle}
-                  onCTInfoClose={onCTInfoClose}
                 />
               </Flex>
               <PrioritySelection setFieldValue={setFieldValue} />

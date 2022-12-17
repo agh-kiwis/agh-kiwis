@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { useDisclosure } from '@chakra-ui/react';
 import { ConstTaskType } from '@agh-kiwis/types';
 import { CHILL_TIME_INFO } from '@agh-kiwis/workspace-constants';
 import { InfoInputField } from '../Common/InfoInputField';
 
 type DependentChillTimeFieldProps = {
   name: string;
-  isCTInfoOpen: boolean;
-  onCTInfoToggle: () => void;
-  onCTInfoClose: () => void;
   onModalOpen: () => void;
 };
 
 export const DependentChillTimeField: React.FC<
   DependentChillTimeFieldProps
-> = ({ name, isCTInfoOpen, onModalOpen, onCTInfoToggle, onCTInfoClose }) => {
+> = ({ name, onModalOpen }) => {
   const { values, setFieldValue } = useFormikContext<ConstTaskType>();
+  const {
+    isOpen: isHelperOpened,
+    onToggle: onHelperToggle,
+    onClose: onHelperClose,
+  } = useDisclosure();
 
   useEffect(() => {
     setFieldValue(name, `${values.chillTime.minutes}min`);
@@ -23,15 +26,14 @@ export const DependentChillTimeField: React.FC<
 
   return (
     <InfoInputField
-      placement="left"
-      isOpen={isCTInfoOpen}
+      label="Chill time"
+      name={name}
       onModalOpen={onModalOpen}
       message={CHILL_TIME_INFO}
-      onToggle={onCTInfoToggle}
-      onClose={onCTInfoClose}
-      name={name}
+      isOpen={isHelperOpened}
+      onToggle={onHelperToggle}
+      onClose={onHelperClose}
       readOnly={true}
-      label="Chill time"
     />
   );
 };

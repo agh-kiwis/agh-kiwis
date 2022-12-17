@@ -36,9 +36,11 @@ export const InfoToggleSwitch: React.FC<InfoToggleSwitchProps> = ({
     <FormControl>
       <Flex>
         <HStack>
-          <FormLabel htmlFor={field.name}>{label}</FormLabel>
+          <FormLabel htmlFor={field.name} mr="0">
+            {label}
+          </FormLabel>
           <Information
-            placement={'right'}
+            placement="top-start"
             isOpen={isOpen}
             message={message}
             onToggle={onToggle}
