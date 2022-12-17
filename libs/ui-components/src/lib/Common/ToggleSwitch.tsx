@@ -6,11 +6,13 @@ type ToggleSwitchProps = {
   label: string;
   name: string;
   handleChange: (fieldName: string, value: boolean) => void;
+  isDisabled?: boolean;
 };
 
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   label,
   handleChange,
+  isDisabled,
   ...props
 }) => {
   const [field] = useField(props);

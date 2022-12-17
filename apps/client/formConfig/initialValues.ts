@@ -72,7 +72,7 @@ export const floatTaskInitialValues: FloatTaskType = {
   chillTimeFacade: '',
   priority: 'low',
   chunking: {
-    shouldChunk: false,
+    shouldChunk: true,
     minChunkTime: {
       minutes: 10,
     },

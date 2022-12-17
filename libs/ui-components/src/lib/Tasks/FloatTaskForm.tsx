@@ -88,46 +88,39 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                   setFieldValue={setFieldValue}
                 />
               </Flex>
+
               <PrioritySelection setFieldValue={setFieldValue} />
-              {values.chunking.shouldChunk ? (
-                <Box boxShadow="inner" borderRadius={8} p={4}>
-                  <ToggleSwitch
-                    name="chunking.shouldChunk"
-                    label="Chunking"
+
+              <Box boxShadow="inner" borderRadius={8} p={4}>
+                <InfoToggleSwitch
+                  name="chunking.shouldChunk"
+                  label="Chunking"
+                  handleChange={setFieldValue}
+                  isOpen={isChunkInfoOpen}
+                  onToggle={onChunkInfoToggle}
+                  onClose={onChunkInfoClose}
+                  message={CHUNKING_INFO}
+                  isDisabled
+                />
+                <Box my={4}>
+                  <IntervalPicker
+                    modalTitle="Min chunk time"
+                    inputFields={minChunkTimeInputFields}
                     handleChange={setFieldValue}
-                  />
-                  <Box my={4}>
-                    <IntervalPicker
-                      modalTitle="Min chunk time"
-                      inputFields={minChunkTimeInputFields}
-                      handleChange={setFieldValue}
-                    >
-                      <DependentMinChunkTimeField name="minChunkTimeFacade" />
-                    </IntervalPicker>
-                  </Box>
-                  <Box my={4}>
-                    <IntervalPicker
-                      modalTitle="Max chunk time"
-                      inputFields={maxChunkTimeInputFields}
-                      handleChange={setFieldValue}
-                    >
-                      <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
-                    </IntervalPicker>
-                  </Box>
+                  >
+                    <DependentMinChunkTimeField name="minChunkTimeFacade" />
+                  </IntervalPicker>
                 </Box>
-              ) : (
-                <Box>
-                  <InfoToggleSwitch
-                    isOpen={isChunkInfoOpen}
-                    onToggle={onChunkInfoToggle}
-                    onClose={onChunkInfoClose}
-                    message={CHUNKING_INFO}
-                    name="chunking.shouldChunk"
-                    label="Chunking"
+                <Box my={4}>
+                  <IntervalPicker
+                    modalTitle="Max chunk time"
+                    inputFields={maxChunkTimeInputFields}
                     handleChange={setFieldValue}
-                  />
+                  >
+                    <DependentMaxChunkTimeField name="maxChunkTimeFacade" />
+                  </IntervalPicker>
                 </Box>
-              )}
+              </Box>
 
               <Box>
                 <ToggleSwitch
@@ -136,6 +129,7 @@ export const FloatTaskForm: React.FC<FloatTaskFormProps> = ({
                   handleChange={setFieldValue}
                 />
               </Box>
+
               <Box>
                 <InfoToggleSwitch
                   isOpen={isARInfoOpen}

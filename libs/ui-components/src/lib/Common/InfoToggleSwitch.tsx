@@ -19,6 +19,7 @@ type InfoToggleSwitchProps = {
   onToggle: () => void;
   onClose: () => void;
   message: string;
+  isDisabled?: boolean;
 };
 
 export const InfoToggleSwitch: React.FC<InfoToggleSwitchProps> = ({
