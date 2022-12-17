@@ -1,10 +1,8 @@
-import { Equal } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { InitialSeed } from '../database/initial-seed';
-import { EntityCondition } from '../utils/types/entity-condition.type';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -14,13 +12,13 @@ export class UsersService {
   async create(createUserInput: CreateUserInput) {
     const user: User = await User.create({ ...createUserInput }).save();
 
-    InitialSeed.colors.forEach(async (color, index) => {
+    for (const [index, color] of InitialSeed.colors.entries()) {
       await Category.create({
         color: await Color.findOne({ where: { hexCode: color } }),
         name: InitialSeed.categories[index],
         user: user,
       }).save();
-    });
+    }
 
     return user;
   }

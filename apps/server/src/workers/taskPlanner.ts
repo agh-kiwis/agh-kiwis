@@ -35,6 +35,7 @@ export class TaskPlanner {
       task.chunkInfo.start &&
       moment(task.chunkInfo.start).isBefore(moment())
     ) {
+      console.log('task.chunkInfo.start', task.chunkInfo.start);
       throw new Error(
         'Start date is in the past, but needs to be in the future.'
       );
