@@ -34,7 +34,6 @@ type FloatTaskFormProps = {
   chillTimeInputFields: NumberInputType[];
   minChunkTimeInputFields: NumberInputType[];
   maxChunkTimeInputFields: NumberInputType[];
-  minTimeBetweenChunksInputFields: NumberInputType[];
   onSubmit: (values: FloatTaskType) => void;
   isInEditMode: boolean;
 };

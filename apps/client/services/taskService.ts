@@ -54,9 +54,6 @@ export const floatTaskFormToAddTaskMutationMapper = (
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   chillTime: getIntervalISOString(variables.chillTime),
-  minTimeBetweenChunks: getIntervalISOString(
-    variables.chunking.minTimeBetweenChunks
-  ),
   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
   shouldAutoResolve: variables.autoResolve,
@@ -134,14 +131,9 @@ export const taskToFloatTaskType = (task: Task): FloatTaskType => ({
       hours: moment.duration(task.chunkInfo.maxChunkDuration).hours(),
       minutes: moment.duration(task.chunkInfo.maxChunkDuration).minutes(),
     },
-    minTimeBetweenChunks: {
-      hours: moment.duration(task.chunkInfo.chillTime).hours(),
-      minutes: moment.duration(task.chunkInfo.chillTime).minutes(),
-    },
   },
   minChunkTimeFacade: '',
   maxChunkTimeFacade: '',
-  minTimeBetweenChunksFacade: '',
   notify: !!task.notifications,
   autoResolve: task.shouldAutoResolve,
 });
@@ -178,9 +170,6 @@ export const floatTaskToUpdateTaskMutationMapper = (
   chillTime: getIntervalISOString(variables.chillTime),
   minChunkDuration: getIntervalISOString(variables.chunking.minChunkTime),
   maxChunkDuration: getIntervalISOString(variables.chunking.maxChunkTime),
-  minTimeBetweenChunks: getIntervalISOString(
-    variables.chunking.minTimeBetweenChunks
-  ),
   deadline: mapToDateTime(variables.deadline.date, variables.deadline.time),
   estimation: getIntervalISOString(variables.timeEstimation),
   start: new Date(),

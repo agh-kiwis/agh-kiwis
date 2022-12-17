@@ -18,7 +18,6 @@ import {
   estimationInputFields,
   maxChunkTimeInputFields,
   minChunkTimeInputFields,
-  minTimeBetweenChunksInputFields,
   repeatEveryAmountFields,
   repeatEverySelectField,
 } from '../../formConfig/initialValues';
@@ -89,7 +88,6 @@ const ConstTask: React.FC = () => {
           chillTimeInputFields={chillTimeInputFields}
           minChunkTimeInputFields={minChunkTimeInputFields}
           maxChunkTimeInputFields={maxChunkTimeInputFields}
-          minTimeBetweenChunksInputFields={minTimeBetweenChunksInputFields}
           onSubmit={handleFloatSubmit}
           isInEditMode={true}
         />

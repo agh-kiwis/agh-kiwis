@@ -65,14 +65,9 @@ export type FloatTaskType = TaskType & {
       hours: number;
       minutes: number;
     };
-    minTimeBetweenChunks: {
-      hours: number;
-      minutes: number;
-    };
   };
   minChunkTimeFacade: string;
   maxChunkTimeFacade: string;
-  minTimeBetweenChunksFacade: string;
 };
 
 export type CalendarTileType = {

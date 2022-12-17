@@ -145,7 +145,6 @@ export type FloatTaskInput = {
   isDone?: InputMaybe<Scalars['Boolean']>;
   maxChunkDuration: Scalars['Interval'];
   minChunkDuration?: InputMaybe<Scalars['Interval']>;
-  minTimeBetweenChunks: Scalars['Interval'];
   /** The name of the task, which is assigned by the user and can be changed in the future. */
   name: Scalars['String'];
   priority?: Scalars['String'];

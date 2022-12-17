@@ -75,14 +75,9 @@ export const floatTaskInitialValues: FloatTaskType = {
       hours: 1,
       minutes: 0,
     },
-    minTimeBetweenChunks: {
-      hours: 0,
-      minutes: 30,
-    },
   },
   minChunkTimeFacade: '',
   maxChunkTimeFacade: '',
-  minTimeBetweenChunksFacade: '',
   notify: false,
   autoResolve: false,
 };
@@ -163,25 +158,6 @@ export const maxChunkTimeInputFields: NumberInputType[] = [
     step: 5,
     label: 'Minutes',
     name: 'chunking.maxChunkTime.minutes',
-  },
-];
-
-export const minTimeBetweenChunksInputFields: NumberInputType[] = [
-  {
-    minValue: 0,
-    maxValue: 24,
-    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.hours,
-    step: 1,
-    label: 'Hours',
-    name: 'chunking.minTimeBetweenChunks.hours',
-  },
-  {
-    minValue: 0,
-    maxValue: 60,
-    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.minutes,
-    step: 5,
-    label: 'Minutes',
-    name: 'chunking.minTimeBetweenChunks.minutes',
   },
 ];
 
