@@ -1,9 +1,8 @@
 import { DataSource } from 'typeorm';
 import moment, { Duration } from 'moment';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Chunk } from '../tasks/entities/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
-import { Console } from 'console';
 
 const WEEKS_TO_ADD = 4;
 
@@ -21,8 +20,6 @@ export class TaskPlanner {
     if (!task || !task.isFloat) {
       throw new Error('No task to plan or task is not a float task.');
     }
-
-    console.log(`Started task planner for : ${task.name}`);
 
     // Get current user or raise error
     const user = task.user;
@@ -120,44 +117,47 @@ export class TaskPlanner {
         .execute();
     }
 
-        // Find all windows in moment duration between start time and end time of the const tasks.
-        
-        let taskStartTime = moment(task.chunkInfo.start);
-        let windows: Window[] = [];
-    
-        // Add chillTime to each const task chunk
-        const constTaskChunks = constTasks.reduce((acc, task) => {
-          const chunks = task.chunks.map((chunk) => ({
-            ...chunk,
-            chillTime: task.chunkInfo.chillTime,
-          }));
-    
-          return [...acc, ...chunks];
-        }, []);
-    
-        // Order chunks by start
-        constTaskChunks.sort((a, b) => {
-          return moment(a.start).diff(moment(b.start));
+    // Find all windows in moment duration between start time and end time of the const tasks.
+
+    let taskStartTime = moment(task.chunkInfo.start);
+    let windows: Window[] = [];
+
+    // Add chillTime to each const task chunk
+    const constTaskChunks = constTasks.reduce((acc, task) => {
+      const chunks = task.chunks.map((chunk) => ({
+        ...chunk,
+        chillTime: task.chunkInfo.chillTime,
+      }));
+
+      return [...acc, ...chunks];
+    }, []);
+
+    // Order chunks by start
+    constTaskChunks.sort((a, b) => {
+      return moment(a.start).diff(moment(b.start));
+    });
+
+    constTaskChunks.forEach((chunk) => {
+      // Add duration to the first task
+      // If time is not negative add to the windows
+      const chunkStartTime = moment(chunk.start);
+      const chunkDuration = moment.duration(chunk.duration);
+
+      if (taskStartTime.isBefore(chunkStartTime)) {
+        (windows as Window[]).push({
+          start: taskStartTime,
+          duration: moment.duration(chunkStartTime.diff(taskStartTime)),
         });
-    
-        constTaskChunks.forEach((chunk) => {
-          // Add duration to the first task
-          // If time is not negative add to the windows
-          const chunkStartTime = moment(chunk.start);
-          const chunkDuration = moment.duration(chunk.duration);
-    
-          if (taskStartTime.isBefore(chunkStartTime)) {
-            (windows as Window[]).push({
-              start: taskStartTime,
-              duration: moment.duration(chunkStartTime.diff(taskStartTime)),
-            });
-          }
-          taskStartTime = chunkStartTime
-            .clone()
-            .add(chunkDuration.clone().add(chunk.chillTime));
-        });
-    
-        printWindows(windows);
+      }
+      taskStartTime = chunkStartTime
+        .clone()
+        .add(chunkDuration.clone().add(chunk.chillTime));
+    });
+
+    interface Weight {
+      deadline: number;
+      priority: number;
+    }
 
     // 1. Find task weight
     const getTaskWeight = (task: Task) => {
@@ -167,34 +167,33 @@ export class TaskPlanner {
       );
       const priority =
         task.priority === 'high' ? 3 : task.priority === 'medium' ? 2 : 1;
-    
+
       return { deadline, priority };
     };
 
     // 2. Sort all tasks by weight
-    const taskIdAndWeightMap = new Map();
+    const taskIdAndWeightMap = new Map<number, Weight>();
     floatTasks.forEach((task) => {
       taskIdAndWeightMap.set(task.id, getTaskWeight(task));
     });
 
     const sortedTasks = floatTasks.sort((a, b) => {
-      const { priority: priorityA } = taskIdAndWeightMap.get(a.id);
-      const { priority: priorityB } = taskIdAndWeightMap.get(b.id);
+      const priorityA = taskIdAndWeightMap.get(a.id).priority;
+      const priorityB = taskIdAndWeightMap.get(b.id).priority;
       return priorityB - priorityA;
     });
 
     sortedTasks.sort((a, b) => {
-      const { deadlineA } = taskIdAndWeightMap.get(a.id);
-      const { deadlineB } = taskIdAndWeightMap.get(b.id);
-      return deadlineB - deadlineA;
+      const deadlineA = taskIdAndWeightMap.get(a.id).deadline;
+      const deadlineB = taskIdAndWeightMap.get(b.id).deadline;
+      return deadlineA - deadlineB;
     });
 
     // Fit tasks in windows and calculate coefficients
     const chunksToInsert = [];
 
     sortedTasks.forEach((task) => {
-      windows = fitTask(task, windows, endDate, chunksToInsert);
-      printWindows(windows);
+      windows = fitTask(task, windows, task.chunkInfo.deadline, chunksToInsert);
       if (!windows) {
         // This indicates that we have more tasks to plan than windows
         throw new Error('No windows left!!! Please do something later');
@@ -214,26 +213,23 @@ export class TaskPlanner {
   }
 }
 
-const calculateCoefficient = (task: Task, taskDuration: Duration,  window: Window) => {
+const calculateCoefficient = (
+  task: Task,
+  taskDuration: Duration,
+  window: Window
+) => {
   const windowDuration: Duration = window.duration.clone();
 
   if (window.duration.asMinutes() == 0) {
     throw new Error('Window duration is 0');
   }
-  let i = 0;
   while (windowDuration.asMinutes() > 0 && taskDuration.asMinutes() > 0) {
-    i += 1;
-    const chunkSize = getMaxChunkToFit(
-      task,
-      windowDuration,
-      taskDuration
-    );
+    const chunkSize = getMaxChunkToFit(task, windowDuration, taskDuration);
 
     if (chunkSize && chunkSize.asMinutes() > 0) {
       // We were able to create a non-zero chunk
       taskDuration = taskDuration.clone().subtract(chunkSize);
       chunkSize.add(task.chunkInfo.chillTime);
-      console.log(chunkSize.asMinutes(), "chunkSize");
       windowDuration.subtract(chunkSize);
     } else {
       break;
@@ -265,8 +261,9 @@ const getMaxChunkToFit = (
     } else if (windowDuration >= minCTWithChill) {
       return windowDuration.clone().subtract(task.chunkInfo.chillTime);
     } else return;
-  } else if (estimationWithChill <= windowDuration) return estimation;
-  else return;
+  } else if (estimationWithChill <= windowDuration) {
+    return estimation;
+  } else return;
 };
 
 // Utils
@@ -280,26 +277,27 @@ const getCoefficient = (
 
 // This function is responsible for inserting chunks for the given task (in transaction)
 // And updating windows (deleting all used and shortening half-used windows)
-const findBestWindow = (  
+const findBestWindow = (
   task: Task,
   taskDuration: Duration,
   windows: Window[],
-  endDate: Date) => {
-
+  endDate: Date
+) => {
   const windowsAndCoefficientMap = new Map();
-  windows.forEach(window => {
+  windows.forEach((window) => {
     if (moment(endDate).isAfter(window.start)) {
-      // TODO: Add start_time to tuple here
-      printWindows([window]);
-      windowsAndCoefficientMap.set(window, calculateCoefficient(task, taskDuration.clone(), window));
+      windowsAndCoefficientMap.set(
+        window,
+        calculateCoefficient(task, taskDuration.clone(), window)
+      );
     }
-  })
+  });
 
-  console.log(windowsAndCoefficientMap);
-
-  const bestWindow = Array.from(windowsAndCoefficientMap.entries()).reduce((a, b) => a[1] < b[1] ? b : a)[0];
+  const bestWindow = Array.from(windowsAndCoefficientMap.entries()).reduce(
+    (a, b) => (a[1] < b[1] ? b : a)
+  )[0];
   return bestWindow;
-}
+};
 
 const processWindows = (windows: Window[]) => {
   const windowsIndexesToRemove = [];
@@ -307,7 +305,7 @@ const processWindows = (windows: Window[]) => {
 
   for (const [index, window] of windows.entries()) {
     if (!window.usedDuration) {
-      break;
+      continue;
     }
     if (window.usedDuration.asMinutes() > 0) {
       windowsIndexesToRemove.push(index);
@@ -359,7 +357,7 @@ const fitTask = (
   if (!window) {
     return;
   }
-  
+
   // We are taking task and planning it
   let taskDuration = getDurationUsedForTheWindow(
     task,
@@ -368,9 +366,7 @@ const fitTask = (
     chunksToInsert
   );
 
-  printWindows(windows);
   windows = processWindows(windows);
-  printWindows(windows);
 
   while (taskDuration.asMinutes() > 0) {
     const window = findBestWindow(task, taskDuration, windows, endDate);
@@ -385,9 +381,8 @@ const fitTask = (
     windows = processWindows(windows);
   }
   return windows;
-  }
-  // Iterate over windows and check if used duration is equal to duration then remove the window, else split into two windows
-  
+};
+// Iterate over windows and check if used duration is equal to duration then remove the window, else split into two windows
 
 const printWindows = (windows: Window[]) => {
   console.log('Windows:');
@@ -436,7 +431,6 @@ const getDurationUsedForTheWindow = (
       });
       chunksToInsert.push(chunkToInsert);
       windowStart.add(chunkSize);
-      windowStart.add(task.chunkInfo.chillTime);
     } else {
       break;
     }

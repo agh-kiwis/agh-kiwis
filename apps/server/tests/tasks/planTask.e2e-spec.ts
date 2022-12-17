@@ -365,7 +365,7 @@ describe('PlanTask (e2e)', () => {
         start: newDate(new Date(2022, 12, 18)),
         minChunkDuration: moment.duration(0.5, 'hour'),
         maxChunkDuration: moment.duration(2, 'hour'),
-        deadline: newDate(new Date(2022, 12, 23, 0, 0)),
+        deadline: newDate(new Date(2022, 12, 22, 0, 0)),
         estimation: moment.duration(5, 'hours'),
         chillTime: moment.duration(30, 'minutes'),
       },
@@ -396,14 +396,17 @@ describe('PlanTask (e2e)', () => {
         minChunkDuration: moment.duration(0.5, 'hour'),
         maxChunkDuration: moment.duration(0.5, 'hour'),
         estimation: moment.duration(2, 'hours'),
-        deadline: newDate(new Date(2022, 12, 24, 0, 0)),
+        deadline: newDate(new Date(2022, 12, 23, 0, 0)),
         chillTime: moment.duration(0, 'minutes'),
       },
     }).save();
 
     await taskPlanner.planTask(A);
+    await taskPlanner.planTask(B);
+    await taskPlanner.planTask(C);
   });
 });
+
 function newDate(date: Date): Date {
   date.setMonth(date.getMonth() - 1);
   return date;
