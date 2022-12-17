@@ -17,7 +17,7 @@ export const constTaskInitialValues: ConstTaskType = {
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(), 10),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
   },
   startTimeFacade: '',
   duration: {
@@ -53,12 +53,12 @@ export const floatTaskInitialValues: FloatTaskType = {
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(), 10),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
   },
   startTimeFacade: '',
   deadline: {
     date: moment().add(7, 'd').format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(), 10),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
   },
   deadlineFacade: '',
   timeEstimation: {

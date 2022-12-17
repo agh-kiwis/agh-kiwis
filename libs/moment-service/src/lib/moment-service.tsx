@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { Chunk } from '@agh-kiwis/data-access';
 import { IntervalType } from '@agh-kiwis/types';
 
 export const roundToMinutes = (date: moment.Moment, minutes: number) => {
