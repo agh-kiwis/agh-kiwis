@@ -66,13 +66,13 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
   },
   taskName: task.name,
   startTime: {
-    date: moment(task.chunks[0].start).format('yyyy-MM-DD'),
-    time: moment(task.chunks[0].start).format('HH:mm'),
+    date: moment(task.chunkInfo.start).format('yyyy-MM-DD'),
+    time: moment(task.chunkInfo.start).format('HH:mm'),
   },
   startTimeFacade: '',
   duration: {
-    hours: moment.duration(task.chunks[0].duration).hours(),
-    minutes: moment.duration(task.chunks[0].duration).minutes(),
+    hours: moment.duration(task.chunkInfo.duration).hours(),
+    minutes: moment.duration(task.chunkInfo.duration).minutes(),
   },
   durationFacade: '',
   chillTime: {

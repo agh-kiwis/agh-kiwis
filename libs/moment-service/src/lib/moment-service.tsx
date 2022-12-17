@@ -8,10 +8,10 @@ export const roundToMinutes = (date: moment.Moment, minutes: number) => {
   return moment(date).add(remainder, 'minutes').format('HH:mm');
 };
 
-export const timeInterval = (chunk: Chunk) => {
-  const start = startToTime(chunk?.start);
-  const end = startToTime(moment(chunk?.start).add(chunk?.duration));
-  return start + ' - ' + end;
+export const timeInterval = (start: moment.Moment, interval: IntervalType) => {
+  const startTime = startToTime(start);
+  const endTime = startToTime(moment(start).add(interval));
+  return `${startTime} - ${endTime}`;
 };
 
 export const deadlineToDate = (deadline: string, dateFormat = 'DD MMM') => {
