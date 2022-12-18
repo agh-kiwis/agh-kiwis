@@ -147,7 +147,7 @@ export class TasksService {
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
-    return await Task.find({
+    const tasks = await Task.find({
       relations: {
         // Include chunks in case of float tasks
         chunks: true,
@@ -183,6 +183,14 @@ export class TasksService {
       },
       take: getTasksInput.limit,
     });
+
+    tasks.forEach((task) => {
+      task.chunks.sort((a, b) => {
+        return a.start.getTime() - b.start.getTime();
+      });
+    });
+
+    return tasks;
   }
 
   async getTask(user: User, id: string) {

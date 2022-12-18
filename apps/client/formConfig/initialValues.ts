@@ -17,7 +17,7 @@ export const constTaskInitialValues: ConstTaskType = {
   taskName: '',
   startTime: {
     date: moment().format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(), 10),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
   },
   startTimeFacade: '',
   duration: {
@@ -51,9 +51,14 @@ export const floatTaskInitialValues: FloatTaskType = {
     color: '#a2a2a2',
   },
   taskName: '',
+  startTime: {
+    date: moment().format('yyyy-MM-DD'),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
+  },
+  startTimeFacade: '',
   deadline: {
     date: moment().add(7, 'd').format('yyyy-MM-DD'),
-    time: roundToMinutes(moment(), 10),
+    time: roundToMinutes(moment().add(10, 'minutes'), 10),
   },
   deadlineFacade: '',
   timeEstimation: {
@@ -67,7 +72,7 @@ export const floatTaskInitialValues: FloatTaskType = {
   chillTimeFacade: '',
   priority: 'low',
   chunking: {
-    shouldChunk: false,
+    shouldChunk: true,
     minChunkTime: {
       minutes: 10,
     },
@@ -75,14 +80,9 @@ export const floatTaskInitialValues: FloatTaskType = {
       hours: 1,
       minutes: 0,
     },
-    minTimeBetweenChunks: {
-      hours: 0,
-      minutes: 30,
-    },
   },
   minChunkTimeFacade: '',
   maxChunkTimeFacade: '',
-  minTimeBetweenChunksFacade: '',
   notify: false,
   autoResolve: false,
 };
@@ -163,25 +163,6 @@ export const maxChunkTimeInputFields: NumberInputType[] = [
     step: 5,
     label: 'Minutes',
     name: 'chunking.maxChunkTime.minutes',
-  },
-];
-
-export const minTimeBetweenChunksInputFields: NumberInputType[] = [
-  {
-    minValue: 0,
-    maxValue: 24,
-    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.hours,
-    step: 1,
-    label: 'Hours',
-    name: 'chunking.minTimeBetweenChunks.hours',
-  },
-  {
-    minValue: 0,
-    maxValue: 60,
-    defaultValue: floatTaskInitialValues.chunking.minTimeBetweenChunks.minutes,
-    step: 5,
-    label: 'Minutes',
-    name: 'chunking.minTimeBetweenChunks.minutes',
   },
 ];
 

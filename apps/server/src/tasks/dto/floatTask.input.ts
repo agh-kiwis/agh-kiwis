@@ -11,9 +11,6 @@ export class FloatTaskInput extends TaskInput {
   @Field(() => Date)
   deadline: Date;
 
-  @Field(() => Interval)
-  minTimeBetweenChunks: Duration;
-
   @Field(() => Interval, { nullable: true })
   minChunkDuration: Duration;
 

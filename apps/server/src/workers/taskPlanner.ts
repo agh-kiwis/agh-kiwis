@@ -47,7 +47,6 @@ export class TaskPlanner {
 
     let endDate: Date;
 
-    // TODO Think of this endDate more later on
     if (task.chunkInfo.deadline) {
       endDate = task.chunkInfo.deadline;
     } else {
@@ -275,8 +274,6 @@ const getCoefficient = (
   return fittedPartDuration.asMinutes() / windowDuration.asMinutes();
 };
 
-// This function is responsible for inserting chunks for the given task (in transaction)
-// And updating windows (deleting all used and shortening half-used windows)
 const findBestWindow = (
   task: Task,
   taskDuration: Duration,
@@ -284,6 +281,9 @@ const findBestWindow = (
   endDate: Date
 ) => {
   const windowsAndCoefficientMap = new Map();
+  if (windows.length === 0) {
+    throw new Error('No windows found!');
+  }
   windows.forEach((window) => {
     if (moment(endDate).isAfter(window.start)) {
       windowsAndCoefficientMap.set(
@@ -358,7 +358,6 @@ const fitTask = (
     return;
   }
 
-  // We are taking task and planning it
   let taskDuration = getDurationUsedForTheWindow(
     task,
     window,
@@ -370,16 +369,15 @@ const fitTask = (
 
   while (taskDuration.asMinutes() > 0) {
     const window = findBestWindow(task, taskDuration, windows, endDate);
-
     taskDuration = getDurationUsedForTheWindow(
       task,
       window,
       taskDuration,
       chunksToInsert
     );
-
     windows = processWindows(windows);
   }
+  printWindows(windows);
   return windows;
 };
 // Iterate over windows and check if used duration is equal to duration then remove the window, else split into two windows

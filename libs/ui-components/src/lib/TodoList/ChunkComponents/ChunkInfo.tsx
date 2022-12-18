@@ -25,7 +25,7 @@ export const ChunkInfo: React.FC<ChunkInfoProps> = ({ id, chunk, checked }) => {
           <Text> {momentToDate(chunk.start)} </Text>
         </Box>
         <Box>
-          <Text>{timeInterval(chunk)}</Text>
+          <Text>{timeInterval(chunk.start, chunk.duration)}</Text>
         </Box>
       </HStack>
     );

@@ -37,7 +37,6 @@ describe('Auth (e2e)', () => {
     }
   `;
 
-  describe('auth', () => {
     it('register', async () => {
       const { register } = await makeRequest(app, registerMutation, {
         registerDto: {
@@ -72,5 +71,4 @@ describe('Auth (e2e)', () => {
 
       expect(login.email).toBe(EMAIL);
     });
-  });
 });
