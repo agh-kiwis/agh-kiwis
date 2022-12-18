@@ -25,6 +25,7 @@ mutation updateConstTask($id: Int!, $taskInput: ConstTaskInput!) {
     }
     chunks {
       duration
+      id
       isDone
       start
     }

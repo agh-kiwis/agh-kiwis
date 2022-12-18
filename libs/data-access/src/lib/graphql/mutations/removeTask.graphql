@@ -25,6 +25,7 @@ mutation removeTask($id: Int!) {
     }
     chunks {
       duration
+      id
       isDone
       start
     }

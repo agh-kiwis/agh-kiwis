@@ -25,6 +25,7 @@ query getTask($id: String!) {
     }
     chunks {
       duration
+      id
       isDone
       start
     }

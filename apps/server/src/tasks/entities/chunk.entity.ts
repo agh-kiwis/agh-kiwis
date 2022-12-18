@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Duration } from 'moment';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
@@ -9,6 +9,7 @@ import { Task } from './task.entity';
 @Entity()
 @ObjectType()
 export class Chunk extends GeneralEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 

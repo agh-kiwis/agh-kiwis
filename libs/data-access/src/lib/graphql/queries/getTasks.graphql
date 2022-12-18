@@ -25,6 +25,7 @@ query getTasks($getTasksInput: GetTasksInput!) {
     }
     chunks {
       duration
+      id
       isDone
       start
     }
