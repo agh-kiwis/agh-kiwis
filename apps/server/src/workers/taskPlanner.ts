@@ -111,8 +111,8 @@ export class TaskPlanner {
         .delete()
         .from(Chunk)
         .where('taskId IN (:...ids)', { ids: floatTasks.map((t) => t.id) })
-        // Where start is after task.start
-        .andWhere('start >= :start', { start: task.chunkInfo.start })
+        // Where chunks are not done
+        .andWhere('isDone = :isDone', { isDone: false })
         .execute();
     }
 
@@ -136,22 +136,51 @@ export class TaskPlanner {
       return moment(a.start).diff(moment(b.start));
     });
 
-    constTaskChunks.forEach((chunk) => {
-      // Add duration to the first task
-      // If time is not negative add to the windows
-      const chunkStartTime = moment(chunk.start);
-      const chunkDuration = moment.duration(chunk.duration);
+    if (constTaskChunks.length > 0) {
+      constTaskChunks.forEach((chunk) => {
+        // Add duration to the first task
+        // If time is not negative add to the windows
+        const chunkStartTime = moment(chunk.start);
+        const chunkDuration = moment.duration(chunk.duration);
 
-      if (taskStartTime.isBefore(chunkStartTime)) {
-        (windows as Window[]).push({
-          start: taskStartTime,
-          duration: moment.duration(chunkStartTime.diff(taskStartTime)),
+        if (taskStartTime.isBefore(chunkStartTime)) {
+          (windows as Window[]).push({
+            start: taskStartTime,
+            duration: moment.duration(chunkStartTime.diff(taskStartTime)),
+          });
+        }
+        taskStartTime = chunkStartTime
+          .clone()
+          .add(chunkDuration.clone().add(chunk.chillTime));
+      });
+    } else {
+      // if there are no const tasks, add the whole time to the windows
+      windows.push({
+        start: taskStartTime,
+        duration: moment.duration(
+          moment(task.chunkInfo.deadline).diff(task.chunkInfo.start)
+        ),
+      });
+    }
+
+    // If there is time left after the last const task, add it to the windows
+    if (constTaskChunks.length > 0) {
+      const lastChunk = constTaskChunks[constTaskChunks.length - 1];
+      const lastChunkStart = moment(lastChunk.start);
+      const lastChunkDuration = moment.duration(lastChunk.duration);
+      if (
+        lastChunkStart.add(lastChunkDuration).isBefore(task.chunkInfo.deadline)
+      ) {
+        windows.push({
+          start: lastChunkStart.add(lastChunkDuration),
+          duration: moment.duration(
+            moment(task.chunkInfo.deadline).diff(
+              lastChunkStart.add(lastChunkDuration)
+            )
+          ),
         });
       }
-      taskStartTime = chunkStartTime
-        .clone()
-        .add(chunkDuration.clone().add(chunk.chillTime));
-    });
+    }
 
     interface Weight {
       deadline: number;

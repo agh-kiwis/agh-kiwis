@@ -29,7 +29,7 @@ describe('PlanTask (e2e)', () => {
   });
 
   beforeEach(async () => {
-    // await connection.clear();
+    await connection.clear(app);
   });
 
   afterAll(async () => {
@@ -233,66 +233,6 @@ describe('PlanTask (e2e)', () => {
     await taskPlanner.planTask(A);
     await taskPlanner.planTask(B);
   });
-});
-
-describe('PlanTask (e2e)', () => {
-  let app: INestApplication | any;
-
-  let taskPlanner: TaskPlanner;
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    taskPlanner = app.get(TaskPlanner);
-    await connection.clear(app);
-    await app.init();
-  });
-
-  beforeEach(async () => {
-    // await connection.clear();
-  });
-
-  afterAll(async () => {
-    await connection.close(app);
-    await app.close();
-  });
-
-  // TODO Add repeat param there
-  const createConstTask = async (params: {
-    taskName: string;
-    category: Category;
-    start: Date;
-    user: User;
-    priority?: string;
-    duration?: Duration;
-    repeat?: Repeat;
-  }) => {
-    // Get taskService
-    const taskService: TasksService = app.get(TasksService);
-
-    const createConstTaskInput: ConstTaskInput = {
-      name: params.taskName,
-      category: params.category,
-      start: params.start,
-      priority: params.priority || 'medium',
-      // duration defaults to 1.5 hours
-      duration: params.duration || moment.duration(1.5, 'hours'),
-      repeat: params.repeat || {
-        repeatType: RepeatType.WEEKS,
-        repeatEvery: 1,
-      },
-      shouldAutoResolve: false,
-      timeBeforeNotification: moment.duration(15, 'minutes'),
-      // TODO Change that to normal value
-      chillTime: moment.duration(0, 'minutes'),
-      // TODO is it needed here?
-      isDone: false,
-    };
-
-    await taskService.createConst(params.user, createConstTaskInput);
-  };
 
   it('3 tasks', async () => {
     const user = await User.create({
@@ -506,6 +446,106 @@ describe('PlanTask (e2e)', () => {
     await taskPlanner.planTask(A);
     await taskPlanner.planTask(B);
     await taskPlanner.planTask(C);
+  });
+
+  it('Start - Deadline (no chunks)', async () => {
+    const user = await User.create({
+      email: 'email@gmail.com',
+      password: 'password1234',
+    }).save();
+
+    // Insert two colors for categories
+    // Const tasks
+
+    // Add float tasks
+
+    const yellowColor = await Color.create({
+      hexCode: '#ffff00',
+    }).save();
+
+    const preparationCategory = await Category.create({
+      name: 'Preparation',
+      color: yellowColor,
+      user: user,
+    }).save();
+
+    // Now let's simulate already planned float task:
+
+    const A = await Task.create({
+      name: 'A',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(new Date(2029, 1, 3)),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(1.5, 'hour'),
+        deadline: newDate(new Date(2029, 1, 5, 0, 0)),
+        estimation: moment.duration(20, 'hours'),
+        chillTime: moment.duration(15, 'minutes'),
+      },
+    }).save();
+
+    await taskPlanner.planTask(A);
+  });
+
+  it('Start - Single chunk - Deadline', async () => {
+    const user = await User.create({
+      email: 'email@gmail.com',
+      password: 'password1234',
+    }).save();
+
+    // Insert two colors for categories
+
+    const greenColor = await Color.create({
+      hexCode: '#00ff00',
+    }).save();
+
+    const lectures_category = await Category.create({
+      name: 'Lectures',
+      color: greenColor,
+      user: user,
+    }).save();
+
+    // Const tasks
+
+    await createConstTask({
+      taskName: 'Const Filler_THU',
+      category: lectures_category,
+      start: newDate(new Date(2029, 1, 3, 3, 0)),
+      duration: moment.duration(5, 'hours'),
+      user,
+    });
+    // Add float tasks
+
+    const yellowColor = await Color.create({
+      hexCode: '#ffff00',
+    }).save();
+
+    const preparationCategory = await Category.create({
+      name: 'Preparation',
+      color: yellowColor,
+      user: user,
+    }).save();
+
+    const A = await Task.create({
+      name: 'A',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(new Date(2029, 1, 3)),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(1.5, 'hour'),
+        deadline: newDate(new Date(2029, 1, 5, 0, 0)),
+        estimation: moment.duration(20, 'hours'),
+        chillTime: moment.duration(15, 'minutes'),
+      },
+    }).save();
+
+    await taskPlanner.planTask(A);
   });
 });
 
