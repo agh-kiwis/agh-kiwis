@@ -162,6 +162,8 @@ export class TaskPlanner {
         ),
       });
     }
+    console.log('Windows before adding float tasks: ');
+    printWindows(windows);
 
     // If there is time left after the last const task, add it to the windows
     if (constTaskChunks.length > 0) {
@@ -169,18 +171,23 @@ export class TaskPlanner {
       const lastChunkStart = moment(lastChunk.start);
       const lastChunkDuration = moment.duration(lastChunk.duration);
       if (
-        lastChunkStart.add(lastChunkDuration).isBefore(task.chunkInfo.deadline)
+        lastChunkStart
+          .clone()
+          .add(lastChunkDuration)
+          .isBefore(task.chunkInfo.deadline)
       ) {
         windows.push({
-          start: lastChunkStart.add(lastChunkDuration),
+          start: lastChunkStart.clone().add(lastChunkDuration),
           duration: moment.duration(
             moment(task.chunkInfo.deadline).diff(
-              lastChunkStart.add(lastChunkDuration)
+              lastChunkStart.clone().add(lastChunkDuration)
             )
           ),
         });
       }
     }
+    console.log('Windows after adding const tasks: ');
+    printWindows(windows);
 
     interface Weight {
       deadline: number;
