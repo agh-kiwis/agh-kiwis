@@ -9,9 +9,9 @@ import { Repeat, RepeatType } from '../tasks/entities/repeat.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { TasksService } from '../tasks/tasks.service';
 import { User } from '../users/entities/user.entity';
-import { newDate } from '../utils/myDate';
 import { TaskPlanner } from '../workers/taskPlanner';
 import { InitialSeed } from './initial-seed';
+import newDate from '../utils/newDate';
 
 // TODO This needs to be changed to adapt new functionality
 
@@ -127,7 +127,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(new Date(2022, 12, 12, 0)),
+    start: newDate(2022, 12, 12, 0),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -138,91 +138,91 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Imperative Programming',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 12, 11, 15)),
+    start: newDate(2022, 12, 12, 11, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'English Language',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 12, 14)),
+    start: newDate(2022, 12, 12, 14),
     user,
   });
 
   await createConstTask({
     taskName: 'Algorithms and Data Structures',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 13, 9, 35)),
+    start: newDate(2022, 12, 13, 9, 35),
     user,
   });
 
   await createConstTask({
     taskName: 'Mathematic Analysis',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 13, 11, 15)),
+    start: newDate(2022, 12, 13, 11, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'Mathematical Logic',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 13, 16, 15)),
+    start: newDate(2022, 12, 13, 16, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'Physics',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 14, 8)),
+    start: newDate(2022, 12, 14, 8),
     user,
   });
 
   await createConstTask({
     taskName: 'Mathematical Logic',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 14, 11, 15)),
+    start: newDate(2022, 12, 14, 11, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'Intellectual Property',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 14, 12, 50)),
+    start: newDate(2022, 12, 14, 12, 50),
     user,
   });
 
   await createConstTask({
     taskName: 'Algorithms and Data Structures',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 14, 14, 40)),
+    start: newDate(2022, 12, 14, 14, 40),
     user,
   });
 
   await createConstTask({
     taskName: 'Mathematical Analysis',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 15, 14, 15)),
+    start: newDate(2022, 12, 15, 14, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'Physics',
     category: lectures_category,
-    start: newDate(new Date(2022, 12, 15, 15, 45)),
+    start: newDate(2022, 12, 15, 15, 45),
     user,
   });
 
   await createConstTask({
     taskName: 'Physical Education',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 16, 10, 15)),
+    start: newDate(2022, 12, 16, 10, 15),
     user,
   });
 
   await createConstTask({
     taskName: 'Imperative Programming',
     category: labs_category,
-    start: newDate(new Date(2022, 12, 16, 14, 40)),
+    start: newDate(2022, 12, 16, 14, 40),
     user,
   });
 
@@ -235,10 +235,10 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(new Date(2022, 12, 13)),
+      start: newDate(2022, 12, 13),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(3, 'hour'),
-      deadline: newDate(new Date(2022, 12, 25, 0, 0)),
+      deadline: newDate(2022, 12, 25, 0, 0),
       estimation: moment.duration(4, 'hours'),
       chillTime: moment.duration(15, 'minutes'),
     },
@@ -248,13 +248,13 @@ export const seedDatabase = async (app: INestApplication) => {
   await Chunk.create({
     duration: moment.duration(1, 'hour'),
     task: prepareForLogicExam,
-    start: newDate(new Date(2022, 12, 16, 50)),
+    start: newDate(2022, 12, 16, 50),
   }).save();
 
   await Chunk.create({
     duration: moment.duration(1, 'hour'),
     task: prepareForLogicExam,
-    start: newDate(new Date(2022, 12, 19, 50)),
+    start: newDate(2022, 12, 19, 50),
   }).save();
 
   const PrepareForPhysicsExam = await Task.create({
@@ -264,10 +264,10 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(new Date(2022, 12, 13)),
+      start: newDate(2022, 12, 13),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(3, 'hour'),
-      deadline: newDate(new Date(2022, 11, 20, 0, 0)),
+      deadline: newDate(2022, 11, 20, 0, 0),
       estimation: moment.duration(5, 'hours'),
       chillTime: moment.duration(15, 'minutes'),
     },
@@ -278,13 +278,13 @@ export const seedDatabase = async (app: INestApplication) => {
   await Chunk.create({
     duration: moment.duration(1, 'hour'),
     task: PrepareForPhysicsExam,
-    start: newDate(new Date(2022, 12, 14, 20)),
+    start: newDate(2022, 12, 14, 20),
   }).save();
 
   await Chunk.create({
     duration: moment.duration(1, 'hour'),
     task: PrepareForPhysicsExam,
-    start: newDate(new Date(2022, 12, 15, 20)),
+    start: newDate(2022, 12, 15, 20),
   }).save();
 
   const prepareForASD = await Task.create({
@@ -294,11 +294,11 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(new Date(2022, 12, 13, 8, 0)),
+      start: newDate(2022, 12, 13, 8, 0),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(3, 'hour'),
       estimation: moment.duration(6, 'hours'),
-      deadline: newDate(new Date(2022, 12, 21, 0, 0)),
+      deadline: newDate(2022, 12, 21, 0, 0),
       chillTime: moment.duration(15, 'minutes'),
     },
   }).save();
