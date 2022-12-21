@@ -102,27 +102,11 @@ export class TasksService {
   }
 
   async upsertChunksForRepeatTask(task: Task) {
-    const chunkInfo = task.chunkInfo;
-
-    if (!chunkInfo) {
-      throw new UserInputError('Task is not a repeat task');
-    }
-
     const repeat = task.chunkInfo.repeat;
-
-    if (!repeat) {
-      throw "Task doesn't have a repeat pattern";
-    }
-
-    // First we need to remove all the existing chunks if they exist
-    await Chunk.createQueryBuilder('chunk')
-      .delete()
-      .where('"chunk"."taskId" = :taskId', { taskId: task.id })
-      .execute();
 
     const repeatUntil = repeat.repeatUntil
       ? moment(repeat.repeatUntil)
-      : moment(task.chunkInfo.start).add(2, 'month');
+      : moment(task.chunkInfo.start).clone().add(2, 'month');
 
     const chunkList = [];
     let currentChunkStart = moment(task.chunkInfo.start);
@@ -148,9 +132,8 @@ export class TasksService {
   }
 
   async getTasks(user: User, getTasksInput: GetTasksInput) {
-    const tasks = await Task.find({
+    const tasksWithoutChunks = await Task.find({
       relations: {
-        chunks: true,
         chunkInfo: {
           repeat: true,
         },
@@ -184,13 +167,25 @@ export class TasksService {
       take: getTasksInput.limit,
     });
 
-    tasks.forEach((task) => {
-      task.chunks.sort((a, b) => {
-        return a.start.getTime() - b.start.getTime();
-      });
-    });
+    return await Promise.all(
+      tasksWithoutChunks.map(async (task) => {
+        // If task is const then we need to limit chunks
+        task.chunks = await Chunk.find({
+          where: {
+            task: { id: task.id },
+            // TODO There we need to filter by start and end times when implementing calendar view
+          },
+          ...(!task.isFloat && {
+            take: 10,
+          }),
+          order: {
+            start: 'ASC' as const,
+          },
+        });
 
-    return tasks;
+        return task;
+      })
+    );
   }
 
   async getTask(user: User, id: string) {

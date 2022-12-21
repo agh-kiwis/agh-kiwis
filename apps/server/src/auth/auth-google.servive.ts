@@ -34,9 +34,7 @@ export class AuthGoogleService {
       idToken: token,
       audience: [process.env.GOOGLE_CLIENT_ID],
     });
-
-    console.log(ticket);
-
+    
     const data = ticket.getPayload();
 
     return {

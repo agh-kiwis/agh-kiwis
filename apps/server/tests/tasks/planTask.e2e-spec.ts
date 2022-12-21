@@ -1,6 +1,6 @@
-import moment, { Duration } from 'moment';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import moment, { Duration } from 'moment';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
@@ -10,6 +10,7 @@ import { Repeat, RepeatType } from '../../src/tasks/entities/repeat.entity';
 import { Task } from '../../src/tasks/entities/task.entity';
 import { TasksService } from '../../src/tasks/tasks.service';
 import { User } from '../../src/users/entities/user.entity';
+import newDate from '../../src/utils/newDate';
 import { TaskPlanner } from '../../src/workers/taskPlanner';
 import connection from '../connection';
 
@@ -124,7 +125,7 @@ describe('PlanTask (e2e)', () => {
       taskName: 'Sleep',
       category: sleepCategory,
       // New date in utc
-      start: newDate(new Date(2022, 11, 13, 0)),
+      start: newDate(2022, 11, 13, 0),
       duration: moment.duration(8, 'hours'),
       user: user,
       priority: 'high',
@@ -135,98 +136,98 @@ describe('PlanTask (e2e)', () => {
     await createConstTask({
       taskName: 'Imperative Programming',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 13, 11, 15)),
+      start: newDate(2022, 11, 13, 11, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'English Language',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 13, 14)),
+      start: newDate(2022, 11, 13, 14),
       user,
     });
 
     await createConstTask({
       taskName: 'Algorithms and Data Structures',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 14, 9, 35)),
+      start: newDate(2022, 11, 14, 9, 35),
       user,
     });
 
     await createConstTask({
       taskName: 'Mathematic Analysis',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 14, 11, 15)),
+      start: newDate(2022, 11, 14, 11, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'Mathematical Logic',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 14, 16, 15)),
+      start: newDate(2022, 11, 14, 16, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'Physics',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 15, 8)),
+      start: newDate(2022, 11, 15, 8),
       user,
     });
 
     await createConstTask({
       taskName: 'Mathematical Logic',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 15, 11, 15)),
+      start: newDate(2022, 11, 15, 11, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'Intellectual Property',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 15, 12, 50)),
+      start: newDate(2022, 11, 15, 12, 50),
       user,
     });
 
     await createConstTask({
       taskName: 'Algorithms and Data Structures',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 15, 14, 40)),
+      start: newDate(2022, 11, 15, 14, 40),
       user,
     });
 
     await createConstTask({
       taskName: 'Algorithms and Data Structures',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 15, 14, 40)),
+      start: newDate(2022, 11, 15, 14, 40),
       user,
     });
 
     await createConstTask({
       taskName: 'Mathematical Analysis',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 15, 14, 15)),
+      start: newDate(2022, 11, 15, 14, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'Physics',
       category: lectures_category,
-      start: newDate(new Date(2022, 11, 16, 15, 45)),
+      start: newDate(2022, 11, 16, 15, 45),
       user,
     });
 
     await createConstTask({
       taskName: 'Physical Education',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 17, 10, 15)),
+      start: newDate(2022, 11, 17, 10, 15),
       user,
     });
 
     await createConstTask({
       taskName: 'Imperative Programming',
       category: labs_category,
-      start: newDate(new Date(2022, 11, 17, 14, 40)),
+      start: newDate(2022, 11, 17, 14, 40),
       user,
     });
 
@@ -251,10 +252,10 @@ describe('PlanTask (e2e)', () => {
       isFloat: true,
       user: user,
       chunkInfo: {
-        start: newDate(new Date(2022, 11, 14)),
+        start: newDate(2022, 11, 14),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: newDate(new Date(2022, 11, 20, 0, 0)),
+        deadline: newDate(2022, 11, 20, 0, 0),
         estimation: moment.duration(4, 'hours'),
         chillTime: moment.duration(15, 'minutes'),
       },
@@ -264,13 +265,13 @@ describe('PlanTask (e2e)', () => {
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: prepareForLogicExam,
-      start: newDate(new Date(2022, 11, 16, 50)),
+      start: newDate(2022, 11, 16, 50),
     }).save();
 
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: prepareForLogicExam,
-      start: newDate(new Date(2022, 11, 19, 50)),
+      start: newDate(2022, 11, 19, 50),
     }).save();
 
     const PrepareForPhysicsExam = await Task.create({
@@ -280,10 +281,10 @@ describe('PlanTask (e2e)', () => {
       isFloat: true,
       user: user,
       chunkInfo: {
-        start: newDate(new Date(2022, 11, 14)),
+        start: newDate(2022, 11, 14),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: newDate(new Date(2022, 11, 20, 0, 0)),
+        deadline: newDate(2022, 11, 20, 0, 0),
         estimation: moment.duration(5, 'hours'),
         chillTime: moment.duration(15, 'minutes'),
       },
@@ -294,13 +295,13 @@ describe('PlanTask (e2e)', () => {
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: PrepareForPhysicsExam,
-      start: newDate(new Date(2022, 11, 14, 20)),
+      start: newDate(2022, 11, 14, 20),
     }).save();
 
     await Chunk.create({
       duration: moment.duration(1, 'hour'),
       task: PrepareForPhysicsExam,
-      start: newDate(new Date(2022, 11, 15, 20)),
+      start: newDate(2022, 11, 15, 20),
     }).save();
 
     const prepareForASD = await Task.create({
@@ -310,11 +311,11 @@ describe('PlanTask (e2e)', () => {
       isFloat: true,
       user: user,
       chunkInfo: {
-        start: newDate(new Date(2022, 12, 13, 8, 0)),
+        start: newDate(2022, 12, 13, 8, 0),
         minChunkDuration: moment.duration(1, 'hour'),
         maxChunkDuration: moment.duration(3, 'hour'),
         estimation: moment.duration(6, 'hours'),
-        deadline: newDate(new Date(2022, 11, 21, 0, 0)),
+        deadline: newDate(2022, 11, 21, 0, 0),
         chillTime: moment.duration(15, 'minutes'),
       },
     }).save();
@@ -325,11 +326,3 @@ describe('PlanTask (e2e)', () => {
   });
 });
 
-// TODO This function needs to add date to present moment
-const newDate = (date: Date) => {
-  //   Set date's month to the previous month
-  date.setMonth(date.getMonth() - 1);
-  // Add a week
-  date.setDate(date.getDate() + 14);
-  return date;
-};

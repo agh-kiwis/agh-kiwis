@@ -35,7 +35,6 @@ export class TaskPlanner {
       task.chunkInfo.start &&
       moment(task.chunkInfo.start).isBefore(moment())
     ) {
-      console.log('task.chunkInfo.start', task.chunkInfo.start);
       throw new Error(
         'Start date is in the past, but needs to be in the future.'
       );
@@ -176,7 +175,7 @@ export class TaskPlanner {
         .add(currentDuration.clone().add(chunk.chillTime));
     });
 
-    printWindows(windows);
+    // printWindows(windows);
 
     // Fit tasks in windows and calculate coefficients
     const chunksToInsert = [];
