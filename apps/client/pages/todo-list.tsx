@@ -1,23 +1,29 @@
+import { useState } from 'react';
+import { HiOutlineCalendar } from 'react-icons/hi';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { useRouter } from 'next/router';
+import { HStack, VStack } from '@chakra-ui/react';
 import { useGetTasksQuery } from '@agh-kiwis/data-access';
 import {
-  AlertModal, CommonButton,
-  CustomSpinner, FilterModal, MappedFilter, mapToGraphQLFields, TasksStack,
-  TodoListHeader, useFilters, Wrapper
+  AlertModal,
+  CommonButton,
+  CustomSpinner,
+  FilterModal,
+  MappedFilter,
+  TasksStack,
+  TodoListHeader,
+  Wrapper,
+  mapToGraphQLFields,
+  useFilters,
 } from '@agh-kiwis/ui-components';
 import {
   ADD_CONST_TASK_URL,
   CALENDAR_URL,
-  SETTINGS_URL
+  SETTINGS_URL,
 } from '@agh-kiwis/workspace-constants';
-import { HStack, VStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { HiOutlineCalendar } from 'react-icons/hi';
-import { IoSettingsOutline } from 'react-icons/io5';
 
 const TodoList: React.FC = () => {
   const router = useRouter();
-
 
   // TODO This can sit in local storage
 
@@ -40,7 +46,7 @@ const TodoList: React.FC = () => {
   const { data, loading, error } = useGetTasksQuery({
     variables: {
       getTasksInput: {
-        limit: 20,
+        limit: 30,
         offset: 0,
         filterOptions: {
           isDone: mappedFilter.status,

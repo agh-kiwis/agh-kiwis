@@ -1,6 +1,7 @@
+import { In } from 'typeorm';
+import moment, { Duration } from 'moment';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import moment, { Duration } from 'moment';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
@@ -15,7 +16,7 @@ import { TaskPlanner } from '../../src/workers/taskPlanner';
 import connection from '../connection';
 
 describe('PlanTask (e2e)', () => {
-  let app: INestApplication | any;
+  let app: INestApplication;
 
   let taskPlanner: TaskPlanner;
   beforeAll(async () => {
@@ -30,7 +31,7 @@ describe('PlanTask (e2e)', () => {
   });
 
   beforeEach(async () => {
-    // await connection.clear();
+    await connection.clear(app);
   });
 
   afterAll(async () => {
@@ -73,39 +74,14 @@ describe('PlanTask (e2e)', () => {
     await taskService.createConst(params.user, createConstTaskInput);
   };
 
-  it('only float tasks', async () => {
+  it('Greedy approach', async () => {
     const user = await User.create({
       email: 'email@gmail.com',
       password: 'password1234',
     }).save();
 
-    // Insert two colors for categories
+    // CONST TASKS PREPARATION
 
-    const redColor = await Color.create({
-      hexCode: '#ff0000',
-    }).save();
-
-    const greenColor = await Color.create({
-      hexCode: '#00ff00',
-    }).save();
-
-    const lectures_category = await Category.create({
-      name: 'Lectures',
-      //   Create a color green with id 1
-      color: greenColor,
-      user: user,
-    }).save();
-
-    const labs_category = await Category.create({
-      name: 'Labs',
-      //   Create a color red with id 1
-      color: redColor,
-      user: user,
-    }).save();
-
-    // Const tasks
-
-    // HEALTH AND OTHERS
     const healthColor = await Color.create({
       hexCode: '#0000ff',
     }).save();
@@ -121,113 +97,74 @@ describe('PlanTask (e2e)', () => {
       repeatEvery: 1,
     }).save();
 
+    // CONST TASKS CREATION
+
     await createConstTask({
       taskName: 'Sleep',
       category: sleepCategory,
-      // New date in utc
-      start: newDate(2022, 11, 13, 0),
-      duration: moment.duration(8, 'hours'),
+      start: newDate(2022, 12, 20, 0),
+      duration: moment.duration(9, 'hours'),
       user: user,
       priority: 'high',
       repeat: everyDayRepeat,
     });
 
-    // LECTURES AND STUFF
     await createConstTask({
-      taskName: 'Imperative Programming',
-      category: lectures_category,
-      start: newDate(2022, 11, 13, 11, 15),
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 0),
+      duration: moment.duration(9, 'hours'),
+      user: user,
+      priority: 'high',
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      // New date in utc
+      start: newDate(2022, 12, 22, 0),
+      duration: moment.duration(12, 'hours'),
+      user: user,
+      priority: 'high',
+    });
+
+    await createConstTask({
+      taskName: 'Lectures',
+      category: sleepCategory,
+      start: newDate(2022, 12, 20, 10, 0),
+      duration: moment.duration(2, 'hours'),
       user,
     });
 
     await createConstTask({
-      taskName: 'English Language',
-      category: labs_category,
-      start: newDate(2022, 11, 13, 14),
+      taskName: 'Lectures',
+      category: sleepCategory,
+      start: newDate(2022, 12, 20, 12, 15),
+      duration: moment.duration(705, 'minutes'),
       user,
     });
 
     await createConstTask({
-      taskName: 'Algorithms and Data Structures',
-      category: lectures_category,
-      start: newDate(2022, 11, 14, 9, 35),
+      taskName: 'Lectures',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 10, 0),
+      duration: moment.duration(2, 'hours'),
       user,
     });
 
     await createConstTask({
-      taskName: 'Mathematic Analysis',
-      category: lectures_category,
-      start: newDate(2022, 11, 14, 11, 15),
+      taskName: 'Lectures',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 12, 15),
+      duration: moment.duration(705, 'minutes'),
       user,
     });
 
     await createConstTask({
-      taskName: 'Mathematical Logic',
-      category: labs_category,
-      start: newDate(2022, 11, 14, 16, 15),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Physics',
-      category: labs_category,
-      start: newDate(2022, 11, 15, 8),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Mathematical Logic',
-      category: lectures_category,
-      start: newDate(2022, 11, 15, 11, 15),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Intellectual Property',
-      category: lectures_category,
-      start: newDate(2022, 11, 15, 12, 50),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Algorithms and Data Structures',
-      category: lectures_category,
-      start: newDate(2022, 11, 15, 14, 40),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Algorithms and Data Structures',
-      category: lectures_category,
-      start: newDate(2022, 11, 15, 14, 40),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Mathematical Analysis',
-      category: labs_category,
-      start: newDate(2022, 11, 15, 14, 15),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Physics',
-      category: lectures_category,
-      start: newDate(2022, 11, 16, 15, 45),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Physical Education',
-      category: labs_category,
-      start: newDate(2022, 11, 17, 10, 15),
-      user,
-    });
-
-    await createConstTask({
-      taskName: 'Imperative Programming',
-      category: labs_category,
-      start: newDate(2022, 11, 17, 14, 40),
+      taskName: 'Lectures',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 12, 15),
+      duration: moment.duration(24, 'hours'),
       user,
     });
 
@@ -243,86 +180,477 @@ describe('PlanTask (e2e)', () => {
       user: user,
     }).save();
 
-    // Now let's simulate already planned float task:
-
-    const prepareForLogicExam = await Task.create({
-      name: 'Prepare for Logic',
-      category: preparationCategory,
-      priority: 'medium',
-      isFloat: true,
-      user: user,
-      chunkInfo: {
-        start: newDate(2022, 11, 14),
-        minChunkDuration: moment.duration(1, 'hour'),
-        maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: newDate(2022, 11, 20, 0, 0),
-        estimation: moment.duration(4, 'hours'),
-        chillTime: moment.duration(15, 'minutes'),
-      },
-    }).save();
-
-    // Those Chunks need to be thrown away by the algorithm and replanned
-    await Chunk.create({
-      duration: moment.duration(1, 'hour'),
-      task: prepareForLogicExam,
-      start: newDate(2022, 11, 16, 50),
-    }).save();
-
-    await Chunk.create({
-      duration: moment.duration(1, 'hour'),
-      task: prepareForLogicExam,
-      start: newDate(2022, 11, 19, 50),
-    }).save();
-
-    const PrepareForPhysicsExam = await Task.create({
-      name: 'Prepare for Physics',
-      category: preparationCategory,
-      priority: 'medium',
-      isFloat: true,
-      user: user,
-      chunkInfo: {
-        start: newDate(2022, 11, 14),
-        minChunkDuration: moment.duration(1, 'hour'),
-        maxChunkDuration: moment.duration(3, 'hour'),
-        deadline: newDate(2022, 11, 20, 0, 0),
-        estimation: moment.duration(5, 'hours'),
-        chillTime: moment.duration(15, 'minutes'),
-      },
-    }).save();
-
-    // Create task breakdowns for the above task
-
-    await Chunk.create({
-      duration: moment.duration(1, 'hour'),
-      task: PrepareForPhysicsExam,
-      start: newDate(2022, 11, 14, 20),
-    }).save();
-
-    await Chunk.create({
-      duration: moment.duration(1, 'hour'),
-      task: PrepareForPhysicsExam,
-      start: newDate(2022, 11, 15, 20),
-    }).save();
-
-    const prepareForASD = await Task.create({
-      name: 'Prepare for Algorithms and Data Structures exam',
+    const A = await Task.create({
+      name: 'A',
       category: preparationCategory,
       priority: 'high',
       isFloat: true,
       user: user,
       chunkInfo: {
-        start: newDate(2022, 12, 13, 8, 0),
-        minChunkDuration: moment.duration(1, 'hour'),
-        maxChunkDuration: moment.duration(3, 'hour'),
-        estimation: moment.duration(6, 'hours'),
-        deadline: newDate(2022, 11, 21, 0, 0),
-        chillTime: moment.duration(15, 'minutes'),
+        start: newDate(2022, 12, 20),
+        minChunkDuration: moment.duration(15, 'minutes'),
+        maxChunkDuration: moment.duration(15, 'minutes'),
+        deadline: newDate(2022, 12, 22, 0, 0),
+        estimation: moment.duration(30, 'minutes'),
+        chillTime: moment.duration(0, 'minutes'),
       },
     }).save();
 
-    // plan task later on this needs to be generic and date-independent
+    const B = await Task.create({
+      name: 'B',
+      category: preparationCategory,
+      priority: 'low',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2022, 12, 20),
+        minChunkDuration: moment.duration(60, 'minutes'),
+        maxChunkDuration: moment.duration(60, 'minutes'),
+        deadline: newDate(2022, 12, 23, 0, 0),
+        estimation: moment.duration(120, 'minutes'),
+        chillTime: moment.duration(0, 'minutes'),
+      },
+    }).save();
 
-    // await taskPlanner.planTask(prepareForASD);
+    await taskPlanner.planTask(A);
+    await taskPlanner.planTask(B);
+
+    const chunks = await Chunk.find({
+      relations: ['task'],
+      where: {
+        task: { name: In(['A', 'B']) },
+      },
+    });
+
+    expect(chunks.length).toBe(4);
+
+    const A1 = {
+      start: newDate(2022, 12, 20, 12, 0),
+      duration: moment.duration(15, 'minutes'),
+    };
+    const A2 = {
+      start: newDate(2022, 12, 21, 12, 0),
+      duration: moment.duration(15, 'minutes'),
+    };
+
+    const B1 = {
+      start: newDate(2022, 12, 20, 9, 0),
+      duration: moment.duration(60, 'minutes'),
+    };
+    const B2 = {
+      start: newDate(2022, 12, 21, 9, 0),
+      duration: moment.duration(60, 'minutes'),
+    };
+
+    expect(chunks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(A1),
+        expect.objectContaining(A2),
+        expect.objectContaining(B1),
+        expect.objectContaining(B2),
+      ])
+    );
+  });
+
+  it('3 tasks', async () => {
+    const user = await User.create({
+      email: 'email@gmail.com',
+      password: 'password1234',
+    }).save();
+
+    // CONST TASKS PREPARATION
+
+    const healthColor = await Color.create({
+      hexCode: '#0000ff',
+    }).save();
+
+    const sleepCategory = await Category.create({
+      name: 'Sleep',
+      color: healthColor,
+      user: user,
+    }).save();
+
+    const everyDayRepeat = await Repeat.create({
+      repeatType: RepeatType.DAYS,
+      repeatEvery: 1,
+    }).save();
+
+    // CONST TASKS CREATION
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 20, 0),
+      duration: moment.duration(6.5, 'hours'),
+      user: user,
+      priority: 'high',
+      repeat: everyDayRepeat,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 20, 6, 30),
+      duration: moment.duration(2.5, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 20, 12, 30),
+      duration: moment.duration(11.5, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 6, 30),
+      duration: moment.duration(2.5, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 10, 0),
+      duration: moment.duration(2, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 21, 16, 0),
+      duration: moment.duration(8, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 22, 6, 30),
+      duration: moment.duration(45, 'minutes'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 22, 12, 30),
+      duration: moment.duration(11.5, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 23, 15, 0),
+      duration: moment.duration(9, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 24, 8, 0),
+      duration: moment.duration(2, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 24, 11, 30),
+      duration: moment.duration(2.5, 'hours'),
+      user,
+    });
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2022, 12, 24, 15, 0),
+      duration: moment.duration(9, 'hours'),
+      user,
+    });
+
+    // Add float tasks
+
+    const yellowColor = await Color.create({
+      hexCode: '#ffff00',
+    }).save();
+
+    const preparationCategory = await Category.create({
+      name: 'Preparation',
+      color: yellowColor,
+      user: user,
+    }).save();
+
+    const A = await Task.create({
+      name: 'A',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2022, 12, 20),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(1.5, 'hour'),
+        deadline: newDate(2022, 12, 22, 0, 0),
+        estimation: moment.duration(3, 'hours'),
+        chillTime: moment.duration(20, 'minutes'),
+      },
+    }).save();
+
+    const B = await Task.create({
+      name: 'B',
+      category: preparationCategory,
+      priority: 'high',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2022, 12, 20),
+        minChunkDuration: moment.duration(0.5, 'hour'),
+        maxChunkDuration: moment.duration(2, 'hour'),
+        deadline: newDate(2022, 12, 24, 0, 0),
+        estimation: moment.duration(5, 'hours'),
+        chillTime: moment.duration(30, 'minutes'),
+      },
+    }).save();
+
+    const C = await Task.create({
+      name: 'C',
+      category: preparationCategory,
+      priority: 'low',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2022, 12, 20),
+        minChunkDuration: moment.duration(0.5, 'hour'),
+        maxChunkDuration: moment.duration(0.5, 'hour'),
+        estimation: moment.duration(2, 'hours'),
+        deadline: newDate(2022, 12, 25, 0, 0),
+        chillTime: moment.duration(0, 'minutes'),
+      },
+    }).save();
+
+    await taskPlanner.planTask(A);
+    await taskPlanner.planTask(B);
+    await taskPlanner.planTask(C);
+
+    const chunks = await Chunk.find({
+      relations: ['task'],
+      where: {
+        task: { name: In(['A', 'B', 'C']) },
+      },
+    });
+
+    expect(chunks.length).toBe(10);
+
+    const A1 = {
+      start: newDate(2022, 12, 20, 9, 0),
+      duration: moment.duration(90, 'minutes'),
+    };
+    const A2 = {
+      start: newDate(2022, 12, 20, 10, 50),
+      duration: moment.duration(80, 'minutes'),
+    };
+    const A3 = {
+      start: newDate(2022, 12, 21, 9, 0),
+      duration: moment.duration(10, 'minutes'),
+    };
+
+    const B1 = {
+      start: newDate(2022, 12, 21, 12, 0),
+      duration: moment.duration(120, 'minutes'),
+    };
+    const B2 = {
+      start: newDate(2022, 12, 21, 14, 30),
+      duration: moment.duration(60, 'minutes'),
+    };
+    const B3 = {
+      start: newDate(2022, 12, 22, 7, 15),
+      duration: moment.duration(120, 'minutes'),
+    };
+
+    const C1 = {
+      start: newDate(2022, 12, 21, 9, 30),
+      duration: moment.duration(30, 'minutes'),
+    };
+    const C2 = {
+      start: newDate(2022, 12, 24, 6, 30),
+      duration: moment.duration(30, 'minutes'),
+    };
+    const C3 = {
+      start: newDate(2022, 12, 24, 7, 0),
+      duration: moment.duration(30, 'minutes'),
+    };
+    const C4 = {
+      start: newDate(2022, 12, 24, 7, 30),
+      duration: moment.duration(30, 'minutes'),
+    };
+
+    expect(chunks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(A1),
+        expect.objectContaining(A2),
+        expect.objectContaining(A3),
+        expect.objectContaining(B1),
+        expect.objectContaining(B2),
+        expect.objectContaining(B3),
+        expect.objectContaining(C1),
+        expect.objectContaining(C2),
+        expect.objectContaining(C3),
+        expect.objectContaining(C4),
+      ])
+    );
+  });
+
+  it('Start - Deadline (no chunks)', async () => {
+    const user = await User.create({
+      email: 'email@gmail.com',
+      password: 'password1234',
+    }).save();
+
+    // Const tasks
+
+    // Add float tasks
+
+    const yellowColor = await Color.create({
+      hexCode: '#ffff00',
+    }).save();
+
+    const preparationCategory = await Category.create({
+      name: 'Preparation',
+      color: yellowColor,
+      user: user,
+    }).save();
+
+    // Now let's simulate already planned float task:
+
+    const A = await Task.create({
+      name: 'A',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2024, 1, 3),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(5, 'hour'),
+        deadline: newDate(2024, 1, 5, 0, 0),
+        estimation: moment.duration(5, 'hours'),
+        chillTime: moment.duration(30, 'minutes'),
+      },
+    }).save();
+
+    await taskPlanner.planTask(A);
+
+    const chunks = await Chunk.find({
+      relations: ['task'],
+      where: {
+        task: { name: 'A' },
+      },
+    });
+
+    expect(chunks.length).toBe(1);
+
+    const A1 = {
+      start: newDate(2024, 1, 3, 0, 0),
+      duration: moment.duration(5, 'hours'),
+    };
+
+    expect(chunks).toEqual(
+      expect.arrayContaining([expect.objectContaining(A1)])
+    );
+  });
+
+  it('Start - Single chunk - Deadline', async () => {
+    const user = await User.create({
+      email: 'email@gmail.com',
+      password: 'password1234',
+    }).save();
+
+    // CONST TASKS PREPARATION
+
+    const healthColor = await Color.create({
+      hexCode: '#0000ff',
+    }).save();
+
+    const sleepCategory = await Category.create({
+      name: 'Sleep',
+      color: healthColor,
+      user: user,
+    }).save();
+
+    const everyDayRepeat = await Repeat.create({
+      repeatType: RepeatType.DAYS,
+      repeatEvery: 1,
+    }).save();
+
+    // CONST TASKS CREATION
+
+    await createConstTask({
+      taskName: 'Sleep',
+      category: sleepCategory,
+      start: newDate(2023, 1, 3, 3, 0),
+      duration: moment.duration(5, 'hours'),
+      user,
+    });
+    // Add float tasks
+
+    const yellowColor = await Color.create({
+      hexCode: '#ffff00',
+    }).save();
+
+    const preparationCategory = await Category.create({
+      name: 'Preparation',
+      color: yellowColor,
+      user: user,
+    }).save();
+
+    const A = await Task.create({
+      name: 'A',
+      category: preparationCategory,
+      priority: 'medium',
+      isFloat: true,
+      user: user,
+      chunkInfo: {
+        start: newDate(2023, 1, 3, 0, 0),
+        minChunkDuration: moment.duration(1, 'hour'),
+        maxChunkDuration: moment.duration(3, 'hour'),
+        deadline: newDate(2023, 1, 5, 0, 0),
+        estimation: moment.duration(4, 'hours'),
+        chillTime: moment.duration(30, 'minutes'),
+      },
+    }).save();
+
+    await taskPlanner.planTask(A);
+
+    const chunks = await Chunk.find({
+      relations: ['task'],
+      where: {
+        task: { name: 'A' },
+      },
+    });
+
+    const expectedChunk1 = {
+      start: newDate(2023, 1, 3, 0, 0),
+      duration: moment.duration(2.5, 'hours'),
+    };
+    const expectedChunk2 = {
+      start: newDate(2023, 1, 3, 8, 0),
+      duration: moment.duration(1.5, 'hours'),
+    };
+
+    expect(chunks.length).toBe(2);
+
+    expect(chunks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(expectedChunk1),
+        expect.objectContaining(expectedChunk2),
+      ])
+    );
   });
 });
-
