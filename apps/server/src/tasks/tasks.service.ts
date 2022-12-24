@@ -7,6 +7,7 @@ import { Color } from '../categories/entities/color.entity';
 import { User } from '../users/entities/user.entity';
 import { TaskPlanner } from '../workers/taskPlanner';
 import { CategoryInput } from './dto/category.input';
+import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
@@ -61,9 +62,10 @@ export class TasksService {
       }).save();
     }
 
-    // Fetch task one more time with chunks as chunks
     const taskToReturn = await Task.findOne({
-      relations: ['chunks'],
+      relations: {
+        chunks: true,
+      },
       where: {
         id: task.id,
       },
@@ -116,6 +118,7 @@ export class TasksService {
         duration: task.chunkInfo.duration,
         start: currentChunkStart,
       });
+
       // Add repeatEvery repeatType to the currentChunkStart using moment
       currentChunkStart = moment(currentChunkStart).add(
         repeat.repeatEvery,
@@ -187,10 +190,14 @@ export class TasksService {
 
   async getTask(user: User, id: string) {
     return await Task.findOne({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      relations: {
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
       where: {
         user: { id: user.id },
-        // Convert id to integer
         id: parseInt(id),
       },
     });
@@ -198,7 +205,12 @@ export class TasksService {
 
   async update(id: number, updateTaskInput: TaskInput) {
     const task: Task = await Task.findOne({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      relations: {
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
       where: {
         id: id,
       },
@@ -217,7 +229,12 @@ export class TasksService {
     updateTaskInput: ConstTaskInput
   ) {
     let task: Task = await Task.findOne({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      relations: {
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
       where: {
         id: id,
       },
@@ -268,7 +285,12 @@ export class TasksService {
     updateTaskInput: FloatTaskInput
   ) {
     let task: Task = await Task.findOne({
-      relations: ['chunks', 'chunkInfo', 'chunkInfo.repeat'],
+      relations: {
+        chunks: true,
+        chunkInfo: {
+          repeat: true,
+        },
+      },
       where: {
         id: id,
       },
@@ -297,6 +319,22 @@ export class TasksService {
     await this.taskPlanner.planTask(task);
 
     return task;
+  }
+
+  async updateChunk(id: number, updateChunkInput: ChunkInput) {
+    const chunk: Chunk = await Chunk.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    chunk.start = updateChunkInput.start;
+    chunk.duration = updateChunkInput.duration;
+    chunk.isDone = updateChunkInput.isDone;
+
+    await chunk.save();
+
+    return chunk;
   }
 
   async remove(user: User, id: number) {

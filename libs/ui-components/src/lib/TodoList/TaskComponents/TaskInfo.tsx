@@ -28,7 +28,7 @@ export const TaskInfo: React.FC<TaskInfoProps> = ({
       return chunk.isDone === true;
     }).length;
 
-    doneChunksNumber ? setDoneChunksNumber(doneChunks) : setDoneChunksNumber(0);
+    setDoneChunksNumber(doneChunks);
   }, [chunks]);
 
   if (isFloat) {

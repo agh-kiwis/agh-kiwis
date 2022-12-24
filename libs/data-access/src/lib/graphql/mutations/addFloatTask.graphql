@@ -25,6 +25,7 @@ mutation addFloatTask($FloatTaskInput: FloatTaskInput!) {
     }
     chunks {
       duration
+      id
       isDone
       start
     }

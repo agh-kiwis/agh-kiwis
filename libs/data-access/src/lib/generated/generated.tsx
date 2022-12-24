@@ -64,6 +64,7 @@ export type CategoryInput = {
 export type Chunk = {
   __typename?: 'Chunk';
   duration: Scalars['Interval'];
+  id: Scalars['Int'];
   isDone: Scalars['Boolean'];
   start: Scalars['DateTime'];
 };
@@ -86,6 +87,15 @@ export type ChunkInfo = {
   /** Only const tasks. Describes how often the task should repeat. When representing task in time, the chunks WILL be duplicated for the sake of easier calculations. */
   repeat?: Maybe<Repeat>;
   /** The time when task should start. In case of float tasks this can be different from chunk.start, as it is just informative data unrelated with real planed entity. */
+  start: Scalars['DateTime'];
+};
+
+export type ChunkInput = {
+  /** Duration of the chunk. */
+  duration: Scalars['Interval'];
+  /** Indicator whether the chunk is done. */
+  isDone: Scalars['Boolean'];
+  /** The time when chunk should start. */
   start: Scalars['DateTime'];
 };
 
@@ -175,6 +185,7 @@ export type Mutation = {
   removeCategory: Category;
   removeTask: Task;
   removeUser: User;
+  updateChunk: Chunk;
   updateConstTask: Task;
   updateFloatTask: Task;
   updateTask: Task;
@@ -218,6 +229,11 @@ export type MutationRemoveTaskArgs = {
 };
 
 export type MutationRemoveUserArgs = {
+  id: Scalars['Int'];
+};
+
+export type MutationUpdateChunkArgs = {
+  chunkInput: ChunkInput;
   id: Scalars['Int'];
 };
 
@@ -390,6 +406,7 @@ export type AddConstTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -437,6 +454,7 @@ export type AddFloatTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -587,6 +605,7 @@ export type RemoveTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -608,6 +627,22 @@ export type RemoveUserMutation = {
     id: number;
     introductionCompleted: boolean;
     name?: string | null;
+  };
+};
+
+export type UpdateChunkMutationVariables = Exact<{
+  chunkInput: ChunkInput;
+  id: Scalars['Int'];
+}>;
+
+export type UpdateChunkMutation = {
+  __typename?: 'Mutation';
+  updateChunk: {
+    __typename?: 'Chunk';
+    duration: any;
+    id: number;
+    isDone: boolean;
+    start: any;
   };
 };
 
@@ -652,6 +687,7 @@ export type UpdateConstTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -700,6 +736,7 @@ export type UpdateFloatTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -748,6 +785,7 @@ export type UpdateTaskMutation = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -845,6 +883,7 @@ export type GetTaskQuery = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -892,6 +931,7 @@ export type GetTasksQuery = {
     chunks?: Array<{
       __typename?: 'Chunk';
       duration: any;
+      id: number;
       isDone: boolean;
       start: any;
     }> | null;
@@ -942,6 +982,7 @@ export const AddConstTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -1028,6 +1069,7 @@ export const AddFloatTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -1485,6 +1527,7 @@ export const RemoveTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -1598,6 +1641,60 @@ export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserMutation,
   RemoveUserMutationVariables
 >;
+export const UpdateChunkDocument = gql`
+  mutation updateChunk($chunkInput: ChunkInput!, $id: Int!) {
+    updateChunk(chunkInput: $chunkInput, id: $id) {
+      duration
+      id
+      isDone
+      start
+    }
+  }
+`;
+export type UpdateChunkMutationFn = Apollo.MutationFunction<
+  UpdateChunkMutation,
+  UpdateChunkMutationVariables
+>;
+
+/**
+ * __useUpdateChunkMutation__
+ *
+ * To run a mutation, you first call `useUpdateChunkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateChunkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateChunkMutation, { data, loading, error }] = useUpdateChunkMutation({
+ *   variables: {
+ *      chunkInput: // value for 'chunkInput'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateChunkMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateChunkMutation,
+    UpdateChunkMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateChunkMutation, UpdateChunkMutationVariables>(
+    UpdateChunkDocument,
+    options
+  );
+}
+export type UpdateChunkMutationHookResult = ReturnType<
+  typeof useUpdateChunkMutation
+>;
+export type UpdateChunkMutationResult =
+  Apollo.MutationResult<UpdateChunkMutation>;
+export type UpdateChunkMutationOptions = Apollo.BaseMutationOptions<
+  UpdateChunkMutation,
+  UpdateChunkMutationVariables
+>;
 export const UpdateConstTaskDocument = gql`
   mutation updateConstTask($id: Int!, $taskInput: ConstTaskInput!) {
     updateConstTask(id: $id, taskInput: $taskInput) {
@@ -1626,6 +1723,7 @@ export const UpdateConstTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -1713,6 +1811,7 @@ export const UpdateFloatTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -1800,6 +1899,7 @@ export const UpdateTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -2120,6 +2220,7 @@ export const GetTaskDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }
@@ -2204,6 +2305,7 @@ export const GetTasksDocument = gql`
       }
       chunks {
         duration
+        id
         isDone
         start
       }

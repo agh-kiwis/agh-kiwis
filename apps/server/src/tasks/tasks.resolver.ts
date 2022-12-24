@@ -1,10 +1,12 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../providers/user.provider';
 import { User } from '../users/entities/user.entity';
+import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
+import { Chunk } from './entities/chunk.entity';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
@@ -99,6 +101,30 @@ export class TasksResolver {
     }
 
     const result = await this.tasksService.updateFloatTask(user, id, taskInput);
+    return result;
+  }
+
+  @Mutation(() => Chunk)
+  async updateChunk(
+    @CurrentUser() user: User,
+    @Args('id', { type: () => Int }) id: number,
+    @Args('chunkInput') chunkInput: ChunkInput
+  ) {
+    const chunk = await Chunk.findOne({
+      relations: {
+        task: {
+          user: true,
+        },
+      },
+      where: { id },
+    });
+    if (!chunk) {
+      throw new Error('Chunk not found');
+    }
+    if (chunk.task.user.id !== user.id) {
+      throw new Error('Task does not belong to user');
+    }
+    const result = await this.tasksService.updateChunk(id, chunkInput);
     return result;
   }
 

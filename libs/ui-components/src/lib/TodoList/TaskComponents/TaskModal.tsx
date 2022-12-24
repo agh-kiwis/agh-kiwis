@@ -62,7 +62,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   const [updateTaskMutation, { loading }] = useUpdateTaskMutation({
     variables: {
       id: task?.id,
-      taskInput: taskToUpdateTaskMutationMapper(task),
+      taskInput: taskToMarkAsDoneMutationMapper(task),
     },
   });
 
@@ -262,14 +262,14 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   );
 };
 
-export const taskToUpdateTaskMutationMapper = (task: Task): TaskInput => ({
+export const taskToMarkAsDoneMutationMapper = (task: Task): TaskInput => ({
   category: {
     id: task?.category.id,
   },
   name: task?.name,
   priority: task?.priority,
-  chillTime: getIntervalISOString(task?.chunkInfo.chillTime),
-  start: task?.chunkInfo.start,
+  chillTime: getIntervalISOString(task?.chunkInfo?.chillTime),
+  start: task?.chunkInfo?.start,
   shouldAutoResolve: task?.shouldAutoResolve,
   isDone: !task?.isDone,
 });

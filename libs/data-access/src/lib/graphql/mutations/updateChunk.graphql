@@ -1,0 +1,8 @@
+mutation updateChunk($chunkInput: ChunkInput!, $id: Int!) {
+  updateChunk(chunkInput: $chunkInput, id: $id) {
+    duration
+    id
+    isDone
+    start
+  }
+}
