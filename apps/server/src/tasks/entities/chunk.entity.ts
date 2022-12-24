@@ -25,6 +25,7 @@ export class Chunk extends GeneralEntity {
   @Column({ default: false })
   isDone: boolean;
 
+  @Field(() => Task)
   @ManyToOne(() => Task, (task) => task.chunks, {
     onDelete: 'CASCADE',
   })
