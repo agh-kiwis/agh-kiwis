@@ -17,7 +17,8 @@ tmux kill-window -t client
 tmux kill-window -t proxy
 
 # There we need to use prod versions in the future
-tmux new-session -d -s server "yarn run nx run server:serve"
+tmux new-session -d -s server "yarn run nx run server:serve:production"
+# We need to configure production later on
 tmux new-session -d -s client "yarn run nx run client:serve"
 tmux new-session -d -s proxy "npx local-ssl-proxy --source 443 --target 4200 --key ./secrets/privkey.pem --cert ./secrets/fullchain.pem"
 tmux ls
