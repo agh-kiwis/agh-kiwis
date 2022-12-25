@@ -10,6 +10,7 @@ export class PaginationService {
     query: SelectQueryBuilder<EntityType>
   ) {
     const skipNumber = paginationOptions.offset * paginationOptions.limit;
+
     return query.offset(skipNumber).limit(paginationOptions.limit);
   }
 }

@@ -11,14 +11,13 @@ import { OrderOptions } from '../ordering/order.options';
 import { PaginationOptions } from '../pagination/pagination.options';
 import { CurrentUser } from '../providers/user.provider';
 import { User } from '../users/entities/user.entity';
-import { ChunkFilterOptions } from './dto/chunkFilter.options';
+import { Chunk } from './chunks/chunk.entity';
 import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { TaskFilterOptions } from './dto/taskFilter.options';
-import { Chunk } from './entities/chunk.entity';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
@@ -52,6 +51,12 @@ export class TasksResolver {
     paginationOptions: PaginationOptions,
     @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
   ) {
+    console.log('tasks resolver');
+
+    console.log({ taskFilterOptions });
+    console.log({ paginationOptions });
+    console.log({ orderOptions });
+
     return this.tasksService.tasks(
       user,
       taskFilterOptions,
@@ -63,9 +68,14 @@ export class TasksResolver {
   @ResolveField(() => [Chunk], { name: 'chunks' })
   async chunksFieldResolver(
     @Parent() task: Task,
-    @Args('paginationOptions', { defaultValue: {} })
+    // FIXME
+    // THAT IS PROBABLY A nestjs/graphql BUG,
+    // because paginatedOptions need to be seeded with
+    // default values at this point, but seems that they are not
+    @Args('paginationOptions', { defaultValue: { offset: 0, limit: 20 } })
     paginationOptions: PaginationOptions,
-    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
+    @Args('orderOptions', { defaultValue: { field: 'id', desc: true } })
+    orderOptions: OrderOptions
   ) {
     // TODO Later on we need to introduce dataloader there
     // Link to the implementation in resolver function
@@ -77,25 +87,7 @@ export class TasksResolver {
     );
   }
 
-  // TODO Add task as a field of a chunk and resolve it (maybe with shared resolvers)
-
-  @Query(() => [Chunk], { name: 'chunks' })
-  async chunksResolver(
-    @CurrentUser() user: User,
-    @Args('chunkFilterOptions') chunkFilterOptions: ChunkFilterOptions,
-    @Args('paginationOptions', { defaultValue: {} })
-    paginationOptions: PaginationOptions,
-    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
-  ) {
-    return this.tasksService.chunksResolver(
-      user,
-      chunkFilterOptions,
-      paginationOptions,
-      orderOptions
-    );
-  }
-
-  @Query(() => [Task])
+  @Query(() => [Task], { deprecationReason: 'Use tasks instead' })
   getTasks(
     @CurrentUser() user: User,
     @Args('getTasksInput') getTasksInput: GetTasksInput
@@ -103,7 +95,9 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
-  @Query(() => Task)
+  @Query(() => Task, {
+    deprecationReason: 'Use tasks with [id] as filter value instead',
+  })
   getTask(@CurrentUser() user: User, @Args('id') id: string) {
     return this.tasksService.getTask(user, id);
   }

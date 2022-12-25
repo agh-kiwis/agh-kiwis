@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
-import { Chunk } from '../tasks/entities/chunk.entity';
+import { Chunk } from '../tasks/chunks/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
 
 const WEEKS_TO_ADD = 4;
@@ -459,6 +459,7 @@ const getDurationUsedForTheWindow = (
         window.usedDuration = chunkSize;
       }
       const chunkToInsert = Chunk.create({
+        // Resolve promise in task
         task: task,
         start: windowStart.toDate(),
         duration: chunkSize.clone().subtract(task.chunkInfo.chillTime),

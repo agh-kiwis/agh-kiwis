@@ -1,12 +1,12 @@
-import { In } from 'typeorm';
-import moment, { Duration } from 'moment';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import moment, { Duration } from 'moment';
+import { In } from 'typeorm';
 import { AppModule } from '../../src/app/app.module';
 import { Category } from '../../src/categories/entities/category.entity';
 import { Color } from '../../src/categories/entities/color.entity';
+import { Chunk } from '../../src/tasks/chunks/chunk.entity';
 import { ConstTaskInput } from '../../src/tasks/dto/constTask.input';
-import { Chunk } from '../../src/tasks/entities/chunk.entity';
 import { Repeat, RepeatType } from '../../src/tasks/entities/repeat.entity';
 import { Task } from '../../src/tasks/entities/task.entity';
 import { TasksService } from '../../src/tasks/tasks.service';

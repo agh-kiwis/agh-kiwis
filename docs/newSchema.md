@@ -3,6 +3,8 @@
 - We use only query builder from now
 - When implementing pagination on scroll we will just request another chunk when needed if it's present, if not we will display end of data to user. (Just end line or smth like that).
 
+# Queries
+
 ```gql
 query tasks {
 	tasks(taskFilterOptions, paginateOptions, orderOptions) {
@@ -62,10 +64,23 @@ orderOptions {
 }
 ```
 
+For calendar view we can fetch chunks for given user for a month and then re-fetch if needed
 
-
-
-# 
+```gql
+query chunks {
+  chunks(chunkFilterOptions: { chunkStartAfter: "2022-12-24" }) {
+    id
+    task {
+      name
+      chunkInfo {
+        id
+        start
+        estimation
+      }
+    }
+  }
+}
+```
 
 ---
 
@@ -73,19 +88,18 @@ Adding tasks can be split into two methods, but backend should share the most of
 
 ---
 
-getCategories -> categories
-
----
-
 Get task details can be split into another request, for example for float tasks we won't need to fetch chunks then.
 
 ---
 
+# Mutations
+
+
+Each task mutation needs replanning algorithm to re-run with the new data. So we need to standartize the entry point for each update
+
 ```gql
 mutation updateTask() {
-    updateTask(updateTaskInput) {
-
-        # Returns new updated task (or errors)
+    updateTask(updateCommonFields, ) {
 
     }
 }
@@ -99,25 +113,3 @@ if chunks are present in update subset, we're updating all fields that are prese
 me query can also fetch only needed fields for now
 
 ---
-
-For calendar view we can fetch chunks for given user for a month and then re-fetch if needed
-
-```gql
-query chunks {
-	chunks(taskFilterOptions, chunkFilterOptions, chunkSortOptions) {
-
-    # This field is a virtual field and we just seed it in back
-    task{
-
-
-    chunkInfo{
-      # This can be without own resolver just fetched with a task
-    }
-
-    }
-
-
-  }
-
-}
-```

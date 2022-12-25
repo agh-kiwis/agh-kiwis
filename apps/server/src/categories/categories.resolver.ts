@@ -35,6 +35,11 @@ export class CategoriesResolver {
     return this.categoriesService.getCategories(user);
   }
 
+  @Query(() => [Category])
+  categories(@CurrentUser() user: User) {
+    return this.categoriesService.getCategories(user);
+  }
+
   @Mutation(() => Category)
   removeCategory(
     @CurrentUser() user: User,

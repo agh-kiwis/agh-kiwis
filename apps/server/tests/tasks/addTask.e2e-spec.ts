@@ -77,7 +77,7 @@ describe('Tasks (e2e)', () => {
         }
         priority
         shouldAutoResolve
-        chunks {
+        chunks(orderOptions: { field: "start", desc: false }) {
           duration
           isDone
           start

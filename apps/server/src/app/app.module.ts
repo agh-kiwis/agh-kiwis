@@ -12,6 +12,7 @@ import authConfig from '../config/auth.config';
 import databaseConfig from '../config/database.config';
 import { TypeOrmConfigService } from '../database/typeorm-config.service';
 import { ApolloConfigService } from '../graphql/apollo-config.service';
+import { ChunksModule } from '../tasks/chunks/chunks.module';
 import { TasksModule } from '../tasks/tasks.module';
 import { UsersModule } from '../users/users.module';
 import { IntervalScalar } from '../utils/interval.scalar';
@@ -39,6 +40,7 @@ import { AppService } from './app.service';
     AuthModule,
     UsersModule,
     TasksModule,
+    ChunksModule,
     CategoriesModule,
     WorkersModule,
   ],

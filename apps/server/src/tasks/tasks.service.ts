@@ -1,8 +1,7 @@
-import { UserInputError } from 'apollo-server-errors';
-import { Equal, In, IsNull, LessThan, MoreThan, Not } from 'typeorm';
-import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
-import { Parent, ResolveField } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-errors';
+import moment, { Duration } from 'moment';
+import { Equal, In, IsNull, Not } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -11,15 +10,14 @@ import { PaginationOptions } from '../pagination/pagination.options';
 import { PaginationService } from '../pagination/pagination.service';
 import { User } from '../users/entities/user.entity';
 import { TaskPlanner } from '../workers/taskPlanner';
+import { Chunk } from './chunks/chunk.entity';
 import { CategoryInput } from './dto/category.input';
-import { ChunkFilterOptions } from './dto/chunkFilter.options';
 import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { TaskFilterOptions } from './dto/taskFilter.options';
-import { Chunk } from './entities/chunk.entity';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
 import { Repeat } from './entities/repeat.entity';
@@ -73,16 +71,11 @@ export class TasksService {
       }).save();
     }
 
-    const taskToReturn = await Task.findOne({
-      relations: {
-        chunks: true,
-      },
+    return await Task.findOne({
       where: {
         id: task.id,
       },
     });
-
-    return taskToReturn;
   }
 
   async createFloatTask(user: User, FloatTaskInput: FloatTaskInput) {
@@ -170,7 +163,8 @@ export class TasksService {
           },
         }),
         user: { id: user.id },
-      });
+      })
+      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo');
 
     queryBuilder = this.orderService.order(orderOptions, queryBuilder);
 
@@ -189,7 +183,7 @@ export class TasksService {
     paginationOptions: PaginationOptions,
     orderOptions: OrderOptions
   ) {
-    console.log(orderOptions, paginationOptions);
+    console.log({ task });
     // Create query builder from chunk entity
     let queryBuilder = Chunk.createQueryBuilder('chunk').where(
       'chunk.taskId = :taskId',
@@ -204,44 +198,6 @@ export class TasksService {
     );
 
     return queryBuilder.getMany();
-  }
-
-  async chunksResolver(
-    user: User,
-    chunkFilterOptions: ChunkFilterOptions,
-    paginationOptions: PaginationOptions,
-    orderOptions: OrderOptions
-  ) {
-    // Create query builder from chunk entity
-    let queryBuilder = Chunk.createQueryBuilder('chunk')
-      // Decide how we display and limit chunks in time??
-      // Use filter options to filter chunks
-      // Left join tasks and select only user id from there
-      .leftJoin('chunk.task', 'task')
-      .where({
-        ...(chunkFilterOptions?.taskIds && {
-          task: { id: In(chunkFilterOptions.taskIds) },
-        }),
-
-        ...(chunkFilterOptions.chunkStartAfter && {
-          start: MoreThan(chunkFilterOptions.chunkStartAfter),
-        }),
-        ...(chunkFilterOptions.chunkEndBefore && {
-          // TODO This is not working as expected
-          // As we're not adding duration to the start
-          start: LessThan(chunkFilterOptions.chunkEndBefore),
-        }),
-      })
-      .andWhere('task.userId = :userId', { userId: user.id });
-
-    queryBuilder = this.orderService.order(orderOptions, queryBuilder);
-
-    queryBuilder = this.paginationService.paginate(
-      paginationOptions,
-      queryBuilder
-    );
-
-    return await queryBuilder.getMany();
   }
 
   // This is deprecated

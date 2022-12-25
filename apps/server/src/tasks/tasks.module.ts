@@ -5,7 +5,7 @@ import { Color } from '../categories/entities/color.entity';
 import { OrderService } from '../ordering/order.service';
 import { PaginationService } from '../pagination/pagination.service';
 import { TaskPlanner } from '../workers/taskPlanner';
-import { Chunk } from './entities/chunk.entity';
+import { Chunk } from './chunks/chunk.entity';
 import { ChunkInfo } from './entities/chunkInfo.entity';
 import { Notification } from './entities/notification.entity';
 import { Repeat } from './entities/repeat.entity';
