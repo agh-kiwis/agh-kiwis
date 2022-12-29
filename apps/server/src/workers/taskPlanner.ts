@@ -329,10 +329,12 @@ const findBestWindow = (
     }
   });
 
-  const bestWindow = Array.from(windowsAndCoefficientMap.entries()).reduce(
-    (a, b) => (a[1] < b[1] ? b : a)
-  )[0];
-  return bestWindow;
+  const array = Array.from(windowsAndCoefficientMap.entries());
+
+  if (array.length === 0) {
+    return null;
+  }
+  return array.reduce((a, b) => (a[1] < b[1] ? b : a))[0];
 };
 
 const processWindows = (windows: Window[]) => {
