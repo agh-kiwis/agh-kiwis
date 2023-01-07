@@ -16,7 +16,7 @@ import {
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
-import { useGetTasksQuery } from '@agh-kiwis/data-access';
+import { useChunksQuery } from '@agh-kiwis/data-access';
 import { AlertModal, CustomSpinner } from '@agh-kiwis/ui-components';
 import { SETTINGS_URL, TODO_LIST_URL } from '@agh-kiwis/workspace-constants';
 import { mapToCalendarTiles } from '../services/taskService';
@@ -26,17 +26,7 @@ const Calendar = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const [clickedTask, setClickedTask] = useState(null);
 
-  console.log(clickedTask);
-
-  const { data, loading, error } = useGetTasksQuery({
-    variables: {
-      getTasksInput: {
-        limit: 20,
-        offset: 0,
-        filterOptions: {},
-      },
-    },
-  });
+  const { data, loading, error } = useChunksQuery({});
 
   if (loading) {
     return <CustomSpinner />;
@@ -64,11 +54,13 @@ const Calendar = () => {
           titleFormat={{ day: 'numeric', month: 'short' }}
           height="88vh"
           slotDuration="00:10:00"
-          events={mapToCalendarTiles(data.getTasks)}
+          events={mapToCalendarTiles(data.chunks)}
           eventClick={(e) => {
             console.log(e.event);
             setClickedTask(
-              data.getTasks.find((task) => task.id.toString() === e.event.id)
+              data.chunks.find(
+                (chunk) => chunk.task.id.toString() === e.event.id
+              )
             );
             setModalOpened(true);
           }}

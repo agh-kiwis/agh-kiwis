@@ -62,8 +62,9 @@ export class Task extends GeneralEntity {
   @JoinColumn()
   chunkInfo: ChunkInfo;
 
-  @NullableField(() => [Chunk], {
+  @Field(() => [Chunk], {
     description: 'Represents task in time. Preferences are in ChunkInfo field.',
+    nullable: true,
   })
   @OneToMany(() => Chunk, (chunk) => chunk.task)
   chunks: Chunk[];
