@@ -26,7 +26,14 @@ const Calendar = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const [clickedTask, setClickedTask] = useState(null);
 
-  const { data, loading, error } = useChunksQuery({});
+  const { data, loading, error } = useChunksQuery({
+    variables: {
+      orderOptions: {
+        desc: false,
+        field: 'start',
+      },
+    },
+  });
 
   if (loading) {
     return <CustomSpinner />;
@@ -54,14 +61,13 @@ const Calendar = () => {
           titleFormat={{ day: 'numeric', month: 'short' }}
           height="88vh"
           slotDuration="00:10:00"
-          events={mapToCalendarTiles(data.chunks)}
+          events={mapToCalendarTiles(data.chunks as any)}
           eventClick={(e) => {
             console.log(e.event);
-            setClickedTask(
-              data.chunks.find(
-                (chunk) => chunk.task.id.toString() === e.event.id
-              )
+            const chunk = data.chunks.find(
+              (chunk) => chunk.id.toString() === e.event.id
             );
+            setClickedTask(chunk.task);
             setModalOpened(true);
           }}
           plugins={[timeGridPlugin, interactionPlugin]}

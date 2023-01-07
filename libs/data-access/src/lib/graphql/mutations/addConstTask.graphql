@@ -1,10 +1,4 @@
-mutation addConstTask(
-  $orderOptions: OrderOptions!
-  $paginationOptions: PaginationOptions!
-  $orderOptions1: OrderOptions!
-  $paginationOptions1: PaginationOptions!
-  $ConstTaskInput: ConstTaskInput!
-) {
+mutation addConstTask($ConstTaskInput: ConstTaskInput!) {
   addConstTask(ConstTaskInput: $ConstTaskInput) {
     category {
       color {
@@ -28,49 +22,6 @@ mutation addConstTask(
         repeatUntil
       }
       start
-    }
-    chunks(
-      orderOptions: $orderOptions1
-      paginationOptions: $paginationOptions1
-    ) {
-      duration
-      id
-      isDone
-      start
-      task {
-        category {
-          id
-          name
-        }
-        chunkInfo {
-          chillTime
-          deadline
-          duration
-          estimation
-          id
-          maxChunkDuration
-          minChunkDuration
-          start
-        }
-        chunks(
-          orderOptions: $orderOptions
-          paginationOptions: $paginationOptions
-        ) {
-          duration
-          id
-          isDone
-          start
-        }
-        id
-        isDone
-        isFloat
-        name
-        notifications {
-          timeBefore
-        }
-        priority
-        shouldAutoResolve
-      }
     }
     id
     isDone
