@@ -51,12 +51,6 @@ export class TasksResolver {
     paginationOptions: PaginationOptions,
     @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
   ) {
-    console.log('tasks resolver');
-
-    console.log({ taskFilterOptions });
-    console.log({ paginationOptions });
-    console.log({ orderOptions });
-
     return this.tasksService.tasks(
       user,
       taskFilterOptions,

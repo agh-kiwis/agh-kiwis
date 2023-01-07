@@ -448,8 +448,6 @@ describe('PlanTask (e2e)', () => {
 
     // expect(chunks.length).toBe(10);
 
-    console.log(chunks);
-
     const A1 = {
       start: newDate(2023, 12, 20, 9, 0),
       duration: moment.duration(90, 'minutes'),

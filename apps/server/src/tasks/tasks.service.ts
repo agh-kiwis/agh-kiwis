@@ -100,9 +100,7 @@ export class TasksService {
       shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
     }).save();
 
-    console.log('STARTED PLANNING');
     await this.taskPlanner.planTask(task);
-    console.log('ENDED PLANNING');
     return task;
   }
 
@@ -184,7 +182,6 @@ export class TasksService {
     paginationOptions: PaginationOptions,
     orderOptions: OrderOptions
   ) {
-    console.log({ task });
     // Create query builder from chunk entity
     let queryBuilder = Chunk.createQueryBuilder('chunk').where(
       'chunk.taskId = :taskId',
@@ -387,9 +384,7 @@ export class TasksService {
 
     task = await task.save();
 
-    console.log('UPDATE TASK PLANNING');
     await this.taskPlanner.planTask(task);
-    console.log('UPDATE TASK PLANNING ENDED');
 
     return task;
   }

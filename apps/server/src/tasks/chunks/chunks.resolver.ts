@@ -23,7 +23,6 @@ export class ChunksResolver {
     paginationOptions: PaginationOptions,
     @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
   ) {
-    console.log('Jo jo ');
     return this.chunksService.resolveChunks(
       user,
       chunkFilterOptions,
