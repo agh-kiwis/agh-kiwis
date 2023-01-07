@@ -17,7 +17,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   const dispatch = useDispatch();
 
   if (task.isFloat && task.chunks?.length === 0) return null;
-
+  console.log(task);
   return (
     <>
       <TaskContainer
@@ -47,6 +47,6 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   );
 };
 
-const getTaskColor = (task: Task) => {
+export const getTaskColor = (task: Task) => {
   return task.isDone ? INSIGNIFICANT_COLOR : task.category.color.hexCode;
 };

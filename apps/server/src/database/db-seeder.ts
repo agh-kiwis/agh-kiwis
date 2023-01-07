@@ -127,7 +127,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 12, 0),
+    start: newDate(2022, 12, 12, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -137,7 +137,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 13, 0),
+    start: newDate(2022, 12, 13, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -146,7 +146,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 14, 0),
+    start: newDate(2022, 12, 14, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -155,7 +155,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 15, 0),
+    start: newDate(2022, 12, 15, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -164,7 +164,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 16, 0),
+    start: newDate(2022, 12, 16, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -173,7 +173,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 17, 0),
+    start: newDate(2022, 12, 17, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',
@@ -182,7 +182,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 18, 0),
+    start: newDate(2022, 12, 18, 23),
     duration: moment.duration(8, 'hours'),
     user: user,
     priority: 'high',

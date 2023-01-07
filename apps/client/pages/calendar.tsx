@@ -1,3 +1,4 @@
+import { getTaskColor } from 'libs/ui-components/src/lib/TodoList/TaskComponents/SingleTask';
 import { TaskModal } from 'libs/ui-components/src/lib/TodoList/TaskComponents/TaskModal';
 import FullCalendar from '@fullcalendar/react';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -24,6 +25,8 @@ const Calendar = () => {
   const router = useRouter();
   const [modalOpened, setModalOpened] = useState(false);
   const [clickedTask, setClickedTask] = useState(null);
+
+  console.log(clickedTask);
 
   const { data, loading, error } = useGetTasksQuery({
     variables: {
@@ -104,11 +107,14 @@ const Calendar = () => {
           </Button>
         </HStack>
       </VStack>
-      <TaskModal
-        isOpen={modalOpened}
-        task={clickedTask}
-        close={() => setModalOpened(false)}
-      />
+      {clickedTask && (
+        <TaskModal
+          color={getTaskColor(clickedTask)}
+          isOpen={modalOpened}
+          task={clickedTask}
+          close={() => setModalOpened(false)}
+        />
+      )}
     </Container>
   );
 };
