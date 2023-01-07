@@ -125,7 +125,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 18, 0),
+    start: newDate(2023, 1, 8, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -136,7 +136,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 19, 0),
+    start: newDate(2023, 1, 9, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -146,7 +146,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 20, 0),
+    start: newDate(2023, 1, 10, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -156,7 +156,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 21, 0),
+    start: newDate(2023, 1, 11, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -166,7 +166,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 22, 0),
+    start: newDate(2023, 1, 12, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -176,7 +176,7 @@ export const seedDatabase = async (app: INestApplication) => {
     taskName: 'Sleep',
     category: sleepingCategory,
     // New date in utc
-    start: newDate(2022, 12, 23, 0),
+    start: newDate(2023, 1, 13, 0),
     duration: moment.duration(6.5, 'hours'),
     user: user,
     priority: 'high',
@@ -185,7 +185,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Go to the gym',
     category: sportCategory,
-    start: newDate(2022, 12, 18, 6, 30),
+    start: newDate(2023, 1, 8, 6, 30),
     duration: moment.duration(2.5, 'hours'),
     user,
   });
@@ -193,7 +193,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Hackathon',
     category: lecturesCategory,
-    start: newDate(2022, 12, 18, 12, 30),
+    start: newDate(2023, 1, 8, 12, 30),
     duration: moment.duration(11.5, 'hours'),
     user,
   });
@@ -201,7 +201,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Algebra',
     category: lecturesCategory,
-    start: newDate(2022, 12, 19, 6, 30),
+    start: newDate(2023, 1, 9, 6, 30),
     duration: moment.duration(2.5, 'hours'),
     user,
   });
@@ -209,7 +209,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Logic',
     category: lecturesCategory,
-    start: newDate(2022, 12, 19, 10, 0),
+    start: newDate(2023, 1, 9, 10, 0),
     duration: moment.duration(2, 'hours'),
     user,
   });
@@ -217,7 +217,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Digital technique labs',
     category: labsCategory,
-    start: newDate(2022, 12, 19, 16, 0),
+    start: newDate(2023, 1, 9, 16, 0),
     duration: moment.duration(8, 'hours'),
     user,
   });
@@ -225,7 +225,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Breakfast',
     category: eatingCategory,
-    start: newDate(2022, 12, 20, 6, 30),
+    start: newDate(2023, 1, 10, 6, 30),
     duration: moment.duration(45, 'minutes'),
     user,
   });
@@ -233,7 +233,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Trip to Zakopane',
     category: sportCategory,
-    start: newDate(2022, 12, 20, 12, 30),
+    start: newDate(2023, 1, 10, 12, 30),
     duration: moment.duration(11.5, 'hours'),
     user,
   });
@@ -241,7 +241,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Lambda days conference',
     category: labsCategory,
-    start: newDate(2022, 12, 21, 15, 0),
+    start: newDate(2023, 1, 11, 15, 0),
     duration: moment.duration(9, 'hours'),
     user,
   });
@@ -249,7 +249,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'ASD lecture',
     category: lecturesCategory,
-    start: newDate(2022, 12, 22, 8, 0),
+    start: newDate(2023, 1, 12, 8, 0),
     duration: moment.duration(2, 'hours'),
     user,
   });
@@ -257,7 +257,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Analysis lecture',
     category: lecturesCategory,
-    start: newDate(2022, 12, 22, 11, 30),
+    start: newDate(2023, 1, 12, 11, 30),
     duration: moment.duration(2.5, 'hours'),
     user,
   });
@@ -265,7 +265,7 @@ export const seedDatabase = async (app: INestApplication) => {
   await createConstTask({
     taskName: 'Lambda Days conference',
     category: labsCategory,
-    start: newDate(2022, 12, 22, 15, 0),
+    start: newDate(2023, 1, 12, 15, 0),
     duration: moment.duration(9, 'hours'),
     user,
   });
@@ -279,10 +279,10 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(2022, 12, 18),
+      start: newDate(2023, 1, 8),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(1.5, 'hour'),
-      deadline: newDate(2022, 12, 20, 0, 0),
+      deadline: newDate(2023, 1, 10, 0, 0),
       estimation: moment.duration(3, 'hours'),
       chillTime: moment.duration(20, 'minutes'),
     },
@@ -297,10 +297,10 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(2022, 12, 18),
+      start: newDate(2023, 1, 8),
       minChunkDuration: moment.duration(0.5, 'hour'),
       maxChunkDuration: moment.duration(2, 'hour'),
-      deadline: newDate(2022, 12, 22, 0, 0),
+      deadline: newDate(2023, 1, 12, 0, 0),
       estimation: moment.duration(5, 'hours'),
       chillTime: moment.duration(30, 'minutes'),
     },
@@ -313,11 +313,11 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(2022, 12, 18),
+      start: newDate(2023, 1, 8),
       minChunkDuration: moment.duration(0.5, 'hour'),
       maxChunkDuration: moment.duration(0.5, 'hour'),
       estimation: moment.duration(2, 'hours'),
-      deadline: newDate(2022, 12, 23, 0, 0),
+      deadline: newDate(2023, 1, 13, 0, 0),
       chillTime: moment.duration(0, 'minutes'),
     },
   }).save();

@@ -12,6 +12,10 @@ const newDate = (
     (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
   );
 
+  if (daysPassed < 0) {
+    return date;
+  }
+
   // Round the days to the closest weeks number
   const weeksPassed = Math.round(daysPassed / 7) + 1;
 
