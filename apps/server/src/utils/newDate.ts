@@ -8,8 +8,8 @@ const newDate = (
   const date = new Date(year, month - 1, day, hour, minute);
 
   // Find how many weeks have passed until now since date
-  const weeksPassed = Math.floor(
-    (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 7)
+  const daysPassed = Math.floor(
+    (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
   );
 
   if (weeksPassed <= 0) {

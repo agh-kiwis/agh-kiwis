@@ -162,8 +162,6 @@ export class TaskPlanner {
         ),
       });
     }
-    console.log('Windows before adding float tasks: ');
-    printWindows(windows);
 
     // If there is time left after the last const task, add it to the windows
     if (constTaskChunks.length > 0) {
@@ -186,8 +184,6 @@ export class TaskPlanner {
         });
       }
     }
-    console.log('Windows after adding const tasks: ');
-    printWindows(windows);
 
     interface Weight {
       deadline: number;

@@ -268,9 +268,6 @@ export const handleFloatTaskSubmit = async (
     variables: {
       FloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
     },
-  }).catch((error) => {
-    // TODO handle error
-    console.log(error);
   });
 
   if (taskResponse) {
