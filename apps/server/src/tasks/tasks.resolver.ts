@@ -81,7 +81,7 @@ export class TasksResolver {
     );
   }
 
-  @Query(() => [Task], { deprecationReason: 'Use tasks instead' })
+  @Query(() => [Task])
   getTasks(
     @CurrentUser() user: User,
     @Args('getTasksInput') getTasksInput: GetTasksInput
@@ -89,9 +89,7 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
-  @Query(() => Task, {
-    deprecationReason: 'Use tasks with [id] as filter value instead',
-  })
+  @Query(() => Task)
   getTask(@CurrentUser() user: User, @Args('id') id: string) {
     return this.tasksService.getTask(user, id);
   }

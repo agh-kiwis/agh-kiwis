@@ -1,0 +1,10 @@
+query categories {
+  categories {
+    color {
+      hexCode
+      id
+    }
+    id
+    name
+  }
+}

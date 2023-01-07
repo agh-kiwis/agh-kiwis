@@ -1,11 +1,15 @@
-mutation removeTask(
+query tasks(
   $orderOptions: OrderOptions!
   $paginationOptions: PaginationOptions!
   $orderOptions1: OrderOptions!
   $paginationOptions1: PaginationOptions!
-  $id: Int!
+  $taskFilterOptions: TaskFilterOptions
 ) {
-  removeTask(id: $id) {
+  tasks(
+    orderOptions: $orderOptions
+    paginationOptions: $paginationOptions
+    taskFilterOptions: $taskFilterOptions
+  ) {
     category {
       color {
         hexCode
@@ -37,40 +41,6 @@ mutation removeTask(
       id
       isDone
       start
-      task {
-        category {
-          id
-          name
-        }
-        chunkInfo {
-          chillTime
-          deadline
-          duration
-          estimation
-          id
-          maxChunkDuration
-          minChunkDuration
-          start
-        }
-        chunks(
-          orderOptions: $orderOptions
-          paginationOptions: $paginationOptions
-        ) {
-          duration
-          id
-          isDone
-          start
-        }
-        id
-        isDone
-        isFloat
-        name
-        notifications {
-          timeBefore
-        }
-        priority
-        shouldAutoResolve
-      }
     }
     id
     isDone
