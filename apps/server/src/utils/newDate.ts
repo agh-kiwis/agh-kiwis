@@ -16,8 +16,11 @@ const newDate = (
     // Just add a week
     date.setTime(date.getTime() + 1 * 7 * 24 * 60 * 60 * 1000);
   } else {
-    date.setTime(date.getTime() + weeksPassed * 7 * 24 * 60 * 60 * 1000);
+    date.setTime(date.getTime() + (weeksPassed + 1) * 7 * 24 * 60 * 60 * 1000);
   }
+
+  // Add a year to the date
+  // const date = new Date(year + 1, month - 1, day, hour, minute);
 
   return date;
 };

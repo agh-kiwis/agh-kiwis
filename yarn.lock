@@ -1809,7 +1809,7 @@
   dependencies:
     "@chakra-ui/utils" "2.0.12"
 
-"@chakra-ui/react@^2.0.2":
+"@chakra-ui/react@2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.4.2.tgz#60d0cf80965d77ab6e280e28124b800a0d7a5f8c"
   integrity sha512-lPDCCuY3S7XSeIK+P+ypGIL+lFqEZQt8H3Iyq4coblULMsj8skdSUqaoQ4I9fGgOi1koTPe4OlXb+rmqwQQ9MQ==

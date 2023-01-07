@@ -4,5 +4,5 @@ export const InitialSeed = {
   password: 'password1234',
 
   categories: ['Sleep', 'Meals', 'Sport', 'Study', 'Hobby', 'Other'],
-  colors: ['#0077B6', '#E0479E', '#FF8C42', '#E53E3E', '#1EA896', '#ECC94B'],
+  colors: ['#0088E1', '#DCA11D', '#9D507C', '#6D67E4', '#1EA896', '#006471'],
 };

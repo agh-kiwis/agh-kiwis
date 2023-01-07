@@ -94,7 +94,6 @@ Get task details can be split into another request, for example for float tasks 
 
 # Mutations
 
-
 Each task mutation needs replanning algorithm to re-run with the new data. So we need to standartize the entry point for each update
 
 ```gql

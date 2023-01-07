@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
-import moment, { Duration } from 'moment';
 import { Equal, In, IsNull, Not } from 'typeorm';
+import moment, { Duration } from 'moment';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -100,8 +100,9 @@ export class TasksService {
       shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
     }).save();
 
+    console.log('STARTED PLANNING');
     await this.taskPlanner.planTask(task);
-
+    console.log('ENDED PLANNING');
     return task;
   }
 
@@ -386,7 +387,9 @@ export class TasksService {
 
     task = await task.save();
 
+    console.log('UPDATE TASK PLANNING');
     await this.taskPlanner.planTask(task);
+    console.log('UPDATE TASK PLANNING ENDED');
 
     return task;
   }
