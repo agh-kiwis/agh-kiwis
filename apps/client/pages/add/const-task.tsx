@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDisclosure } from '@chakra-ui/react';
 import { useAddConstTaskMutation } from '@agh-kiwis/data-access';
 import { ConstTaskType } from '@agh-kiwis/types';
-import { ConstTaskForm } from '@agh-kiwis/ui-components';
+import { ConstTaskForm, ErrorModal, Wrapper } from '@agh-kiwis/ui-components';
+import { CONST_ERROR_INFO } from '@agh-kiwis/workspace-constants';
 import {
   chillTimeInputFields,
   constTaskInitialValues,
@@ -13,21 +15,37 @@ import { handleConstTaskSubmit } from '../../services/taskService';
 
 const ConstTask: React.FC = () => {
   const [addConstTaskMutation] = useAddConstTaskMutation();
+  const [addTaskError, setAddTaskError] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
 
   const handleSubmit = async (values: ConstTaskType) => {
-    handleConstTaskSubmit(values, addConstTaskMutation);
+    await handleConstTaskSubmit(values, addConstTaskMutation).catch((error) => {
+      onOpen();
+      setAddTaskError(error.message);
+    });
   };
 
   return (
-    <ConstTaskForm
-      initialValues={constTaskInitialValues}
-      durationInputFields={durationInputFields}
-      chillTimeInputFields={chillTimeInputFields}
-      repeatEverySelectField={repeatEverySelectField}
-      repeatEveryAmountFields={repeatEveryAmountFields}
-      onSubmit={handleSubmit}
-      isInEditMode={false}
-    />
+    <Wrapper>
+      {addTaskError && (
+        <ErrorModal
+          message={CONST_ERROR_INFO}
+          isOpen={isOpen}
+          onClose={onClose}
+          cancelRef={cancelRef}
+        />
+      )}
+      <ConstTaskForm
+        initialValues={constTaskInitialValues}
+        durationInputFields={durationInputFields}
+        chillTimeInputFields={chillTimeInputFields}
+        repeatEverySelectField={repeatEverySelectField}
+        repeatEveryAmountFields={repeatEveryAmountFields}
+        onSubmit={handleSubmit}
+        isInEditMode={false}
+      />
+    </Wrapper>
   );
 };
 

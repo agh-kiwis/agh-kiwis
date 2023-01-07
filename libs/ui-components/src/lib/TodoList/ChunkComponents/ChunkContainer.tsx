@@ -7,17 +7,19 @@ import {
 type ChunkContainerProps = {
   children: React.ReactNode;
   checked: boolean;
+  color: string;
 };
 
 export const ChunkContainer: React.FC<ChunkContainerProps> = ({
   children,
   checked,
+  color,
 }) => {
   return (
     <HStack
       justifyContent="space-between"
       color="white"
-      bgColor={checked ? INSIGNIFICANT_COLOR : DEFAULT_COLOR}
+      bgColor={checked ? INSIGNIFICANT_COLOR : color}
       borderRadius="0.5rem"
       px="2"
     >

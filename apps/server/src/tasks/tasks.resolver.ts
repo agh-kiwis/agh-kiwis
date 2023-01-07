@@ -1,12 +1,23 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { OrderOptions } from '../ordering/order.options';
+import { PaginationOptions } from '../pagination/pagination.options';
 import { CurrentUser } from '../providers/user.provider';
 import { User } from '../users/entities/user.entity';
+import { Chunk } from './chunks/chunk.entity';
 import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
 import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
-import { Chunk } from './entities/chunk.entity';
+import { TaskFilterOptions } from './dto/taskFilter.options';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
@@ -31,6 +42,46 @@ export class TasksResolver {
   }
 
   @Query(() => [Task])
+  async tasks(
+    @CurrentUser() user: User,
+    // Make the filter options optional
+    @Args('taskFilterOptions', { nullable: true })
+    taskFilterOptions: TaskFilterOptions,
+    @Args('paginationOptions', { defaultValue: {} })
+    paginationOptions: PaginationOptions,
+    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
+  ) {
+    return this.tasksService.tasks(
+      user,
+      taskFilterOptions,
+      paginationOptions,
+      orderOptions
+    );
+  }
+
+  @ResolveField(() => [Chunk], { name: 'chunks' })
+  async chunksFieldResolver(
+    @Parent() task: Task,
+    // FIXME
+    // THAT IS PROBABLY A nestjs/graphql BUG,
+    // because paginatedOptions need to be seeded with
+    // default values at this point, but seems that they are not
+    @Args('paginationOptions', { defaultValue: { offset: 0, limit: 20 } })
+    paginationOptions: PaginationOptions,
+    @Args('orderOptions', { defaultValue: { field: 'id', desc: true } })
+    orderOptions: OrderOptions
+  ) {
+    // TODO Later on we need to introduce dataloader there
+    // Link to the implementation in resolver function
+    // A chunk is expected to be a field of a task, so we omit validation
+    return this.tasksService.chunksFieldResolve(
+      task,
+      paginationOptions,
+      orderOptions
+    );
+  }
+
+  @Query(() => [Task], { deprecationReason: 'Use tasks instead' })
   getTasks(
     @CurrentUser() user: User,
     @Args('getTasksInput') getTasksInput: GetTasksInput
@@ -38,7 +89,9 @@ export class TasksResolver {
     return this.tasksService.getTasks(user, getTasksInput);
   }
 
-  @Query(() => Task)
+  @Query(() => Task, {
+    deprecationReason: 'Use tasks with [id] as filter value instead',
+  })
   getTask(@CurrentUser() user: User, @Args('id') id: string) {
     return this.tasksService.getTask(user, id);
   }

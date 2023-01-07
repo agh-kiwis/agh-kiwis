@@ -4,7 +4,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IntervalColumn } from '../../types/IntervalColumn';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { Interval } from '../../utils/interval.scalar';
-import { Task } from './task.entity';
+import { Task } from '../entities/task.entity';
 
 @Entity()
 @ObjectType()
@@ -25,6 +25,7 @@ export class Chunk extends GeneralEntity {
   @Column({ default: false })
   isDone: boolean;
 
+  @Field(() => Task)
   @ManyToOne(() => Task, (task) => task.chunks, {
     onDelete: 'CASCADE',
   })

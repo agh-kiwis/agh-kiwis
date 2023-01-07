@@ -16,6 +16,8 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   const [modalOpened, setModalOpened] = useState(false);
   const dispatch = useDispatch();
 
+  if (task.isFloat && task.chunks?.length === 0) return null;
+
   return (
     <>
       <TaskContainer
@@ -37,6 +39,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
 
       <TaskModal
         isOpen={modalOpened}
+        color={getTaskColor(task)}
         task={task}
         close={() => setModalOpened(false)}
       />

@@ -42,12 +42,14 @@ import { TaskChunks } from './TaskChunks';
 type TaskModalProps = {
   isOpen: boolean;
   task: Task;
+  color: string;
   close: () => void;
 };
 
 export const TaskModal: React.FC<TaskModalProps> = ({
   isOpen,
   task,
+  color,
   close,
 }) => {
   const router = useRouter();
@@ -224,7 +226,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <ModalBody>
               {task.isFloat && (
                 <Box>
-                  <TaskChunks chunks={task.chunks!} />
+                  <TaskChunks chunks={task.chunks!} color={color} />
                 </Box>
               )}
             </ModalBody>

@@ -13,7 +13,7 @@ import { Category } from '../../categories/entities/category.entity';
 import { User } from '../../users/entities/user.entity';
 import { GeneralEntity } from '../../utils/GeneralEntity';
 import { NullableField } from '../../utils/NullableField';
-import { Chunk } from './chunk.entity';
+import { Chunk } from '../chunks/chunk.entity';
 import { ChunkInfo } from './chunkInfo.entity';
 import { Notification } from './notification.entity';
 
