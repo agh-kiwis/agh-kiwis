@@ -11,9 +11,14 @@ import { ChunkInfo } from './ChunkInfo';
 type TaskChunkProps = {
   index: number;
   chunk: Chunk;
+  color: string;
 };
 
-export const TaskChunk: React.FC<TaskChunkProps> = ({ index, chunk }) => {
+export const TaskChunk: React.FC<TaskChunkProps> = ({
+  index,
+  chunk,
+  color,
+}) => {
   const [checked, setChecked] = useState(chunk.isDone);
 
   const [updateChunkMutation, { loading }] = useUpdateChunkMutation({
@@ -34,7 +39,7 @@ export const TaskChunk: React.FC<TaskChunkProps> = ({ index, chunk }) => {
   };
 
   return (
-    <ChunkContainer checked={checked}>
+    <ChunkContainer checked={checked} color={color}>
       <ChunkInfo checked={checked} id={index} chunk={chunk} />
       <Checkbox
         px="4"
