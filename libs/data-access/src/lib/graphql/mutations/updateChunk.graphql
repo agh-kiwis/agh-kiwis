@@ -1,9 +1,4 @@
-mutation updateChunk(
-  $orderOptions: OrderOptions!
-  $paginationOptions: PaginationOptions!
-  $chunkInput: ChunkInput!
-  $id: Int!
-) {
+mutation updateChunk($chunkInput: ChunkInput!, $id: Int!) {
   updateChunk(chunkInput: $chunkInput, id: $id) {
     duration
     id
@@ -32,26 +27,6 @@ mutation updateChunk(
           repeatUntil
         }
         start
-      }
-      chunks(
-        orderOptions: $orderOptions
-        paginationOptions: $paginationOptions
-      ) {
-        duration
-        id
-        isDone
-        start
-        task {
-          id
-          isDone
-          isFloat
-          name
-          notifications {
-            timeBefore
-          }
-          priority
-          shouldAutoResolve
-        }
       }
       id
       isDone

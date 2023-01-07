@@ -1,6 +1,7 @@
 import router from 'next/router';
 import moment from 'moment';
 import {
+  Chunk,
   ConstTaskInput,
   FloatTaskInput,
   RepeatType,
@@ -178,36 +179,18 @@ export const floatTaskToUpdateTaskMutationMapper = (
   timeBeforeNotification: null,
 });
 
-export const mapToCalendarTiles = (tasks: Task[]): CalendarTileType[] => {
+export const mapToCalendarTiles = (chunks: Chunk[]): CalendarTileType[] => {
   const mappedTasks: CalendarTileType[] = [];
 
-  tasks
-    .filter((task) => task.isFloat)
-    .map((task) => {
-      task.chunks.map((chunk) =>
-        mappedTasks.push({
-          id: task?.id.toString(),
-          title: task?.name,
-          start: moment(chunk?.start).toISOString(),
-          end: moment(chunk?.start).add(chunk?.duration).toISOString(),
-          color: task.category.color.hexCode,
-        })
-      );
+  chunks.map((chunk) => {
+    mappedTasks.push({
+      id: chunk?.id.toString(),
+      title: chunk?.task.name,
+      start: moment(chunk?.start).toISOString(),
+      end: moment(chunk?.start).add(chunk?.duration).toISOString(),
+      color: chunk.task.category.color.hexCode,
     });
-
-  tasks
-    .filter((task) => !task.isFloat)
-    .map((task) => {
-      mappedTasks.push({
-        id: task?.id.toString(),
-        title: task?.name,
-        start: moment(task?.chunkInfo?.start).toISOString(),
-        end: moment(task?.chunkInfo?.start)
-          .add(task?.chunkInfo?.duration)
-          .toISOString(),
-        color: task.category.color.hexCode,
-      });
-    });
+  });
 
   return mappedTasks;
 };

@@ -60,6 +60,8 @@ export class ChunksService {
     return await Task.createQueryBuilder('task')
       .leftJoin('task.chunks', 'chunk')
       .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+      .innerJoinAndSelect('task.category', 'category')
+      .innerJoinAndSelect('category.color', 'color')
       .where('chunk.id = :chunkId', { chunkId: chunk.id })
       .getOneOrFail();
   }
