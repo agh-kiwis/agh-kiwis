@@ -88,7 +88,9 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
         ? task.chunkInfo.repeat?.repeatEvery
         : 1,
     },
-    repeatUntil: moment(task.chunkInfo.repeat.repeatUntil).format('yyyy-MM-DD'),
+    repeatUntil: moment(task.chunkInfo.repeat?.repeatUntil).format(
+      'yyyy-MM-DD'
+    ),
   },
   repeatEveryFacade: '',
   notify: !!task.notifications,

@@ -1,11 +1,4 @@
-mutation updateTask(
-  $orderOptions: OrderOptions!
-  $paginationOptions: PaginationOptions!
-  $orderOptions1: OrderOptions!
-  $paginationOptions1: PaginationOptions!
-  $id: Int!
-  $taskInput: TaskInput!
-) {
+mutation updateTask($id: Int!, $taskInput: TaskInput!) {
   updateTask(id: $id, taskInput: $taskInput) {
     category {
       color {
@@ -29,49 +22,6 @@ mutation updateTask(
         repeatUntil
       }
       start
-    }
-    chunks(
-      orderOptions: $orderOptions1
-      paginationOptions: $paginationOptions1
-    ) {
-      duration
-      id
-      isDone
-      start
-      task {
-        category {
-          id
-          name
-        }
-        chunkInfo {
-          chillTime
-          deadline
-          duration
-          estimation
-          id
-          maxChunkDuration
-          minChunkDuration
-          start
-        }
-        chunks(
-          orderOptions: $orderOptions
-          paginationOptions: $paginationOptions
-        ) {
-          duration
-          id
-          isDone
-          start
-        }
-        id
-        isDone
-        isFloat
-        name
-        notifications {
-          timeBefore
-        }
-        priority
-        shouldAutoResolve
-      }
     }
     id
     isDone
