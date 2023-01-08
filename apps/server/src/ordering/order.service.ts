@@ -9,6 +9,13 @@ export class OrderService {
     orderOptions: OrderOptions,
     query: SelectQueryBuilder<EntityType>
   ) {
+    if (orderOptions.field.includes('.')) {
+      return query.orderBy(
+        orderOptions.field,
+        orderOptions.desc ? 'DESC' : 'ASC'
+      );
+    }
+
     // get entity name
     const entityName = query.expressionMap.mainAlias!.name;
 

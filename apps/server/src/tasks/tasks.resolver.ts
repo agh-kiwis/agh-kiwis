@@ -7,6 +7,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import {
+  GraphqlLoader,
+  Loader,
+  LoaderData,
+} from '@agh-kiwis/nestjs-graphql-tools';
 import { OrderOptions } from '../ordering/order.options';
 import { PaginationOptions } from '../pagination/pagination.options';
 import { CurrentUser } from '../providers/user.provider';
@@ -60,25 +65,40 @@ export class TasksResolver {
   }
 
   @ResolveField(() => [Chunk], { name: 'chunks' })
+  @GraphqlLoader()
   async chunksFieldResolver(
-    @Parent() task: Task,
     // FIXME
     // THAT IS PROBABLY A nestjs/graphql BUG,
     // because paginatedOptions need to be seeded with
     // default values at this point, but seems that they are not
+    @Loader() loader: LoaderData<Chunk[], number>,
     @Args('paginationOptions', { defaultValue: { offset: 0, limit: 20 } })
     paginationOptions: PaginationOptions,
     @Args('orderOptions', { defaultValue: { field: 'id', desc: true } })
     orderOptions: OrderOptions
   ) {
-    // TODO Later on we need to introduce dataloader there
     // Link to the implementation in resolver function
     // A chunk is expected to be a field of a task, so we omit validation
-    return this.tasksService.chunksFieldResolve(
-      task,
+    const chunks = await this.tasksService.chunksFieldResolve(
+      loader.ids,
       paginationOptions,
       orderOptions
     );
+
+    const taskChunksMap = loader.ids.reduce((acc, id) => {
+      acc[Number(id)] = [];
+
+      // Find all chunks that belong to the task with id
+      chunks.forEach((chunk) => {
+        if (chunk.task.id === id) {
+          acc[Number(id)].push(chunk);
+        }
+      });
+
+      return acc;
+    }, {});
+
+    return Object.values(taskChunksMap);
   }
 
   @Query(() => [Task])

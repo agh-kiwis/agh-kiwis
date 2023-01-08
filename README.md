@@ -1,5 +1,14 @@
 # AghKiwis
 
+We need to:
+
+FRONT
+
+1. Use data loader
+2. Cleanup backend
+
+BACKEND 3. Cleanup filters to be persistent through the session (store them in redux states) 4. Cleanup caching to not refetch the queries but to update the cache according to the performed operation
+
 ## First run
 
 - Install postgres

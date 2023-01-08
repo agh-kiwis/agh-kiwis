@@ -1,6 +1,11 @@
 /* eslint-disable */
 export default {
   displayName: 'server',
+  moduleNameMapper: {
+    // That is needed to show jest from where the import is coming from
+    '@agh-kiwis/nestjs-graphql-tools':
+      '<rootDir>/../../libs/nestjs-graphql-tools/src/index.ts',
+  },
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {

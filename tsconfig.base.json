@@ -19,6 +19,9 @@
       "@agh-kiwis/data-access": ["libs/data-access/src/index.ts"],
       "@agh-kiwis/form-validators": ["libs/form-validators/src/index.ts"],
       "@agh-kiwis/moment-service": ["libs/moment-service/src/index.ts"],
+      "@agh-kiwis/nestjs-graphql-tools": [
+        "libs/nestjs-graphql-tools/src/index.ts"
+      ],
       "@agh-kiwis/redux": ["libs/redux/src/index.ts"],
       "@agh-kiwis/server": ["apps/server"],
       "@agh-kiwis/types": ["libs/types/src/index.ts"],

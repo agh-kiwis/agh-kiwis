@@ -42,7 +42,9 @@ export class ChunksService {
           start: LessThan(chunkFilterOptions.chunkEndBefore),
         }),
       })
-      .andWhere('task.userId = :userId', { userId: user.id });
+      .andWhere('task.userId = :userId', { userId: user.id })
+      .addSelect('task.id', 'task_id');
+    // Select task_id
 
     queryBuilder = this.orderService.order(orderOptions, queryBuilder);
 
@@ -54,7 +56,18 @@ export class ChunksService {
     return await queryBuilder.getMany();
   }
 
-  async resolveTask(chunk: Chunk) {
+  // async resolveTask(chunk: Chunk) {
+  //   // TODO Batch later on
+  //   // Create repository builder from chunk
+  //   return await Task.createQueryBuilder('task')
+  //     .leftJoin('task.chunks', 'chunk')
+  //     .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+  //     .innerJoinAndSelect('task.category', 'category')
+  //     .innerJoinAndSelect('category.color', 'color')
+  //     .where('chunk.id = :chunkId', { chunkId: chunk.id })
+  //     .getOneOrFail();
+  // }
+  async resolveTask(taskIds: number[]) {
     // TODO Batch later on
     // Create repository builder from chunk
     return await Task.createQueryBuilder('task')
@@ -62,7 +75,7 @@ export class ChunksService {
       .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
       .innerJoinAndSelect('task.category', 'category')
       .innerJoinAndSelect('category.color', 'color')
-      .where('chunk.id = :chunkId', { chunkId: chunk.id })
-      .getOneOrFail();
+      .where('task.id IN (:...taskIds)', { taskIds })
+      .getMany();
   }
 }
