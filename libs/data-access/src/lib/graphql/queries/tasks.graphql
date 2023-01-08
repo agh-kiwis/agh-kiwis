@@ -1,8 +1,8 @@
 query tasks(
-  $orderOptions: OrderOptions!
-  $paginationOptions: PaginationOptions!
-  $orderOptions1: OrderOptions!
-  $paginationOptions1: PaginationOptions!
+  $orderOptions: OrderOptions
+  $paginationOptions: PaginationOptions
+  $orderOptions1: OrderOptions
+  $paginationOptions1: PaginationOptions
   $taskFilterOptions: TaskFilterOptions
 ) {
   tasks(

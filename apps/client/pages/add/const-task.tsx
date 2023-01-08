@@ -14,7 +14,13 @@ import {
 import { handleConstTaskSubmit } from '../../services/taskService';
 
 const ConstTask: React.FC = () => {
-  const [addConstTaskMutation] = useAddConstTaskMutation();
+  const [addConstTaskMutation] = useAddConstTaskMutation({
+    update(cache) {
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
+    },
+  });
   const [addTaskError, setAddTaskError] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();

@@ -103,7 +103,7 @@ export const categoryHandler = (optionsArray: FilterType) => {
       ids.push(categories_map.get(opt)!);
     }
   });
-  return ids;
+  return ids.length === 0 ? undefined : ids;
 };
 
 const priorityHandler = (optionsArray: FilterType) => {

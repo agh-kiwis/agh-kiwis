@@ -69,7 +69,14 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   });
 
   const handleDelete = async () => {
-    const response = await removeTaskMutation().catch((error) => {
+    const response = await removeTaskMutation({
+      update(cache) {
+        // TODO Replace that with by-hand cache modifications
+        cache.evict({ fieldName: 'tasks' });
+        cache.evict({ fieldName: 'chunks' });
+        cache.gc();
+      },
+    }).catch((error) => {
       console.log(error);
     });
 

@@ -303,8 +303,8 @@ export type Query = {
 
 export type QueryChunksArgs = {
   chunkFilterOptions?: InputMaybe<ChunkFilterOptions>;
-  orderOptions?: InputMaybe<OrderOptions>;
-  paginationOptions?: InputMaybe<PaginationOptions>;
+  orderOptions?: OrderOptions;
+  paginationOptions?: PaginationOptions;
 };
 
 
@@ -493,7 +493,7 @@ export type RemoveTaskMutationVariables = Exact<{
 }>;
 
 
-export type RemoveTaskMutation = { __typename?: 'Mutation', removeTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
+export type RemoveTaskMutation = { __typename?: 'Mutation', removeTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
 
 export type RemoveUserMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -508,7 +508,7 @@ export type UpdateChunkMutationVariables = Exact<{
 }>;
 
 
-export type UpdateChunkMutation = { __typename?: 'Mutation', updateChunk: { __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any, task?: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null } | null } };
+export type UpdateChunkMutation = { __typename?: 'Mutation', updateChunk: { __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any } };
 
 export type UpdateConstTaskMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -519,14 +519,12 @@ export type UpdateConstTaskMutationVariables = Exact<{
 export type UpdateConstTaskMutation = { __typename?: 'Mutation', updateConstTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
 
 export type UpdateFloatTaskMutationVariables = Exact<{
-  orderOptions?: InputMaybe<OrderOptions>;
-  paginationOptions?: InputMaybe<PaginationOptions>;
   id: Scalars['Int'];
   taskInput: FloatTaskInput;
 }>;
 
 
-export type UpdateFloatTaskMutation = { __typename?: 'Mutation', updateFloatTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
+export type UpdateFloatTaskMutation = { __typename?: 'Mutation', updateFloatTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
 
 export type UpdateTaskMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -594,10 +592,10 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 export type TasksQueryVariables = Exact<{
-  orderOptions: OrderOptions;
-  paginationOptions: PaginationOptions;
-  orderOptions1: OrderOptions;
-  paginationOptions1: PaginationOptions;
+  orderOptions?: InputMaybe<OrderOptions>;
+  paginationOptions?: InputMaybe<PaginationOptions>;
+  orderOptions1?: InputMaybe<OrderOptions>;
+  paginationOptions1?: InputMaybe<PaginationOptions>;
   taskFilterOptions?: InputMaybe<TaskFilterOptions>;
 }>;
 
@@ -997,14 +995,6 @@ export type RemoveCategoryMutationOptions = Apollo.BaseMutationOptions<RemoveCat
 export const RemoveTaskDocument = gql`
     mutation removeTask($id: Int!) {
   removeTask(id: $id) {
-    category {
-      color {
-        hexCode
-        id
-      }
-      id
-      name
-    }
     chunkInfo {
       chillTime
       deadline
@@ -1103,37 +1093,6 @@ export const UpdateChunkDocument = gql`
     id
     isDone
     start
-    task {
-      category {
-        color {
-          hexCode
-          id
-        }
-        id
-        name
-      }
-      chunkInfo {
-        chillTime
-        deadline
-        duration
-        estimation
-        id
-        maxChunkDuration
-        minChunkDuration
-        repeat {
-          repeatEvery
-          repeatType
-          repeatUntil
-        }
-        start
-      }
-      id
-      isDone
-      isFloat
-      name
-      priority
-      shouldAutoResolve
-    }
   }
 }
     `;
@@ -1230,7 +1189,7 @@ export type UpdateConstTaskMutationHookResult = ReturnType<typeof useUpdateConst
 export type UpdateConstTaskMutationResult = Apollo.MutationResult<UpdateConstTaskMutation>;
 export type UpdateConstTaskMutationOptions = Apollo.BaseMutationOptions<UpdateConstTaskMutation, UpdateConstTaskMutationVariables>;
 export const UpdateFloatTaskDocument = gql`
-    mutation updateFloatTask($orderOptions: OrderOptions, $paginationOptions: PaginationOptions, $id: Int!, $taskInput: FloatTaskInput!) {
+    mutation updateFloatTask($id: Int!, $taskInput: FloatTaskInput!) {
   updateFloatTask(id: $id, taskInput: $taskInput) {
     category {
       color {
@@ -1253,12 +1212,6 @@ export const UpdateFloatTaskDocument = gql`
         repeatType
         repeatUntil
       }
-      start
-    }
-    chunks(orderOptions: $orderOptions, paginationOptions: $paginationOptions) {
-      duration
-      id
-      isDone
       start
     }
     id
@@ -1288,8 +1241,6 @@ export type UpdateFloatTaskMutationFn = Apollo.MutationFunction<UpdateFloatTaskM
  * @example
  * const [updateFloatTaskMutation, { data, loading, error }] = useUpdateFloatTaskMutation({
  *   variables: {
- *      orderOptions: // value for 'orderOptions'
- *      paginationOptions: // value for 'paginationOptions'
  *      id: // value for 'id'
  *      taskInput: // value for 'taskInput'
  *   },
@@ -1820,7 +1771,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const TasksDocument = gql`
-    query tasks($orderOptions: OrderOptions!, $paginationOptions: PaginationOptions!, $orderOptions1: OrderOptions!, $paginationOptions1: PaginationOptions!, $taskFilterOptions: TaskFilterOptions) {
+    query tasks($orderOptions: OrderOptions, $paginationOptions: PaginationOptions, $orderOptions1: OrderOptions, $paginationOptions1: PaginationOptions, $taskFilterOptions: TaskFilterOptions) {
   tasks(
     orderOptions: $orderOptions
     paginationOptions: $paginationOptions
@@ -1888,7 +1839,7 @@ export const TasksDocument = gql`
  *   },
  * });
  */
-export function useTasksQuery(baseOptions: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>) {
+export function useTasksQuery(baseOptions?: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<TasksQuery, TasksQueryVariables>(TasksDocument, options);
       }

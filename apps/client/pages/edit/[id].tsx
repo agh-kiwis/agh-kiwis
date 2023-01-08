@@ -31,7 +31,13 @@ import {
 const ConstTask: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [updateConstTaskMutation] = useUpdateConstTaskMutation();
+  const [updateConstTaskMutation] = useUpdateConstTaskMutation({
+    update(cache) {
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
+    },
+  });
   const [updateFloatTaskMutation] = useUpdateFloatTaskMutation();
 
   const { data, loading, error } = useGetTaskQuery({

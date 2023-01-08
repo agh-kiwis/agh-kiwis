@@ -1,9 +1,4 @@
-mutation updateFloatTask(
-  $orderOptions: OrderOptions
-  $paginationOptions: PaginationOptions
-  $id: Int!
-  $taskInput: FloatTaskInput!
-) {
+mutation updateFloatTask($id: Int!, $taskInput: FloatTaskInput!) {
   updateFloatTask(id: $id, taskInput: $taskInput) {
     category {
       color {
@@ -26,12 +21,6 @@ mutation updateFloatTask(
         repeatType
         repeatUntil
       }
-      start
-    }
-    chunks(orderOptions: $orderOptions, paginationOptions: $paginationOptions) {
-      duration
-      id
-      isDone
       start
     }
     id

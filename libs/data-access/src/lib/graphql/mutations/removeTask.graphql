@@ -1,13 +1,5 @@
 mutation removeTask($id: Int!) {
   removeTask(id: $id) {
-    category {
-      color {
-        hexCode
-        id
-      }
-      id
-      name
-    }
     chunkInfo {
       chillTime
       deadline

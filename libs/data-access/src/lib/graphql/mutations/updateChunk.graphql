@@ -4,36 +4,5 @@ mutation updateChunk($chunkInput: ChunkInput!, $id: Int!) {
     id
     isDone
     start
-    task {
-      category {
-        color {
-          hexCode
-          id
-        }
-        id
-        name
-      }
-      chunkInfo {
-        chillTime
-        deadline
-        duration
-        estimation
-        id
-        maxChunkDuration
-        minChunkDuration
-        repeat {
-          repeatEvery
-          repeatType
-          repeatUntil
-        }
-        start
-      }
-      id
-      isDone
-      isFloat
-      name
-      priority
-      shouldAutoResolve
-    }
   }
 }

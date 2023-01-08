@@ -20,9 +20,9 @@ export class ChunksResolver {
     // TODO Replace that with custom argument later on
     @Args('chunkFilterOptions', { nullable: true })
     chunkFilterOptions: ChunkFilterOptions,
-    @Args('paginationOptions', { defaultValue: {}, nullable: true })
+    @Args('paginationOptions', { defaultValue: {} })
     paginationOptions: PaginationOptions,
-    @Args('orderOptions', { defaultValue: {}, nullable: true })
+    @Args('orderOptions', { defaultValue: {} })
     orderOptions: OrderOptions
   ) {
     return this.chunksService.resolveChunks(

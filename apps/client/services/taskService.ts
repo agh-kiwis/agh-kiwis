@@ -1,9 +1,12 @@
+import { ApolloCache } from '@apollo/client';
 import router from 'next/router';
 import moment from 'moment';
 import {
   Chunk,
   ConstTaskInput,
   FloatTaskInput,
+  GetTaskDocument,
+  GetTasksDocument,
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
@@ -89,7 +92,9 @@ export const taskToConstTaskType = (task: Task): ConstTaskType => ({
         ? task.chunkInfo.repeat?.repeatEvery
         : 1,
     },
-    repeatUntil: moment(task.chunkInfo.repeat.repeatUntil).format('yyyy-MM-DD'),
+    repeatUntil: moment(task.chunkInfo.repeat?.repeatUntil).format(
+      'yyyy-MM-DD'
+    ),
   },
   repeatEveryFacade: '',
   notify: !!task.notifications,
@@ -232,6 +237,11 @@ export const handleConstTaskSubmit = async (
     variables: {
       ConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
     },
+    update(cache) {
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
+    },
   }).catch((error) => {
     // TODO handle error
     console.log(error);
@@ -250,6 +260,11 @@ export const handleFloatTaskSubmit = async (
   const taskResponse = await addFloatTaskMutation({
     variables: {
       FloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
+    },
+    update(cache) {
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
     },
   });
 
