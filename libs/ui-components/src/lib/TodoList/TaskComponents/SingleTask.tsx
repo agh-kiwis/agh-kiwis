@@ -17,7 +17,7 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   const dispatch = useDispatch();
 
   if (task.isFloat && task.chunks?.length === 0) return null;
-  console.log(task);
+
   return (
     <>
       <TaskContainer

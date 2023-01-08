@@ -428,26 +428,18 @@ export type User = {
 };
 
 export type AddConstTaskMutationVariables = Exact<{
-  orderOptions: OrderOptions;
-  paginationOptions: PaginationOptions;
-  orderOptions1: OrderOptions;
-  paginationOptions1: PaginationOptions;
   ConstTaskInput: ConstTaskInput;
 }>;
 
 
-export type AddConstTaskMutation = { __typename?: 'Mutation', addConstTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any, task?: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } | null }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
+export type AddConstTaskMutation = { __typename?: 'Mutation', addConstTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
 
 export type AddFloatTaskMutationVariables = Exact<{
-  orderOptions: OrderOptions;
-  paginationOptions: PaginationOptions;
-  orderOptions1: OrderOptions;
-  paginationOptions1: PaginationOptions;
   FloatTaskInput: FloatTaskInput;
 }>;
 
 
-export type AddFloatTaskMutation = { __typename?: 'Mutation', addFloatTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any, task?: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } | null }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
+export type AddFloatTaskMutation = { __typename?: 'Mutation', addFloatTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
 
 export type CreateCategoryMutationVariables = Exact<{
   createCategoryInput: CreateCategoryInput;
@@ -632,7 +624,7 @@ export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Ta
 
 
 export const AddConstTaskDocument = gql`
-    mutation addConstTask($orderOptions: OrderOptions!, $paginationOptions: PaginationOptions!, $orderOptions1: OrderOptions!, $paginationOptions1: PaginationOptions!, $ConstTaskInput: ConstTaskInput!) {
+    mutation addConstTask($ConstTaskInput: ConstTaskInput!) {
   addConstTask(ConstTaskInput: $ConstTaskInput) {
     category {
       color {
@@ -656,43 +648,6 @@ export const AddConstTaskDocument = gql`
         repeatUntil
       }
       start
-    }
-    chunks(orderOptions: $orderOptions1, paginationOptions: $paginationOptions1) {
-      duration
-      id
-      isDone
-      start
-      task {
-        category {
-          id
-          name
-        }
-        chunkInfo {
-          chillTime
-          deadline
-          duration
-          estimation
-          id
-          maxChunkDuration
-          minChunkDuration
-          start
-        }
-        chunks(orderOptions: $orderOptions, paginationOptions: $paginationOptions) {
-          duration
-          id
-          isDone
-          start
-        }
-        id
-        isDone
-        isFloat
-        name
-        notifications {
-          timeBefore
-        }
-        priority
-        shouldAutoResolve
-      }
     }
     id
     isDone
@@ -721,10 +676,6 @@ export type AddConstTaskMutationFn = Apollo.MutationFunction<AddConstTaskMutatio
  * @example
  * const [addConstTaskMutation, { data, loading, error }] = useAddConstTaskMutation({
  *   variables: {
- *      orderOptions: // value for 'orderOptions'
- *      paginationOptions: // value for 'paginationOptions'
- *      orderOptions1: // value for 'orderOptions1'
- *      paginationOptions1: // value for 'paginationOptions1'
  *      ConstTaskInput: // value for 'ConstTaskInput'
  *   },
  * });
@@ -737,7 +688,7 @@ export type AddConstTaskMutationHookResult = ReturnType<typeof useAddConstTaskMu
 export type AddConstTaskMutationResult = Apollo.MutationResult<AddConstTaskMutation>;
 export type AddConstTaskMutationOptions = Apollo.BaseMutationOptions<AddConstTaskMutation, AddConstTaskMutationVariables>;
 export const AddFloatTaskDocument = gql`
-    mutation addFloatTask($orderOptions: OrderOptions!, $paginationOptions: PaginationOptions!, $orderOptions1: OrderOptions!, $paginationOptions1: PaginationOptions!, $FloatTaskInput: FloatTaskInput!) {
+    mutation addFloatTask($FloatTaskInput: FloatTaskInput!) {
   addFloatTask(FloatTaskInput: $FloatTaskInput) {
     category {
       color {
@@ -761,43 +712,6 @@ export const AddFloatTaskDocument = gql`
         repeatUntil
       }
       start
-    }
-    chunks(orderOptions: $orderOptions1, paginationOptions: $paginationOptions1) {
-      duration
-      id
-      isDone
-      start
-      task {
-        category {
-          id
-          name
-        }
-        chunkInfo {
-          chillTime
-          deadline
-          duration
-          estimation
-          id
-          maxChunkDuration
-          minChunkDuration
-          start
-        }
-        chunks(orderOptions: $orderOptions, paginationOptions: $paginationOptions) {
-          duration
-          id
-          isDone
-          start
-        }
-        id
-        isDone
-        isFloat
-        name
-        notifications {
-          timeBefore
-        }
-        priority
-        shouldAutoResolve
-      }
     }
     id
     isDone
@@ -826,10 +740,6 @@ export type AddFloatTaskMutationFn = Apollo.MutationFunction<AddFloatTaskMutatio
  * @example
  * const [addFloatTaskMutation, { data, loading, error }] = useAddFloatTaskMutation({
  *   variables: {
- *      orderOptions: // value for 'orderOptions'
- *      paginationOptions: // value for 'paginationOptions'
- *      orderOptions1: // value for 'orderOptions1'
- *      paginationOptions1: // value for 'paginationOptions1'
  *      FloatTaskInput: // value for 'FloatTaskInput'
  *   },
  * });
