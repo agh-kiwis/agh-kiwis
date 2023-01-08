@@ -3,7 +3,7 @@ import { HiOutlineCalendar } from 'react-icons/hi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { HStack, VStack } from '@chakra-ui/react';
-import { useGetTasksQuery } from '@agh-kiwis/data-access';
+import { useTasksQuery } from '@agh-kiwis/data-access';
 import {
   AlertModal,
   CommonButton,
@@ -43,18 +43,18 @@ const TodoList: React.FC = () => {
     )
   );
 
-  const { data, loading, error } = useGetTasksQuery({
+  const { data, loading, error } = useTasksQuery({
     variables: {
-      getTasksInput: {
+      taskFilterOptions: {
+        isDone: mappedFilter.status,
+        isFloat: mappedFilter.type,
+        category: mappedFilter.categories,
+        priority: mappedFilter.priorities,
+        repeat: mappedFilter.repeat,
+      },
+      paginationOptions: {
         limit: 30,
         offset: 0,
-        filterOptions: {
-          isDone: mappedFilter.status,
-          isFloat: mappedFilter.type,
-          category: mappedFilter.categories,
-          priority: mappedFilter.priorities,
-          repeat: mappedFilter.repeat,
-        },
       },
     },
   });
@@ -76,7 +76,7 @@ const TodoList: React.FC = () => {
   return (
     <Wrapper height="100vh">
       <TodoListHeader setOpen={setOpen} />
-      <TasksStack tasks={data.getTasks} />
+      <TasksStack tasks={data.tasks} />
 
       <VStack align="stretch" w="100%">
         <HStack>

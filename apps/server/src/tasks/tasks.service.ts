@@ -163,7 +163,9 @@ export class TasksService {
         }),
         user: { id: user.id },
       })
-      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo');
+      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+      .innerJoinAndSelect('task.category', 'category')
+      .innerJoinAndSelect('category.color', 'color');
 
     queryBuilder = this.orderService.order(orderOptions, queryBuilder);
 
@@ -326,7 +328,9 @@ export class TasksService {
 
     const chunk = await Chunk.findOne({
       where: {
-        task: Equal(task),
+        task: {
+          id: task.id,
+        },
       },
     });
 

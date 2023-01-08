@@ -120,7 +120,7 @@ export class TasksResolver {
     @Args('taskInput') taskInput: ConstTaskInput
   ) {
     const task = await Task.findOne({
-      where: { id },
+      where: { id: id },
     });
 
     if (!task) {

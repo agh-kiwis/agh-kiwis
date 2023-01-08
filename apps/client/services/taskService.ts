@@ -1,9 +1,12 @@
+import { ApolloCache } from '@apollo/client';
 import router from 'next/router';
 import moment from 'moment';
 import {
   Chunk,
   ConstTaskInput,
   FloatTaskInput,
+  GetTaskDocument,
+  GetTasksDocument,
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
@@ -235,7 +238,9 @@ export const handleConstTaskSubmit = async (
       ConstTaskInput: constTaskFormToAddTaskMutationMapper(values),
     },
     update(cache) {
-      cache.evict({ fieldName: 'getTasks' });
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
     },
   }).catch((error) => {
     // TODO handle error
@@ -257,7 +262,9 @@ export const handleFloatTaskSubmit = async (
       FloatTaskInput: floatTaskFormToAddTaskMutationMapper(values),
     },
     update(cache) {
-      cache.evict({ fieldName: 'getTasks' });
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.gc();
     },
   });
 

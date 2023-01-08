@@ -303,8 +303,8 @@ export type Query = {
 
 export type QueryChunksArgs = {
   chunkFilterOptions?: InputMaybe<ChunkFilterOptions>;
-  orderOptions?: InputMaybe<OrderOptions>;
-  paginationOptions?: InputMaybe<PaginationOptions>;
+  orderOptions?: OrderOptions;
+  paginationOptions?: PaginationOptions;
 };
 
 
@@ -592,10 +592,10 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', birthDate?: any | null, email: string, gender?: string | null, id: number, introductionCompleted: boolean, name?: string | null } };
 
 export type TasksQueryVariables = Exact<{
-  orderOptions: OrderOptions;
-  paginationOptions: PaginationOptions;
-  orderOptions1: OrderOptions;
-  paginationOptions1: PaginationOptions;
+  orderOptions?: InputMaybe<OrderOptions>;
+  paginationOptions?: InputMaybe<PaginationOptions>;
+  orderOptions1?: InputMaybe<OrderOptions>;
+  paginationOptions1?: InputMaybe<PaginationOptions>;
   taskFilterOptions?: InputMaybe<TaskFilterOptions>;
 }>;
 
@@ -1771,7 +1771,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const TasksDocument = gql`
-    query tasks($orderOptions: OrderOptions!, $paginationOptions: PaginationOptions!, $orderOptions1: OrderOptions!, $paginationOptions1: PaginationOptions!, $taskFilterOptions: TaskFilterOptions) {
+    query tasks($orderOptions: OrderOptions, $paginationOptions: PaginationOptions, $orderOptions1: OrderOptions, $paginationOptions1: PaginationOptions, $taskFilterOptions: TaskFilterOptions) {
   tasks(
     orderOptions: $orderOptions
     paginationOptions: $paginationOptions
@@ -1839,7 +1839,7 @@ export const TasksDocument = gql`
  *   },
  * });
  */
-export function useTasksQuery(baseOptions: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>) {
+export function useTasksQuery(baseOptions?: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<TasksQuery, TasksQueryVariables>(TasksDocument, options);
       }
