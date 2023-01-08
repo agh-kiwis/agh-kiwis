@@ -209,13 +209,9 @@ export const GraphqlLoader = (args?: GraphqlLoaderOptions) => {
         }
       } else {
         if (options.accessor) {
-          console.log('Hi there');
-          console.log(options.accessor(loader.parent));
           const a = loader.req._loader[loaderKey].load(
             options.accessor(loader.parent)
           );
-
-          console.log(a);
           return a;
         }
 

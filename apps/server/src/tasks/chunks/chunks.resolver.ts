@@ -45,10 +45,6 @@ export class ChunksResolver {
   async task(@Loader() loader: LoaderData<Task, number>) {
     const tasks = await this.chunksService.resolveTask(loader.ids);
 
-    const toReturn = loader.helpers.mapManyToOneRelation(tasks, loader.ids);
-
-    console.log('toReturn', toReturn);
-
-    return toReturn;
+    return loader.helpers.mapManyToOneRelation(tasks, loader.ids);
   }
 }
