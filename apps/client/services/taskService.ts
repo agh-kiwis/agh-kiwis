@@ -3,7 +3,6 @@ import moment from 'moment';
 import {
   ConstTaskInput,
   FloatTaskInput,
-  GetTasksDocument,
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
