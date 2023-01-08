@@ -1,14 +1,12 @@
 query chunks(
-  $orderOptions: OrderOptions!
-  $paginationOptions: PaginationOptions!
-  $chunkFilterOptions: ChunkFilterOptions!
-  $orderOptions1: OrderOptions!
-  $paginationOptions1: PaginationOptions!
+  $orderOptions: OrderOptions
+  $paginationOptions: PaginationOptions
+  $chunkFilterOptions: ChunkFilterOptions
 ) {
   chunks(
     chunkFilterOptions: $chunkFilterOptions
-    orderOptions: $orderOptions1
-    paginationOptions: $paginationOptions1
+    orderOptions: $orderOptions
+    paginationOptions: $paginationOptions
   ) {
     duration
     id
@@ -36,15 +34,6 @@ query chunks(
           repeatType
           repeatUntil
         }
-        start
-      }
-      chunks(
-        orderOptions: $orderOptions
-        paginationOptions: $paginationOptions
-      ) {
-        duration
-        id
-        isDone
         start
       }
       id

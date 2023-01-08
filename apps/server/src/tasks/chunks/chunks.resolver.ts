@@ -18,10 +18,12 @@ export class ChunksResolver {
   async chunks(
     @CurrentUser() user: User,
     // TODO Replace that with custom argument later on
-    @Args('chunkFilterOptions') chunkFilterOptions: ChunkFilterOptions,
-    @Args('paginationOptions', { defaultValue: {} })
+    @Args('chunkFilterOptions', { nullable: true })
+    chunkFilterOptions: ChunkFilterOptions,
+    @Args('paginationOptions', { defaultValue: {}, nullable: true })
     paginationOptions: PaginationOptions,
-    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
+    @Args('orderOptions', { defaultValue: {}, nullable: true })
+    orderOptions: OrderOptions
   ) {
     return this.chunksService.resolveChunks(
       user,

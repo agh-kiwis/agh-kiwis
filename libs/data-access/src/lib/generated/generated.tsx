@@ -302,9 +302,9 @@ export type Query = {
 
 
 export type QueryChunksArgs = {
-  chunkFilterOptions: ChunkFilterOptions;
-  orderOptions?: OrderOptions;
-  paginationOptions?: PaginationOptions;
+  chunkFilterOptions?: InputMaybe<ChunkFilterOptions>;
+  orderOptions?: InputMaybe<OrderOptions>;
+  paginationOptions?: InputMaybe<PaginationOptions>;
 };
 
 
@@ -547,15 +547,13 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }> };
 
 export type ChunksQueryVariables = Exact<{
-  orderOptions: OrderOptions;
-  paginationOptions: PaginationOptions;
-  chunkFilterOptions: ChunkFilterOptions;
-  orderOptions1: OrderOptions;
-  paginationOptions1: PaginationOptions;
+  orderOptions?: InputMaybe<OrderOptions>;
+  paginationOptions?: InputMaybe<PaginationOptions>;
+  chunkFilterOptions?: InputMaybe<ChunkFilterOptions>;
 }>;
 
 
-export type ChunksQuery = { __typename?: 'Query', chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any, task?: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } | null }> };
+export type ChunksQuery = { __typename?: 'Query', chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any, task?: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, notifications?: { __typename?: 'Notification', timeBefore: any } | null } | null }> };
 
 export type FindCategoryByPrefixQueryVariables = Exact<{
   prefix: Scalars['String'];
@@ -1398,11 +1396,11 @@ export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
 export const ChunksDocument = gql`
-    query chunks($orderOptions: OrderOptions!, $paginationOptions: PaginationOptions!, $chunkFilterOptions: ChunkFilterOptions!, $orderOptions1: OrderOptions!, $paginationOptions1: PaginationOptions!) {
+    query chunks($orderOptions: OrderOptions, $paginationOptions: PaginationOptions, $chunkFilterOptions: ChunkFilterOptions) {
   chunks(
     chunkFilterOptions: $chunkFilterOptions
-    orderOptions: $orderOptions1
-    paginationOptions: $paginationOptions1
+    orderOptions: $orderOptions
+    paginationOptions: $paginationOptions
   ) {
     duration
     id
@@ -1430,12 +1428,6 @@ export const ChunksDocument = gql`
           repeatType
           repeatUntil
         }
-        start
-      }
-      chunks(orderOptions: $orderOptions, paginationOptions: $paginationOptions) {
-        duration
-        id
-        isDone
         start
       }
       id
@@ -1467,12 +1459,10 @@ export const ChunksDocument = gql`
  *      orderOptions: // value for 'orderOptions'
  *      paginationOptions: // value for 'paginationOptions'
  *      chunkFilterOptions: // value for 'chunkFilterOptions'
- *      orderOptions1: // value for 'orderOptions1'
- *      paginationOptions1: // value for 'paginationOptions1'
  *   },
  * });
  */
-export function useChunksQuery(baseOptions: Apollo.QueryHookOptions<ChunksQuery, ChunksQueryVariables>) {
+export function useChunksQuery(baseOptions?: Apollo.QueryHookOptions<ChunksQuery, ChunksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ChunksQuery, ChunksQueryVariables>(ChunksDocument, options);
       }
