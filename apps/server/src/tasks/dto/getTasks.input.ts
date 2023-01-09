@@ -18,9 +18,3 @@ export class FilterOptions {
   @Field({ nullable: true })
   repeat?: boolean;
 }
-
-@InputType()
-export class GetTasksInput extends PaginatedInput {
-  @Field(() => FilterOptions, { nullable: true })
-  filterOptions?: FilterOptions;
-}

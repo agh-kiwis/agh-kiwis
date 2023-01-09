@@ -1,4 +1,10 @@
-import { useRouter } from 'next/router';
+import { TasksQuery, useTasksQuery } from '@agh-kiwis/data-access';
+import {
+  CommonButton,
+  CustomSpinner,
+  Logo,
+  Wrapper
+} from '@agh-kiwis/ui-components';
 import {
   Table,
   TableContainer,
@@ -8,29 +14,17 @@ import {
   Th,
   Thead,
   Tr,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
-import { GetTasksQuery, useGetTasksQuery } from '@agh-kiwis/data-access';
-import {
-  CommonButton,
-  CustomSpinner,
-  Logo,
-  Wrapper,
-} from '@agh-kiwis/ui-components';
+import { useRouter } from 'next/router';
 
 const IntroductionSummary: React.FC = () => {
-  const { data, loading } = useGetTasksQuery({
-    variables: {
-      getTasksInput: {
-        filterOptions: {},
-      },
-    },
-  });
+  const { data, loading } = useTasksQuery();
 
-  const renderSummaryTable = (data: GetTasksQuery) => {
+  const renderSummaryTable = (data: TasksQuery) => {
     const categoriesMap = new Map<string, number>([]);
 
-    data?.getTasks.map((task) => {
+    data?.tasks.map((task) => {
       categoriesMap.has(task.category.name)
         ? categoriesMap.set(
             task.category.name,

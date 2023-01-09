@@ -1,8 +1,8 @@
-import { ForbiddenError, UserInputError } from 'apollo-server-errors';
-import * as bcrypt from 'bcryptjs';
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { ForbiddenError, UserInputError } from 'apollo-server-errors';
+import * as bcrypt from 'bcryptjs';
 import { CustomContext } from '../types/context.type';
 import { JwtTokenPayload } from '../types/jwt-token.type';
 import { User } from '../users/entities/user.entity';
@@ -59,6 +59,7 @@ export class AuthService {
   }
 
   logout(context: CustomContext): boolean {
+    // TODO
     // This is a temporary solution, we can't invalidate the JWT tokens
     // We need to use normal session tokens, which we would just remove from the key-value database (redis for example)
     clearCookie(context, this.configService);

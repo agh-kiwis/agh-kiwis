@@ -27,7 +27,9 @@ import {
 
 const UserDetails: React.FC = () => {
   const router = useRouter();
-  const { data, loading } = useMeQuery();
+  const { data, loading } = useMeQuery({
+    fetchPolicy: 'network-only',
+  });
   const [updateUserMutation] = useUpdateUserMutation();
 
   const onSubmit = useCallback(

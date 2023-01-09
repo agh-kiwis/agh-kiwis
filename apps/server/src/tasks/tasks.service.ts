@@ -1,7 +1,7 @@
 import { UserInputError } from 'apollo-server-errors';
 import { Equal, In, IsNull, Not } from 'typeorm';
 import moment, { Duration } from 'moment';
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -15,7 +15,6 @@ import { CategoryInput } from './dto/category.input';
 import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
-import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { TaskFilterOptions } from './dto/taskFilter.options';
 import { ChunkInfo } from './entities/chunkInfo.entity';
@@ -140,7 +139,6 @@ export class TasksService {
     paginationOptions: PaginationOptions,
     orderOptions: OrderOptions
   ) {
-    // Create task query builder:
     let queryBuilder = Task.createQueryBuilder('task')
       // TODO Move that to a different service and use .andWhere
       .where({
@@ -163,6 +161,8 @@ export class TasksService {
         }),
         user: { id: user.id },
       })
+      // Those are tiny in comparison with another query, so
+      // We're pre-joining them here
       .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
       .innerJoinAndSelect('task.category', 'category')
       .innerJoinAndSelect('category.color', 'color');
@@ -200,77 +200,13 @@ export class TasksService {
     return queryBuilder.getMany();
   }
 
-  // This is deprecated
-  async getTasks(user: User, getTasksInput: GetTasksInput) {
-    const tasksWithoutChunks = await Task.find({
-      relations: {
-        chunkInfo: {
-          repeat: true,
-        },
-      },
-      where: {
-        // Get those values from filterOptions that are in task entity
-        ...Object.keys(getTasksInput?.filterOptions || {}).filter(
-          (key) => key in Task
-        ),
-        ...(getTasksInput?.filterOptions?.category && {
-          category: In(getTasksInput.filterOptions.category),
-        }),
-        ...(getTasksInput?.filterOptions?.priority && {
-          priority: In(getTasksInput.filterOptions.priority),
-        }),
-        ...(typeof getTasksInput?.filterOptions?.repeat === 'boolean' && {
-          chunkInfo: {
-            repeat: getTasksInput?.filterOptions?.repeat
-              ? Not(IsNull())
-              : IsNull(),
-          },
-        }),
-        user: { id: user.id },
-      },
-      skip: getTasksInput.offset * getTasksInput.limit,
-      order: {
-        chunkInfo: {
-          start: 'ASC' as const,
-        },
-      },
-      take: getTasksInput.limit,
-    });
-
-    return await Promise.all(
-      tasksWithoutChunks.map(async (task) => {
-        // If task is const then we need to limit chunks
-        task.chunks = await Chunk.find({
-          where: {
-            task: { id: task.id },
-            // TODO There we need to filter by start and end times when implementing calendar view
-          },
-          ...(!task.isFloat && {
-            take: 10,
-          }),
-          order: {
-            start: 'ASC' as const,
-          },
-        });
-
-        return task;
-      })
-    );
-  }
-
-  async getTask(user: User, id: string) {
-    return await Task.findOne({
-      relations: {
-        chunks: true,
-        chunkInfo: {
-          repeat: true,
-        },
-      },
-      where: {
-        user: { id: user.id },
-        id: parseInt(id),
-      },
-    });
+  async resolveNotificationsField(taskIds: number[]) {
+    return Task.createQueryBuilder('task')
+      .where('task.id IN (:...taskIds)', { taskIds })
+      .leftJoinAndSelect('task.notifications', 'notifications')
+      .select('task')
+      .addSelect('notifications')
+      .getMany();
   }
 
   async update(id: number, updateTaskInput: TaskInput) {

@@ -17,8 +17,6 @@ import { TasksModule } from '../tasks/tasks.module';
 import { UsersModule } from '../users/users.module';
 import { IntervalScalar } from '../utils/interval.scalar';
 import { WorkersModule } from '../workers/workers.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -44,9 +42,7 @@ import { AppService } from './app.service';
     CategoriesModule,
     WorkersModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
@@ -55,5 +51,3 @@ import { AppService } from './app.service';
   ],
 })
 export class AppModule {}
-
-// Export this module

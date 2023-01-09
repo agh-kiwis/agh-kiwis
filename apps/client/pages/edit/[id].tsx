@@ -1,17 +1,17 @@
-import React from 'react';
-import { useRouter } from 'next/router';
 import {
-  useGetTaskQuery,
+  useTasksQuery,
   useUpdateConstTaskMutation,
-  useUpdateFloatTaskMutation,
+  useUpdateFloatTaskMutation
 } from '@agh-kiwis/data-access';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 import {
   AlertModal,
   ConstTaskForm,
   CustomSpinner,
-  FloatTaskForm,
+  FloatTaskForm
 } from '@agh-kiwis/ui-components';
+import { useRouter } from 'next/router';
+import React from 'react';
 import {
   chillTimeInputFields,
   durationInputFields,
@@ -19,13 +19,13 @@ import {
   maxChunkTimeInputFields,
   minChunkTimeInputFields,
   repeatEveryAmountFields,
-  repeatEverySelectField,
+  repeatEverySelectField
 } from '../../formConfig/initialValues';
 import {
   constTaskToUpdateTaskMutationMapper,
   floatTaskToUpdateTaskMutationMapper,
   taskToConstTaskType,
-  taskToFloatTaskType,
+  taskToFloatTaskType
 } from '../../services/taskService';
 
 const ConstTask: React.FC = () => {
@@ -40,9 +40,11 @@ const ConstTask: React.FC = () => {
   });
   const [updateFloatTaskMutation] = useUpdateFloatTaskMutation();
 
-  const { data, loading, error } = useGetTaskQuery({
+  const { data, loading, error } = useTasksQuery({
     variables: {
-      id: Array.isArray(id) ? id[0] : id,
+      taskFilterOptions: {
+        ids: [Number(Array.isArray(id) ? id[0] : id)],
+      },
     },
   });
 
@@ -85,11 +87,12 @@ const ConstTask: React.FC = () => {
       <AlertModal status={'error'} title={'Error!'} message={error.message} />
     );
   }
+  const task = data.tasks[0];
   return (
     <>
-      {data.getTask.isFloat ? (
+      {task.isFloat ? (
         <FloatTaskForm
-          initialValues={taskToFloatTaskType(data.getTask)}
+          initialValues={taskToFloatTaskType(task)}
           estimationInputFields={estimationInputFields}
           chillTimeInputFields={chillTimeInputFields}
           minChunkTimeInputFields={minChunkTimeInputFields}
@@ -99,7 +102,7 @@ const ConstTask: React.FC = () => {
         />
       ) : (
         <ConstTaskForm
-          initialValues={taskToConstTaskType(data.getTask)}
+          initialValues={taskToConstTaskType(task)}
           durationInputFields={durationInputFields}
           chillTimeInputFields={chillTimeInputFields}
           repeatEverySelectField={repeatEverySelectField}

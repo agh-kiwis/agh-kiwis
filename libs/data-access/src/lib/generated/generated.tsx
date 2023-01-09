@@ -136,14 +136,6 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
-export type FilterOptions = {
-  category?: InputMaybe<Array<Scalars['Float']>>;
-  isDone?: InputMaybe<Scalars['Boolean']>;
-  isFloat?: InputMaybe<Scalars['Boolean']>;
-  priority?: InputMaybe<Array<Scalars['String']>>;
-  repeat?: InputMaybe<Scalars['Boolean']>;
-};
-
 export type FloatTaskInput = {
   /** Either existing category id or new category name and color. */
   category: CategoryInput;
@@ -164,12 +156,6 @@ export type FloatTaskInput = {
   start: Scalars['DateTime'];
   /** The time before user wants to receive task notification. */
   timeBeforeNotification?: InputMaybe<Scalars['Interval']>;
-};
-
-export type GetTasksInput = {
-  filterOptions?: InputMaybe<FilterOptions>;
-  limit?: Scalars['Int'];
-  offset?: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -294,8 +280,6 @@ export type Query = {
   findCategoryByPrefix: Array<Category>;
   getCategories: Array<Category>;
   getColors: Array<Color>;
-  getTask: Task;
-  getTasks: Array<Task>;
   me: User;
   tasks: Array<Task>;
 };
@@ -310,16 +294,6 @@ export type QueryChunksArgs = {
 
 export type QueryFindCategoryByPrefixArgs = {
   prefix: Scalars['String'];
-};
-
-
-export type QueryGetTaskArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetTasksArgs = {
-  getTasksInput: GetTasksInput;
 };
 
 
@@ -571,20 +545,6 @@ export type GetColorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetColorsQuery = { __typename?: 'Query', getColors: Array<{ __typename?: 'Color', hexCode: string, id: number }> };
-
-export type GetTaskQueryVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-
-export type GetTaskQuery = { __typename?: 'Query', getTask: { __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null } };
-
-export type GetTasksQueryVariables = Exact<{
-  getTasksInput: GetTasksInput;
-}>;
-
-
-export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename?: 'Task', id: number, isDone: boolean, isFloat: boolean, name: string, priority: string, shouldAutoResolve: boolean, category: { __typename?: 'Category', id: number, name: string, color: { __typename?: 'Color', hexCode: string, id: number } }, chunkInfo?: { __typename?: 'ChunkInfo', chillTime: any, deadline?: string | null, duration?: any | null, estimation?: any | null, id: number, maxChunkDuration?: any | null, minChunkDuration?: any | null, start: any, repeat?: { __typename?: 'Repeat', repeatEvery: number, repeatType: string, repeatUntil?: any | null } | null } | null, chunks: Array<{ __typename?: 'Chunk', duration: any, id: number, isDone: boolean, start: any }>, notifications?: { __typename?: 'Notification', timeBefore: any } | null }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1587,150 +1547,6 @@ export function useGetColorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetColorsQueryHookResult = ReturnType<typeof useGetColorsQuery>;
 export type GetColorsLazyQueryHookResult = ReturnType<typeof useGetColorsLazyQuery>;
 export type GetColorsQueryResult = Apollo.QueryResult<GetColorsQuery, GetColorsQueryVariables>;
-export const GetTaskDocument = gql`
-    query getTask($id: String!) {
-  getTask(id: $id) {
-    category {
-      color {
-        hexCode
-        id
-      }
-      id
-      name
-    }
-    chunkInfo {
-      chillTime
-      deadline
-      duration
-      estimation
-      id
-      maxChunkDuration
-      minChunkDuration
-      repeat {
-        repeatEvery
-        repeatType
-        repeatUntil
-      }
-      start
-    }
-    chunks {
-      duration
-      id
-      isDone
-      start
-    }
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority
-    shouldAutoResolve
-  }
-}
-    `;
-
-/**
- * __useGetTaskQuery__
- *
- * To run a query within a React component, call `useGetTaskQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTaskQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTaskQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetTaskQuery(baseOptions: Apollo.QueryHookOptions<GetTaskQuery, GetTaskQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTaskQuery, GetTaskQueryVariables>(GetTaskDocument, options);
-      }
-export function useGetTaskLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTaskQuery, GetTaskQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTaskQuery, GetTaskQueryVariables>(GetTaskDocument, options);
-        }
-export type GetTaskQueryHookResult = ReturnType<typeof useGetTaskQuery>;
-export type GetTaskLazyQueryHookResult = ReturnType<typeof useGetTaskLazyQuery>;
-export type GetTaskQueryResult = Apollo.QueryResult<GetTaskQuery, GetTaskQueryVariables>;
-export const GetTasksDocument = gql`
-    query getTasks($getTasksInput: GetTasksInput!) {
-  getTasks(getTasksInput: $getTasksInput) {
-    category {
-      color {
-        hexCode
-        id
-      }
-      id
-      name
-    }
-    chunkInfo {
-      chillTime
-      deadline
-      duration
-      estimation
-      id
-      maxChunkDuration
-      minChunkDuration
-      repeat {
-        repeatEvery
-        repeatType
-        repeatUntil
-      }
-      start
-    }
-    chunks {
-      duration
-      id
-      isDone
-      start
-    }
-    id
-    isDone
-    isFloat
-    name
-    notifications {
-      timeBefore
-    }
-    priority
-    shouldAutoResolve
-  }
-}
-    `;
-
-/**
- * __useGetTasksQuery__
- *
- * To run a query within a React component, call `useGetTasksQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTasksQuery({
- *   variables: {
- *      getTasksInput: // value for 'getTasksInput'
- *   },
- * });
- */
-export function useGetTasksQuery(baseOptions: Apollo.QueryHookOptions<GetTasksQuery, GetTasksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTasksQuery, GetTasksQueryVariables>(GetTasksDocument, options);
-      }
-export function useGetTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTasksQuery, GetTasksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTasksQuery, GetTasksQueryVariables>(GetTasksDocument, options);
-        }
-export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
-export type GetTasksLazyQueryHookResult = ReturnType<typeof useGetTasksLazyQuery>;
-export type GetTasksQueryResult = Apollo.QueryResult<GetTasksQuery, GetTasksQueryVariables>;
 export const MeDocument = gql`
     query me {
   me {

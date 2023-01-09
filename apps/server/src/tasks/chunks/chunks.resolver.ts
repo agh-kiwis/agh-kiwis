@@ -1,9 +1,9 @@
-import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
   GraphqlLoader,
   Loader,
-  LoaderData,
+  LoaderData
 } from '@agh-kiwis/nestjs-graphql-tools';
+import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { OrderOptions } from '../../ordering/order.options';
 import { PaginationOptions } from '../../pagination/pagination.options';
 import { CurrentUser } from '../../providers/user.provider';
@@ -16,8 +16,6 @@ import { ChunksService } from './chunks.service';
 @Resolver(() => Chunk)
 export class ChunksResolver {
   constructor(private readonly chunksService: ChunksService) {}
-
-  // TODO Add task as a field of a chunk and resolve it (maybe with shared resolvers)
 
   @Query(() => [Chunk])
   async chunks(
