@@ -1,4 +1,9 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  GraphqlLoader,
+  Loader,
+  LoaderData,
+} from '@agh-kiwis/nestjs-graphql-tools';
 import { OrderOptions } from '../../ordering/order.options';
 import { PaginationOptions } from '../../pagination/pagination.options';
 import { CurrentUser } from '../../providers/user.provider';
@@ -34,7 +39,12 @@ export class ChunksResolver {
   }
 
   @ResolveField(() => Task, { name: 'task' })
-  async task(@Parent() chunk: Chunk) {
-    return this.chunksService.resolveTask(chunk);
+  @GraphqlLoader({
+    accessor: (parent: Chunk) => parent.task.id,
+  })
+  async task(@Loader() loader: LoaderData<Task, number>) {
+    const tasks = await this.chunksService.resolveTask(loader.ids);
+
+    return loader.helpers.mapManyToOneRelation(tasks, loader.ids);
   }
 }

@@ -45,6 +45,10 @@ const TodoList: React.FC = () => {
 
   const { data, loading, error } = useTasksQuery({
     variables: {
+      orderOptions: {
+        desc: false,
+        field: 'chunkInfo.start',
+      },
       taskFilterOptions: {
         isDone: mappedFilter.status,
         isFloat: mappedFilter.type,

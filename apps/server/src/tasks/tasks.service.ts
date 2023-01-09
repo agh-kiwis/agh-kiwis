@@ -180,15 +180,15 @@ export class TasksService {
   async chunksFieldResolve(
     // TODO There will be tasks later on to batch them
     // https://blog.logrocket.com/use-dataloader-nestjs/
-    task: Task,
+    taskIds: number[],
     paginationOptions: PaginationOptions,
     orderOptions: OrderOptions
   ) {
     // Create query builder from chunk entity
-    let queryBuilder = Chunk.createQueryBuilder('chunk').where(
-      'chunk.taskId = :taskId',
-      { taskId: task.id }
-    );
+    let queryBuilder = Chunk.createQueryBuilder('chunk')
+      .where('chunk.taskId IN (:...taskIds)', { taskIds })
+      .innerJoin('chunk.task', 'task')
+      .addSelect('task.id');
 
     queryBuilder = this.orderService.order(orderOptions, queryBuilder);
 
