@@ -1,10 +1,4 @@
-import { TasksQuery, useTasksQuery } from '@agh-kiwis/data-access';
-import {
-  CommonButton,
-  CustomSpinner,
-  Logo,
-  Wrapper
-} from '@agh-kiwis/ui-components';
+import { useRouter } from 'next/router';
 import {
   Table,
   TableContainer,
@@ -14,9 +8,15 @@ import {
   Th,
   Thead,
   Tr,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { TasksQuery, useTasksQuery } from '@agh-kiwis/data-access';
+import {
+  CommonButton,
+  CustomSpinner,
+  Logo,
+  Wrapper,
+} from '@agh-kiwis/ui-components';
 
 const IntroductionSummary: React.FC = () => {
   const { data, loading } = useTasksQuery();

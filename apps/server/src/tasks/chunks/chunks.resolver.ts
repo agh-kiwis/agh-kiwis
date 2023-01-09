@@ -1,9 +1,9 @@
+import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
   GraphqlLoader,
   Loader,
-  LoaderData
+  LoaderData,
 } from '@agh-kiwis/nestjs-graphql-tools';
-import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { OrderOptions } from '../../ordering/order.options';
 import { PaginationOptions } from '../../pagination/pagination.options';
 import { CurrentUser } from '../../providers/user.provider';

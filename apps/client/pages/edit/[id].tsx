@@ -1,17 +1,17 @@
+import React from 'react';
+import { useRouter } from 'next/router';
 import {
   useTasksQuery,
   useUpdateConstTaskMutation,
-  useUpdateFloatTaskMutation
+  useUpdateFloatTaskMutation,
 } from '@agh-kiwis/data-access';
 import { ConstTaskType, FloatTaskType } from '@agh-kiwis/types';
 import {
   AlertModal,
   ConstTaskForm,
   CustomSpinner,
-  FloatTaskForm
+  FloatTaskForm,
 } from '@agh-kiwis/ui-components';
-import { useRouter } from 'next/router';
-import React from 'react';
 import {
   chillTimeInputFields,
   durationInputFields,
@@ -19,13 +19,13 @@ import {
   maxChunkTimeInputFields,
   minChunkTimeInputFields,
   repeatEveryAmountFields,
-  repeatEverySelectField
+  repeatEverySelectField,
 } from '../../formConfig/initialValues';
 import {
   constTaskToUpdateTaskMutationMapper,
   floatTaskToUpdateTaskMutationMapper,
   taskToConstTaskType,
-  taskToFloatTaskType
+  taskToFloatTaskType,
 } from '../../services/taskService';
 
 const ConstTask: React.FC = () => {

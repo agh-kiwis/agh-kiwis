@@ -1,7 +1,7 @@
-import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import * as fs from 'fs';
+import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { setupApp } from './utils/setup';
 import validationOptions from './utils/validation-options';
