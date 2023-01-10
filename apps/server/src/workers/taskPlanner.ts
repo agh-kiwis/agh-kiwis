@@ -333,6 +333,10 @@ const findBestWindow = (
     }
   });
 
+  if (windowsAndCoefficientMap.size === 0) {
+    return;
+  }
+
   const bestWindow = Array.from(windowsAndCoefficientMap.entries()).reduce(
     (a, b) => (a[1] < b[1] ? b : a)
   )[0];

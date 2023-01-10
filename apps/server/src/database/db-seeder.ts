@@ -266,7 +266,7 @@ export const seedDatabase = async (app: INestApplication) => {
       start: newDate(2022, 12, 13),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(3, 'hour'),
-      deadline: newDate(2022, 11, 20, 0, 0),
+      deadline: newDate(2022, 12, 20, 0, 0),
       estimation: moment.duration(5, 'hours'),
       chillTime: moment.duration(15, 'minutes'),
     },
