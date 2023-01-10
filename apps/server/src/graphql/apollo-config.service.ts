@@ -12,7 +12,6 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
   constructor(private configService: ConfigService) {}
 
   createGqlOptions(): ApolloDriverConfig {
-    // TODO This smells bad for me
     registerEnumType(RepeatType, {
       name: 'RepeatType',
       description: 'Supported repeat types',
@@ -30,7 +29,6 @@ export class ApolloConfigService implements ApolloDriverConfigFactory {
         return { req, res, ...(clientId && { clientId }) };
       },
       cors: {
-        // origin: '*',
         origin: this.configService.get('app.corsOrigin'),
         // We need credentials to accept Auth cookies
         credentials: true,

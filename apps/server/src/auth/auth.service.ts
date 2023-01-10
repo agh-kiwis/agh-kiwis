@@ -59,6 +59,7 @@ export class AuthService {
   }
 
   logout(context: CustomContext): boolean {
+    // TODO
     // This is a temporary solution, we can't invalidate the JWT tokens
     // We need to use normal session tokens, which we would just remove from the key-value database (redis for example)
     clearCookie(context, this.configService);

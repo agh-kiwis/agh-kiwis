@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Chunk } from '../tasks/chunks/chunk.entity';
 import { Task } from '../tasks/entities/task.entity';
 
+// TODO Split this into subServices and add unit tests for them
 const WEEKS_TO_ADD = 4;
 
 type Window = {

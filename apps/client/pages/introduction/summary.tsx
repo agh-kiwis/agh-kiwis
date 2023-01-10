@@ -10,7 +10,7 @@ import {
   Tr,
   VStack,
 } from '@chakra-ui/react';
-import { GetTasksQuery, useGetTasksQuery } from '@agh-kiwis/data-access';
+import { TasksQuery, useTasksQuery } from '@agh-kiwis/data-access';
 import {
   CommonButton,
   CustomSpinner,
@@ -19,18 +19,12 @@ import {
 } from '@agh-kiwis/ui-components';
 
 const IntroductionSummary: React.FC = () => {
-  const { data, loading } = useGetTasksQuery({
-    variables: {
-      getTasksInput: {
-        filterOptions: {},
-      },
-    },
-  });
+  const { data, loading } = useTasksQuery();
 
-  const renderSummaryTable = (data: GetTasksQuery) => {
+  const renderSummaryTable = (data: TasksQuery) => {
     const categoriesMap = new Map<string, number>([]);
 
-    data?.getTasks.map((task) => {
+    data?.tasks.map((task) => {
       categoriesMap.has(task.category.name)
         ? categoriesMap.set(
             task.category.name,

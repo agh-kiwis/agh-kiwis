@@ -2,7 +2,6 @@ import {
   Args,
   Int,
   Mutation,
-  Parent,
   Query,
   ResolveField,
   Resolver,
@@ -12,15 +11,16 @@ import {
   Loader,
   LoaderData,
 } from '@agh-kiwis/nestjs-graphql-tools';
+import { Category } from '../categories/entities/category.entity';
 import { OrderOptions } from '../ordering/order.options';
 import { PaginationOptions } from '../pagination/pagination.options';
 import { CurrentUser } from '../providers/user.provider';
+import { Notification } from '../tasks/entities/notification.entity';
 import { User } from '../users/entities/user.entity';
 import { Chunk } from './chunks/chunk.entity';
 import { ChunkInput } from './dto/chunkInput';
 import { ConstTaskInput } from './dto/constTask.input';
 import { FloatTaskInput } from './dto/floatTask.input';
-import { GetTasksInput } from './dto/getTasks.input';
 import { TaskInput } from './dto/task.input';
 import { TaskFilterOptions } from './dto/taskFilter.options';
 import { Task } from './entities/task.entity';
@@ -30,39 +30,7 @@ import { TasksService } from './tasks.service';
 export class TasksResolver {
   constructor(private readonly tasksService: TasksService) {}
 
-  @Mutation(() => Task)
-  addConstTask(
-    @CurrentUser() user: User,
-    @Args('ConstTaskInput') ConstTaskInput: ConstTaskInput
-  ) {
-    return this.tasksService.createConst(user, ConstTaskInput);
-  }
-
-  @Mutation(() => Task)
-  addFloatTask(
-    @CurrentUser() user: User,
-    @Args('FloatTaskInput') FloatTaskInput: FloatTaskInput
-  ) {
-    return this.tasksService.createFloatTask(user, FloatTaskInput);
-  }
-
-  @Query(() => [Task])
-  async tasks(
-    @CurrentUser() user: User,
-    // Make the filter options optional
-    @Args('taskFilterOptions', { nullable: true })
-    taskFilterOptions: TaskFilterOptions,
-    @Args('paginationOptions', { defaultValue: {} })
-    paginationOptions: PaginationOptions,
-    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
-  ) {
-    return this.tasksService.tasks(
-      user,
-      taskFilterOptions,
-      paginationOptions,
-      orderOptions
-    );
-  }
+  // FIELDS
 
   @ResolveField(() => [Chunk], { name: 'chunks' })
   @GraphqlLoader()
@@ -77,41 +45,90 @@ export class TasksResolver {
     @Args('orderOptions', { defaultValue: { field: 'id', desc: true } })
     orderOptions: OrderOptions
   ) {
-    // Link to the implementation in resolver function
-    // A chunk is expected to be a field of a task, so we omit validation
     const chunks = await this.tasksService.chunksFieldResolve(
       loader.ids,
       paginationOptions,
       orderOptions
     );
-
+    // TODO We would like to move that to another place
     const taskChunksMap = loader.ids.reduce((acc, id) => {
       acc[Number(id)] = [];
-
-      // Find all chunks that belong to the task with id
       chunks.forEach((chunk) => {
         if (chunk.task.id === id) {
           acc[Number(id)].push(chunk);
         }
       });
-
       return acc;
     }, {});
 
-    return Object.values(taskChunksMap);
+    return loader.ids.reduce((acc: number[], id) => {
+      acc.push(taskChunksMap[id]);
+      return acc;
+    }, []);
   }
 
-  @Query(() => [Task])
-  getTasks(
-    @CurrentUser() user: User,
-    @Args('getTasksInput') getTasksInput: GetTasksInput
+  @ResolveField(() => Notification)
+  @GraphqlLoader()
+  async notificationsFieldResolver(
+    // FIXME
+    @Loader() loader: LoaderData<Category, number>
   ) {
-    return this.tasksService.getTasks(user, getTasksInput);
+    // We need to move that to the helper
+    const tasksWithCategories =
+      await this.tasksService.resolveNotificationsField(loader.ids);
+
+    const taskNotificationsMap = loader.ids.reduce((acc, id) => {
+      acc[Number(id)] = [];
+
+      tasksWithCategories.forEach((task) => {
+        if (task.id === id) {
+          acc[Number(id)] = task.notifications;
+        }
+      });
+      return acc;
+    }, {});
+
+    return loader.ids.reduce((acc: number[], id) => {
+      acc.push(taskNotificationsMap[id]);
+      return acc;
+    }, []);
   }
 
-  @Query(() => Task)
-  getTask(@CurrentUser() user: User, @Args('id') id: string) {
-    return this.tasksService.getTask(user, id);
+  // QUERIES
+  @Query(() => [Task])
+  async tasks(
+    @CurrentUser() user: User,
+    @Args('taskFilterOptions', { nullable: true })
+    taskFilterOptions: TaskFilterOptions,
+    @Args('paginationOptions', { defaultValue: {} })
+    paginationOptions: PaginationOptions,
+    @Args('orderOptions', { defaultValue: {} }) orderOptions: OrderOptions
+  ) {
+    return this.tasksService.tasks(
+      user,
+      taskFilterOptions,
+      paginationOptions,
+      orderOptions
+    );
+  }
+
+  // MUTATIONS
+
+  @Mutation(() => Task)
+  addConstTask(
+    @CurrentUser() user: User,
+    // TODO Fix this arg name to be starting from lowercase
+    @Args('ConstTaskInput') ConstTaskInput: ConstTaskInput
+  ) {
+    return this.tasksService.createConst(user, ConstTaskInput);
+  }
+
+  @Mutation(() => Task)
+  addFloatTask(
+    @CurrentUser() user: User,
+    @Args('FloatTaskInput') FloatTaskInput: FloatTaskInput
+  ) {
+    return this.tasksService.createFloatTask(user, FloatTaskInput);
   }
 
   @Mutation(() => Task)
@@ -129,8 +146,7 @@ export class TasksResolver {
     if (task.user.id !== user?.id) {
       throw new Error('Task does not belong to user');
     }
-    const result = await this.tasksService.update(id, taskInput);
-    return result;
+    return this.tasksService.update(id, taskInput);
   }
 
   @Mutation(() => Task)
@@ -150,8 +166,7 @@ export class TasksResolver {
       throw new Error('Task does not belong to user');
     }
 
-    const result = await this.tasksService.updateConstTask(user, id, taskInput);
-    return result;
+    return this.tasksService.updateConstTask(user, id, taskInput);
   }
 
   @Mutation(() => Task)
@@ -171,8 +186,7 @@ export class TasksResolver {
       throw new Error('Task does not belong to user');
     }
 
-    const result = await this.tasksService.updateFloatTask(user, id, taskInput);
-    return result;
+    return this.tasksService.updateFloatTask(user, id, taskInput);
   }
 
   @Mutation(() => Chunk)
@@ -195,8 +209,7 @@ export class TasksResolver {
     if (chunk.task.user.id !== user.id) {
       throw new Error('Task does not belong to user');
     }
-    const result = await this.tasksService.updateChunk(id, chunkInput);
-    return result;
+    return this.tasksService.updateChunk(id, chunkInput);
   }
 
   @Mutation(() => Task)
@@ -204,6 +217,9 @@ export class TasksResolver {
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number
   ) {
+    // Move those validations to the service
+    // Resolver is only responsible for validating the input
+    // And authorizing the request
     const task = await Task.findOne({
       where: { id },
     });

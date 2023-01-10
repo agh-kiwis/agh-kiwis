@@ -17,8 +17,6 @@ import { ChunksService } from './chunks.service';
 export class ChunksResolver {
   constructor(private readonly chunksService: ChunksService) {}
 
-  // TODO Add task as a field of a chunk and resolve it (maybe with shared resolvers)
-
   @Query(() => [Chunk])
   async chunks(
     @CurrentUser() user: User,

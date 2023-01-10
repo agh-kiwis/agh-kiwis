@@ -9,6 +9,7 @@ import validationOptions from './utils/validation-options';
 async function bootstrap() {
   const options: NestApplicationOptions = {};
 
+  // TODO This needs to be moved to nginx layer
   if (process.env.NODE_ENV == 'production') {
     options.httpsOptions = {
       key: fs.readFileSync('./secrets/privkey.pem'),
@@ -20,10 +21,10 @@ async function bootstrap() {
 
   // This is needed for class-validator to work with nestjs
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await setupApp(app);
-  // Move that to the appDataSource
-
   app.useGlobalPipes(new ValidationPipe(validationOptions));
+
+  // Custom app setup
+  await setupApp(app);
 
   const port = process.env.BACKEND_PORT || 3333;
   const host =
