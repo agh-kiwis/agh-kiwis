@@ -25,8 +25,6 @@ import {
 const TodoList: React.FC = () => {
   const router = useRouter();
 
-  // TODO This can sit in local storage
-
   const [open, setOpen] = useState(false);
   const { filters, setFilters } = useFilters();
 
@@ -69,7 +67,6 @@ const TodoList: React.FC = () => {
   if (error) {
     if (error.message.includes('Authentication failed')) {
       router.push('/login');
-      return <></>;
     } else {
       return (
         <AlertModal status={'error'} title={'Error!'} message={error.message} />

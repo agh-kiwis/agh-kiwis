@@ -21,9 +21,10 @@ import {
 import {
   DESCRIPTIVE_DATE_FORMAT,
   LOGIN_URL,
+  TODO_LIST_URL,
 } from '@agh-kiwis/workspace-constants';
 
-const Settings: React.FC = (props) => {
+const Settings: React.FC = () => {
   const router = useRouter();
   const { data, loading } = useMeQuery();
   const [logoutMutation] = useLogoutMutation();
@@ -32,7 +33,6 @@ const Settings: React.FC = (props) => {
     await logoutMutation();
   };
 
-  // We need to handle errors or unauthenticated
   if (loading) {
     return <CustomSpinner />;
   }
@@ -85,7 +85,7 @@ const Settings: React.FC = (props) => {
             type="submit"
             buttonText="Cancel"
             onClick={() => {
-              router.back();
+              router.push(TODO_LIST_URL);
             }}
           />
         </HStack>

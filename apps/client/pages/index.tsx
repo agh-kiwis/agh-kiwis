@@ -9,11 +9,7 @@ const Index: React.FC = () => {
     router.push('/todo-list');
   }, [router]);
 
-  return (
-    <>
-      <CustomSpinner />
-    </>
-  );
+  return <CustomSpinner />;
 };
 
 export default Index;
