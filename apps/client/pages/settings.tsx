@@ -27,10 +27,21 @@ import {
 const Settings: React.FC = () => {
   const router = useRouter();
   const { data, loading } = useMeQuery();
-  const [logoutMutation] = useLogoutMutation();
+  const [logoutMutation] = useLogoutMutation({
+    update(cache) {
+      cache.evict({ fieldName: 'me' });
+      cache.gc();
+    },
+  });
 
   const handleLogout = async () => {
     await logoutMutation();
+    // TODO Clear Authorization cookie from document.cookie
+    // document.cookie.split(';').forEach(function (c) {
+    //   document.cookie = c
+    //     .replace(/^ +/, '')
+    //     .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    // });
   };
 
   if (loading) {
