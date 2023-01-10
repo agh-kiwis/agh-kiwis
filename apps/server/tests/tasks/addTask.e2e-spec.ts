@@ -5,6 +5,7 @@ import { AppModule } from '../../src/app/app.module';
 import connection from '../connection';
 import { makeRequest } from '../testUtils';
 
+
 describe('Tasks (e2e)', () => {
   let app: INestApplication | any;
 
@@ -122,17 +123,17 @@ describe('Tasks (e2e)', () => {
         shouldAutoResolve: false,
         chunks: [
           {
-            duration: 'P0D',
+            duration: 'P0Y0M0DT0H0M0S',
             isDone: false,
             start: '2022-11-19T11:00:00.000Z',
           },
           {
-            duration: 'P0D',
+            duration: 'P0Y0M0DT0H0M0S',
             isDone: false,
             start: '2022-11-20T11:00:00.000Z',
           },
           {
-            duration: 'P0D',
+            duration: 'P0Y0M0DT0H0M0S',
             isDone: false,
             start: '2022-11-21T11:00:00.000Z',
           },
