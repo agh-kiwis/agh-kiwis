@@ -32,7 +32,6 @@ export const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         name={FilterNames.Type}
         filters={filters}
       />
-
       <SingleFilter
         onClick={(option) =>
           updateFilter(filters, setFilters, FilterNames.Status, option)
@@ -41,7 +40,6 @@ export const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         name={FilterNames.Status}
         filters={filters}
       />
-
       <SingleFilter
         onClick={(option) =>
           updateFilter(filters, setFilters, FilterNames.Category, option)
@@ -50,7 +48,6 @@ export const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         name={FilterNames.Category}
         filters={filters}
       />
-
       <SingleFilter
         onClick={(option) =>
           updateFilter(filters, setFilters, FilterNames.Priority, option)
