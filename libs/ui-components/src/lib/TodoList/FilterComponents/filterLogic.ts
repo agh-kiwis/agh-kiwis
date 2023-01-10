@@ -82,39 +82,35 @@ export const mapToGraphQLFields = (
 };
 
 const typeHandler = (optionsArray: FilterType) => {
-  if (optionsArray.length !== 1) return undefined;
-  else if (optionsArray[0] === Type.Float) return true;
-  else return false;
+  return optionsArray.length === 1 ? optionsArray[0] === Type.Float : undefined;
 };
 
 const statusHandler = (optionsArray: FilterType) => {
-  if (optionsArray.length !== 1) return undefined;
-  else if (optionsArray[0] === Status.Done) return true;
-  else return false;
+  return optionsArray.length === 1
+    ? optionsArray[0] === Status.Done
+    : undefined;
 };
 
 export const categoryHandler = (optionsArray: FilterType) => {
   if (optionsArray.length === 0) {
     return undefined;
   }
+
   const ids: number[] = [];
   optionsArray.map((opt) => {
     if (categories_map && categories_map.has(opt)) {
       ids.push(categories_map.get(opt)!);
     }
   });
+
   return ids.length === 0 ? undefined : ids;
 };
 
 const priorityHandler = (optionsArray: FilterType) => {
-  if (optionsArray.length === 0) {
-    return Object.values(Priority);
-  }
-  return optionsArray;
+  return optionsArray.length > 0 ? optionsArray : undefined;
 };
 
 const repeatHandler = (optionsArray: FilterType) => {
-  if (optionsArray[0] === Repeat.ShouldRepeat) return true;
   if (optionsArray[0] === undefined) return undefined;
-  else return false;
+  return optionsArray[0] === Repeat.ShouldRepeat;
 };

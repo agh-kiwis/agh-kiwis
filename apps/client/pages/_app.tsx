@@ -16,7 +16,7 @@ const client = new ApolloClient({
   credentials: 'include',
 });
 
-function KiwisApp({ Component, pageProps }: AppProps) {
+const KiwisApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
@@ -30,6 +30,6 @@ function KiwisApp({ Component, pageProps }: AppProps) {
       </GoogleOAuthProvider>
     </>
   );
-}
+};
 
 export default KiwisApp;

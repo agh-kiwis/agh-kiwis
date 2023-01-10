@@ -21,7 +21,7 @@ import { AlertModal, CustomSpinner } from '@agh-kiwis/ui-components';
 import { SETTINGS_URL, TODO_LIST_URL } from '@agh-kiwis/workspace-constants';
 import { mapToCalendarTiles } from '../services/taskService';
 
-const Calendar = () => {
+const Calendar: React.FC = () => {
   const router = useRouter();
   const [modalOpened, setModalOpened] = useState(false);
   const [clickedTask, setClickedTask] = useState(null);

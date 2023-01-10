@@ -25,8 +25,6 @@ import {
 const TodoList: React.FC = () => {
   const router = useRouter();
 
-  // TODO This can sit in local storage
-
   const [open, setOpen] = useState(false);
   const { filters, setFilters } = useFilters();
 

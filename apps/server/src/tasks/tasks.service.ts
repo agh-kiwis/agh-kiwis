@@ -141,6 +141,9 @@ export class TasksService {
   ) {
     let queryBuilder = Task.createQueryBuilder('task')
       // TODO Move that to a different service and use .andWhere
+      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
+      .innerJoinAndSelect('task.category', 'category')
+      .innerJoinAndSelect('category.color', 'color')
       .where({
         ...(taskFilterOptions?.ids && {
           id: In(taskFilterOptions.ids),
@@ -160,12 +163,7 @@ export class TasksService {
           },
         }),
         user: { id: user.id },
-      })
-      // Those are tiny in comparison with another query, so
-      // We're pre-joining them here
-      .innerJoinAndSelect('task.chunkInfo', 'chunkInfo')
-      .innerJoinAndSelect('task.category', 'category')
-      .innerJoinAndSelect('category.color', 'color');
+      });
 
     queryBuilder = this.orderService.order(orderOptions, queryBuilder);
 

@@ -1,12 +1,9 @@
-import { ApolloCache } from '@apollo/client';
 import router from 'next/router';
 import moment from 'moment';
 import {
   Chunk,
   ConstTaskInput,
   FloatTaskInput,
-  GetTaskDocument,
-  GetTasksDocument,
   RepeatType,
   Task,
 } from '@agh-kiwis/data-access';
