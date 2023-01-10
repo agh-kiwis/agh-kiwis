@@ -14,7 +14,7 @@ const newDate = (
       (1000 * 60 * 60 * 24 * 7)
   );
 
-  date.setTime(date.getTime() + (weeksPassed + 1) * 7 * 24 * 60 * 60 * 1000);
+  date.setTime(date.getTime() + weeksPassed * 7 * 24 * 60 * 60 * 1000);
 
   return date;
 };

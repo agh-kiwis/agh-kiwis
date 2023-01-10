@@ -1,6 +1,6 @@
-import { DataSource } from 'typeorm';
-import moment from 'moment';
 import { INestApplication } from '@nestjs/common';
+import moment from 'moment';
+import { DataSource } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { Chunk } from '../tasks/chunks/chunk.entity';
@@ -293,7 +293,7 @@ export const seedDatabase = async (app: INestApplication) => {
     isFloat: true,
     user: user,
     chunkInfo: {
-      start: newDate(2022, 12, 13, 8, 0),
+      start: newDate(2022, 12, 13, 24, 0),
       minChunkDuration: moment.duration(1, 'hour'),
       maxChunkDuration: moment.duration(3, 'hour'),
       estimation: moment.duration(6, 'hours'),

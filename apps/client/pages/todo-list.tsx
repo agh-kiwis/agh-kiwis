@@ -1,26 +1,22 @@
-import { useState } from 'react';
-import { HiOutlineCalendar } from 'react-icons/hi';
-import { IoSettingsOutline } from 'react-icons/io5';
-import { useRouter } from 'next/router';
-import { HStack, VStack } from '@chakra-ui/react';
 import { useTasksQuery } from '@agh-kiwis/data-access';
 import {
   AlertModal,
   CommonButton,
   CustomSpinner,
   FilterModal,
-  MappedFilter,
-  TasksStack,
-  TodoListHeader,
-  Wrapper,
-  mapToGraphQLFields,
-  useFilters,
+  MappedFilter, mapToGraphQLFields, TasksStack,
+  TodoListHeader, useFilters, Wrapper
 } from '@agh-kiwis/ui-components';
 import {
   ADD_CONST_TASK_URL,
   CALENDAR_URL,
-  SETTINGS_URL,
+  SETTINGS_URL
 } from '@agh-kiwis/workspace-constants';
+import { HStack, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { HiOutlineCalendar } from 'react-icons/hi';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 const TodoList: React.FC = () => {
   const router = useRouter();
@@ -46,6 +42,10 @@ const TodoList: React.FC = () => {
       orderOptions: {
         desc: false,
         field: 'chunkInfo.start',
+      },
+      orderOptions1: {
+        desc: false,
+        field: 'start',
       },
       taskFilterOptions: {
         isDone: mappedFilter.status,

@@ -1,16 +1,16 @@
 import {
+  GraphqlLoader,
+  Loader,
+  LoaderData
+} from '@agh-kiwis/nestjs-graphql-tools';
+import {
   Args,
   Int,
   Mutation,
   Query,
   ResolveField,
-  Resolver,
+  Resolver
 } from '@nestjs/graphql';
-import {
-  GraphqlLoader,
-  Loader,
-  LoaderData,
-} from '@agh-kiwis/nestjs-graphql-tools';
 import { Category } from '../categories/entities/category.entity';
 import { OrderOptions } from '../ordering/order.options';
 import { PaginationOptions } from '../pagination/pagination.options';
@@ -50,11 +50,12 @@ export class TasksResolver {
       paginationOptions,
       orderOptions
     );
+
     // TODO We would like to move that to another place
     const taskChunksMap = loader.ids.reduce((acc, id) => {
       acc[Number(id)] = [];
-      chunks.forEach((chunk) => {
-        if (chunk.task.id === id) {
+      chunks.forEach((chunk: Chunk & { taskId: number }) => {
+        if (chunk.taskId === id) {
           acc[Number(id)].push(chunk);
         }
       });

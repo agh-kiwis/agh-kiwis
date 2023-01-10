@@ -1,7 +1,7 @@
-import { UserInputError } from 'apollo-server-errors';
-import { Equal, In, IsNull, Not } from 'typeorm';
-import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
+import { UserInputError } from 'apollo-server-errors';
+import moment, { Duration } from 'moment';
+import { Equal, In, IsNull, Not } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -176,32 +176,36 @@ export class TasksService {
   }
 
   async chunksFieldResolve(
-    // TODO There will be tasks later on to batch them
-    // https://blog.logrocket.com/use-dataloader-nestjs/
     taskIds: number[],
     paginationOptions: PaginationOptions,
     orderOptions: OrderOptions
-  ) {
-    // Create query builder from chunk entity
-    let queryBuilder = Chunk.createQueryBuilder('chunk')
-      .where('chunk.taskId IN (:...taskIds)', { taskIds })
-      .innerJoin('chunk.task', 'task')
-      .addSelect('task.id');
-
-    queryBuilder = this.orderService.order(orderOptions, queryBuilder);
-
-    queryBuilder = this.paginationService.paginate(
-      paginationOptions,
-      queryBuilder
+  ): Promise<[Chunk & { taskId: number }]> {
+    // TODO Place this in a different service  and generalise
+    return await Chunk.query(
+      `
+        SELECT chunk_virtual.* FROM (
+        SELECT c.*,
+        rank() OVER (
+            PARTITION BY c."taskId"
+            order by c.${orderOptions?.field} ${
+        orderOptions?.desc ? 'DESC' : 'ASC'
+      }
+        ) as rank
+        FROM chunk c
+    ) chunk_virtual
+    WHERE rank <= ${
+      paginationOptions?.limit * (paginationOptions?.offset + 1)
+    } and rank >= ${
+        paginationOptions?.limit * paginationOptions?.offset
+      } and chunk_virtual."taskId" IN (${taskIds.join(',')})
+    `
     );
-
-    return queryBuilder.getMany();
   }
 
   async resolveNotificationsField(taskIds: number[]) {
     return Task.createQueryBuilder('task')
-      .where('task.id IN (:...taskIds)', { taskIds })
       .leftJoinAndSelect('task.notifications', 'notifications')
+      .where('task.id IN (:...taskIds)', { taskIds })
       .select('task')
       .addSelect('notifications')
       .getMany();
