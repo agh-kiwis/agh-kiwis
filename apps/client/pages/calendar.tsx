@@ -41,6 +41,7 @@ const Calendar: React.FC = () => {
   if (error) {
     if (error.message.includes('Authentication failed')) {
       router.push('/login');
+      return <></>;
     } else {
       return (
         <AlertModal status={'error'} title={'Error!'} message={error.message} />
