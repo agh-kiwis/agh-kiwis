@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
-import moment, { Duration } from 'moment';
 import { Equal, In, IsNull, Not } from 'typeorm';
+import moment, { Duration } from 'moment';
+import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -78,29 +78,33 @@ export class TasksService {
   }
 
   async createFloatTask(user: User, FloatTaskInput: FloatTaskInput) {
-    const category = await getCategory(user, FloatTaskInput.category);
+    try {
+      const category = await getCategory(user, FloatTaskInput.category);
 
-    const notification = await getNotification(
-      FloatTaskInput.timeBeforeNotification
-    );
+      const notification = await getNotification(
+        FloatTaskInput.timeBeforeNotification
+      );
 
-    const chunkInfo = await ChunkInfo.create({
-      ...FloatTaskInput,
-    }).save();
+      const chunkInfo = await ChunkInfo.create({
+        ...FloatTaskInput,
+      }).save();
 
-    const task = await Task.create({
-      category: category,
-      isFloat: true,
-      user: user,
-      name: FloatTaskInput.name,
-      notifications: notification,
-      priority: FloatTaskInput.priority,
-      chunkInfo: chunkInfo,
-      shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
-    }).save();
+      const task = await Task.create({
+        category: category,
+        isFloat: true,
+        user: user,
+        name: FloatTaskInput.name,
+        notifications: notification,
+        priority: FloatTaskInput.priority,
+        chunkInfo: chunkInfo,
+        shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
+      }).save();
 
-    await this.taskPlanner.planTask(task);
-    return task;
+      await this.taskPlanner.planTask(task);
+      return task;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   async upsertChunksForRepeatTask(task: Task) {

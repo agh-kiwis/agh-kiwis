@@ -16,8 +16,6 @@ export const SingleTask: React.FC<SingleTaskProps> = ({ task }) => {
   const [modalOpened, setModalOpened] = useState(false);
   const dispatch = useDispatch();
 
-  if (task.isFloat && task.chunks?.length === 0) return null;
-
   return (
     <>
       <TaskContainer

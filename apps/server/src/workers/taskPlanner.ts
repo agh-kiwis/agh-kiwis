@@ -342,9 +342,10 @@ const findBestWindow = (
   )[0];
 
   // Check if a coefficient is 0, and if it is, return nothing
-  if (windowsAndCoefficientMap.get(bestWindow) === 0) {
-    return;
-  }
+  // if (windowsAndCoefficientMap.get(bestWindow) === 0) {
+  //   return;
+  // }
+
   return bestWindow;
 };
 
