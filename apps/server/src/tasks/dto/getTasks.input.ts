@@ -1,5 +1,4 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { PaginatedInput } from '../../utils/PaginatedInput';
 
 @InputType()
 export class FilterOptions {

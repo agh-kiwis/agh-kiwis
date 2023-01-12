@@ -3,7 +3,6 @@ import moment from 'moment';
 import { INestApplication } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
-import { Chunk } from '../tasks/chunks/chunk.entity';
 import { ConstTaskInput } from '../tasks/dto/constTask.input';
 import { Repeat, RepeatType } from '../tasks/entities/repeat.entity';
 import { Task } from '../tasks/entities/task.entity';
@@ -63,6 +62,8 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
   // Add user
   const user = await User.create({
     email: InitialSeed.email,
+    name: 'John',
+    birthDate: newDate(1990, 1, 1),
     introductionCompleted: true,
     password: InitialSeed.password,
   }).save();
@@ -315,23 +316,23 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     priority: 'medium',
   });
 
-  const prepareForEngineerExam = await Task.create({
-    name: 'Prepare for Engineer Exam',
-    category: preparationCategory,
-    priority: 'high',
-    isFloat: true,
-    user: user,
-    chunkInfo: {
-      start: newDate(2023, 1, 13, 7, 15),
-      minChunkDuration: moment.duration(30, 'minutes'),
-      maxChunkDuration: moment.duration(2, 'hour'),
-      estimation: moment.duration(15, 'hours'),
-      deadline: newDate(2023, 1, 20, 0, 0),
-      chillTime: moment.duration(30, 'minutes'),
-    },
-  }).save();
+  // const prepareForEngineerExam = awa`it Task.create({
+  //   name: 'Prepare for Engineer Exam',
+  //   category: preparationCategory,
+  //   priority: 'high',
+  //   isFloat: true,
+  //   user: user,
+  //   chunkInfo: {
+  //     start: newDate(2023, 1, 13, 7, 15),
+  //     minChunkDuration: moment.duration(30, 'minutes'),
+  //     maxChunkDuration: moment.duration(2, 'hour'),
+  //     estimation: moment.duration(15, 'hours'),
+  //     deadline: newDate(2023, 1, 20, 0, 0),
+  //     chillTime: moment.duration(30, 'minutes'),
+  //   },
+  // }).save();
 
-  // plan task
+  // // plan task
 
-  await taskPlanner.planTask(prepareForEngineerExam);
+  // await taskPlanner.planTask(prepareForEngineerExam);`
 };

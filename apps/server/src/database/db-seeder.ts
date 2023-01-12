@@ -1,6 +1,6 @@
-import { INestApplication } from '@nestjs/common';
-import moment from 'moment';
 import { DataSource } from 'typeorm';
+import moment from 'moment';
+import { INestApplication } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { Chunk } from '../tasks/chunks/chunk.entity';
@@ -300,7 +300,7 @@ export const seedDatabase = async (app: INestApplication) => {
       deadline: newDate(2022, 12, 21, 0, 0),
       chillTime: moment.duration(15, 'minutes'),
     },
-  }).save();
+  });
 
   // plan task
 

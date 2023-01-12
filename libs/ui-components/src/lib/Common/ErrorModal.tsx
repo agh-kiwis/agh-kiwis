@@ -31,11 +31,12 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
   return (
     <AlertDialog
       isOpen={isOpen}
+      isCentered
       leastDestructiveRef={cancelRef}
       onClose={onClose}
     >
       <AlertDialogOverlay>
-        <AlertDialogContent>
+        <AlertDialogContent mx="4">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {ADD_TASK_ERROR}
           </AlertDialogHeader>

@@ -28,6 +28,10 @@ const Calendar: React.FC = () => {
 
   const { data, loading, error } = useChunksQuery({
     variables: {
+      paginationOptions: {
+        limit: 100,
+        offset: 0,
+      },
       orderOptions: {
         desc: false,
         field: 'start',
@@ -58,9 +62,10 @@ const Calendar: React.FC = () => {
       <VStack align="stretch" spacing="4">
         <FullCalendar
           initialView="timeGridDay"
+          eventMinHeight={50}
           titleFormat={{ day: 'numeric', month: 'short' }}
           height="88vh"
-          slotDuration="00:10:00"
+          slotDuration="00:15:00"
           events={mapToCalendarTiles(data.chunks as any)}
           eventClick={(e) => {
             console.log(e.event);

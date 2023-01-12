@@ -1,6 +1,12 @@
+import { GoogleLogin } from '@react-oauth/google';
+import { useEffect, useRef, useState } from 'react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { Form, Formik } from 'formik';
+import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import {
   useGoogleLoginMutation,
-  useLoginMutation
+  useLoginMutation,
 } from '@agh-kiwis/data-access';
 import { CredentialSchema } from '@agh-kiwis/form-validators';
 import {
@@ -8,20 +14,21 @@ import {
   CommonButton,
   InputField,
   Logo,
-  Wrapper
+  Wrapper,
 } from '@agh-kiwis/ui-components';
 import { ERROR_MODAL_TIMEOUT } from '@agh-kiwis/workspace-constants';
-import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react';
-import { GoogleLogin } from '@react-oauth/google';
-import { Form, Formik } from 'formik';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
 
 const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
   const [popUpMessage, setPopUpMessage] = useState('');
-  const [loginMutation] = useLoginMutation();
+  const [loginMutation] = useLoginMutation({
+    update(cache) {
+      cache.evict({ fieldName: 'tasks' });
+      cache.evict({ fieldName: 'chunks' });
+      cache.evict({ fieldName: 'me' });
+      cache.gc();
+    },
+  });
   const [googleLoginMutation] = useGoogleLoginMutation();
   const router = useRouter();
   const isInitialMount = useRef(true);

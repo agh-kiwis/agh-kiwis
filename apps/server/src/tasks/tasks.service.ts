@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server-errors';
-import { Equal, In, IsNull, Not } from 'typeorm';
+import { DataSource, Equal, In, IsNull, Not } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
@@ -27,7 +27,8 @@ export class TasksService {
   constructor(
     private readonly orderService: OrderService,
     private readonly paginationService: PaginationService,
-    private readonly taskPlanner: TaskPlanner
+    private readonly taskPlanner: TaskPlanner,
+    private dataSource: DataSource
   ) {}
 
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
@@ -78,33 +79,33 @@ export class TasksService {
   }
 
   async createFloatTask(user: User, FloatTaskInput: FloatTaskInput) {
-    try {
-      const category = await getCategory(user, FloatTaskInput.category);
+    const category = await getCategory(user, FloatTaskInput.category);
 
-      const notification = await getNotification(
-        FloatTaskInput.timeBeforeNotification
-      );
+    const notification = await getNotification(
+      FloatTaskInput.timeBeforeNotification
+    );
 
-      const chunkInfo = await ChunkInfo.create({
-        ...FloatTaskInput,
-      }).save();
+    const chunkInfo = await ChunkInfo.create({
+      ...FloatTaskInput,
+    }).save();
 
-      const task = await Task.create({
-        category: category,
-        isFloat: true,
-        user: user,
-        name: FloatTaskInput.name,
-        notifications: notification,
-        priority: FloatTaskInput.priority,
-        chunkInfo: chunkInfo,
-        shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
-      }).save();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-      await this.taskPlanner.planTask(task);
-      return task;
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    const task = Task.create({
+      category: category,
+      isFloat: true,
+      user: user,
+      name: FloatTaskInput.name,
+      notifications: notification,
+      priority: FloatTaskInput.priority,
+      chunkInfo: chunkInfo,
+      shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
+    });
+
+    await this.taskPlanner.planTask(task);
+    return task;
   }
 
   async upsertChunksForRepeatTask(task: Task) {
@@ -330,8 +331,6 @@ export class TasksService {
     task.priority = updateTaskInput.priority;
     task.chunkInfo = chunkInfo;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
-
-    task = await task.save();
 
     await this.taskPlanner.planTask(task);
 
