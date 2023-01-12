@@ -117,32 +117,7 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     repeatEvery: 1,
   }).save();
 
-  const everyDayRepeat1 = await Repeat.create({
-    repeatType: RepeatType.DAYS,
-    repeatEvery: 1,
-  }).save();
-
-  const everyDayRepeat2 = await Repeat.create({
-    repeatType: RepeatType.DAYS,
-    repeatEvery: 1,
-  }).save();
-
-  const everyDayRepeat3 = await Repeat.create({
-    repeatType: RepeatType.DAYS,
-    repeatEvery: 1,
-  }).save();
-
-  const everyDayRepeat4 = await Repeat.create({
-    repeatType: RepeatType.DAYS,
-    repeatEvery: 1,
-  }).save();
-
   const everySecondDayRepeat = await Repeat.create({
-    repeatType: RepeatType.DAYS,
-    repeatEvery: 2,
-  }).save();
-
-  const everySecondDayRepeat1 = await Repeat.create({
     repeatType: RepeatType.DAYS,
     repeatEvery: 2,
   }).save();
@@ -167,7 +142,8 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     duration: moment.duration(15, 'minutes'),
     user: user,
     priority: 'low',
-    repeat: everyDayRepeat1,
+    // use everyDayRepeat without creating new instance
+    repeat: { repeatType: RepeatType.DAYS, repeatEvery: 1 } as Repeat,
   });
 
   // Breakfast
@@ -179,7 +155,7 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     duration: moment.duration(30, 'minutes'),
     user: user,
     priority: 'medium',
-    repeat: everyDayRepeat2,
+    repeat: { repeatType: RepeatType.DAYS, repeatEvery: 1 } as Repeat,
   });
 
   // Work
@@ -242,7 +218,7 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     duration: moment.duration(1, 'hours'),
     user: user,
     priority: 'low',
-    repeat: everyDayRepeat3,
+    repeat: { repeatType: RepeatType.DAYS, repeatEvery: 1 } as Repeat,
   });
 
   await createConstTask({
@@ -253,7 +229,7 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     duration: moment.duration(15, 'minutes'),
     user: user,
     priority: 'low',
-    repeat: everyDayRepeat4,
+    repeat: { repeatType: RepeatType.DAYS, repeatEvery: 1 } as Repeat,
   });
 
   // Gym
@@ -276,7 +252,7 @@ export const seedDatabasePresentation = async (app: INestApplication) => {
     duration: moment.duration(75, 'minutes'),
     user: user,
     priority: 'medium',
-    repeat: everySecondDayRepeat1,
+    repeat: { repeatType: RepeatType.DAYS, repeatEvery: 2 } as Repeat,
   });
 
   await createConstTask({

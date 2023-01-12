@@ -152,8 +152,11 @@ export class TasksService {
         ...(taskFilterOptions?.ids && {
           id: In(taskFilterOptions.ids),
         }),
-        ...(taskFilterOptions?.isDone && {
+        ...(typeof taskFilterOptions?.isDone === 'boolean' && {
           isDone: taskFilterOptions.isDone,
+        }),
+        ...(typeof taskFilterOptions?.isFloat === 'boolean' && {
+          isFloat: taskFilterOptions.isFloat,
         }),
         ...(taskFilterOptions?.category && {
           category: In(taskFilterOptions.category),
