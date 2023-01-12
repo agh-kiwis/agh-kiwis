@@ -34,7 +34,7 @@ export const EstimationInput: React.FC<EstimationInputProps> = ({
 
       <FormModal
         finalRef={finalRef}
-        modalTitle="Chill time"
+        modalTitle="Estimation"
         isOpen={isOpen}
         onClose={onClose}
         inputFields={estimationInputFields}

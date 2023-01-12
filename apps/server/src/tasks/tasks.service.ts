@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-errors';
+import { DataSource, Equal, In, IsNull, Not } from 'typeorm';
 import moment, { Duration } from 'moment';
-import { Equal, In, IsNull, Not } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { Category } from '../categories/entities/category.entity';
 import { Color } from '../categories/entities/color.entity';
 import { OrderOptions } from '../ordering/order.options';
@@ -27,7 +27,8 @@ export class TasksService {
   constructor(
     private readonly orderService: OrderService,
     private readonly paginationService: PaginationService,
-    private readonly taskPlanner: TaskPlanner
+    private readonly taskPlanner: TaskPlanner,
+    private dataSource: DataSource
   ) {}
 
   async createConst(user: User, ConstTaskInput: ConstTaskInput) {
@@ -88,7 +89,11 @@ export class TasksService {
       ...FloatTaskInput,
     }).save();
 
-    const task = await Task.create({
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    const task = Task.create({
       category: category,
       isFloat: true,
       user: user,
@@ -97,7 +102,7 @@ export class TasksService {
       priority: FloatTaskInput.priority,
       chunkInfo: chunkInfo,
       shouldAutoResolve: FloatTaskInput.shouldAutoResolve,
-    }).save();
+    });
 
     await this.taskPlanner.planTask(task);
     return task;
@@ -148,8 +153,11 @@ export class TasksService {
         ...(taskFilterOptions?.ids && {
           id: In(taskFilterOptions.ids),
         }),
-        ...(taskFilterOptions?.isDone && {
+        ...(typeof taskFilterOptions?.isDone === 'boolean' && {
           isDone: taskFilterOptions.isDone,
+        }),
+        ...(typeof taskFilterOptions?.isFloat === 'boolean' && {
+          isFloat: taskFilterOptions.isFloat,
         }),
         ...(taskFilterOptions?.category && {
           category: In(taskFilterOptions.category),
@@ -323,8 +331,6 @@ export class TasksService {
     task.priority = updateTaskInput.priority;
     task.chunkInfo = chunkInfo;
     task.shouldAutoResolve = updateTaskInput.shouldAutoResolve;
-
-    task = await task.save();
 
     await this.taskPlanner.planTask(task);
 

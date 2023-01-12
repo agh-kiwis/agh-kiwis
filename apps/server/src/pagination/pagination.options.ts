@@ -12,6 +12,6 @@ export class PaginationOptions {
     defaultValue: 20,
   })
   @Min(1)
-  @Max(50)
+  @Max(100)
   limit: number = 20;
 }

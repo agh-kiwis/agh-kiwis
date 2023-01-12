@@ -34,5 +34,4 @@ async function bootstrap() {
   Logger.log(`App is running in ${process.env.NODE_ENV} mode`);
   Logger.log(`🚀 Application is running on: ${host}/graphql`);
 }
-
 bootstrap();

@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 import moment, { Duration } from 'moment';
 import { Injectable } from '@nestjs/common';
 import { Chunk } from '../tasks/chunks/chunk.entity';
@@ -6,6 +6,8 @@ import { Task } from '../tasks/entities/task.entity';
 
 // TODO Split this into subServices and add unit tests for them
 const WEEKS_TO_ADD = 4;
+
+let queryRunner: QueryRunner;
 
 type Window = {
   start: moment.Moment;
@@ -40,9 +42,11 @@ export class TaskPlanner {
     }
 
     // We need to create a transaction for the sake of integrity of operations
-    const queryRunner = this.dataSource.createQueryRunner();
+    queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+
+    queryRunner.manager.save(task);
 
     // Get all float tasks breakdowns for the user in the given range
 
@@ -228,6 +232,8 @@ export class TaskPlanner {
       windows = fitTask(task, windows, task.chunkInfo.deadline, chunksToInsert);
       if (!windows) {
         // This indicates that we have more tasks to plan than windows
+        // Revert transaction
+        queryRunner.rollbackTransaction();
         throw new Error('No windows left!!! Please do something later');
       }
     });
@@ -253,6 +259,8 @@ const calculateCoefficient = (
   const windowDuration: Duration = window.duration.clone();
 
   if (window.duration.asMinutes() == 0) {
+    queryRunner.rollbackTransaction();
+
     throw new Error('Window duration is 0');
   }
   while (windowDuration.asMinutes() > 0 && taskDuration.asMinutes() > 0) {
@@ -322,6 +330,8 @@ const findBestWindow = (
 ) => {
   const windowsAndCoefficientMap = new Map();
   if (windows.length === 0) {
+    queryRunner.rollbackTransaction();
+
     throw new Error('No windows found!');
   }
   windows.forEach((window) => {
@@ -343,8 +353,11 @@ const findBestWindow = (
 
   // Check if a coefficient is 0, and if it is, return nothing
   if (windowsAndCoefficientMap.get(bestWindow) === 0) {
-    return;
+    queryRunner.rollbackTransaction();
+
+    throw new Error('Coefficient is 0');
   }
+
   return bestWindow;
 };
 
@@ -454,6 +467,8 @@ const getDurationUsedForTheWindow = (
   const windowStart = window.start.clone();
 
   if (window.duration.asMinutes() == 0) {
+    queryRunner.rollbackTransaction();
+
     throw new Error('Window duration is 0');
   }
 
@@ -484,6 +499,7 @@ const getDurationUsedForTheWindow = (
       chunksToInsert.push(chunkToInsert);
       windowStart.add(chunkSize);
     } else {
+      queryRunner.rollbackTransaction();
       throw new Error('Not enough time to fit the task!');
     }
   }
