@@ -1,33 +1,8 @@
 import gql from 'graphql-tag';
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../../src/app/app.module';
-import connection from '../connection';
-import { makeRequest } from '../testUtils';
+import { describe_e2e, execute } from '../tests';
 
 
-describe('Tasks (e2e)', () => {
-  let app: INestApplication | any;
-
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await connection.clear(app);
-    await app.init();
-  });
-
-  beforeEach(async () => {
-    await connection.clear(app);
-  });
-
-  afterAll(async () => {
-    await connection.close(app);
-    await app.close();
-  });
-
+describe_e2e('Tasks (e2e)', () => {
   const registerMutation = gql`
     mutation ($registerDto: AuthEmailRegisterInput!) {
       register(registerDto: $registerDto) {
@@ -89,14 +64,14 @@ describe('Tasks (e2e)', () => {
 
   describe('task', () => {
     it('AddTask', async () => {
-      const { register } = await makeRequest(app, registerMutation, {
+      const { register } = await execute(registerMutation, {
         registerDto: {
           email: 'email@gmail.com',
           password: 'password1234',
         },
       });
 
-      const { addConstTask } = await makeRequest(app, addConstTaskMutation, {
+      const { addConstTask } = await execute(addConstTaskMutation, {
         token: register.token,
       });
 

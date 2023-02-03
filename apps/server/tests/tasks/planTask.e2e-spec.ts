@@ -14,10 +14,15 @@ import { User } from '../../src/users/entities/user.entity';
 import newDate from '../../src/utils/newDate';
 import { TaskPlanner } from '../../src/workers/taskPlanner';
 import connection from '../connection';
+import { describe_e2e } from '../tests';
 
-describe('PlanTask (e2e)', () => {
+describe_e2e('PlanTask (e2e)', () => {
   let app: INestApplication;
 
+  // We need to override the beforeAll callback
+  // To be able to inject the TaskPlanner
+
+  // Later on this needs to be customizable
   let taskPlanner: TaskPlanner;
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -28,15 +33,6 @@ describe('PlanTask (e2e)', () => {
     taskPlanner = app.get(TaskPlanner);
     await connection.clear(app);
     await app.init();
-  });
-
-  beforeEach(async () => {
-    await connection.clear(app);
-  });
-
-  afterAll(async () => {
-    await connection.close(app);
-    await app.close();
   });
 
   // TODO Add repeat param there
